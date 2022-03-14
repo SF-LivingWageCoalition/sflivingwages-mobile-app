@@ -1,0 +1,556 @@
+import React, { useState, useEffect } from 'react';
+import {
+    StyleSheet,
+    View,
+    TouchableOpacity,
+    ScrollView,
+    ImageBackground,
+    Linking,
+    Dimensions,
+    FlatList, ActivityIndicator,
+} from 'react-native';
+import * as Font from 'expo-font';
+
+import { Divider } from 'react-native-elements';
+import { Text, Button } from 'native-base';
+
+import { Card, Title, Paragraph } from 'react-native-paper';
+import { WebView } from "react-native-webview";
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Swiper from 'react-native-swiper/src';
+import EventListItem from './EventListItem';
+
+var bodyPageHeight = Dimensions.get('window').height;
+var boadyPageWidth = Dimensions.get('window').width;
+
+
+export default function NewHomeScreen({ navigation }) {
+
+    const [about, setAbout] = useState("");
+    const [active, setActive] = useState(0);
+
+    const [events, setEvents] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const getEvents = async () => {
+        const response = await fetch('http://157.245.184.202:8080/calendar', {
+            method: "GET"
+        });
+
+        const getEvents = await response.json();
+  
+        //get idea from https://stackoverflow.com/questions/7513040/how-to-sort-objects-by-date-ascending-order/21244139
+        getEvents.sort((a,b) => {
+            let date_1 = new Date(a.start_date);
+            let date_2 = new Date(b.start_date);
+
+            if(date_1 < date_2){
+                return -1;
+            }else if (date_1 == date_2){
+                return 0;
+            }else{
+                return 1;
+            }
+        });
+
+        setEvents(getEvents.slice(0,4) );
+        setLoading(false);
+    }
+
+
+    let images = [
+        // {
+        //     id: 1,
+        //     src: require('./../../../../assets/P1040589.png'),
+        //     destination: 'CampaignScreen'
+        // },
+        {
+
+            id: 2,
+            src: require('./../../../../assets/Encuentro_2017_130.jpg'),
+            destination: 'https://www.livingwage-sf.org/donations-and-membership/'
+            
+        },       
+        {
+            id: 3,
+            src: require('./../../../../assets/p1040208.jpg'),
+            destination: 'Event'
+        },
+
+    ]
+
+    const handleActive = (nativeEvent) => {
+        if (nativeEvent) {
+            const number = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
+            if (number != active) {
+                if (number === images.length) {
+                    setActive(number - 1);
+                } else {
+                    setActive(number);
+                }
+
+            }
+        }
+    }
+
+    let newsImages = [
+        {
+            id: 1,
+            src: require('./../../../../assets/campaign3_background.jpg'),
+            title: 'RAISE WAGES',
+            destination: 'CampaignDetail'
+        },
+        {
+            id: 2,
+            src: require('./../../../../assets/Encuentro_2017_021.jpg'),
+            title: 'End the Injustice of Mass Incarceration',
+            destination: 'CampaignTwoDetail'
+
+        },
+        {
+            id: 3,
+            src: require('./../../../../assets/immigrant.jpg'),
+            title: '"REFORM A BROKEN MIGRATION SYSTEM',
+            destination: 'CampaignThreeDetail'
+        },
+    ]
+
+    // console.log("images, ", images);
+
+    const getAbout = async () => {
+        const response = await fetch("http://157.245.184.202:8080/about", {
+            method: 'GET'
+        });
+
+        const getAbout = await response.json();
+        setAbout(getAbout[0].aboutinfo);
+    };
+
+
+    useEffect(() => {
+        getEvents();
+
+        getAbout();
+
+        (async () => await Font.loadAsync({
+            Roboto: require('native-base/Fonts/Roboto.ttf'),
+            Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
+          }))();
+    }, [])
+
+
+
+
+
+    return (
+        <ScrollView style={{ flex: 1, backgroundColor: '#ffffff' }}>
+            <View style={styles.container}>
+                <View style={styles.topbackground}>
+                    <ImageBackground source={require('./../../../../assets/stefan-mitev-Sp3eNPAHB8c-unsplash.jpg')} style={styles.background}>
+                        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.3)' }} >
+                            <Text style={styles.imageTitle}>
+                                Who We Are </Text>
+                            <Text note numberOfLines={3} style={styles.imageContent}>
+                                {about}</Text>
+                            <View style={styles.buttonView}>
+                                <TouchableOpacity onPress={() => Linking.openURL('https://www.livingwage-sf.org/who-we-are/')} style={styles.button}>
+                                    <Text style={{ fontSize: 18, color: "#ffffff", textAlign: 'center', fontWeight: "700" }}>View More</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </ImageBackground>
+                </View>
+                <ScrollView style={styles.bodyPage} >
+                    {/* <View style={{ flex: 1, marginTop: 30}}>
+                        <ScrollView pagingEnabled horizontal  scrollEventThrottle={0} onScroll={({nativeEvent}) => handleActive(nativeEvent)}>
+                            {images.map(image => (
+                                image.id === 2 ? (
+                                    <TouchableOpacity key={image.id} onPress={() => { Linking.openURL(image.destination) }}>
+                                        <ImageBackground source={image.src} alt={image.title} style={{ width: boadyPageWidth, height: 195}} imageStyle={{ borderRadius: 10 }} 
+                                        >
+                                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center", borderRadius: 10 }} >
+                                                <Text style={styles.textEvent}>Donate</Text>
+                                            </View>
+                                        </ImageBackground>
+                                    </TouchableOpacity>
+                                ) : (
+                                    image.id === 3 ? (
+                                        <TouchableOpacity key={image.id}  onPress={() => navigation.navigate(image.destination)}>
+                                            <ImageBackground source={image.src} alt="no image" style={{ width: boadyPageWidth, height: 195 }} imageStyle={{ borderRadius: 10 }}
+                                            >
+                                                <View style={{ flex: 1, justifyContent: "center", alignItems: "center", borderRadius: 10 }} >
+                                               
+                                                      <Text style={styles.textEvent}>Events</Text>
+                                                     
+                                                 </View> */}
+                    <View style={{ flex: 2 }}>
+                        <View style={{ width: boadyPageWidth, alignItems: 'center', alignSelf: "center", marginTop: 30, marginLeft: 10 }}>
+                            <Swiper style={{ height: boadyPageWidth / 2}} showsButtons autoplay={true} autoplayTimeout={4} dotColor={'white'} activeDotColor={'#70b5ff'} dotStyle={{width: 8, height: 8}}>
+                                {/* <View style={{ flex: 1, marginTop: 30, alignContent: 'center', alignItems: 'center', width: 380}}> */}
+                                {/* <ScrollView pagingEnabled horizontal  scrollEventThrottle={0} onScroll={({nativeEvent}) => handleActive(nativeEvent)}> */}
+                                {images.map(image => (
+                                    image.id === 2 ? (
+                                        <TouchableOpacity key={image.id} onPress={() => { Linking.openURL(image.destination) }}>
+                                            <ImageBackground source={image.src} alt={image.title} style={{ width: boadyPageWidth - 10, height: 195, }} imageStyle={{ borderRadius: 10 }}
+                                            >
+                                                <View style={{ flex: 1, justifyContent: "center", alignItems: "center", borderRadius: 10 }} >
+                                                    <Text style={styles.textEvent}>Donate </Text>
+                                                </View>
+                                            </ImageBackground>
+                                        </TouchableOpacity>
+                                    ) : (
+                                        image.id === 3 ? (
+                                            <TouchableOpacity key={image.id} onPress={() => navigation.navigate(image.destination)}>
+                                                <ImageBackground source={image.src} alt={image.title} style={{ width: boadyPageWidth - 10 , height: 195, }} imageStyle={{ borderRadius: 10 }}
+                                                >
+                                                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", borderRadius: 10 }} >
+                                                        <Text style={styles.textEvent}>Events </Text>
+                                                    </View>
+                                                </ImageBackground>
+                                            </TouchableOpacity>
+                                        ) :
+                                            (<TouchableOpacity key={image.id} onPress={() => navigation.navigate(image.destination)}>
+                                                <ImageBackground source={image.src} alt={image.title} style={{ width: boadyPageWidth - 10, height: 195, }} imageStyle={{ borderRadius: 10 }}
+                                                >
+                                                    <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', justifyContent: "center", alignItems: "center", borderRadius: 10 }} >
+                                                        <Text style={styles.textEvent}>Campaigns </Text>
+                                                    </View>
+                                                </ImageBackground>
+                                            </TouchableOpacity>)
+                                    )
+                                ))}
+                            </Swiper>
+                            {/* </ScrollView> */}
+                            {/* <View style={styles.dot}>
+                            {
+                                images.map(image => (
+                                    <Text key={image.id} style={active == image.id - 1 ? styles.active : styles.noActive}>
+                                         ●
+                                    </Text>
+                                ))
+                            }
+                        </View> */}
+                        </View>
+                    </View>
+                    {/* </View> */}
+                    <View style={styles.newsArea}>
+                        <Text style={{ fontSize: 30, lineHeight: 35, fontWeight: 'bold', marginLeft: 12 }}>Campaigns</Text>
+                        <ScrollView pagingEnabled horizontal style={{ marginLeft: 12, marginTop: 26 }}>
+                             {
+                                newsImages.map(newsImage => (
+                                    <TouchableOpacity key={newsImage.id} onPress={() => navigation.navigate(newsImage.destination)}>
+                                        <ImageBackground source={newsImage.src} style={styles.newsIamge} imageStyle={{ borderRadius: 8, borderWidth: 0.5 }}>
+                                            <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.1)', justifyContent: 'flex-end', borderRadius: 8 }} >
+                                                {newsImage.id === 2 ? (<Text style={styles.textNews2}>{newsImage.title}</Text>) : (<Text style={styles.textNews}>{newsImage.title}</Text>)}
+                                            </View>
+                                        </ImageBackground>
+                                    </TouchableOpacity>
+
+                                ))
+                                
+                            } 
+
+                        </ScrollView>
+                    </View>
+
+                    <View style={styles.mediaArea}>
+                        <Text style={{ fontSize: 30, lineHeight: 35, fontWeight: 'bold', marginLeft: 12 }}>Media</Text>
+                        <View style={{ flexDirection: 'column' }}>
+
+                            <Card style={styles.cardStyle}>
+                                <TouchableOpacity>
+                                    <WebView
+                                        style={styles.youTubeStyle}
+                                        source={{ uri: "http://www.youtube.com/embed?max-results=1&showinfo=0&rel=0&listType=user_uploads&list=sflivingwage" }}
+                                        javaScriptEnabled={true}
+                                        domStorageEnabled={true}
+                                        mediaPlaybackRequiresUserAction={true}
+                                        scrollEnabled={false}
+                                        allowsInlineMediaPlayback={true}
+                                    />
+                                </TouchableOpacity>
+                                <Card.Actions>
+                                    <View style={{ flex: 1, height: 30 }}>
+                                        <Text style={styles.actionText}
+                                            onPress={() => Linking.openURL('https://www.youtube.com/playlist?list=PLcuBfm3dxksyN__WaZR1pN1hoUcivSMPU')}>See full list of TV Shows</Text>
+                                    </View>
+                                </Card.Actions>
+                            </Card>
+                            <Card style={styles.cardStyle}>
+                                <WebView
+                                    style={styles.youTubeStyle}
+                                    source={{ uri: "https://www.youtube.com/embed?max-results=1&controls=0&showinfo=0&rel=0&listType=playlist&list=PLcuBfm3dxkszAbt58VCPehuEoi3VjzH2g" }}
+                                    javaScriptEnabled={true}
+                                    domStorageEnabled={true}
+                                    mediaPlaybackRequiresUserAction={true}
+                                    scrollEnabled={false}
+                                    allowsInlineMediaPlayback={true}
+                                />
+                                <Card.Actions>
+                                    <View style={{ flex: 1, height: 30, }}>
+                                        <Text style={styles.actionText}
+                                            onPress={() => Linking.openURL('https://www.youtube.com/playlist?list=PLcuBfm3dxkszAbt58VCPehuEoi3VjzH2g')}>See full list of Vintage Videos</Text>
+                                    </View>
+                                </Card.Actions>
+                            </Card>
+                            <Card style={styles.cardStyle}>
+                                <WebView
+                                    style={styles.youTubeStyle}
+                                    source={{ uri: "https://www.youtube.com/embed?max-results=1&controls=0&showinfo=0&rel=0&listType=playlist&list=PLcuBfm3dxksz54i7-7QN1XaJbT23m6Pg3" }}
+                                    javaScriptEnabled={true}
+                                    domStorageEnabled={true}
+                                    mediaPlaybackRequiresUserAction={true}
+                                    scrollEnabled={false}
+                                    allowsInlineMediaPlayback={true}
+                                />
+                                <Card.Actions>
+                                    <View style={{ flex: 1, height: 30, }}>
+                                        <Text style={styles.actionText}
+                                            onPress={() => Linking.openURL('https://www.youtube.com/playlist?list=PLcuBfm3dxksz54i7-7QN1XaJbT23m6Pg3')}>See full list of Documentaries</Text>
+                                    </View>
+                                </Card.Actions>
+                            </Card>
+                        </View>
+                    </View>
+                    <View style={styles.socialMediaArea}>
+                        <Divider style={styles.divider} />
+                        <Text style={styles.follow}>Follow Us</Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 10 }}>
+                            <TouchableOpacity
+                                onPress={() => Linking.openURL("https://www.facebook.com/san.francisco.living.wage/")} style={{ marginRight: 27 }}>
+                                <Icon name="facebook-square" size={46} color="#177DDC" />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => Linking.openURL("https://twitter.com/sflivingwage?lang=en/")} style={{ marginRight: 27 }}>
+                                <Icon name="twitter" size={46} color="#7AB3E8" />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => Linking.openURL("https://www.instagram.com/sflivingwage/?hl=en")} style={{ marginRight: 27 }}>
+                                <Icon name="instagram" size={46} color="#F297DE" />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => Linking.openURL("https://www.youtube.com/user/sflivingwage")}>
+                                <Icon name="youtube" size={42} color="#E10505" />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </ScrollView>
+            </View>
+        </ScrollView>
+    )
+
+}
+
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center'
+    },
+    topbackground: {
+        // position: 'relative',
+        height: 256,
+        borderColor: '#95989a',
+        borderWidth: 1,
+        backgroundColor: "white"
+    },
+    background: {
+        height: 256,
+        width: '100%',
+        backgroundColor: "#000000"
+    },
+    imageTitle: {
+        fontSize: 23,
+        fontWeight: "bold",
+        color: "#ffffff",
+        marginLeft: 23,
+        marginTop: 23,
+    },
+    imageContent: {
+        fontSize: 20,
+        width: 340,
+        fontWeight: '500',
+        color: "#ffffff",
+        marginLeft: 23,
+        marginTop: 26
+    },
+    buttonView: {
+        marginLeft: 23,
+        marginTop: 28,
+        width: 120,
+        height: 40
+    },
+    button: {
+        backgroundColor: "#177ddc",
+        borderRadius: 10,
+        paddingVertical: 6,
+        paddingHorizontal: 10,
+        // marginLeft: 12,
+        elevation: 6,
+        shadowColor: '#177ddc',
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
+        shadowOffset: { width: 1, height: 1 },
+    },
+    bodyPage: {
+        flexDirection: 'column',
+        backgroundColor: "#ffffff",
+        // position: 'absolute',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        width: '100%',
+        // flex: 1,
+        // height: bodyPageHeight,
+        top: -10
+    },
+    text: {
+        //fontFamily: 'Optima-Bold',
+        fontSize: 40,
+        color: '#fffdfd',
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        fontWeight: '800'
+    },
+
+    textEvent: {
+        //fontFamily: 'HelveticaNeue-BoldItalic',
+        fontSize: 40,
+        color: '#fffdfd',
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        fontWeight: '800'
+    },
+
+    textDonate: {
+        //fontFamily: 'Georgia-Bold',
+        fontSize: 40,
+        color: '#fffdfd',
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        fontWeight: '800'
+    },
+
+    newsArea: {
+        flexDirection: 'column',
+        width: boadyPageWidth,
+        marginTop: 30
+    },
+
+    newsIamge: {
+        width: 132,
+        height: 172,
+        marginRight: 23,
+        elevation: 6,
+        shadowColor: '#177ddc',
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
+        shadowOffset: { width: 1, height: 1 },
+    },
+
+    textNews: {
+        //fontFamily: 'HelveticaNeue-BoldItalic',
+        fontSize: 20,
+        color: '#fffdfd',
+        width: 128,
+        // textAlign: 'center',
+        textAlignVertical: 'center',
+        fontWeight: '800',
+        marginLeft: 7,
+        marginBottom: 20,
+        elevation: 6,
+        shadowColor: '#177ddc',
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
+        shadowOffset: { width: 3, height: 3 },
+
+    },
+    textNews2: {
+        fontFamily: 'HelveticaNeue-BoldItalic',
+        fontSize: 17,
+        color: '#fffdfd',
+        width: 128,
+        // textAlign: 'center',
+        textAlignVertical: 'center',
+        fontWeight: '800',
+        marginLeft: 7,
+        marginBottom: 20,
+        elevation: 6,
+        shadowColor: '#177ddc',
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
+        shadowOffset: { width: 3, height: 3 },
+    },
+
+    mediaArea: {
+        flexDirection: 'column',
+        width: boadyPageWidth,
+        marginTop: 40,
+        flex: 1
+    },
+
+    youTubeStyle: {
+        height: 250,
+        width: 320,
+        margin: 20,
+        alignSelf: 'center',
+        opacity: 0.99
+    },
+
+    cardStyle: {
+        shadowColor: '#000000',
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 1,
+        elevation: 1,
+        marginTop: 26,
+        borderWidth: 2,
+        width: '90%',
+        marginLeft: 21
+
+    },
+    actionText: {
+        textDecorationLine: 'underline',
+        // alignItems: 'center', 
+        alignSelf: "center",
+        // fontFamily: "Arial",
+        fontSize: 18,
+        color: '#4169e1'
+    },
+    socialMediaArea: {
+        flexDirection: 'column',
+        width: boadyPageWidth,
+        marginTop: 40,
+        flex: 1
+    },
+    divider: {
+        borderWidth: 0.5,
+        shadowColor: '#000000',
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+        elevation: 1
+    },
+    follow: {
+        textAlign: "center",
+        fontSize: 20,
+        //fontFamily: 'Palatino-Bold',
+        fontWeight: '600',
+        marginTop: 30,
+        marginBottom: 10
+    },
+    dot: {
+        flexDirection: 'row',
+        alignSelf: 'center',
+        marginRight: 21,
+        marginTop: 10
+    },
+    active: {
+        margin: 3,
+        color: '#C4C4C4'
+    },
+    noActive: {
+        margin: 3,
+        color: '#EEEEEE'
+    }
+});
