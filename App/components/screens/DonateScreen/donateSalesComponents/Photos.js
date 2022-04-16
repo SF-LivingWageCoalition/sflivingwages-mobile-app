@@ -62,7 +62,7 @@ const Photos = ({photos}) => {
       var sec = new Date(value).getSeconds(); //Current Seconds
       setCloseDate(
          month + '/' + date + '/' + year 
-        + ' ' + hours + ':' + min + '0'
+        + ' ' + hours + ':' + min
       );
     }
     

@@ -64,7 +64,7 @@ const Arts = ({ arts }) => {
     var sec = new Date(value).getSeconds(); //Current Seconds
     setCloseDate(
        month + '/' + date + '/' + year 
-      + ' ' + hours + ':' + min+'0'
+      + ' ' + hours + ':' + min
     );
   }
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(arts.closeDate));
