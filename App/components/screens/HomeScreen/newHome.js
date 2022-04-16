@@ -111,7 +111,7 @@ export default function NewHomeScreen({ navigation }) {
         {
             id: 3,
             src: require('./../../../../assets/immigrant.jpg'),
-            title: '"REFORM A BROKEN MIGRATION SYSTEM',
+            title: 'REFORM A BROKEN IMMIGRATION SYSTEM',
             destination: 'CampaignThreeDetail'
         },
     ]
@@ -449,37 +449,39 @@ const styles = StyleSheet.create({
     },
 
     textNews: {
-        //fontFamily: 'HelveticaNeue-BoldItalic',
-        fontSize: 20,
+        fontFamily: 'HelveticaNeue-BoldItalic',
+        fontSize: 15,
         color: '#fffdfd',
-        width: 128,
-        // textAlign: 'center',
+        //width: 128,
+        textAlign: 'center',
         textAlignVertical: 'center',
-        fontWeight: '800',
-        marginLeft: 7,
+        fontWeight: 'bold',
+        //marginLeft: 7,
         marginBottom: 20,
-        elevation: 6,
+        //elevation: 6,
         shadowColor: '#177ddc',
         shadowOpacity: 0.3,
         shadowRadius: 3,
         shadowOffset: { width: 3, height: 3 },
+        textTransform:'uppercase'
 
     },
     textNews2: {
         fontFamily: 'HelveticaNeue-BoldItalic',
-        fontSize: 17,
+        fontSize: 15,
         color: '#fffdfd',
-        width: 128,
-        // textAlign: 'center',
+        //width: 128,
+        textAlign: 'center',
         textAlignVertical: 'center',
-        fontWeight: '800',
-        marginLeft: 7,
+        fontWeight: 'bold',
+        //marginLeft: 7,
         marginBottom: 20,
         elevation: 6,
         shadowColor: '#177ddc',
         shadowOpacity: 0.3,
         shadowRadius: 3,
         shadowOffset: { width: 3, height: 3 },
+        textTransform:'uppercase'
     },
 
     mediaArea: {
