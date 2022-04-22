@@ -114,6 +114,25 @@ export default function NewHomeScreen({ navigation }) {
             title: 'REFORM A BROKEN IMMIGRATION SYSTEM',
             destination: 'CampaignThreeDetail'
         },
+        {
+            id: 4,
+            src: require('./../../../../assets/public.jpg'),
+            title: 'Protect public sector employment',
+            destination: 'CampaignFourDetail'
+        },
+        {
+            id: 5,
+            src: require('./../../../../assets/fairtrade.jpg'),
+            title: 'Fair trade',
+            destination: 'CampaignFiveDetail'
+        },
+        {
+            id: 6,
+            src: require('./../../../../assets/welfare.jpg'),
+            title: 'Transform a broken Welfare-to-Work system',
+            destination: 'CampaignSixDetail'
+        }
+            
     ]
 
     // console.log("images, ", images);
@@ -236,7 +255,9 @@ export default function NewHomeScreen({ navigation }) {
                     {/* </View> */}
                     <View style={styles.newsArea}>
                         <Text style={{ fontSize: 30, lineHeight: 35, fontWeight: 'bold', marginLeft: 12 }}>Campaigns</Text>
-                        <ScrollView pagingEnabled horizontal style={{ marginLeft: 12, marginTop: 26 }}>
+                        
+                        {/*<Swiper style={{ height: boadyPageWidth / 2}} showsButtons >*/}
+                        <ScrollView pagingEnabled horizontal showsHorizontalScrollIndicator showsVerticalScrollIndicator indicatorStyle ='black' style={{ marginLeft: 12, marginTop: 26 }} bounces>    
                              {
                                 newsImages.map(newsImage => (
                                     <TouchableOpacity key={newsImage.id} onPress={() => navigation.navigate(newsImage.destination)}>
@@ -250,8 +271,9 @@ export default function NewHomeScreen({ navigation }) {
                                 ))
                                 
                             } 
-
-                        </ScrollView>
+                        </ScrollView>    
+                       {/* </Swiper>*/}
+                        
                     </View>
 
                     <View style={styles.mediaArea}>
