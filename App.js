@@ -19,6 +19,9 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { bannerStyle } from './App/components/style/styleSheet';
 import DonateMoney from './App/components/screens/DonateScreen/DonateMoney';
 
+import { NativeBaseProvider } from 'native-base';
+import Events from './App/components/screens/HomeScreen/EventListScreen';
+
 // // testing fonts
 // import {
 //   useFonts,
@@ -56,7 +59,9 @@ export default class App extends React.Component {
   render() {
       return (
         <SafeAreaProvider>
+
           <NavigationContainer >
+            <NativeBaseProvider>
             <Stack.Navigator 
               initialRouteName="Home"
               screenOptions={{
@@ -64,22 +69,26 @@ export default class App extends React.Component {
                 headerTintColor: '#fff',
                 headerTitleStyle: { fontWeight: 'bold' },}}
                 // tabBar={props => <BottemTabNav {...props} />}
-            >
+                >
               
               <Stack.Screen name="TabStack" component={BottomTabStack} 
                 options={{ title: 'San Francisco Living Wage Coalition' }}
                 
-                 // options={{ headerTitle: props => <LogoTitle {...props} /> }}
+                //  options={{ headerTitle: props => <LogoTitle {...props} /> }}
               />
             
               <Stack.Screen name="Details" component={ DetailComponent} />
               <Stack.Screen name="Preview" component={ModalScreen} />
               <Stack.Screen name="donate" component={DonateMoney} />
-             
+              <Stack.Screen name="Event" component={Events} />            
 
             </Stack.Navigator>
+            </NativeBaseProvider>
           
           </NavigationContainer>
+          
+          
+          
           </SafeAreaProvider>   
       )
   }

@@ -86,7 +86,8 @@ export default class AuctionNav extends React.Component {
 
             <Tab.Navigator
             initialRouteName="Arts"
-            tabBarOptions={{
+            
+            screenOptions={{
                 activeTintColor: '#870c18',
                 inactiveTintColor: '#ffffff',
                 style: {
@@ -105,7 +106,6 @@ export default class AuctionNav extends React.Component {
                 children={()=><Arts arts={this.state.arts}/>}
                 options={{
                 tabBarLabel: 'Art',
-              
                 }}  />
 
             <Tab.Screen

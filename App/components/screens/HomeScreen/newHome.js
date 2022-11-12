@@ -24,6 +24,20 @@ import EventListItem from './EventListItem';
 var bodyPageHeight = Dimensions.get('window').height;
 var boadyPageWidth = Dimensions.get('window').width;
 
+const CarouselImage = ({ image, onPress }) => (
+    <TouchableOpacity key={image.id} onPress={onPress}>
+        <ImageBackground
+            source={image.src}
+            // alt={image.title}
+            style={{ alignContent: 'center', width: boadyPageWidth - 10, height: 195, }}
+            imageStyle={{ borderRadius: 10 }}
+        >
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+                <Text style={styles.textEvent}>{image.title}</Text>
+            </View>
+        </ImageBackground>
+    </TouchableOpacity>
+)
 
 export default function NewHomeScreen({ navigation }) {
 
@@ -39,44 +53,46 @@ export default function NewHomeScreen({ navigation }) {
         });
 
         const getEvents = await response.json();
-  
+
         //get idea from https://stackoverflow.com/questions/7513040/how-to-sort-objects-by-date-ascending-order/21244139
-        getEvents.sort((a,b) => {
+        getEvents.sort((a, b) => {
             let date_1 = new Date(a.start_date);
             let date_2 = new Date(b.start_date);
 
-            if(date_1 < date_2){
+            if (date_1 < date_2) {
                 return -1;
-            }else if (date_1 == date_2){
+            } else if (date_1 == date_2) {
                 return 0;
-            }else{
+            } else {
                 return 1;
             }
         });
 
-        setEvents(getEvents.slice(0,4) );
+        setEvents(getEvents.slice(0, 4));
         setLoading(false);
     }
 
 
     let images = [
-        // {
+        // this in the carousel
+        // { 
         //     id: 1,
         //     src: require('./../../../../assets/P1040589.png'),
         //     destination: 'CampaignScreen'
         // },
         {
-
             id: 2,
+            title: "Donate",
             src: require('./../../../../assets/Encuentro_2017_130.jpg'),
             destination: 'https://www.livingwage-sf.org/donations-and-membership/'
-            
-        },       
+
+        },
         {
             id: 3,
+            title: "Events",
             src: require('./../../../../assets/p1040208.jpg'),
             destination: 'Event'
-        },
+        }
 
     ]
 
@@ -89,7 +105,6 @@ export default function NewHomeScreen({ navigation }) {
                 } else {
                     setActive(number);
                 }
-
             }
         }
     }
@@ -99,20 +114,23 @@ export default function NewHomeScreen({ navigation }) {
             id: 1,
             src: require('./../../../../assets/campaign3_background.jpg'),
             title: 'RAISE WAGES',
-            destination: 'CampaignDetail'
+            // destination: 'CampaignDetail'
+            destination: 'https://www.livingwage-sf.org/raising-wages/'
         },
         {
             id: 2,
             src: require('./../../../../assets/Encuentro_2017_021.jpg'),
             title: 'End the Injustice of Mass Incarceration',
-            destination: 'CampaignTwoDetail'
+            // destination: 'CampaignTwoDetail'
+            destination: 'https://www.livingwage-sf.org/mass-incarceration/'
 
         },
         {
             id: 3,
             src: require('./../../../../assets/immigrant.jpg'),
             title: 'REFORM A BROKEN IMMIGRATION SYSTEM',
-            destination: 'CampaignThreeDetail'
+            // destination: 'CampaignThreeDetail'
+            destination: 'https://www.livingwage-sf.org/immigration-reform/'
         },
     ]
 
@@ -133,10 +151,10 @@ export default function NewHomeScreen({ navigation }) {
 
         getAbout();
 
-        (async () => await Font.loadAsync({
-            Roboto: require('native-base/Fonts/Roboto.ttf'),
-            Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
-          }))();
+        // (async () => await Font.loadAsync({
+        //     Roboto: require('native-base/Fonts/Roboto.ttf'),
+        //     Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
+        //   }))();
     }, [])
 
 
@@ -161,64 +179,20 @@ export default function NewHomeScreen({ navigation }) {
                         </View>
                     </ImageBackground>
                 </View>
-                <ScrollView style={styles.bodyPage} >
-                    {/* <View style={{ flex: 1, marginTop: 30}}>
-                        <ScrollView pagingEnabled horizontal  scrollEventThrottle={0} onScroll={({nativeEvent}) => handleActive(nativeEvent)}>
-                            {images.map(image => (
-                                image.id === 2 ? (
-                                    <TouchableOpacity key={image.id} onPress={() => { Linking.openURL(image.destination) }}>
-                                        <ImageBackground source={image.src} alt={image.title} style={{ width: boadyPageWidth, height: 195}} imageStyle={{ borderRadius: 10 }} 
-                                        >
-                                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center", borderRadius: 10 }} >
-                                                <Text style={styles.textEvent}>Donate</Text>
-                                            </View>
-                                        </ImageBackground>
-                                    </TouchableOpacity>
-                                ) : (
-                                    image.id === 3 ? (
-                                        <TouchableOpacity key={image.id}  onPress={() => navigation.navigate(image.destination)}>
-                                            <ImageBackground source={image.src} alt="no image" style={{ width: boadyPageWidth, height: 195 }} imageStyle={{ borderRadius: 10 }}
-                                            >
-                                                <View style={{ flex: 1, justifyContent: "center", alignItems: "center", borderRadius: 10 }} >
-                                               
-                                                      <Text style={styles.textEvent}>Events</Text>
-                                                     
-                                                 </View> */}
-                    <View style={{ flex: 2 }}>
+                <View style={styles.bodyPage} >
+                    <View>
                         <View style={{ width: boadyPageWidth, alignItems: 'center', alignSelf: "center", marginTop: 30, marginLeft: 10 }}>
-                            <Swiper style={{ height: boadyPageWidth / 2}} showsButtons autoplay={true} autoplayTimeout={4} dotColor={'white'} activeDotColor={'#70b5ff'} dotStyle={{width: 8, height: 8}}>
-                                {/* <View style={{ flex: 1, marginTop: 30, alignContent: 'center', alignItems: 'center', width: 380}}> */}
-                                {/* <ScrollView pagingEnabled horizontal  scrollEventThrottle={0} onScroll={({nativeEvent}) => handleActive(nativeEvent)}> */}
+                            <Swiper style={{ height: boadyPageWidth / 2 }} showsButtons autoplay={true} autoplayTimeout={4} dotColor={'white'} activeDotColor={'#70b5ff'} dotStyle={{ width: 8, height: 8 }}>
+                                {/* <View style={{ flex: 1, marginTop: 30, alignContent: 'center', alignItems: 'center', width: 380}}></View> */}
+                                {/* <ScrollView pagingEnabled horizontal  scrollEventThrottle={0} onScroll={({nativeEvent}) => handleActive(nativeEvent)}></ScrollView> */}
                                 {images.map(image => (
-                                    image.id === 2 ? (
-                                        <TouchableOpacity key={image.id} onPress={() => { Linking.openURL(image.destination) }}>
-                                            <ImageBackground source={image.src} alt={image.title} style={{ width: boadyPageWidth - 10, height: 195, }} imageStyle={{ borderRadius: 10 }}
-                                            >
-                                                <View style={{ flex: 1, justifyContent: "center", alignItems: "center", borderRadius: 10 }} >
-                                                    <Text style={styles.textEvent}>Donate </Text>
-                                                </View>
-                                            </ImageBackground>
-                                        </TouchableOpacity>
-                                    ) : (
-                                        image.id === 3 ? (
-                                            <TouchableOpacity key={image.id} onPress={() => navigation.navigate(image.destination)}>
-                                                <ImageBackground source={image.src} alt={image.title} style={{ width: boadyPageWidth - 10 , height: 195, }} imageStyle={{ borderRadius: 10 }}
-                                                >
-                                                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", borderRadius: 10 }} >
-                                                        <Text style={styles.textEvent}>Events </Text>
-                                                    </View>
-                                                </ImageBackground>
-                                            </TouchableOpacity>
-                                        ) :
-                                            (<TouchableOpacity key={image.id} onPress={() => navigation.navigate(image.destination)}>
-                                                <ImageBackground source={image.src} alt={image.title} style={{ width: boadyPageWidth - 10, height: 195, }} imageStyle={{ borderRadius: 10 }}
-                                                >
-                                                    <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', justifyContent: "center", alignItems: "center", borderRadius: 10 }} >
-                                                        <Text style={styles.textEvent}>Campaigns </Text>
-                                                    </View>
-                                                </ImageBackground>
-                                            </TouchableOpacity>)
-                                    )
+                                    <CarouselImage
+                                        image={image}
+                                        // title={<Text style={styles.textEvent}>{image.title}</Text>}
+                                        onPress={() => {
+                                            image.id === 2 ? Linking.openURL(image.destination) : navigation.navigate(image.destination)
+                                        }}
+                                    />
                                 ))}
                             </Swiper>
                             {/* </ScrollView> */}
@@ -237,23 +211,19 @@ export default function NewHomeScreen({ navigation }) {
                     <View style={styles.newsArea}>
                         <Text style={{ fontSize: 30, lineHeight: 35, fontWeight: 'bold', marginLeft: 12 }}>Campaigns</Text>
                         <ScrollView pagingEnabled horizontal style={{ marginLeft: 12, marginTop: 26 }}>
-                             {
+                            {
                                 newsImages.map(newsImage => (
-                                    <TouchableOpacity key={newsImage.id} onPress={() => navigation.navigate(newsImage.destination)}>
+                                    <TouchableOpacity  key={newsImage.id} onPress={() => Linking.openURL(newsImage.destination)}>
                                         <ImageBackground source={newsImage.src} style={styles.newsIamge} imageStyle={{ borderRadius: 8, borderWidth: 0.5 }}>
                                             <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.1)', justifyContent: 'flex-end', borderRadius: 8 }} >
                                                 {newsImage.id === 2 ? (<Text style={styles.textNews2}>{newsImage.title}</Text>) : (<Text style={styles.textNews}>{newsImage.title}</Text>)}
                                             </View>
                                         </ImageBackground>
                                     </TouchableOpacity>
-
                                 ))
-                                
-                            } 
-
+                            }
                         </ScrollView>
                     </View>
-
                     <View style={styles.mediaArea}>
                         <Text style={{ fontSize: 30, lineHeight: 35, fontWeight: 'bold', marginLeft: 12 }}>Media</Text>
                         <View style={{ flexDirection: 'column' }}>
@@ -335,7 +305,7 @@ export default function NewHomeScreen({ navigation }) {
                             </TouchableOpacity>
                         </View>
                     </View>
-                </ScrollView>
+                </View>
             </View>
         </ScrollView>
     )
@@ -416,6 +386,8 @@ const styles = StyleSheet.create({
     textEvent: {
         //fontFamily: 'HelveticaNeue-BoldItalic',
         fontSize: 40,
+
+        paddingVertical: 40,
         color: '#fffdfd',
         textAlign: 'center',
         textAlignVertical: 'center',
@@ -463,7 +435,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 3,
         shadowOffset: { width: 3, height: 3 },
-        textTransform:'uppercase'
+        textTransform: 'uppercase'
 
     },
     textNews2: {
@@ -481,7 +453,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 3,
         shadowOffset: { width: 3, height: 3 },
-        textTransform:'uppercase'
+        textTransform: 'uppercase'
     },
 
     mediaArea: {

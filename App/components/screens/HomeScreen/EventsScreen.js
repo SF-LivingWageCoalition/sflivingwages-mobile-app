@@ -53,7 +53,6 @@ export default class EventScreen extends React.Component {
 		*/
 
 		let mark = {};
-
 		this.state.data.forEach(day => {
 			
 			mark[day.start_date] = { 

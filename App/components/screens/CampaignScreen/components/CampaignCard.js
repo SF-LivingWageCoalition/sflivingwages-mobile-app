@@ -14,7 +14,7 @@ export default CampaignCard = (props) => {
 			style={styles.homeNavText}
 			onPress={() => props.navigate('CampaignDetailpage')}
 			>
-		    Raise Wage
+		    Raise Wage 
 			</Text>
 			{/* <Text
 			style={styles.homeNavText}

@@ -36,23 +36,23 @@ const Stack = createStackNavigator();
 
 export default function MyStack() {
 
-  const baseHeaderOptions = { 
+  const baseHeaderOptions = {
     // headerTitle: props => <LogoHeader {...props} />,
     headerTintColor: '#fff',
     headerTitleStyle: { fontWeight: 'bold' }
   }
   return (
-    <Stack.Navigator initialRouteName="Home"  headerMode="none"
+    <Stack.Navigator initialRouteName="Home" headerMode="none"
       screenOptions={baseHeaderOptions}
-    >  
+    >
       <Stack.Screen name="Home" component={Home} />
-      
-              <Stack.Screen name="Event" component={EventNavigator} />
+
+      <Stack.Screen name="Event" component={EventNavigator} />
       <Stack.Screen name="CampaignScreen" component={Campaign} />
       <Stack.Screen name="PressCoverage" component={PressCoverage} />
       <Stack.Screen name="WageGap" component={WageGap} />
       <Stack.Screen name="PressRelease" component={PressRelease} />
-    
+
 
       {/* <Stack.Screen name="CampaignScreen" component={CampaignScreen} />
       <Stack.Screen name="CampaignFullDetail" component={CampaignFullDetail} />
@@ -63,7 +63,7 @@ export default function MyStack() {
       <Stack.Screen name="CampaignFourDetail" component={CampaignFourDetail  } />
       <Stack.Screen name="CampaignFiveDetail" component={CampaignFiveDetail} />
       <Stack.Screen name="CampaignSixDetail" component={CampaignSixDetail} /> */}
-     
+
     </Stack.Navigator>
   );
 }

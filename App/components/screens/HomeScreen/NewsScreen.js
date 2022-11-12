@@ -96,7 +96,7 @@ export default class NewsScreen extends React.Component {
 
                         <Text key={index}>
 
-                            <Text style={styles.noteStyle} style={styles.noteStyle}>
+                            <Text style={styles.noteStyle} styles={styles.noteStyle}>
                                 Date Published:
                                 {
                                     " " + updatedDate
@@ -141,7 +141,7 @@ export default class NewsScreen extends React.Component {
 
                         <Text key={index}>
 
-                            <Text style={styles.noteStyle} style={styles.noteStyle}>
+                            <Text style={styles.noteStyle} styles={styles.noteStyle}>
                                 Date Published:
                                 {
                                     " " + updatedDate
@@ -195,7 +195,7 @@ export default class NewsScreen extends React.Component {
 
                         <Text key={index}>
 
-                            <Text style={styles.noteStyle} style={styles.noteStyle}>
+                            <Text style={styles.noteStyle} styles={styles.noteStyle}>
                                 Date Published:
                                 {
                                     " " + updatedDate

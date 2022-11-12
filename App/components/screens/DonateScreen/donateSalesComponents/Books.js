@@ -56,7 +56,7 @@ const Books = ({books}) => {
 
 
   useEffect(() => {
-
+  
     const timer=setTimeout(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
@@ -64,7 +64,6 @@ const Books = ({books}) => {
     return () => clearTimeout(timer);
   });
   const timerComponents = [];
-
   Object.keys(timeLeft).forEach((interval) => {
     if (!timeLeft[interval]) {
       return;
@@ -76,6 +75,7 @@ const Books = ({books}) => {
      </Text>
     );
   });
+
 
   const onRefresh = () =>{
     

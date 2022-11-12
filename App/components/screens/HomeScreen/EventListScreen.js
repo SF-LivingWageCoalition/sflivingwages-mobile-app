@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet, Dimensions,ScrollView,SafeAreaView } from 'react-native';
-import { Right } from 'native-base';
+import { View, Text, FlatList, ActivityIndicator, StyleSheet, Dimensions, ScrollView, SafeAreaView } from 'react-native';
+// import { Right } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome'
 //import styles from '../DonateScreen/donateSalesComponents/style/styles';
 import EventListItem from './EventListItem';
@@ -18,17 +18,17 @@ const Events = (props) => {
         });
 
         const getEvents = await response.json();
-  
+
         //get idea from https://stackoverflow.com/questions/7513040/how-to-sort-objects-by-date-ascending-order/21244139
-        getEvents.sort((a,b) => {
+        getEvents.sort((a, b) => {
             let date_1 = new Date(a.start_date);
             let date_2 = new Date(b.start_date);
 
-            if(date_1 < date_2){
+            if (date_1 < date_2) {
                 return -1;
-            }else if (date_1 == date_2){
+            } else if (date_1 == date_2) {
                 return 0;
-            }else{
+            } else {
                 return 1;
             }
         });
@@ -41,20 +41,25 @@ const Events = (props) => {
         getEvents();
     }, [])
 
-   
-    
+    // console.log("this ",events[0].description);
     return (
 
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{ flex: 1 }}>
+            {/* <FlatList
+                data={events}
+                renderItem={({ item, index }) => <EventListItem event={item} index={index} />}
+                keyExtractor={(item) => item.id}
+            /> */}
+
             <View style={{ flexDirection: 'row', margin: 20 }}>
                 <Text style={{ fontSize: 30, marginRight: 10 }}>Events 2022</Text>
-                <Right>
-                    <View style={{marginRight: 35}}>
+                {/* <Right> */}
+                    <View style={{ marginRight: 35 }}>
                         <Icon name='calendar' size={30} color="#dc143c"
-                            onPress={()=>props.navigation.navigate("Calendar")}/>
+                            onPress={() => props.navigation.navigate("Calendar")} />
                     </View>
-                    <Text size={10} style={{color: '#dc143c'}}>Check Calendar</Text>
-                </Right>
+                    <Text size={10} style={{ color: '#dc143c' }}>Check Calendar</Text>
+                {/* </Right> */}
             </View>
 
             {loading ? (
@@ -62,13 +67,10 @@ const Events = (props) => {
                     <ActivityIndicator size="large" color="red" />
                 </View>
             ) : (
-                <FlatList 
+                <FlatList
                     data={events}
-                    renderItem={({item, index}) => (
-                        <EventListItem event={item} index={index}/>
-                        
-                    )}
-                    keyExtractor ={(item) => item.id}
+                    renderItem={({ item, index }) => <EventListItem event={item} index={index} />}
+                    keyExtractor={(item) => item.id}
                 />
             )
             }

@@ -23,6 +23,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import MyStack from './MyStack';
 import HomeNavigator from '../screens/HomeScreen/HomeStack';
 
+import CampaignDetail from "../screens/CampaignScreen/CampaignDetail";
+import CampaignFiveDetail from '../screens/CampaignScreen/CampaignFiveDetail';
+
 const helpingHandIcon = <Icon name="hands-helping" size={30} color="#900" />;
 
 const Tab = createBottomTabNavigator();
@@ -32,7 +35,9 @@ export default function BottomTabStack() {
       initialRouteName="Home"
       tabBarOptions={{
         activeTintColor: '#870c18',
-        inactiveTintColor: '#ffffff',
+        // inactiveTintColor: '#ffffff',
+        inactiveTintColor: 'red',
+      
         style: {
           backgroundColor: '#d31623',
         },
@@ -43,6 +48,7 @@ export default function BottomTabStack() {
           borderBottomColor: '#87B56A',
           borderBottomWidth: 2,
         },
+        
       }}>
       <Tab.Screen
         name="Home"
@@ -60,8 +66,10 @@ export default function BottomTabStack() {
         }}  />
         <Tab.Screen
         name="CampaignNavigator"
-        component={CampaignNavigator}
+        component={CampaignDetail}
+        // component={CampaignNavigator}
         options={{
+          title:"",
           tabBarLabel: 'Campaigns',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
