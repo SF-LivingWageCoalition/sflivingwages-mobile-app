@@ -132,8 +132,29 @@ export default function NewHomeScreen({ navigation }) {
             // destination: 'CampaignThreeDetail'
             destination: 'https://www.livingwage-sf.org/immigration-reform/'
         },
+        {
+            id: 4,
+            src: require('./../../../../assets/welfare.jpg'),
+            title: 'Transform Welfare-to-Work',
+            // destination: 'CampaignThreeDetail'
+            destination: 'https://www.livingwage-sf.org/transform-welfare-to-work-programs/'
+        },
+        {
+            id: 5,
+            src: require('./../../../../assets/fairtrade.jpg'),
+            title: 'Fair Trade',
+            // destination: 'CampaignThreeDetail'
+            destination: 'https://www.livingwage-sf.org/transform-welfare-to-work-programs/'
+        },
+        {
+            id: 6,
+            src: require('./../../../../assets/P1040589.png'),
+            title: ' Immigration Reform',
+            // destination: 'CampaignThreeDetail'
+            destination: 'https://www.livingwage-sf.org/immigration-reform/'
+        },
     ]
-
+    
     // console.log("images, ", images);
 
     const getAbout = async () => {
@@ -213,7 +234,7 @@ export default function NewHomeScreen({ navigation }) {
                         <ScrollView pagingEnabled horizontal style={{ marginLeft: 12, marginTop: 26 }}>
                             {
                                 newsImages.map(newsImage => (
-                                    <TouchableOpacity  key={newsImage.id} onPress={() => Linking.openURL(newsImage.destination)}>
+                                    <TouchableOpacity key={newsImage.id} onPress={() => Linking.openURL(newsImage.destination)}>
                                         <ImageBackground source={newsImage.src} style={styles.newsIamge} imageStyle={{ borderRadius: 8, borderWidth: 0.5 }}>
                                             <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.1)', justifyContent: 'flex-end', borderRadius: 8 }} >
                                                 {newsImage.id === 2 ? (<Text style={styles.textNews2}>{newsImage.title}</Text>) : (<Text style={styles.textNews}>{newsImage.title}</Text>)}
