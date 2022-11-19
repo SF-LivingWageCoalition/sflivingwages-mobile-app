@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button,Image, View, Text , StyleSheet,TouchableOpacity, SafeAreaView  } from 'react-native';
+import { Button, Image, View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import {
   createMaterialTopTabNavigator
 } from '@react-navigation/material-top-tabs';
@@ -36,10 +36,10 @@ export default function BottomTabStack() {
       tabBarOptions={{
         activeTintColor: '#870c18',
         // inactiveTintColor: '#ffffff',
-        inactiveTintColor: 'red',
+        inactiveTintColor: '#CD1621',
       
         style: {
-          backgroundColor: '#d31623',
+          backgroundColor: '#d31623a',
         },
         labelStyle: {
           textAlign: 'center',
@@ -48,64 +48,40 @@ export default function BottomTabStack() {
           borderBottomColor: '#87B56A',
           borderBottomWidth: 2,
         },
-        
+
       }}>
       <Tab.Screen
         name="Home"
         component={HomeNavigator}
         options={{
+          headerShown : false,
           tabBarLabel: 'Home',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-                name="home"
-                color={color}
-                size={size}
-              />
-          ),
-         
-        }}  />
-        <Tab.Screen
-        name="CampaignNavigator"
-        component={CampaignDetail}
-        // component={CampaignNavigator}
-        options={{
-          title:"",
-          tabBarLabel: 'Campaigns',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-                name="pencil-ruler"
-                color={color}
-                size={size}
-              />
-            // <Icon name="campaign" color={color}
-            // size={size}/>
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name={'home'} color={color} size={20} />
           ),
         }} />
-        <Tab.Screen
+
+      <Tab.Screen
         name="Auction"
         component={AuctionNav}
         options={{
+          headerShown : false,
           tabBarLabel: 'Auction',
-          tabBarIcon: ({ color, size }) => (    
-              // <Image  id="img"
-              // source={require('../../../assets/auction36x36.png')}
-              // size={size}
-              // tintColor={color}
-              // styleSheet={coverStyle}
-              // style={{ color: "black" }}
-              // />
-              <FontAwesome5 name={'donate'}  style={{  }} color={color}/>
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name={'donate'} color={color} size={20} />
           ),
-        }}  />
-        
+        }}
+      />
+
       <Tab.Screen
         name="Assist"
         component={AssistanceScreen}
         options={{
+          headerShown : false,
           tabBarLabel: 'Assist',
-          tabBarIcon: ({ color, size }) => (
-              // <Icon2 name="" size={30} color="#900" />
-              <FontAwesome5 name={'hands-helping'}  style={{  }} color={color}/>
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name={'hands-helping'} color={color} size={20} />
+            // <FontAwesome5 name={'calendar'} color={color} size={20} />
           ),
         }} />
     </Tab.Navigator>

@@ -45,7 +45,7 @@ export default function MyStack() {
     <Stack.Navigator initialRouteName="Home" headerMode="none"
       screenOptions={baseHeaderOptions}
     >
-      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Home" component={Home}  />
 
       <Stack.Screen name="Event" component={EventNavigator} />
       <Stack.Screen name="CampaignScreen" component={Campaign} />

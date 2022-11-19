@@ -1,10 +1,10 @@
 import 'react-native-gesture-handler';
-import React  from 'react';
-import { Button, View, Text , Image, StyleSheet,TouchableWithoutFeedback,TouchableOpacity, Dimensions,SafeAreaView  } from 'react-native';
+import React from 'react';
+import { Button, View, Text, Image, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native';
 //import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import BottomTabStack from './App/components/stacks/BottomTabStack'
@@ -57,60 +57,60 @@ const Stack = createStackNavigator();
 export default class App extends React.Component {
 
   render() {
-      return (
-        <SafeAreaProvider>
+    return (
+      <SafeAreaProvider>
 
-          <NavigationContainer >
-            <NativeBaseProvider>
-            <Stack.Navigator 
-              initialRouteName="Home"
+        <NavigationContainer >
+          <NativeBaseProvider>
+            <Stack.Navigator
+              // initialRouteName="Home"
               screenOptions={{
-                headerStyle: { backgroundColor: '#d31623' },
+                headerStyle: { backgroundColor:  "#CD1621" },
                 headerTintColor: '#fff',
-                headerTitleStyle: { fontWeight: 'bold' },}}
-                // tabBar={props => <BottemTabNav {...props} />}
-                >
-              
-              <Stack.Screen name="TabStack" component={BottomTabStack} 
+                headerTitleStyle: { fontWeight: 'bold' },
+              }}
+            >
+
+              <Stack.Screen name="TabStack" component={BottomTabStack}
                 options={{ title: 'San Francisco Living Wage Coalition' }}
-                
-                //  options={{ headerTitle: props => <LogoTitle {...props} /> }}
+
+              //  options={{ headerTitle: props => <LogoTitle {...props} /> }}
               />
-            
-              <Stack.Screen name="Details" component={ DetailComponent} />
+
+              <Stack.Screen name="Details" component={DetailComponent} />
               <Stack.Screen name="Preview" component={ModalScreen} />
               <Stack.Screen name="donate" component={DonateMoney} />
-              <Stack.Screen name="Event" component={Events} />            
+              <Stack.Screen name="Event" component={Events} />
 
             </Stack.Navigator>
-            </NativeBaseProvider>
-          
-          </NavigationContainer>
-          
-          
-          
-          </SafeAreaProvider>   
-      )
+          </NativeBaseProvider>
+
+        </NavigationContainer>
+
+
+
+      </SafeAreaProvider>
+    )
   }
 }
 
 function LogoTitle() {
   return (
-    <View style={{ flexDirection: "row", width: 300, height:65}}>
-    <Image
-      //style={{ width: Dimensions.width, height: 50 }}
-      style={
-        bannerStyle.logoHeaderImageStyle
-      }
-      source={require('./assets/sflwc_logo_finaltemp.png')}
-    />
- 
- <MaterialCommunityIcons
-                name="pencil-ruler"
-                color={"white"}
-                 size= {38}
-              />
- 
+    <View style={{ flexDirection: "row", width: 300, height: 65 }}>
+      <Image
+        //style={{ width: Dimensions.width, height: 50 }}
+        style={
+          bannerStyle.logoHeaderImageStyle
+        }
+        source={require('./assets/sflwc_logo_finaltemp.png')}
+      />
+
+      <MaterialCommunityIcons
+        name="pencil-ruler"
+        color={"white"}
+        size={38}
+      />
+
     </View>
   );
 }
