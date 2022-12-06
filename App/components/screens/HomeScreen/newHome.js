@@ -39,6 +39,24 @@ const CarouselImage = ({ image, onPress }) => (
     </TouchableOpacity>
 )
 
+
+const CarouselImageSmall = ({ image, onPress }) => (
+
+    <View style={{ marginTop: 30, flex: 1, alignItems: 'center', alignContent: 'center' }}>
+        <TouchableOpacity key={image.id} onPress={onPress}>
+            <ImageBackground
+                source={image.src}
+                style={{ flex: 1, alignContent: 'center', alignItems: 'center', width: 300, height: 300 }}
+                imageStyle={{ borderRadius: 10 }}
+            >
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+                    <Text style={styles.textCampaingsImg}>{image.title}</Text>
+                </View>
+            </ImageBackground>
+        </TouchableOpacity>
+    </View>
+)
+
 export default function NewHomeScreen({ navigation }) {
 
     const [about, setAbout] = useState("");
@@ -74,7 +92,6 @@ export default function NewHomeScreen({ navigation }) {
 
 
     let images = [
-        // this in the carousel
         // { 
         //     id: 1,
         //     src: require('./../../../../assets/P1040589.png'),
@@ -154,7 +171,7 @@ export default function NewHomeScreen({ navigation }) {
             destination: 'https://www.livingwage-sf.org/immigration-reform/'
         },
     ]
-    
+
     // console.log("images, ", images);
 
     const getAbout = async () => {
@@ -204,105 +221,87 @@ export default function NewHomeScreen({ navigation }) {
                     <View>
                         <View style={{ width: boadyPageWidth, alignItems: 'center', alignSelf: "center", marginTop: 30, marginLeft: 10 }}>
                             <Swiper style={{ height: boadyPageWidth / 2 }} showsButtons autoplay={true} autoplayTimeout={4} dotColor={'white'} activeDotColor={'#70b5ff'} dotStyle={{ width: 8, height: 8 }}>
-                                {/* <View style={{ flex: 1, marginTop: 30, alignContent: 'center', alignItems: 'center', width: 380}}></View> */}
-                                {/* <ScrollView pagingEnabled horizontal  scrollEventThrottle={0} onScroll={({nativeEvent}) => handleActive(nativeEvent)}></ScrollView> */}
                                 {images.map(image => (
                                     <CarouselImage
                                         image={image}
-                                        // title={<Text style={styles.textEvent}>{image.title}</Text>}
                                         onPress={() => {
                                             image.id === 2 ? Linking.openURL(image.destination) : navigation.navigate(image.destination)
                                         }}
                                     />
                                 ))}
                             </Swiper>
-                            {/* </ScrollView> */}
-                            {/* <View style={styles.dot}>
-                            {
-                                images.map(image => (
-                                    <Text key={image.id} style={active == image.id - 1 ? styles.active : styles.noActive}>
-                                         ●
-                                    </Text>
-                                ))
-                            }
-                        </View> */}
                         </View>
                     </View>
-                    {/* </View> */}
-                    <View style={styles.newsArea}>
-                        <Text style={{ fontSize: 30, lineHeight: 35, fontWeight: 'bold', marginLeft: 12 }}>Campaigns</Text>
-                        <ScrollView pagingEnabled horizontal style={{ marginLeft: 12, marginTop: 26 }}>
+                    <View style={styles.containerBody}>
+                        <Text style={{ ...styles.titles, marginTop: 12 }}>Campaigns</Text>
+                        <Swiper style={{ height: 350 }} showsButtons autoplay={false} activeDotColor={'#70b5ff'} dotStyle={{ width: 8, height: 8 }}>
                             {
-                                newsImages.map(newsImage => (
-                                    <TouchableOpacity key={newsImage.id} onPress={() => Linking.openURL(newsImage.destination)}>
-                                        <ImageBackground source={newsImage.src} style={styles.newsIamge} imageStyle={{ borderRadius: 8, borderWidth: 0.5 }}>
-                                            <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.1)', justifyContent: 'flex-end', borderRadius: 8 }} >
-                                                {newsImage.id === 2 ? (<Text style={styles.textNews2}>{newsImage.title}</Text>) : (<Text style={styles.textNews}>{newsImage.title}</Text>)}
-                                            </View>
-                                        </ImageBackground>
-                                    </TouchableOpacity>
-                                ))
-                            }
-                        </ScrollView>
-                    </View>
-                    <View style={styles.mediaArea}>
-                        <Text style={{ fontSize: 30, lineHeight: 35, fontWeight: 'bold', marginLeft: 12 }}>Media</Text>
-                        <View style={{ flexDirection: 'column' }}>
-
-                            <Card style={styles.cardStyle}>
-                                <TouchableOpacity>
-                                    <WebView
-                                        style={styles.youTubeStyle}
-                                        source={{ uri: "http://www.youtube.com/embed?max-results=1&showinfo=0&rel=0&listType=user_uploads&list=sflivingwage" }}
-                                        javaScriptEnabled={true}
-                                        domStorageEnabled={true}
-                                        mediaPlaybackRequiresUserAction={true}
-                                        scrollEnabled={false}
-                                        allowsInlineMediaPlayback={true}
+                                newsImages.map(image => (
+                                    <CarouselImageSmall
+                                        image={image}
+                                        onPress={() => {
+                                            Linking.openURL(image.destination)
+                                        }}
                                     />
-                                </TouchableOpacity>
-                                <Card.Actions>
-                                    <View style={{ flex: 1, height: 30 }}>
-                                        <Text style={styles.actionText}
-                                            onPress={() => Linking.openURL('https://www.youtube.com/playlist?list=PLcuBfm3dxksyN__WaZR1pN1hoUcivSMPU')}>See full list of TV Shows</Text>
-                                    </View>
-                                </Card.Actions>
-                            </Card>
-                            <Card style={styles.cardStyle}>
+                                ))
+                            }
+                        </Swiper>
+                    </View>
+                    <View style={styles.containerBody}>
+                        <Text style={styles.titles}>Media</Text>
+                        <Card style={styles.cardStyle}>
+                            <TouchableOpacity>
                                 <WebView
                                     style={styles.youTubeStyle}
-                                    source={{ uri: "https://www.youtube.com/embed?max-results=1&controls=0&showinfo=0&rel=0&listType=playlist&list=PLcuBfm3dxkszAbt58VCPehuEoi3VjzH2g" }}
+                                    source={{ uri: "http://www.youtube.com/embed?max-results=1&showinfo=0&rel=0&listType=user_uploads&list=sflivingwage" }}
                                     javaScriptEnabled={true}
                                     domStorageEnabled={true}
                                     mediaPlaybackRequiresUserAction={true}
                                     scrollEnabled={false}
                                     allowsInlineMediaPlayback={true}
                                 />
-                                <Card.Actions>
-                                    <View style={{ flex: 1, height: 30, }}>
-                                        <Text style={styles.actionText}
-                                            onPress={() => Linking.openURL('https://www.youtube.com/playlist?list=PLcuBfm3dxkszAbt58VCPehuEoi3VjzH2g')}>See full list of Vintage Videos</Text>
-                                    </View>
-                                </Card.Actions>
-                            </Card>
-                            <Card style={styles.cardStyle}>
-                                <WebView
-                                    style={styles.youTubeStyle}
-                                    source={{ uri: "https://www.youtube.com/embed?max-results=1&controls=0&showinfo=0&rel=0&listType=playlist&list=PLcuBfm3dxksz54i7-7QN1XaJbT23m6Pg3" }}
-                                    javaScriptEnabled={true}
-                                    domStorageEnabled={true}
-                                    mediaPlaybackRequiresUserAction={true}
-                                    scrollEnabled={false}
-                                    allowsInlineMediaPlayback={true}
-                                />
-                                <Card.Actions>
-                                    <View style={{ flex: 1, height: 30, }}>
-                                        <Text style={styles.actionText}
-                                            onPress={() => Linking.openURL('https://www.youtube.com/playlist?list=PLcuBfm3dxksz54i7-7QN1XaJbT23m6Pg3')}>See full list of Documentaries</Text>
-                                    </View>
-                                </Card.Actions>
-                            </Card>
-                        </View>
+                            </TouchableOpacity>
+                            <Card.Actions>
+                                <View style={{ flex: 1, height: 30 }}>
+                                    <Text style={styles.actionText}
+                                        onPress={() => Linking.openURL('https://www.youtube.com/playlist?list=PLcuBfm3dxksyN__WaZR1pN1hoUcivSMPU')}>See full list of TV Shows</Text>
+                                </View>
+                            </Card.Actions>
+                        </Card>
+                        <Card style={styles.cardStyle}>
+                            <WebView
+                                style={styles.youTubeStyle}
+                                source={{ uri: "https://www.youtube.com/embed?max-results=1&controls=0&showinfo=0&rel=0&listType=playlist&list=PLcuBfm3dxkszAbt58VCPehuEoi3VjzH2g" }}
+                                javaScriptEnabled={true}
+                                domStorageEnabled={true}
+                                mediaPlaybackRequiresUserAction={true}
+                                scrollEnabled={false}
+                                allowsInlineMediaPlayback={true}
+                            />
+                            <Card.Actions>
+                                <View style={{ flex: 1, height: 30, }}>
+                                    <Text style={styles.actionText}
+                                        onPress={() => Linking.openURL('https://www.youtube.com/playlist?list=PLcuBfm3dxkszAbt58VCPehuEoi3VjzH2g')}>See full list of Vintage Videos</Text>
+                                </View>
+                            </Card.Actions>
+                        </Card>
+                        <Card style={styles.cardStyle}>
+                            <WebView
+                                style={styles.youTubeStyle}
+                                source={{ uri: "https://www.youtube.com/embed?max-results=1&controls=0&showinfo=0&rel=0&listType=playlist&list=PLcuBfm3dxksz54i7-7QN1XaJbT23m6Pg3" }}
+                                javaScriptEnabled={true}
+                                domStorageEnabled={true}
+                                mediaPlaybackRequiresUserAction={true}
+                                scrollEnabled={false}
+                                allowsInlineMediaPlayback={true}
+                            />
+                            <Card.Actions>
+                                <View style={{ flex: 1, height: 30, }}>
+                                    <Text style={styles.actionText}
+                                        onPress={() => Linking.openURL('https://www.youtube.com/playlist?list=PLcuBfm3dxksz54i7-7QN1XaJbT23m6Pg3')}>See full list of Documentaries</Text>
+                                </View>
+                            </Card.Actions>
+                        </Card>
                     </View>
                     <View style={styles.socialMediaArea}>
                         <Divider style={styles.divider} />
@@ -328,17 +327,19 @@ export default function NewHomeScreen({ navigation }) {
                     </View>
                 </View>
             </View>
-        </ScrollView>
+        </ScrollView >
     )
 
 }
 
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center'
-    },
+    // container: {
+    //     flex: 1,
+    //     // alignContent: 'center',
+    //     alignItems: 'center',
+    //     justifyContent: 'center'
+    // },
     topbackground: {
         // position: 'relative',
         height: 256,
@@ -403,7 +404,16 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         fontWeight: '800'
     },
+    textCampaingsImg: {
+        fontSize: 20,
 
+        paddingVertical: 40,
+        color: '#fffdfd',
+        // borderColor: 'red',
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        fontWeight: '900'
+    },
     textEvent: {
         //fontFamily: 'HelveticaNeue-BoldItalic',
         fontSize: 40,
@@ -431,8 +441,8 @@ const styles = StyleSheet.create({
     },
 
     newsIamge: {
-        width: 132,
-        height: 172,
+        // width: 140,
+        height: 180,
         marginRight: 23,
         elevation: 6,
         shadowColor: '#177ddc',
@@ -478,10 +488,14 @@ const styles = StyleSheet.create({
     },
 
     mediaArea: {
-        flexDirection: 'column',
-        width: boadyPageWidth,
-        marginTop: 40,
-        flex: 1
+        flex: 1,
+        justifyContent: 'center',
+        alignContent: 'center',
+        // alignContent: 'center',
+        // alignItems :'center'
+        // flexDirection: 'column',
+        // width: boadyPageWidth,
+        // marginTop: 40,
     },
 
     youTubeStyle: {
@@ -501,8 +515,6 @@ const styles = StyleSheet.create({
         marginTop: 26,
         borderWidth: 2,
         width: '90%',
-        marginLeft: 21
-
     },
     actionText: {
         textDecorationLine: 'underline',
@@ -547,5 +559,18 @@ const styles = StyleSheet.create({
     noActive: {
         margin: 3,
         color: '#EEEEEE'
+    },
+    containerBody: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        // backgroundColor: 'red'
+
+    },
+    titles: {
+        fontSize: 30,
+        lineHeight: 35,
+        fontWeight: 'bold',
+        // marginTop: 5
     }
 });

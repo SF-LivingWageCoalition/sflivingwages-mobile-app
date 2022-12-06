@@ -63,7 +63,7 @@ export default class App extends React.Component {
         <NavigationContainer >
           <NativeBaseProvider>
             <Stack.Navigator
-              // initialRouteName="Home"
+              initialRouteName="Home"
               screenOptions={{
                 headerStyle: { backgroundColor:  "#CD1621" },
                 headerTintColor: '#fff',
@@ -76,7 +76,6 @@ export default class App extends React.Component {
 
               //  options={{ headerTitle: props => <LogoTitle {...props} /> }}
               />
-
               <Stack.Screen name="Details" component={DetailComponent} />
               <Stack.Screen name="Preview" component={ModalScreen} />
               <Stack.Screen name="donate" component={DonateMoney} />
@@ -84,10 +83,7 @@ export default class App extends React.Component {
 
             </Stack.Navigator>
           </NativeBaseProvider>
-
         </NavigationContainer>
-
-
 
       </SafeAreaProvider>
     )

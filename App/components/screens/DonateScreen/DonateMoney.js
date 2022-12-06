@@ -1,6 +1,6 @@
 //Import Necessary Packges
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, ScrollView, Image, Button, Linking, TouchableOpacity} from 'react-native';
+import { Platform, StyleSheet, Text, View, ScrollView, Image, Button, Linking, TouchableOpacity } from 'react-native';
 import DropDownItem from 'react-native-drop-down-item';
 // import WKWebView from 'react-native-wkwebview-reborn';
 import { WebView } from 'react-native-webview';
@@ -16,12 +16,15 @@ export default class DonateMoney extends React.Component {
     contents: [
       {
         title: 'Checks',
-        body: 'Mail to:\n \nSan Francisco Living Wage Coalition, 2940 16th Street, #301 San Francisco, California, 94103',
+        body: 'Mail to:\n\nSan Francisco Living Wage Coalition, 2940 16th Street, #301 San Francisco, California, 94103',
+        url: "https://livingwage-sf.org/wp-content/uploads/2020/04/Donation-Form.pdf",
+        btnTitle : 'Download Form'
       },
       {
         title: 'PayPal',
-        body: 'A PayPal account is not required. You can also use your credit card or bank account to donate through PayPal. \n \nClick on the button below to be taken to our PayPal site.',
-
+        body: 'A PayPal account is not required. You can also use your credit card or bank account to donate through PayPal. \n\nClick on the button below to be taken to our PayPal site.',
+        url: "https://www.livingwage-sf.org/online-donation-form/",
+        btnTitle : 'Donate Online'
       },
     ],
   };
@@ -30,7 +33,7 @@ export default class DonateMoney extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView style={{ alignSelf: 'stretch' }}>
-      
+
           {
             this.state.contents
               ? this.state.contents.map((param, i) => {
@@ -60,25 +63,22 @@ export default class DonateMoney extends React.Component {
                     ]}>
                       {param.body}
                     </Text>
+
+                    <View style={styles.buttonStyle}>
+                      <TouchableOpacity style={styles.donationButton}
+                        onPress={() => Linking.openURL(param.url)}>
+                        <Text style={styles.donationButtonText}>
+                          {param.btnTitle}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </DropDownItem>
                 );
               })
               : null
           }
-          <View style={{ height: 30 }}/>
-          <ScrollView>
-            <View style={styles.buttonStyle}>
-              <TouchableOpacity style={styles.donationButton}
-              onPress={() => Linking.openURL('https://www.livingwage-sf.org/donations-and-membership/')}>
-                <Text style={styles.donationButtonText}>
-                  Donation
-                </Text>
-              </TouchableOpacity>
-                
-                
-            </View>
-            </ScrollView>
-
+          <View style={{ height: 30 }} />
+         
         </ScrollView>
 
       </View>
@@ -117,23 +117,23 @@ const styles = StyleSheet.create({
   donationButton: {
     backgroundColor: '#d31623',
     padding: 10,
-    width: 100,  
+    width: 200,
     height: 40,
     marginTop: 5,
     // marginLeft:20
-    
- },
- buttonStyle:{
-  padding: 5, 
-  flex: 1, 
-  flexDirection: "row", 
-  // justifyContent: "space-evenly" 
-  justifyContent: "center",
-  alignItems: 'center'
-},
-donationButtonText:{
-  color: 'white',
-  fontWeight: "900",
-  textAlign: "center"
-},
+
+  },
+  buttonStyle: {
+    padding: 5,
+    flex: 1,
+    flexDirection: "row",
+    // justifyContent: "space-evenly" 
+    justifyContent: "center",
+    alignItems: 'center'
+  },
+  donationButtonText: {
+    color: 'white',
+    fontWeight: "900",
+    textAlign: "center"
+  },
 });

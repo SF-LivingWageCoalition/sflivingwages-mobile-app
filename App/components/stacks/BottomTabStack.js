@@ -25,6 +25,7 @@ import HomeNavigator from '../screens/HomeScreen/HomeStack';
 
 import CampaignDetail from "../screens/CampaignScreen/CampaignDetail";
 import CampaignFiveDetail from '../screens/CampaignScreen/CampaignFiveDetail';
+import DonateMoney from '../screens/DonateScreen/DonateMoney';
 
 const helpingHandIcon = <Icon name="hands-helping" size={30} color="#900" />;
 
@@ -37,7 +38,7 @@ export default function BottomTabStack() {
         activeTintColor: '#870c18',
         // inactiveTintColor: '#ffffff',
         inactiveTintColor: '#CD1621',
-      
+
         style: {
           backgroundColor: '#d31623a',
         },
@@ -54,7 +55,7 @@ export default function BottomTabStack() {
         name="Home"
         component={HomeNavigator}
         options={{
-          headerShown : false,
+          headerShown: false,
           tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name={'home'} color={color} size={20} />
@@ -65,8 +66,20 @@ export default function BottomTabStack() {
         name="Auction"
         component={AuctionNav}
         options={{
-          headerShown : false,
+          headerShown: false,
           tabBarLabel: 'Auction',
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name={'hammer'} color={color} size={20} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Donate"
+        component={DonateMoney}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Donate',
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name={'donate'} color={color} size={20} />
           ),
@@ -77,7 +90,7 @@ export default function BottomTabStack() {
         name="Assist"
         component={AssistanceScreen}
         options={{
-          headerShown : false,
+          headerShown: false,
           tabBarLabel: 'Assist',
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name={'hands-helping'} color={color} size={20} />

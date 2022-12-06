@@ -51,16 +51,14 @@ const Events = (props) => {
                 keyExtractor={(item) => item.id}
             /> */}
 
-            <View style={{ flexDirection: 'row', margin: 20 }}>
+            {/* <View style={{ flexDirection: 'row', margin: 20 }}>
                 <Text style={{ fontSize: 30, marginRight: 10 }}>Events 2022</Text>
-                {/* <Right> */}
                     <View style={{ marginRight: 35 }}>
                         <Icon name='calendar' size={30} color="#dc143c"
                             onPress={() => props.navigation.navigate("Calendar")} />
                     </View>
                     <Text size={10} style={{ color: '#dc143c' }}>Check Calendar</Text>
-                {/* </Right> */}
-            </View>
+            </View> */}
 
             {loading ? (
                 <View style={styles.spinner}>
