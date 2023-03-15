@@ -18,13 +18,13 @@ export default class DonateMoney extends React.Component {
         title: 'Checks',
         body: 'Mail to:\n\nSan Francisco Living Wage Coalition, 2940 16th Street, #301 San Francisco, California, 94103',
         url: "https://livingwage-sf.org/wp-content/uploads/2020/04/Donation-Form.pdf",
-        btnTitle : 'Download Form'
+        btnTitle: ''
       },
       {
         title: 'PayPal',
         body: 'A PayPal account is not required. You can also use your credit card or bank account to donate through PayPal. \n\nClick on the button below to be taken to our PayPal site.',
         url: "https://www.livingwage-sf.org/online-donation-form/",
-        btnTitle : 'Donate Online'
+        btnTitle: 'Donate Online'
       },
     ],
   };
@@ -65,12 +65,19 @@ export default class DonateMoney extends React.Component {
                     </Text>
 
                     <View style={styles.buttonStyle}>
-                      <TouchableOpacity style={styles.donationButton}
-                        onPress={() => Linking.openURL(param.url)}>
-                        <Text style={styles.donationButtonText}>
-                          {param.btnTitle}
-                        </Text>
-                      </TouchableOpacity>
+                      {
+                        param.btnTitle.length !== 0 ?
+                          <TouchableOpacity style={styles.donationButton}
+                            onPress={() => Linking.openURL(param.url)}>
+
+                            <Text style={styles.donationButtonText}>
+                              {param.btnTitle}
+                            </Text>
+
+
+                          </TouchableOpacity>
+                          : null
+                      }
                     </View>
                   </DropDownItem>
                 );
@@ -78,7 +85,7 @@ export default class DonateMoney extends React.Component {
               : null
           }
           <View style={{ height: 30 }} />
-         
+
         </ScrollView>
 
       </View>

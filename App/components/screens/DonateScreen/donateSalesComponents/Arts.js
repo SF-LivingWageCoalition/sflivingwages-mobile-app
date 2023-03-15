@@ -23,6 +23,7 @@ import MyNavigationButton from './MyNavigationButton';
 import { useNavigation } from '@react-navigation/native';
 import { set } from 'date-fns';
 import Moment from 'moment';
+import Card from '../Card/Card';
 
 const Arts = ({ arts }) => {
   const navigation = useNavigation();
@@ -90,87 +91,100 @@ const Arts = ({ arts }) => {
 
   return (
    
+    // <FlatList
+    //   horizontal={false}
+    //   data={arts}
+    //   extraData={refreshing}
+    //   keyExtractor={(item, index) => index.toString()}
+    //   refreshControl={
+    //     <RefreshControl
+    //       refreshing={refreshing}
+    //       onRefresh={onRefresh()}
+    //     />
+        
+    //   }
+    //   renderItem={({ item }) => {
+    //     return (
+          
+    //       <View style={{ flex: 1 }}>
+    //         <View style={styles.cardImage}>
+    //           <Text style={{ textAlign: "center", fontSize: 18,  marginBottom: 15, fontWeight: 'bold' }}> {item.title} </Text>
+               
+    //           <TouchableHighlight
+    //               underlayColor = 'gray'
+    //               onPress={ () => { 
+    //                   if (item.long_description != null ) {
+    //                   navigation.navigate(  'Details', {
+    //                     image: item.author_image,
+    //                     bio: item.long_description,
+    //                     title: item.title}) 
+    //                   } else {
+    //                     Alert.alert(
+    //                       "",
+    //                       "No Detail",
+    //                       [{  text: "Check back later",
+    //                         onPress: () => console.log("Check back later pressed")}]
+    //                     );
+    //                   }
+    //                 }
+    //               }
+
+    //               onLongPress = {() => {navigation.navigate('Preview', {image: item.path})}}
+    //           >
+              
+    //               <Image
+    //                 style={styles.imageStyle}
+    //                 source={{ uri: item.path }}
+    //               />
+               
+    //           </TouchableHighlight>
+    //           <Text style={{ textAlign: "center", fontStyle: 'italic'}} >Long press to zoom or Tap to show details</Text>
+             
+    //           <View
+    //             style={styles.horizontalLine}
+    //           />
+              
+          
+    //            <Text style= {{marginTop:10}}>
+    //              { formatDate(item.closeDate) }  
+    //              Close date:  {closeDate}
+    //         </Text>
+
+    //           {/*<Text style={{ marginLeft: 15 }}> {item.details} </Text>*/}
+
+    //          {/* item.openforbid  &&
+    //           <InputArts artsData={item} /> */}
+            
+    //           <Text style={{ }}> {item.contact} </Text>
+              
+    //           {/*Product Individual page link*/}
+    //           <View style={styles.buttonStyle}>
+    //           <TouchableOpacity
+    //             style={styles.submitButton} 
+    //             onPress = { () => {Linking.openURL(`${item.url}`)}}>
+    //               <Text style={styles.submitButtonText}> Place bid </Text>
+    //           </TouchableOpacity>
+    //           </View>
+    //           {/*Product Individual page link*/}
+             
+                
+    //         </View>
+    //       </View>
+    //     )
+    //   }}
+    // />
     <FlatList
       horizontal={false}
       data={arts}
-      extraData={refreshing}
-      keyExtractor={(item, index) => index.toString()}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh()}
-        />
-        
+      renderItem={({ item }) => <Card
+        key={item.id}
+        categoryId={944}
+        name={item.name}
+        short={item.short_description}
+        price={item.prices.price}
+        image={item.images[0].thumbnail}
+      />
       }
-      renderItem={({ item }) => {
-        return (
-          
-          <View style={{ flex: 1 }}>
-            <View style={styles.cardImage}>
-              <Text style={{ textAlign: "center", fontSize: 18,  marginBottom: 15, fontWeight: 'bold' }}> {item.title} </Text>
-               
-              <TouchableHighlight
-                  underlayColor = 'gray'
-                  onPress={ () => { 
-                      if (item.long_description != null ) {
-                      navigation.navigate(  'Details', {
-                        image: item.author_image,
-                        bio: item.long_description,
-                        title: item.title}) 
-                      } else {
-                        Alert.alert(
-                          "",
-                          "No Detail",
-                          [{  text: "Check back later",
-                            onPress: () => console.log("Check back later pressed")}]
-                        );
-                      }
-                    }
-                  }
-
-                  onLongPress = {() => {navigation.navigate('Preview', {image: item.path})}}
-              >
-              
-                  <Image
-                    style={styles.imageStyle}
-                    source={{ uri: item.path }}
-                  />
-               
-              </TouchableHighlight>
-              <Text style={{ textAlign: "center", fontStyle: 'italic'}} >Long press to zoom or Tap to show details</Text>
-             
-              <View
-                style={styles.horizontalLine}
-              />
-              
-          
-               <Text style= {{marginTop:10}}>
-                 { formatDate(item.closeDate) }  
-                 Close date:  {closeDate}
-            </Text>
-
-              {/*<Text style={{ marginLeft: 15 }}> {item.details} </Text>*/}
-
-             {/* item.openforbid  &&
-              <InputArts artsData={item} /> */}
-            
-              <Text style={{ }}> {item.contact} </Text>
-              
-              {/*Product Individual page link*/}
-              <View style={styles.buttonStyle}>
-              <TouchableOpacity
-                style={styles.submitButton} 
-                onPress = { () => {Linking.openURL(`${item.url}`)}}>
-                  <Text style={styles.submitButtonText}> Place bid </Text>
-              </TouchableOpacity>
-              </View>
-              {/*Product Individual page link*/}
-             
-                
-            </View>
-          </View>
-        )
-      }}
     />
   )
 }

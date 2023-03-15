@@ -1,9 +1,9 @@
 import 'react-native-gesture-handler';
 
-import React, { Component, useContext , useEffect, useState} from 'react';
-import { Button,Image, View, Text  } from 'react-native';
+import React, { Component, useContext, useEffect, useState } from 'react';
+import { Button, Image, View, Text } from 'react-native';
 import {
-  createMaterialTopTabNavigator
+    createMaterialTopTabNavigator
 } from '@react-navigation/material-top-tabs';
 
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -29,115 +29,125 @@ export default class AuctionNav extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          arts: [],
-          books: [],
-          photos: [],
-          cds: [],
-          dvds: [],
-          modalVisible: false,
-          bid: ''
+            arts: [],
+            books: [],
+            photos: [],
+            cds: [],
+            dvds: [],
+            modalVisible: false,
+            bid: ''
         };
-      }
+    }
 
-    componentDidMount(){
+    componentDidMount() {
         this.fetchArt()
         this.fetchBook()
         this.fetchCds()
         this.fetchDvds()
         this.fetchPhoto()
+
+        // fetch('https://www.livingwage-sf.org/wp-json/wc/store/v1/products?category=190')
+        // .then(resp => resp.json())
+        // .then(resp => this.setState({cds : resp}))
     }
     fetchArt = async () => {
         Promise.all(
-          [
-          fetch('http://157.245.184.202:8080/arts') ])
-        .then(([ resArt])=> Promise.all([ resArt.json(), ]))
-        .then(([dataArt]) => this.setState({ arts: dataArt }))
-      }
+            
+            // [fetch('http://157.245.184.202:8080/arts')])
+            [fetch('https://www.livingwage-sf.org/wp-json/wc/store/v1/products?category=944&per_page=100')])
+            .then(([resArt]) => Promise.all([resArt.json(),]))
+            .then(([dataArt]) => this.setState({ arts: dataArt }))
+    }
     fetchBook = async () => {
         Promise.all(
-          [fetch('http://157.245.184.202:8080/pictures')])
-         .then(([ resBooks])=> Promise.all([ resBooks.json(), ]))
-         .then(([dataBooks]) => this.setState({ 
-          books: dataBooks }))
-    
-    }  
+            // https://www.livingwage-sf.org/wp-json/wc/store/v1/products?category=196
+            //   [fetch('http://157.245.184.202:8080/pictures')])
+            [fetch('https://www.livingwage-sf.org/wp-json/wc/store/v1/products?category=196&per_page=12')])
+            .then(([resBooks]) => Promise.all([resBooks.json(),]))
+            .then(([dataBooks]) => this.setState({
+                books: dataBooks
+            }))
+
+    }
 
     fetchPhoto = async () => {
-    Promise.all(
-        [fetch('http://157.245.184.202:8080/photos')])
-    .then(([ resPhotos])=> Promise.all([ resPhotos.json(), ]))
-    .then(([dataPhotos]) => this.setState({ photos: dataPhotos }))
+        Promise.all(
+            [fetch('http://157.245.184.202:8080/photos')])
+            .then(([resPhotos]) => Promise.all([resPhotos.json(),]))
+            .then(([dataPhotos]) => this.setState({ photos: dataPhotos }))
     }
     fetchCds = async () => {
-    Promise.all(
-        [fetch('http://157.245.184.202:8080/cds')])
-    .then(([ resCds])=> Promise.all([ resCds.json(), ]))
-    .then(([dataCds]) => this.setState({ cds: dataCds }))
+        Promise.all(
+            [fetch('https://www.livingwage-sf.org/wp-json/wc/store/v1/products?category=190')])
+            // [fetch('http://157.245.184.202:8080/cds')])
+            .then(([resCds]) => Promise.all([resCds.json(),]))
+            .then(([dataCds]) => this.setState({ cds: dataCds }))
     }
     fetchDvds = async () => {
-    Promise.all(
-        [fetch('http://157.245.184.202:8080/dvds')])
-    .then(([ resDvds])=> Promise.all([ resDvds.json(), ]))
-    .then(([dataDvds]) => this.setState({ dvds: dataDvds }))
+        Promise.all(
+            // [fetch('http://157.245.184.202:8080/dvds')])
+            [fetch('https://www.livingwage-sf.org/wp-json/wc/store/v1/products?category=192')])
+            .then(([resDvds]) => Promise.all([resDvds.json(),]))
+            .then(([dataDvds]) => this.setState({ dvds: dataDvds }))
     }
 
-   render(){
+    render() {
         return (
 
             <Tab.Navigator
-            initialRouteName="Arts"
-            
-            screenOptions={{
-                activeTintColor: '#870c18',
-                inactiveTintColor: '#ffffff',
-                style: {
-                backgroundColor: '#d31623',
-                },
-                labelStyle: {
-                textAlign: 'center',
-                },
-                indicatorStyle: {
-                borderBottomColor: '#87B56A',
-                borderBottomWidth: 2,
-                },
-            }}>
-            <Tab.Screen
-                name="Arts"
-                children={()=><Arts arts={this.state.arts}/>}
-                options={{
-                tabBarLabel: 'Art',
-                }}  />
+                initialRouteName="Arts"
 
-            <Tab.Screen
-                name="Photos"
-                children={()=><Photos photos={this.state.photos}/>}
-                options={{
-                tabBarLabel: 'Photo',
-              
-            }} />
-            <Tab.Screen
-                name="Books"
-                children={()=><Books books={this.state.books}/>}
-                options={{
-                tabBarLabel: 'Book',
-              
-            }} />
-            <Tab.Screen
-                name="Cds"
-                children={()=><Cds cds={this.state.cds}/>}
-                options={{
-                tabBarLabel: 'Cd',
-              
-                }}  />
-            <Tab.Screen
-                name="Dvds"
-                children={()=><Dvds dvds={this.state.dvds}/>}
-                options={{
-                tabBarLabel: 'DVD',
-              
-            }} />
-           
-            
+                screenOptions={{
+                    activeTintColor: '#870c18',
+                    inactiveTintColor: '#ffffff',
+                    style: {
+                        backgroundColor: '#d31623',
+                    },
+                    labelStyle: {
+                        textAlign: 'center',
+                    },
+                    indicatorStyle: {
+                        borderBottomColor: '#87B56A',
+                        borderBottomWidth: 2,
+                    },
+                }}>
+                <Tab.Screen
+                    name="Arts"
+                    children={() => <Arts arts={this.state.arts} />}
+                    options={{
+                        tabBarLabel: 'Art',
+                    }} />
+
+                <Tab.Screen
+                    name="Photos"
+                    children={() => <Photos photos={this.state.photos} />}
+                    options={{
+                        tabBarLabel: 'Photo',
+
+                    }} />
+                <Tab.Screen
+                    name="Books"
+                    children={() => <Books books={this.state.books} />}
+                    options={{
+                        tabBarLabel: 'Book',
+
+                    }} />
+                <Tab.Screen
+                    name="Cds"
+                    children={() => <Cds cds={this.state.cds} />}
+                    options={{
+                        tabBarLabel: 'Cd',
+
+                    }} />
+                <Tab.Screen
+                    name="Dvds"
+                    children={() => <Dvds dvds={this.state.dvds} />}
+                    options={{
+                        tabBarLabel: 'DVD',
+
+                    }} />
+
+
             </Tab.Navigator>
         );
     }
