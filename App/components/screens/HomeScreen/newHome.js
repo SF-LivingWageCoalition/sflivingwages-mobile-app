@@ -50,7 +50,7 @@ const CarouselImageSmall = ({ image, onPress }) => (
                 imageStyle={{ borderRadius: 10 }}
             >
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
-                    <Text style={styles.textCampaingsImg}>{image.title}</Text>
+                    <Text style={styles.textCampaingsImg}>{image.title.toUpperCase()}</Text>
                 </View>
             </ImageBackground>
         </TouchableOpacity>
@@ -126,35 +126,45 @@ export default function NewHomeScreen({ navigation }) {
         }
     }
 
+    // let newsImages = [
+    //     {
+    //         id: 1,
+    //         src: require('./../../../../assets/welfare.jpg'),
+    //         title: 'Transform Welfare-to-Work',
+    //         // destination: 'CampaignThreeDetail'
+    //         destination: 'https://www.livingwage-sf.org/transform-welfare-to-work-programs/'
+    //     }, 
+    // ]
+
     let newsImages = [
         {
             id: 1,
-            src: require('./../../../../assets/campaign3_background.jpg'),
-            title: 'RAISE WAGES',
-            // destination: 'CampaignDetail'
-            destination: 'https://www.livingwage-sf.org/raising-wages/'
+            src: require('./../../../../assets/welfare.jpg'),
+            title: 'Transform Welfare',
+            // destination: 'CampaignThreeDetail'
+            destination: 'https://www.livingwage-sf.org/transform-welfare-to-work-programs/'
         },
         {
             id: 2,
+            src: require('./../../../../assets/public-sector.png'),
+            title: 'Protect Public Sector',
+            // destination: 'CampaignThreeDetail'
+            destination: 'https://www.livingwage-sf.org/protect-public-sector-jobs/'
+        },
+        {
+            id: 3,
             src: require('./../../../../assets/Encuentro_2017_021.jpg'),
-            title: 'End the Injustice of Mass Incarceration',
+            title: 'End the Injustice',
             // destination: 'CampaignTwoDetail'
             destination: 'https://www.livingwage-sf.org/mass-incarceration/'
 
         },
         {
-            id: 3,
+            id: 4,
             src: require('./../../../../assets/immigrant.jpg'),
-            title: 'REFORM A BROKEN IMMIGRATION SYSTEM',
+            title: 'IMMIGRATION REFORM',
             // destination: 'CampaignThreeDetail'
             destination: 'https://www.livingwage-sf.org/immigration-reform/'
-        },
-        {
-            id: 4,
-            src: require('./../../../../assets/welfare.jpg'),
-            title: 'Transform Welfare-to-Work',
-            // destination: 'CampaignThreeDetail'
-            destination: 'https://www.livingwage-sf.org/transform-welfare-to-work-programs/'
         },
         {
             id: 5,
@@ -165,15 +175,13 @@ export default function NewHomeScreen({ navigation }) {
         },
         {
             id: 6,
-            src: require('./../../../../assets/P1040589.png'),
-            title: ' Immigration Reform',
-            // destination: 'CampaignThreeDetail'
-            destination: 'https://www.livingwage-sf.org/immigration-reform/'
+            src: require('./../../../../assets/campaign3_background.jpg'),
+            title: 'RAISE WAGES',
+            // destination: 'CampaignDetail'
+            destination: 'https://www.livingwage-sf.org/raising-wages/'
         },
     ]
-
-    // console.log("images, ", images);
-
+  
     const getAbout = async () => {
         const response = await fetch("http://157.245.184.202:8080/about", {
             method: 'GET'
@@ -406,12 +414,10 @@ const styles = StyleSheet.create({
     },
     textCampaingsImg: {
         fontSize: 20,
+        backgroundColor: 'rgba(0, 0, 0, 0.576)',
 
-        paddingVertical: 40,
-        color: '#fffdfd',
-        // borderColor: 'red',
-        textAlign: 'center',
-        textAlignVertical: 'center',
+        color: '#ffff',
+        // color: '#CD1621',
         fontWeight: '900'
     },
     textEvent: {
