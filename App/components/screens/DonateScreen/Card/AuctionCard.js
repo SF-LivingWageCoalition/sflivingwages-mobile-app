@@ -6,18 +6,25 @@ import {
     Text,
     TouchableOpacity,
     Linking,
-    ScrollView
 } from "react-native";
-import ItemModal from "../Modal/ItemModal";
 import { useNavigation } from "@react-navigation/native";
 
 
 // Card Render
-const Card = ({  name, description, price, link, image, previwImage }) => {
-
+const AuctionCard = ({
+    categoryId,
+    name,
+    description,
+    price,
+    link,
+    image,
+    previwImage,
+}) => {
     // remove html tags and html entities
     let navigate = useNavigation()
+
     const rgex = /(&.+;)|(<([^>]+)>)/ig
+
     const cleanDescription = description.replace(rgex, "")
     const cleanName = name.replace(rgex, "")
     const itemPrice = +price / 100
@@ -40,16 +47,10 @@ const Card = ({  name, description, price, link, image, previwImage }) => {
                 <Text>Long pressd to zoom</Text>
                 <View style={styles.horizontalLine} />
                 <View>
-                    {/* <Text>{cleanDescription} </Text>  */}
-                    <ItemModal
-                        title={name}
-                        decription={cleanDescription}
-                    />
+                    <Text>{cleanDescription} </Text>
                     <Text>${itemPrice}</Text>
                 </View>
-
                 {/*Product Individual page link*/}
-
                 <View style={styles.submitButtonContainer}>
                     <TouchableOpacity
                         style={styles.submitButton}
@@ -57,11 +58,9 @@ const Card = ({  name, description, price, link, image, previwImage }) => {
                             Linking.openURL(link)
                         }}
                     >
-                        <Text style={styles.submitButtonText}> Shop </Text>
+                        <Text style={styles.submitButtonText}> Place bid </Text>
                     </TouchableOpacity>
                 </View>
-
-
                 {/* <Text style={{ marginLeft: 15 }}> {item.contact} </Text> */}
             </View>
         </View >
@@ -70,7 +69,7 @@ const Card = ({  name, description, price, link, image, previwImage }) => {
 
 }
 
-export default Card;
+export default AuctionCard;
 
 const styles = StyleSheet.create({
 
