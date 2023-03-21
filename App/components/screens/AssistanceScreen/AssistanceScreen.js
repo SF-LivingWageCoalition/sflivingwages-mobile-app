@@ -13,21 +13,24 @@ import {
 
 import { Checkbox } from 'galio-framework';
 
-
-
 const Assistancecreen = () => {
+
+
 
 	const [fullName, setFullName] = useState('');
 	const [userEmail, setUserEmail] = useState('');
 	const [userPhone, setUserPhone] = useState('');
 	const [userNotes, setUserNotes] = useState('');
 
+
+
+
 	const onSubmitData = () => {
-		if(fullName.length === 0 || userEmail.length === 0|| userNotes.length === 0 || userPhone === 0){
+		if (fullName.length === 0 || userEmail.length === 0 || userNotes.length === 0 || userPhone === 0) {
 			Alert.alert("Must enter name and contact information to submit");
 		}
-		
-		else{
+
+		else {
 			fetch('http://157.245.184.202:8080/assistance', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
@@ -40,20 +43,21 @@ const Assistancecreen = () => {
 			})
 
 			Alert.alert("We recieve your complain. We will contact you soon")
-	    }
-		
+		}
+
 		setFullName('');
 		setUserEmail('');
 		setUserPhone('');
 		setUserNotes('');
 	}
-	
+
 	const resetAll = () => {
 		setFullName('');
 		setUserEmail('');
 		setUserPhone('');
 		setUserNotes('');
 	}
+
 	return (
 		<ScrollView>
 
@@ -65,18 +69,18 @@ const Assistancecreen = () => {
 					</View>
 					<Text style={{ marginLeft: 20, marginTop: 10 }}>We can assist you.</Text>
 					<Text style={{ marginLeft: 20, marginBottom: 30 }}>Complete the form below.</Text>
-                    
+
 					<View style={styles.inputContainer}>
-						<Text style={{marginLeft: 10}}>Full Name</Text>
+						<Text style={{ marginLeft: 10 }}>Full Name</Text>
 						<TextInput
 							style={styles.textInput}
 							onChangeText={fullNameInput => setFullName(fullNameInput)}
 							value={fullName}
 						/>
 					</View>
-                    
+
 					<View style={styles.inputContainer}>
-						<Text style={{marginLeft: 10}}>E-mail</Text>
+						<Text style={{ marginLeft: 10 }}>E-mail</Text>
 						<TextInput
 							style={styles.textInput}
 							keyboardType='email-address'
@@ -84,9 +88,9 @@ const Assistancecreen = () => {
 							value={userEmail}
 						/>
 					</View>
-                    
+
 					<View style={styles.inputContainer}>
-						<Text style={{marginLeft: 10}}>Phone</Text>
+						<Text style={{ marginLeft: 10 }}>Phone</Text>
 						<TextInput
 							style={styles.textInput}
 							keyboardType='numeric'
@@ -94,26 +98,26 @@ const Assistancecreen = () => {
 							value={userPhone}
 						/>
 					</View>
-					
+
 					<Text style={{ marginBottom: 10, marginLeft: 20 }} >Brief description of your situation, type in topic using example down below</Text>
 					<Text style={{ marginLeft: 20 }} >Wage theft</Text>
 					<Text style={{ marginLeft: 20 }} >Unpaid overtime</Text>
 					<Text style={{ marginLeft: 20 }} >No break</Text>
 					<Text style={{ marginLeft: 20 }} >Discrimination</Text>
-                    
+
 					<View style={styles.inputContainer}>
-						<Text style={{marginLeft: 3}}>Note</Text>
+						<Text style={{ marginLeft: 3 }}>Note</Text>
 						<TextInput
 							style={styles.textInput}
 							onChangeText={userNotesInput => setUserNotes(userNotesInput)}
 							value={userNotes}
 						/>
-                    </View>
-					
+					</View>
+
 					<View style={styles.buttonStyles}>
 
 						<TouchableOpacity onPress={onSubmitData}>
-							<View  style={styles.submitButton} >
+							<View style={styles.submitButton} >
 								<Text style={styles.submitButtonText} >Submit</Text>
 							</View>
 						</TouchableOpacity>
@@ -186,7 +190,7 @@ const styles = StyleSheet.create({
 		textAlign: "center"
 	},
 
-	inputContainer:{
+	inputContainer: {
 		margin: 12
 	}
 });
