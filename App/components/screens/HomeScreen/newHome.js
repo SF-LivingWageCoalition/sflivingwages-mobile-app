@@ -255,7 +255,8 @@ export default function NewHomeScreen({ navigation }) {
                             }
                         </Swiper>
                     </View>
-                    <View style={styles.containerBody}>
+                    {/* this is comment because an error occur need to fix : ERROR with WebView */}
+                    {/* <View style={styles.containerBody}>
                         <Text style={styles.titles}>Media</Text>
                         <Card style={styles.cardStyle}>
                             <TouchableOpacity>
@@ -310,7 +311,7 @@ export default function NewHomeScreen({ navigation }) {
                                 </View>
                             </Card.Actions>
                         </Card>
-                    </View>
+                    </View> */}
                     <View style={styles.socialMediaArea}>
                         <Divider style={styles.divider} />
                         <Text style={styles.follow}>Follow Us</Text>

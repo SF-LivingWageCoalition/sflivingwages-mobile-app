@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useCallback, useState } from 'react';
 import {
 	StyleSheet,
 	Text,
@@ -7,11 +7,36 @@ import {
 	TouchableOpacity,
 	ScrollView,
 	Image,
+	Linking,
+	Button,
 	Alert
+} from 'react-native'
+import Recaptcha from 'react-native-recaptcha-that-works';
+import qs from "querystring";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-} from 'react-native';
+const sendEmail = async (to, subject, body, options = {}) => {
+	const { cc, bcc } = options;
+	let url = `mailto:${to}`;
+	// Create email link query
+	const query = qs.stringify({
+		subject: subject,
+		body: body,
+		cc: cc,
+		bcc: bcc
+	});
+	if (query.length) {
+		url += `?${query}`;
+	}
+	// check if we can use this link
+	const canOpen = await Linking.canOpenURL(url);
+	if (!canOpen) {
+		throw new Error('Provided URL can not be handled');
+	}
 
-import { Checkbox } from 'galio-framework';
+
+	return Linking.openURL(url);
+}
 
 const Assistancecreen = () => {
 
@@ -22,33 +47,34 @@ const Assistancecreen = () => {
 	const [userPhone, setUserPhone] = useState('');
 	const [userNotes, setUserNotes] = useState('');
 
+	const [valid, setIsValid] = useState(false);
 
-
+	const [isEmpty, setEmpty] = useState(false)
 
 	const onSubmitData = () => {
-		if (fullName.length === 0 || userEmail.length === 0 || userNotes.length === 0 || userPhone === 0) {
-			Alert.alert("Must enter name and contact information to submit");
+
+		if ((fullName.length === 0 || userEmail.length === 0 || userNotes.length === 0 || userPhone === 0)) {
+			setEmpty(true)
 		}
 
-		else {
-			fetch('http://157.245.184.202:8080/assistance', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					full_name: fullName,
-					email: userEmail,
-					phone: userPhone,
-					notes: userNotes
-				})
-			})
+		if (valid && (fullName.length > 0 || userEmail.length > 0 || userNotes.length > 0 || userPhone > 0)) {
+			setEmpty(false)
+			const strBodyFormat = `
+							My Name ${fullName}
+							My Email ${userEmail}
+							My Phone ${userPhone}
+							My situation ${userNotes}
+					`
+			sendEmail(
+				'<sanfranciscolivingwagecoalition@assist.com>', // San Francisco Living Wage Coalition Email.
+				'Assist',
+				strBodyFormat,
+			)
+				.then(() => {
+					resetAll()
+				});
 
-			Alert.alert("We recieve your complain. We will contact you soon")
 		}
-
-		setFullName('');
-		setUserEmail('');
-		setUserPhone('');
-		setUserNotes('');
 	}
 
 	const resetAll = () => {
@@ -57,6 +83,37 @@ const Assistancecreen = () => {
 		setUserPhone('');
 		setUserNotes('');
 	}
+
+	const recaptcha = useRef(null);
+
+	const send = useCallback(() => {
+		recaptcha.current.open();
+	}, []);
+
+	const close = useCallback(() => {
+		recaptcha.current.close();
+	}, [])
+
+	const onVerify = (token) => {
+
+		const secretKey = '<secret_key>' // server
+
+		// verify token on server 
+		fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`)
+			.then(resp => resp.json())
+			.then((data) => {
+				// If it's not a success..
+				if (!data.success) {
+					// ERROR
+					setIsValid(false)
+				} else {
+					console.log(data);
+					setEmpty(false)
+					setIsValid(true);
+				}
+			});
+	}
+
 
 	return (
 		<ScrollView>
@@ -71,7 +128,7 @@ const Assistancecreen = () => {
 					<Text style={{ marginLeft: 20, marginBottom: 30 }}>Complete the form below.</Text>
 
 					<View style={styles.inputContainer}>
-						<Text style={{ marginLeft: 10 }}>Full Name</Text>
+						<Text style={{ marginLeft: 10 }}>Full Name <Text style={styles.requiredField}>*</Text></Text>
 						<TextInput
 							style={styles.textInput}
 							onChangeText={fullNameInput => setFullName(fullNameInput)}
@@ -80,7 +137,7 @@ const Assistancecreen = () => {
 					</View>
 
 					<View style={styles.inputContainer}>
-						<Text style={{ marginLeft: 10 }}>E-mail</Text>
+						<Text style={{ marginLeft: 10 }}>E-mail <Text style={styles.requiredField}>*</Text></Text>
 						<TextInput
 							style={styles.textInput}
 							keyboardType='email-address'
@@ -90,7 +147,7 @@ const Assistancecreen = () => {
 					</View>
 
 					<View style={styles.inputContainer}>
-						<Text style={{ marginLeft: 10 }}>Phone</Text>
+						<Text style={{ marginLeft: 10 }}>Phone <Text style={styles.requiredField}>*</Text></Text>
 						<TextInput
 							style={styles.textInput}
 							keyboardType='numeric'
@@ -106,16 +163,37 @@ const Assistancecreen = () => {
 					<Text style={{ marginLeft: 20 }} >Discrimination</Text>
 
 					<View style={styles.inputContainer}>
-						<Text style={{ marginLeft: 3 }}>Note</Text>
+						<Text style={{ marginLeft: 3 }}>Note <Text style={styles.requiredField}>*</Text></Text>
 						<TextInput
 							style={styles.textInput}
 							onChangeText={userNotesInput => setUserNotes(userNotesInput)}
 							value={userNotes}
 						/>
 					</View>
-
+					{isEmpty ?
+						<Text style={styles.recaptchaMessage}>Fields marked with an * are required </Text>
+						: null
+					}
+					<SafeAreaView>
+						<View style={styles.buttonStylesRecaptcha}>
+							<Recaptcha
+								headerComponent={<Button title='close' onPress={close} />}
+								lang={'en'}
+								ref={recaptcha}
+								siteKey='<site_key>' // site key
+								baseUrl='<http://my-test-domail.me>' // San Francisco Living Wage Coalition domain
+								onVerify={onVerify}
+								size={'normal'}
+								theme={'light'}
+							/>
+							<Button title="Recaptcha" onPress={send} />
+						</View>
+					</SafeAreaView>
+					{isEmpty ?
+						<Text style={styles.recaptchaMessage}>Please compleate the recaptcha before submit</Text>
+						: null
+					}
 					<View style={styles.buttonStyles}>
-
 						<TouchableOpacity onPress={onSubmitData}>
 							<View style={styles.submitButton} >
 								<Text style={styles.submitButtonText} >Submit</Text>
@@ -125,7 +203,6 @@ const Assistancecreen = () => {
 						<TouchableOpacity style={styles.submitButton} onPress={resetAll}>
 							<Text style={styles.submitButtonText}>Clear</Text>
 						</TouchableOpacity>
-
 					</View>
 				</View>
 			</View>
@@ -155,7 +232,12 @@ const styles = StyleSheet.create({
 		height: 30,
 		borderBottomColor: '#d31623',
 		borderBottomWidth: 1,
-		margin: 10
+		margin: 10,
+	},
+	requiredField :{
+		color: '#d31623',
+		fontSize : 16,
+		fontWeight: '900'
 	},
 	submitButton: {
 		backgroundColor: 'white',
@@ -172,7 +254,18 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-evenly',
 		padding: 5,
-		paddingBottom: 35
+		paddingBottom: 20
+	},
+	buttonStylesRecaptcha: {
+		flexDirection: 'row',
+		justifyContent: 'space-evenly',
+		padding: 5,
+	},
+	recaptchaMessage: {
+		fontSize: 15,
+		fontWeight: '600',
+		textAlign: 'center',
+		color: '#D31623',
 	},
 	logo: {
 		width: 200,
