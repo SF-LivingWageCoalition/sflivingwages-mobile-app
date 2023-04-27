@@ -1,83 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
-  Text,
   FlatList,
+  ActivityIndicator
 } from 'react-native';
 
-
-import { useIsFocused } from '@react-navigation/native';
 import Card from '../Card/Card';
 
 
-const Books = ({ books }) => {
-  //const [bookLocal, setBookLocal] = useState( );
-  const [refreshing, setRefreshing] = useState(false);
-
-  const isFocused = useIsFocused();
-
-  const calculateTimeLeft = (value) => {
-    // Set bid end day here
-    let year = new Date().getFullYear();
-    let endDate = value // books[0].closeDate;
-    //Date format: 2021-06-01T12:00:00.000Z
-    let difference = +new Date(endDate) - +new Date();
-
-
-    let timeLeft = {};
-    if (difference > 0) {
-      timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60)
-      };
-    }
-    return timeLeft;
-  }
-
-
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-
-
-  useEffect(() => {
-
-    const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-    // Clear timeout if the component is unmounted
-    return () => clearTimeout(timer);
-  });
-
-  const timerComponents = [];
-  Object.keys(timeLeft).forEach((interval) => {
-    if (!timeLeft[interval]) {
-      return;
-    }
-    timerComponents.push(
-      <Text>
-        {timeLeft[interval]} {interval}{" "}
-      </Text>
-    );
-  });
-
+const Books = ({ books, isLoading }) => {
 
 
   return (
-
-    <FlatList
-      horizontal={false}
-      data={books}
-      renderItem={({ item }) => <Card
-        key={item.id}
-        name={item.name}
-        description={item.description}
-        price={item.prices.price}
-        link={item.permalink}
-        image={item.images[0].thumbnail}
-        previwImage={item.images[0].src}
-      />
+    <>
+      {
+        isLoading ? <ActivityIndicator size="large" color="red" /> :
+          <FlatList
+            horizontal={false}
+            data={books}
+            renderItem={({ item }) => <Card
+              key={item.id}
+              name={item.name}
+              description={item.description}
+              price={item.prices.price}
+              link={item.permalink}
+              image={item.images[0].thumbnail}
+              previwImage={item.images[0].src}
+            />
+            }
+          />
       }
-    />
+    </>
+
 
   );
 
