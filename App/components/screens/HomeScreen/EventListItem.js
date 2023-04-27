@@ -1,18 +1,16 @@
 import React from 'react';
-import {View, StyleSheet, Text, Dimensions} from 'react-native';
-import { Left } from 'native-base';
+import { View, StyleSheet, Text, Dimensions } from 'react-native';
 import { Title, Paragraph } from 'react-native-paper';
 
-var {width} = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const EventListItem = ({ event, index }) => {
-    var monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+    const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN",
         "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
-    var newDate = new Date(event.start_date);
-    var month = monthNames[newDate.getMonth()];
-    var day = newDate.getDate() + 1;
-    // console.log("date,", day);
+    const newDate = new Date(event.date);
+    const month = monthNames[newDate.getMonth()];
+    const day = newDate.getDate() + 1;
 
     return (
         <View style={[styles.container, { backgroundColor: index % 2 == 0 ? "white" : "#F5F5F5" }]}>
@@ -22,7 +20,7 @@ const EventListItem = ({ event, index }) => {
             </View>
             <View style={styles.eventInfo}>
                 <Title style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 6, /*fontFamily: "Helvetica"*/ }} >{event.description}</Title>
-                <Paragraph style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 6, /*fontFamily: "Arial"*/ }}>{event.duration}</Paragraph>
+                <Paragraph style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 6, /*fontFamily: "Arial"*/ }}>{event.time}</Paragraph>
                 <Text style={{ fontSize: 15, fontWeight: '300', marginBottom: 13, /*fontFamily: "Arial"*/ }}>{event.location}</Text>
             </View>
         </View>
@@ -42,14 +40,11 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignContent: "center",
         flexShrink: 1,
-        width: width/1.2,
+        width: width / 1.2,
         padding: 3,
         marginTop: 8,
         marginLeft: 10
     }
-
-
-    
 })
 
 
