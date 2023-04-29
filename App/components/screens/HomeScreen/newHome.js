@@ -7,9 +7,7 @@ import {
     ImageBackground,
     Linking,
     Dimensions,
-    FlatList, ActivityIndicator,
 } from 'react-native';
-import * as Font from 'expo-font';
 
 import { Divider } from 'react-native-elements';
 import { Text, Button } from 'native-base';
@@ -60,7 +58,7 @@ const CarouselImageSmall = ({ image, onPress }) => (
 export default function NewHomeScreen({ navigation }) {
 
     let images = [
-     
+
         {
             id: 2,
             title: "Donate",
@@ -77,7 +75,7 @@ export default function NewHomeScreen({ navigation }) {
 
     ]
 
-   
+
 
     let newsImages = [
         {
@@ -173,6 +171,7 @@ export default function NewHomeScreen({ navigation }) {
                                 {images.map(image => (
                                     <CarouselImage
                                         image={image}
+                                        key={image.id}
                                         onPress={() => {
                                             image.id === 2 ? Linking.openURL(image.destination) : navigation.navigate(image.destination)
                                         }}
@@ -187,6 +186,7 @@ export default function NewHomeScreen({ navigation }) {
                             {
                                 newsImages.map(image => (
                                     <CarouselImageSmall
+                                        key={image.id}
                                         image={image}
                                         onPress={() => {
                                             Linking.openURL(image.destination)
