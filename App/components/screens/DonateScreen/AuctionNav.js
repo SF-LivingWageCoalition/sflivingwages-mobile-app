@@ -45,20 +45,20 @@ export default class AuctionNav extends React.Component {
 
     fetchBook = async () => {
         fetch('https://www.livingwage-sf.org/wp-json/wc/store/v1/products?category=196&per_page=12')
-            .then(([resBooks]) => Promise.all([resBooks.json(),]))
-            .then(([dataBooks]) => this.setState({ books: dataBooks, isLoading: false }))
+            .then(resBooks => resBooks.json())
+            .then(dataBooks => this.setState({ books: dataBooks, isLoading: false }))
     }
 
     fetchCds = async () => {
 
         fetch('https://www.livingwage-sf.org/wp-json/wc/store/v1/products?category=190')
-            .then(([resCds]) => Promise.all([resCds.json(),]))
-            .then(([dataCds]) => this.setState({ cds: dataCds, isLoading: false }))
+            .then((resCds) => resCds.json())
+            .then((dataCds) => this.setState({ cds: dataCds, isLoading: false }))
     }
     fetchDvds = async () => {
         fetch('https://www.livingwage-sf.org/wp-json/wc/store/v1/products?category=192')
-            .then(([resDvds]) => Promise.all([resDvds.json(),]))
-            .then(([dataDvds]) => this.setState({ dvds: dataDvds, isLoading: false }))
+            .then((resDvds) => resDvds.json())
+            .then((dataDvds) => this.setState({ dvds: dataDvds, isLoading: false }))
     }
 
     render() {
