@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     View,
     FlatList,
@@ -13,12 +13,11 @@ const { height } = Dimensions.get('window');
 
 
 const Events = () => {
+    const ref = useRef()
     const [events, setEvents] = useState({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!events) return
-
         fetch("https://www.livingwage-sf.org/wp-json/wp/v2/pages/18493",
             {
                 method: "GET",
@@ -41,7 +40,50 @@ const Events = () => {
                 setEvents(events)
                 setLoading(false);
             })
+    })
+
+    const eventsCalls = () => {
+        console.log("------------ call every 10 minute");
+        fetch("https://www.livingwage-sf.org/wp-json/wp/v2/pages/18493",
+            {
+                method: "GET",
+                headers: { 'cache-control': 'no-cache' }
+            }
+        )
+            .then(res => {
+                if (res.ok && res.status !== 401) {
+                    return res.json()
+                }
+            })
+            .then(res => {
+
+                const regex = /({([{^}]*)})|(&.+;)|(<([^>]+)>)/ig
+                const clean = res.content.rendered.replace(regex, '')
+
+                const events = JSON.parse(clean)
+
+
+                setEvents(events)
+            })
+    }
+
+    useEffect(() => {
+        ref.current = eventsCalls;
+    })
+
+
+    useEffect(() => {
+        const call = () => {
+            ref.current()
+        }
+        console.log("test ONE.......");
+        // let id = setInterval(call, 5000); test
+        let id = setInterval(call, 10 * 60 * 1000);
+        return () => clearInterval(id)
     }, [])
+
+
+
 
 
     return (
@@ -54,7 +96,7 @@ const Events = () => {
                 <FlatList
                     data={events.events}
                     renderItem={({ item, index }) => <EventListItem event={item} index={index} />}
-                    keyExtractor={(item) => item.month}
+                    keyExtractor={(item) => item.date}
                 />
             )}
 
