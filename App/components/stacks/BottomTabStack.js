@@ -14,30 +14,24 @@ const Tab = createBottomTabNavigator();
 export default function BottomTabStack() {
   return (
     <Tab.Navigator
-      // initialRouteName="Home"r
+    
       screenOptions={{
-        activeTintColor: '#870c18',
-        // inactiveTintColor: '#ffffff',
-        inactiveTintColor: '#CD1621',
-
-        style: {
-          backgroundColor: '#d31623a',
-        },
-        labelStyle: {
-          textAlign: 'center',
-        },
-        indicatorStyle: {
-          borderBottomColor: '#87B56A',
-          borderBottomWidth: 2,
+     
+        tabBarStyle :{
+          backgroundColor : "#CD1621",
         },
 
-      }}>
+        tabBarActiveTintColor : '#fff',
+        tabBarInactiveTintColor : '#000'
+      }}
+    
+      >
+        
       <Tab.Screen
         name="Home"
         component={HomeNavigator}
         options={{
           headerShown: false,
-          tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name={'home'} color={color} size={20} />
           ),
