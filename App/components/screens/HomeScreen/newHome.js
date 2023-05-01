@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
     StyleSheet,
     View,
@@ -10,16 +10,13 @@ import {
 } from 'react-native';
 
 import { Divider } from 'react-native-elements';
-import { Text, Button } from 'native-base';
+import { Text} from 'native-base';
 
-import { Card, Title, Paragraph } from 'react-native-paper';
+import { Card } from 'react-native-paper';
 import { WebView } from "react-native-webview";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Swiper from 'react-native-swiper/src';
-import EventListItem from './EventListItem';
 
-var bodyPageHeight = Dimensions.get('window').height;
 var boadyPageWidth = Dimensions.get('window').width;
 
 const CarouselImage = ({ image, onPress }) => (
@@ -123,28 +120,6 @@ export default function NewHomeScreen({ navigation }) {
         },
     ]
 
-    const getAbout = async () => {
-        const response = await fetch("http://157.245.184.202:8080/about", {
-            method: 'GET'
-        });
-
-        const getAbout = await response.json();
-        setAbout(getAbout[0].aboutinfo);
-    };
-
-
-    useEffect(() => {
-        // getEvents();
-
-        getAbout();
-
-    }, [])
-
-
-
-
-
-
     return (
         <ScrollView style={{ flex: 1, backgroundColor: '#ffffff' }}>
             <View style={styles.container}>
@@ -197,7 +172,7 @@ export default function NewHomeScreen({ navigation }) {
                         </Swiper>
                     </View>
                     {/* this is comment because an error occur need to fix : ERROR with WebView */}
-                    {/* <View style={styles.containerBody}>
+                    <View style={styles.containerBody}>
                         <Text style={styles.titles}>Media</Text>
                         <Card style={styles.cardStyle}>
                             <TouchableOpacity>
@@ -252,7 +227,7 @@ export default function NewHomeScreen({ navigation }) {
                                 </View>
                             </Card.Actions>
                         </Card>
-                    </View> */}
+                    </View>
                     <View style={styles.socialMediaArea}>
                         <Divider style={styles.divider} />
                         <Text style={styles.follow}>Follow Us</Text>
@@ -310,9 +285,8 @@ const styles = StyleSheet.create({
         marginTop: 25,
     },
     imageContent: {
-        fontSize: 20,
-        width: 340,
-        fontWeight: '500',
+        fontSize: 21,
+        fontWeight: '400',
         color: "#ffffff",
         marginLeft: 23,
         marginTop: 26
