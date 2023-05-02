@@ -39,7 +39,7 @@ const ItemModal = ({ decription, title }) => {
             </Modal>
             <TouchableOpacity
                 onPress={() => setModalVisible(true)}>
-                <Text style={styles.textStyleOpen}>Description...</Text>
+                <Text style={styles.textStyleOpen}>Read More</Text>
             </TouchableOpacity>
         </View>
     )

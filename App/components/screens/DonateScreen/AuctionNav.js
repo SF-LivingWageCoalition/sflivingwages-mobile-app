@@ -1,4 +1,4 @@
-import 'react-native-gesture-handler';
+import 'react-native-gesture-handler'; 
 import React from 'react';
 import {
     createMaterialTopTabNavigator
@@ -68,18 +68,11 @@ export default class AuctionNav extends React.Component {
                 initialRouteName="Arts"
 
                 screenOptions={{
-                    activeTintColor: '#870c18',
-                    inactiveTintColor: '#ffffff',
-                    style: {
-                        backgroundColor: '#d31623',
-                    },
-                    labelStyle: {
-                        textAlign: 'center',
-                    },
-                    indicatorStyle: {
-                        borderBottomColor: '#87B56A',
-                        borderBottomWidth: 2,
-                    },
+                    tabBarActiveTintColor: '#CD1621',
+                    tabBarInactiveTintColor: '#000',
+
+                    tabBarLabelStyle : {fontSize : 15, fontWeight : '500'},
+             
                 }}>
                 <Tab.Screen
                     name="Arts"
@@ -89,6 +82,7 @@ export default class AuctionNav extends React.Component {
                     }
                     options={{
                         tabBarLabel: 'Art',
+                        tabBarPressColor : "blue"
                     }} />
 
                 <Tab.Screen
