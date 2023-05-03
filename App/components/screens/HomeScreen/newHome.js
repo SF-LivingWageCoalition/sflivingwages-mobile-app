@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
     StyleSheet,
     View,
@@ -7,21 +7,16 @@ import {
     ImageBackground,
     Linking,
     Dimensions,
-    FlatList, ActivityIndicator,
 } from 'react-native';
-import * as Font from 'expo-font';
 
 import { Divider } from 'react-native-elements';
-import { Text, Button } from 'native-base';
+import { Text} from 'native-base';
 
-import { Card, Title, Paragraph } from 'react-native-paper';
+import { Card } from 'react-native-paper';
 import { WebView } from "react-native-webview";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Swiper from 'react-native-swiper/src';
-import EventListItem from './EventListItem';
 
-var bodyPageHeight = Dimensions.get('window').height;
 var boadyPageWidth = Dimensions.get('window').width;
 
 const CarouselImage = ({ image, onPress }) => (
@@ -59,44 +54,8 @@ const CarouselImageSmall = ({ image, onPress }) => (
 
 export default function NewHomeScreen({ navigation }) {
 
-    const [about, setAbout] = useState("");
-    const [active, setActive] = useState(0);
-
-    const [events, setEvents] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    const getEvents = async () => {
-        const response = await fetch('http://157.245.184.202:8080/calendar', {
-            method: "GET"
-        });
-
-        const getEvents = await response.json();
-
-        //get idea from https://stackoverflow.com/questions/7513040/how-to-sort-objects-by-date-ascending-order/21244139
-        getEvents.sort((a, b) => {
-            let date_1 = new Date(a.start_date);
-            let date_2 = new Date(b.start_date);
-
-            if (date_1 < date_2) {
-                return -1;
-            } else if (date_1 == date_2) {
-                return 0;
-            } else {
-                return 1;
-            }
-        });
-
-        setEvents(getEvents.slice(0, 4));
-        setLoading(false);
-    }
-
-
     let images = [
-        // { 
-        //     id: 1,
-        //     src: require('./../../../../assets/P1040589.png'),
-        //     destination: 'CampaignScreen'
-        // },
+
         {
             id: 2,
             title: "Donate",
@@ -113,28 +72,7 @@ export default function NewHomeScreen({ navigation }) {
 
     ]
 
-    const handleActive = (nativeEvent) => {
-        if (nativeEvent) {
-            const number = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
-            if (number != active) {
-                if (number === images.length) {
-                    setActive(number - 1);
-                } else {
-                    setActive(number);
-                }
-            }
-        }
-    }
 
-    // let newsImages = [
-    //     {
-    //         id: 1,
-    //         src: require('./../../../../assets/welfare.jpg'),
-    //         title: 'Transform Welfare-to-Work',
-    //         // destination: 'CampaignThreeDetail'
-    //         destination: 'https://www.livingwage-sf.org/transform-welfare-to-work-programs/'
-    //     }, 
-    // ]
 
     let newsImages = [
         {
@@ -181,31 +119,6 @@ export default function NewHomeScreen({ navigation }) {
             destination: 'https://www.livingwage-sf.org/raising-wages/'
         },
     ]
-  
-    const getAbout = async () => {
-        const response = await fetch("http://157.245.184.202:8080/about", {
-            method: 'GET'
-        });
-
-        const getAbout = await response.json();
-        setAbout(getAbout[0].aboutinfo);
-    };
-
-
-    useEffect(() => {
-        getEvents();
-
-        getAbout();
-
-        // (async () => await Font.loadAsync({
-        //     Roboto: require('native-base/Fonts/Roboto.ttf'),
-        //     Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
-        //   }))();
-    }, [])
-
-
-
-
 
     return (
         <ScrollView style={{ flex: 1, backgroundColor: '#ffffff' }}>
@@ -216,7 +129,8 @@ export default function NewHomeScreen({ navigation }) {
                             <Text style={styles.imageTitle}>
                                 Who We Are </Text>
                             <Text note numberOfLines={3} style={styles.imageContent}>
-                                {about}</Text>
+                                The Living Wage Coalition is a low-wage worker advocacy organization fighting for economic justice.
+                            </Text>
                             <View style={styles.buttonView}>
                                 <TouchableOpacity onPress={() => Linking.openURL('https://www.livingwage-sf.org/who-we-are/')} style={styles.button}>
                                     <Text style={{ fontSize: 18, color: "#ffffff", textAlign: 'center', fontWeight: "700" }}>View More</Text>
@@ -232,6 +146,7 @@ export default function NewHomeScreen({ navigation }) {
                                 {images.map(image => (
                                     <CarouselImage
                                         image={image}
+                                        key={image.id}
                                         onPress={() => {
                                             image.id === 2 ? Linking.openURL(image.destination) : navigation.navigate(image.destination)
                                         }}
@@ -246,6 +161,7 @@ export default function NewHomeScreen({ navigation }) {
                             {
                                 newsImages.map(image => (
                                     <CarouselImageSmall
+                                        key={image.id}
                                         image={image}
                                         onPress={() => {
                                             Linking.openURL(image.destination)
@@ -256,7 +172,7 @@ export default function NewHomeScreen({ navigation }) {
                         </Swiper>
                     </View>
                     {/* this is comment because an error occur need to fix : ERROR with WebView */}
-                    {/* <View style={styles.containerBody}>
+                    <View style={styles.containerBody}>
                         <Text style={styles.titles}>Media</Text>
                         <Card style={styles.cardStyle}>
                             <TouchableOpacity>
@@ -311,7 +227,7 @@ export default function NewHomeScreen({ navigation }) {
                                 </View>
                             </Card.Actions>
                         </Card>
-                    </View> */}
+                    </View>
                     <View style={styles.socialMediaArea}>
                         <Divider style={styles.divider} />
                         <Text style={styles.follow}>Follow Us</Text>
@@ -366,12 +282,11 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "#ffffff",
         marginLeft: 23,
-        marginTop: 23,
+        marginTop: 25,
     },
     imageContent: {
-        fontSize: 20,
-        width: 340,
-        fontWeight: '500',
+        fontSize: 21,
+        fontWeight: '400',
         color: "#ffffff",
         marginLeft: 23,
         marginTop: 26

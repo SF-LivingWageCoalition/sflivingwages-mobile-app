@@ -1,18 +1,17 @@
 import React from 'react';
-import {View, StyleSheet, Text, Dimensions} from 'react-native';
-import { Left } from 'native-base';
+import { View, StyleSheet, Text, Dimensions, Linking } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Title, Paragraph } from 'react-native-paper';
 
-var {width} = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const EventListItem = ({ event, index }) => {
-    var monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+    const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN",
         "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
-    var newDate = new Date(event.start_date);
-    var month = monthNames[newDate.getMonth()];
-    var day = newDate.getDate() + 1;
-    // console.log("date,", day);
+    const newDate = new Date(event.date);
+    const month = monthNames[newDate.getMonth()];
+    const day = newDate.getDate() + 1;
 
     return (
         <View style={[styles.container, { backgroundColor: index % 2 == 0 ? "white" : "#F5F5F5" }]}>
@@ -22,8 +21,15 @@ const EventListItem = ({ event, index }) => {
             </View>
             <View style={styles.eventInfo}>
                 <Title style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 6, /*fontFamily: "Helvetica"*/ }} >{event.description}</Title>
-                <Paragraph style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 6, /*fontFamily: "Arial"*/ }}>{event.duration}</Paragraph>
-                <Text style={{ fontSize: 15, fontWeight: '300', marginBottom: 13, /*fontFamily: "Arial"*/ }}>{event.location}</Text>
+                <Paragraph style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 6, /*fontFamily: "Arial"*/ }}>{event.time}</Paragraph>
+                <TouchableOpacity
+                    style={styles.registerButton}
+                    onPress={() => {
+                        Linking.openURL(event.location)
+                    }}
+                >
+                    <Text style={styles.registerText}>Register</Text>
+                </TouchableOpacity>
             </View>
         </View>
     )
@@ -42,14 +48,29 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignContent: "center",
         flexShrink: 1,
-        width: width/1.2,
+        width: width / 1.2,
         padding: 3,
         marginTop: 8,
         marginLeft: 10
+    },
+    registerText: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: '700',
+        alignContent: 'center',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    registerButton: {
+        alignItems: 'center',
+        justifyContent: 'center',
+
+        backgroundColor: '#d31623',
+        // borderColor : '#d31623',
+        width: 100,
+        height: 40,
+        borderRadius: 10
     }
-
-
-    
 })
 
 
