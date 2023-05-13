@@ -59,7 +59,7 @@ export default function NewHomeScreen({ navigation }) {
         {
             id: 2,
             title: "Donate",
-            src: require('./../../../../assets/Encuentro_2017_130.jpg'),
+            src: require('./../../../../assets/campaign2_background.jpg'),
             destination: 'https://www.livingwage-sf.org/donations-and-membership/'
 
         },
@@ -85,14 +85,14 @@ export default function NewHomeScreen({ navigation }) {
         {
             id: 2,
             src: require('./../../../../assets/public-sector.png'),
-            title: 'Protect Public Sector',
+            title: 'Protect Public Sector and union jobs',
             // destination: 'CampaignThreeDetail'
             destination: 'https://www.livingwage-sf.org/protect-public-sector-jobs/'
         },
         {
             id: 3,
             src: require('./../../../../assets/Encuentro_2017_021.jpg'),
-            title: 'End the Injustice',
+            title: 'end mass incarceration and prison labor',
             // destination: 'CampaignTwoDetail'
             destination: 'https://www.livingwage-sf.org/mass-incarceration/'
 
