@@ -8,12 +8,12 @@ import {
 	ScrollView,
 	Image,
 	Linking,
-	Button,
-	Alert
+	Button
 } from 'react-native'
 import Recaptcha from 'react-native-recaptcha-that-works';
 import qs from "querystring";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { BASE_URL, SITE_KEY } from "@env";
 
 const sendEmail = async (to, subject, body, options = {}) => {
 	const { cc, bcc } = options;
@@ -53,21 +53,27 @@ const Assistancecreen = () => {
 
 	const onSubmitData = () => {
 
-		if ((fullName.length === 0 || userEmail.length === 0 || userNotes.length === 0 || userPhone === 0)) {
+		if ((fullName.length === 0 || userEmail.length === 0 || userNotes.length === 0 || userPhone === 0) || !valid) {
 			setEmpty(true)
 		}
 
 		if (valid && (fullName.length > 0 || userEmail.length > 0 || userNotes.length > 0 || userPhone > 0)) {
-			setEmpty(false)
+			// setEmpty(false)
 			const strBodyFormat = `
-							My Name ${fullName}
-							My Email ${userEmail}
-							My Phone ${userPhone}
+
+							San Francisco Living Wage Coalition Assist
+
+
+							My Name is  ${fullName}
+							My Email is ${userEmail}
+							My Phone is ${userPhone}
 							My situation ${userNotes}
+
+
 					`
 			sendEmail(
-				'<sanfranciscolivingwagecoalition@assist.com>', // San Francisco Living Wage Coalition Email.
-				'Assist',
+				'preynaldorod@gmail.com', // San Francisco Living Wage Coalition Email.
+				'ASSIST',
 				strBodyFormat,
 			)
 				.then(() => {
@@ -96,24 +102,32 @@ const Assistancecreen = () => {
 
 	const onVerify = (token) => {
 
-		const secretKey = '<secret_key>' // server
+		// check for token
+		if (token) {
+			setEmpty(false)
+			setIsValid(true);
+		}else{
+			setEmpty(true)
+			setIsValid(false)
+		}
 
-		// verify token on server 
-		fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`)
-			.then(resp => resp.json())
-			.then((data) => {
-				// If it's not a success..
-				if (!data.success) {
-					// ERROR
-					setIsValid(false)
-				} else {
-					console.log(data);
-					setEmpty(false)
-					setIsValid(true);
-				}
-			});
+		// const secretKey = '<secret_key>' // server
+
+		// // verify token on server 
+		// fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`)
+		// 	.then(resp => resp.json())
+		// 	.then((data) => {
+		// 		// If it's not a success..
+		// 		if (!data.success) {
+		// 			// ERROR
+		// 			setIsValid(false)
+		// 		} else {
+		// 			console.log(data);
+		// 			setEmpty(false)
+		// 			setIsValid(true);
+		// 		}
+		// 	});
 	}
-
 
 	return (
 		<ScrollView>
@@ -125,7 +139,7 @@ const Assistancecreen = () => {
 						<Image style={styles.logo} source={require('../../../../assets/icon.png')} />
 					</View>
 					<Text style={{ marginLeft: 20, marginTop: 10 }}>We can assist you.</Text>
-					<Text style={{ marginLeft: 20, marginBottom: 30 }}>Complete the form below.</Text>
+					<Text style={{ marginLeft: 20, marginBottom: 30 }}>Complete the form below.</Text>	
 
 					<View style={styles.inputContainer}>
 						<Text style={{ marginLeft: 10 }}>Full Name <Text style={styles.requiredField}>*</Text></Text>
@@ -180,8 +194,8 @@ const Assistancecreen = () => {
 								headerComponent={<Button title='close' onPress={close} />}
 								lang={'en'}
 								ref={recaptcha}
-								siteKey='<site_key>' // site key
-								baseUrl='<http://my-test-domail.me>' // San Francisco Living Wage Coalition domain
+								siteKey={SITE_KEY} // site key
+								baseUrl={BASE_URL} // San Francisco Living Wage Coalition domain
 								onVerify={onVerify}
 								size={'normal'}
 								theme={'light'}
@@ -193,6 +207,7 @@ const Assistancecreen = () => {
 						<Text style={styles.recaptchaMessage}>Please compleate the recaptcha before submit</Text>
 						: null
 					}
+					<Text style={styles.submitionInfo}>Please review your information before you submit</Text>
 					<View style={styles.buttonStyles}>
 						<TouchableOpacity onPress={onSubmitData}>
 							<View style={styles.submitButton} >
@@ -234,9 +249,9 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 		margin: 10,
 	},
-	requiredField :{
+	requiredField: {
 		color: '#d31623',
-		fontSize : 16,
+		fontSize: 16,
 		fontWeight: '900'
 	},
 	submitButton: {
@@ -285,6 +300,14 @@ const styles = StyleSheet.create({
 
 	inputContainer: {
 		margin: 12
+	},
+	submitionInfo : {
+		marginTop: 12,
+		textAlign :'center',
+		// fontWeight: '900',
+		fontStyle :'italic',
+		fontSize : 13,
+		color : '#D31623'
 	}
 });
 export default Assistancecreen;
