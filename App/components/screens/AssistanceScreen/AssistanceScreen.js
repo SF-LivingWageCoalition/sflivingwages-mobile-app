@@ -14,7 +14,7 @@ import { CheckBox } from 'react-native-elements';
 import Recaptcha from 'react-native-recaptcha-that-works';
 import qs from "querystring";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BASE_URL, SITE_KEY } from "@env";
+import { BASE_URL, SITE_KEY, SEND_TO } from "@env";
 
 const sendEmail = async (to, subject, body, options = {}) => {
     const { cc, bcc } = options;
@@ -83,7 +83,7 @@ const Assistancecreen = () => {
             `
 
             sendEmail(
-                { SEND_TO }, // San Francisco Living Wage Coalition Email.
+                SEND_TO , // San Francisco Living Wage Coalition Email.
                 'ASSIST',
                 strBodyFormat
             )
@@ -118,6 +118,7 @@ const Assistancecreen = () => {
     const onVerify = (token) => {
 
         // check for token
+        console.log("this : ",token);
         if (token) {
             setEmpty(false)
             setIsValid(true);
@@ -226,7 +227,7 @@ const Assistancecreen = () => {
                                 siteKey={SITE_KEY} // site key
                                 baseUrl={BASE_URL} // San Francisco Living Wage Coalition domain
                                 onVerify={onVerify}
-                                size={'normal'}
+                                size={'invisible'} // change to 'normal' for version 2 
                                 theme={'light'}
                             />
                             <Button title="Recaptcha" onPress={send} />
