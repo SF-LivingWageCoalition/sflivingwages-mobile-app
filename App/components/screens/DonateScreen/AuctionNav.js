@@ -82,7 +82,6 @@ export default class AuctionNav extends React.Component {
                     }
                     options={{
                         tabBarLabel: 'Art',
-                        tabBarPressColor : "blue"
                     }} />
 
                 <Tab.Screen

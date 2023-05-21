@@ -6,8 +6,8 @@ import AssistanceScreen from '../screens/AssistanceScreen/AssistanceScreen';
 import AuctionNav from '../screens/DonateScreen/AuctionNav';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import HomeNavigator from '../screens/HomeScreen/HomeStack';
 import DonateMoney from '../screens/DonateScreen/DonateMoney';
+import newHome from '../../components/screens/HomeScreen/newHome'
 
 
 const Tab = createBottomTabNavigator();
@@ -29,7 +29,7 @@ export default function BottomTabStack() {
         
       <Tab.Screen
         name="Home"
-        component={HomeNavigator}
+        component={newHome}
         options={{
           headerShown: false,
           tabBarIcon: ({ color }) => (
