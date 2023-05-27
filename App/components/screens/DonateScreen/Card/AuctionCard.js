@@ -1,7 +1,6 @@
 import {
     View,
     StyleSheet,
-    TouchableHighlight,
     Image,
     Text,
     TouchableOpacity,
@@ -35,16 +34,15 @@ const AuctionCard = ({
                 style={styles.cardImage}
             >
                 <Text style={styles.cardTitle}>{cleanName}</Text>
-                <TouchableHighlight
-                    underlayColor={'gray'}
-                    onLongPress={() => { navigate.navigate('Preview', { image: previwImage }) }}
+                <TouchableOpacity
+                    onPress={() => { navigate.navigate('Preview', { image: previwImage }) }}
                 >
                     <Image
                         style={styles.imageStyle}
                         source={{ uri: image }}
                     />
-                </TouchableHighlight>
-                <Text>Long pressd to zoom</Text>
+                </TouchableOpacity>
+                <Text>tap picture to enlarge</Text>
                 <View style={styles.horizontalLine} />
                 <View>
                     <Text>{cleanDescription} </Text>

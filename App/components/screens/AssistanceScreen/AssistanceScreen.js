@@ -8,7 +8,7 @@ import {
     ScrollView,
     Image,
     Linking,
-    Button
+    Platform
 } from 'react-native'
 import { CheckBox } from 'react-native-elements';
 import Recaptcha from 'react-native-recaptcha-that-works';
@@ -83,7 +83,7 @@ const Assistancecreen = () => {
             `
 
             sendEmail(
-                SEND_TO , // San Francisco Living Wage Coalition Email.
+                SEND_TO, // San Francisco Living Wage Coalition Email.
                 'ASSIST',
                 strBodyFormat
             )
@@ -213,12 +213,16 @@ const Assistancecreen = () => {
                         <Text style={styles.recaptchaMessage}>Fields marked with an * are required </Text>
                         : null
                     }
-                    <SafeAreaView>
                         <View style={styles.buttonStylesRecaptcha}>
                             <Recaptcha
                                 headerComponent={
-                                    <View style={styles.recaptchaButtonClose}>
-                                        <Button title='Close' onPress={close} />
+                                    <View style={styles.headerComponentView}>
+                                        <TouchableOpacity
+                                            style={styles.recaptchaButton}
+                                            onPress={close}
+                                        >
+                                            <Text style={styles.recaptchaText}>Close</Text>
+                                        </TouchableOpacity>
                                     </View>
                                 }
                                 lang={'en'}
@@ -229,9 +233,13 @@ const Assistancecreen = () => {
                                 size={'invisible'} // change to 'normal' for version 2 
                                 theme={'light'}
                             />
-                            <Button title="Recaptcha" onPress={send} />
+                            <TouchableOpacity
+                                style={styles.recaptchaButton}
+                                onPress={send}
+                            >
+                                <Text style={styles.recaptchaText}>Recaptcha</Text>
+                            </TouchableOpacity>
                         </View>
-                    </SafeAreaView>
                     {isEmpty ?
                         <Text style={styles.recaptchaMessage}>Please complete recaptcha before submit</Text>
                         : null
@@ -338,9 +346,25 @@ const styles = StyleSheet.create({
         fontSize: 13,
         color: '#D31623'
     },
-    recaptchaButtonClose: {
-        marginTop : 20, 
-        padding: 20,
+    recaptchaButton: {
+        backgroundColor: '#1C94EF',
+        borderColor: '#1C94EF',
+        // borderWidth: 1,
+        padding: 10,
+        width: 100,
+        height: 40,
+        marginTop: 20,
+    },
+    recaptchaText: {
+        color: '#fff',
+        fontWeight: '700',
+        textAlign: 'center'
+    },
+    headerComponentView: {
+        marginTop: Platform.OS === 'ios' ? 12 : 0,
+        padding: Platform.OS === 'ios' ? 18 : 13,
+        alignContent: 'center',
+        alignItems: 'center',
         backgroundColor: "#D31623",
     }
 });

@@ -1,19 +1,17 @@
 import {
     View,
     StyleSheet,
-    TouchableHighlight,
     Image,
     Text,
     TouchableOpacity,
     Linking,
-    ScrollView
 } from "react-native";
 import ItemModal from "../Modal/ItemModal";
 import { useNavigation } from "@react-navigation/native";
 
 
 // Card Render
-const Card = ({  name, description, price, link, image, previwImage }) => {
+const Card = ({ name, description, price, link, image, previwImage }) => {
 
     // remove html tags and html entities
     let navigate = useNavigation()
@@ -28,19 +26,17 @@ const Card = ({  name, description, price, link, image, previwImage }) => {
                 style={styles.cardImage}
             >
                 <Text style={styles.cardTitle}>{cleanName}</Text>
-                <TouchableHighlight
-                    underlayColor={'gray'}
-                    onLongPress={() => { navigate.navigate('Preview', { image: previwImage }) }}
+                <TouchableOpacity 
+                    onPress={() => { navigate.navigate('Preview', { image: previwImage }) }}
                 >
-                    <Image
+                     <Image
                         style={styles.imageStyle}
                         source={{ uri: image }}
                     />
-                </TouchableHighlight>
-                <Text>Long pressd to zoom</Text>
+                </TouchableOpacity>
+                <Text>tap picture to enlarge</Text>
                 <View style={styles.horizontalLine} />
                 <View>
-                    {/* <Text>{cleanDescription} </Text>  */}
                     <ItemModal
                         title={name}
                         decription={cleanDescription}
