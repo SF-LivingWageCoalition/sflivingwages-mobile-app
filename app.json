@@ -3,12 +3,10 @@
     "name": "sflivingwages",
     "slug": "sflw",
     "privacy": "public",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "version": "11.0.4",
     "orientation": "portrait",
+    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "icon": "./assets/icon.png",
@@ -36,8 +34,6 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "assetBundlePatterns": ["**/*"]
   }
 }
