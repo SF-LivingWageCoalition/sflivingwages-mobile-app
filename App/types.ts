@@ -14,3 +14,13 @@ export type WebBrowserResult = {
   type: string;
   url?: string;
 };
+
+export type EmailOptions = {
+  cc?: string;
+  bcc?: string;
+};
+
+export type RecaptchaRef = {
+  open: () => void;
+  close: () => void;
+};

@@ -11321,7 +11321,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-elements@npm:^3.4.2":
+"react-native-elements@npm:^3.4.3":
   version: 3.4.3
   resolution: "react-native-elements@npm:3.4.3"
   dependencies:
@@ -12641,7 +12641,7 @@ __metadata:
     react-native-credit-card-input: "npm:^0.4.1"
     react-native-dotenv: "npm:^3.4.8"
     react-native-drop-down-item: "npm:^1.1.0"
-    react-native-elements: "npm:^3.4.2"
+    react-native-elements: "npm:^3.4.3"
     react-native-general-calendars: "npm:^1.11.0"
     react-native-gesture-handler: "npm:~2.20.2"
     react-native-image-pan-zoom: "npm:^2.1.12"
