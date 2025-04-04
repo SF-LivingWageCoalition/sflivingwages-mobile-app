@@ -51,7 +51,7 @@ export type AuctionCardProps = {
   price: number;
   link: string;
   image: string;
-  previwImage: string; // Note: keeping the typo to maintain compatibility
+  previewImage: string;
 };
 
 export type PreviewScreenParams = {
@@ -64,10 +64,45 @@ export type CardProps = {
   price: number;
   link: string;
   image: string;
-  previwImage: string; // Note: keeping the typo to maintain compatibility
+  previewImage: string;
 };
 
 export type ItemModalProps = {
-  decription: string; // Note: keeping the typo to maintain compatibility
+  description: string;
   title: string;
+};
+
+export type ProductItem = {
+  id: number;
+  name: string;
+  description?: string;
+  price_html?: string;
+  prices: {
+    price: number;
+  };
+  permalink: string;
+  images: Array<{
+    thumbnail: string;
+    src: string;
+  }>;
+};
+
+export type ArtsProps = {
+  arts: Array<ProductItem>;
+  isLoading: boolean;
+};
+
+export type BooksProps = {
+  books: Array<ProductItem>;
+  isLoading: boolean;
+};
+
+export type CdsProps = {
+  cds: Array<ProductItem>;
+  isLoading: boolean;
+};
+
+export type DvdsProps = {
+  dvds: Array<ProductItem>;
+  isLoading: boolean;
 };

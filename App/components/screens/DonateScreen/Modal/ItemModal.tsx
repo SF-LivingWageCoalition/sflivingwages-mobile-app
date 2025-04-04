@@ -7,10 +7,9 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { ItemModalProps } from "../../../../App/types";
+import { ItemModalProps } from "../../../../../App/types";
 
-// Modal Description
-const ItemModal: React.FC<ItemModalProps> = ({ decription, title }) => {
+const ItemModal: React.FC<ItemModalProps> = ({ description, title }) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   return (
@@ -27,7 +26,7 @@ const ItemModal: React.FC<ItemModalProps> = ({ decription, title }) => {
           <View style={styles.modalView}>
             <Text style={styles.titleText}>{title}</Text>
             <ScrollView>
-              <Text style={styles.modalText}>{decription}</Text>
+              <Text style={styles.modalText}>{description}</Text>
             </ScrollView>
             <TouchableOpacity
               style={[styles.button, styles.buttonClose]}

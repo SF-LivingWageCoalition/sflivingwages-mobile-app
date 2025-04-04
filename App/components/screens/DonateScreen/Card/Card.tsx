@@ -12,16 +12,15 @@ import {
   NavigationProp,
   ParamListBase,
 } from "@react-navigation/native";
-import { CardProps, PreviewScreenParams } from "../../../../App/types";
+import { CardProps, PreviewScreenParams } from "../../../../../App/types";
 
-// Card Render
 const Card: React.FC<CardProps> = ({
   name,
   description,
   price,
   link,
   image,
-  previwImage,
+  previewImage,
 }) => {
   // Get navigation
   const navigate = useNavigation<NavigationProp<ParamListBase>>();
@@ -43,7 +42,7 @@ const Card: React.FC<CardProps> = ({
         <TouchableOpacity
           onPress={() => {
             navigate.navigate("Preview", {
-              image: previwImage,
+              image: previewImage,
             } as PreviewScreenParams);
           }}
         >
@@ -52,7 +51,7 @@ const Card: React.FC<CardProps> = ({
         <Text>tap picture to enlarge</Text>
         <View style={styles.horizontalLine} />
         <View>
-          <ItemModal title={name} decription={cleanDescription} />
+          <ItemModal title={name} description={cleanDescription} />
           <Text>${itemPrice}</Text>
         </View>
         {/* Product Individual page link */}
@@ -76,7 +75,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cardTitle: {
-    textAlign: "center",
+    textAlign: "center", // <-- the magic
     fontWeight: "bold",
     fontSize: 18,
     margin: 5,
@@ -98,7 +97,7 @@ const styles = StyleSheet.create({
   imageStyle: {
     width: 250,
     height: 250,
-    marginLeft: 40, // Note: original had duplicate marginLeft, keeping the last one
+    marginLeft: 40, // Note: original had duplicate marginLeft at 15
     marginRight: 15,
     marginBottom: 10,
   },

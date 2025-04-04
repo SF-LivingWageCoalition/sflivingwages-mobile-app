@@ -24,7 +24,7 @@ const AuctionCard: React.FC<AuctionCardProps> = ({
   price,
   link,
   image,
-  previwImage,
+  previewImage,
 }) => {
   // Get navigation
   const navigate = useNavigation<NavigationProp<ParamListBase>>();
@@ -46,7 +46,7 @@ const AuctionCard: React.FC<AuctionCardProps> = ({
         <TouchableOpacity
           onPress={() => {
             navigate.navigate("Preview", {
-              image: previwImage,
+              image: previewImage,
             } as PreviewScreenParams);
           }}
         >

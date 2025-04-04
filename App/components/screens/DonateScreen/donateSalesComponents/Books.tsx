@@ -1,10 +1,10 @@
 import React from "react";
 import { FlatList, ActivityIndicator } from "react-native";
 
-import AuctionCard from "../Card/AuctionCard";
-import { ArtsProps } from "../../../../../App/types";
+import Card from "../Card/Card";
+import { BooksProps } from "../../../../../App/types";
 
-const Arts: React.FC<ArtsProps> = ({ arts, isLoading }) => {
+const Books: React.FC<BooksProps> = ({ books, isLoading }) => {
   return (
     <>
       {isLoading ? (
@@ -12,13 +12,12 @@ const Arts: React.FC<ArtsProps> = ({ arts, isLoading }) => {
       ) : (
         <FlatList
           horizontal={false}
-          data={arts}
+          data={books}
           renderItem={({ item }) => (
-            <AuctionCard
+            <Card
               key={item.id}
-              categoryId={944}
               name={item.name}
-              description={item.price_html ? item.price_html : ""}
+              description={item.description ? item.description : ""}
               price={item.prices.price}
               link={item.permalink}
               image={item.images[0].thumbnail}
@@ -32,4 +31,4 @@ const Arts: React.FC<ArtsProps> = ({ arts, isLoading }) => {
   );
 };
 
-export default Arts;
+export default Books;
