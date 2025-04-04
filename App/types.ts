@@ -247,3 +247,7 @@ export type EventListItemProps = {
   event: EventItem;
   index: number;
 };
+
+export type EventsData = {
+  events: EventItem[];
+};
