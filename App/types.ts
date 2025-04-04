@@ -231,3 +231,19 @@ export type ArticleItem = {
 export type ArticleProps = {
   article: ArticleItem;
 };
+
+export type CalendarNavProps = {
+  navigate: (screen: string) => void;
+};
+
+export type EventItem = {
+  date: string;
+  description: string;
+  time: string;
+  location: string;
+};
+
+export type EventListItemProps = {
+  event: EventItem;
+  index: number;
+};
