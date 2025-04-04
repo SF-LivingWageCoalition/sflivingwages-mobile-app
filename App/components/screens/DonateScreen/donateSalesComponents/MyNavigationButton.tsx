@@ -7,7 +7,7 @@ import React from "react";
 import { Button } from "react-native";
 import {
   MyNavigationButtonProps,
-  SalesDetailParams,
+  DetailParams,
 } from "../../../../../App/types";
 
 const MyNavigationButton: React.FC<MyNavigationButtonProps> = ({
@@ -26,7 +26,7 @@ const MyNavigationButton: React.FC<MyNavigationButtonProps> = ({
           image: author,
           bio: description,
           title: title,
-        } as SalesDetailParams);
+        } as DetailParams);
       }}
     />
   );

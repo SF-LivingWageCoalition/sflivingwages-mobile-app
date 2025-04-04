@@ -16,7 +16,7 @@ import {
   View,
 } from "react-native";
 import {
-  DetailsScreenParams,
+  DetailParams,
   PhotoItem,
   PhotosProps,
   PreviewScreenParams,
@@ -99,7 +99,7 @@ const Photos: React.FC<PhotosProps> = ({ photos }) => {
                   image: item.author_image,
                   bio: item.long_description,
                   title: item.title,
-                } as DetailsScreenParams);
+                } as DetailParams);
               } else {
                 Alert.alert("", "No Detail", [
                   {

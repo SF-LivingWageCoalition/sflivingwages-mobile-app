@@ -14,11 +14,7 @@ import { Card } from "react-native-paper";
 import Swiper from "react-native-swiper/src";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { WebView } from "react-native-webview";
-import {
-  CarouselImageProps,
-  CarouselImageSmallProps,
-  NewHomeScreenProps,
-} from "../../../../App/types";
+import { CarouselImageProps, NewHomeScreenProps } from "../../../../App/types";
 
 const bodyPageWidth = Dimensions.get("window").width;
 
@@ -42,7 +38,7 @@ const CarouselImage: React.FC<CarouselImageProps> = ({ image, onPress }) => (
 /**
  * Carousel Image component for the campaigns section
  */
-const CarouselImageSmall: React.FC<CarouselImageSmallProps> = ({
+const CarouselImageSmall: React.FC<CarouselImageProps> = ({
   image,
   onPress,
 }) => (

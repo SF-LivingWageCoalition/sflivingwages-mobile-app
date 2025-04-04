@@ -1,13 +1,10 @@
 import React, { useRef } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import KeyboardSpacer from "react-native-keyboard-spacer";
-import { AddSubscriptionViewProps, CardData } from "../../../../App/types";
+import { CardData, ViewProps } from "../../../../App/types";
 import PaymentFormView from "./paymentFormView";
 
-/**
- * Renders a view with PaymentFormView
- */
-const AddSubscriptionView: React.FC<AddSubscriptionViewProps> = ({
+const AddSubscriptionView: React.FC<ViewProps> = ({
   onSubmit,
   submitted,
   error,

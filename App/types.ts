@@ -8,8 +8,9 @@ export type RootStackParamList = {
 
 export type BottomTabParamList = {
   Home: undefined;
+  Auction: undefined;
   Donate: undefined;
-  About: undefined;
+  Assist: undefined;
 };
 
 export type WebBrowserResult = {
@@ -113,7 +114,7 @@ export type MyNavigationButtonProps = {
   title?: string;
 };
 
-export type SalesDetailParams = {
+export type DetailParams = {
   image: string;
   bio: string;
   title: string;
@@ -140,12 +141,6 @@ export type TimeLeft = {
   seconds?: number;
 };
 
-export type DetailsScreenParams = {
-  image: string;
-  bio: string;
-  title: string;
-};
-
 export type CardData = {
   valid: boolean;
   values?: {
@@ -164,14 +159,8 @@ export type CardData = {
   [key: string]: any;
 };
 
-export type PaymentFormViewProps = {
+export type ViewProps = {
   onSubmit: (cardData: CardData) => void;
-  submitted?: boolean;
-  error?: string;
-};
-
-export type AddSubscriptionViewProps = {
-  onSubmit?: (cardData: CardData) => void;
   submitted?: boolean;
   error?: string;
 };
@@ -253,20 +242,10 @@ export type EventsData = {
 };
 
 export type EventStackParamList = {
-  Events: undefined;
+  Events: any;
 };
 
 export type CarouselImageProps = {
-  image: {
-    id: number;
-    title: string;
-    src: any;
-    destination: string;
-  };
-  onPress: () => void;
-};
-
-export type CarouselImageSmallProps = {
   image: {
     id: number;
     title: string;
