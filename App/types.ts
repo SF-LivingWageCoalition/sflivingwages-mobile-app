@@ -106,3 +106,15 @@ export type DvdsProps = {
   dvds: Array<ProductItem>;
   isLoading: boolean;
 };
+
+export type MyNavigationButtonProps = {
+  author?: string;
+  description?: string;
+  title?: string;
+};
+
+export type SalesDetailParams = {
+  image: string;
+  bio: string;
+  title: string;
+};
