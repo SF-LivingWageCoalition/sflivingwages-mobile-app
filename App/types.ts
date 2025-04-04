@@ -255,3 +255,27 @@ export type EventsData = {
 export type EventStackParamList = {
   Events: undefined;
 };
+
+export type CarouselImageProps = {
+  image: {
+    id: number;
+    title: string;
+    src: any;
+    destination: string;
+  };
+  onPress: () => void;
+};
+
+export type CarouselImageSmallProps = {
+  image: {
+    id: number;
+    title: string;
+    src: any;
+    destination: string;
+  };
+  onPress: () => void;
+};
+
+export type NewHomeScreenProps = {
+  navigation: NavigationProp<ParamListBase>;
+};
