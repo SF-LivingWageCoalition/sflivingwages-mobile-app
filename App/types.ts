@@ -175,3 +175,32 @@ export type AddSubscriptionViewProps = {
   submitted?: boolean;
   error?: string;
 };
+
+export type AuctionNavState = {
+  arts: ProductItem[];
+  books: ProductItem[];
+  photos: PhotoItem[];
+  cds: ProductItem[];
+  dvds: ProductItem[];
+  modalVisible: boolean;
+  bid: string;
+  isLoading: boolean;
+};
+
+export type AuctionTabParamList = {
+  Arts: undefined;
+  Books: undefined;
+  Cds: undefined;
+  Dvds: undefined;
+};
+
+export type DonateContentItem = {
+  title: string;
+  body: string;
+  url: string;
+  btnTitle: string;
+};
+
+export type DonateMoneyState = {
+  contents: DonateContentItem[];
+};
