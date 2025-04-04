@@ -145,3 +145,33 @@ export type DetailsScreenParams = {
   bio: string;
   title: string;
 };
+
+export type CardData = {
+  valid: boolean;
+  values?: {
+    number?: string;
+    expiry?: string;
+    cvc?: string;
+    type?: string;
+    name?: string;
+  };
+  status?: {
+    number?: string;
+    expiry?: string;
+    cvc?: string;
+    name?: string;
+  };
+  [key: string]: any;
+};
+
+export type PaymentFormViewProps = {
+  onSubmit: (cardData: CardData) => void;
+  submitted?: boolean;
+  error?: string;
+};
+
+export type AddSubscriptionViewProps = {
+  onSubmit?: (cardData: CardData) => void;
+  submitted?: boolean;
+  error?: string;
+};
