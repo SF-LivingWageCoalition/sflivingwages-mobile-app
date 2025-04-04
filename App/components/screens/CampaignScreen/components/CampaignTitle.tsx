@@ -1,18 +1,12 @@
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableHighlight,
   Linking,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
 } from "react-native";
-import { NavigationProp, ParamListBase } from "@react-navigation/native";
-
-interface CampaignTitleProps {
-  title?: string;
-  url?: string;
-  navigation?: NavigationProp<ParamListBase>;
-}
+import { CampaignTitleProps } from "../../../../../App/types";
 
 const CampaignTitle: React.FC<CampaignTitleProps> = (props) => {
   const { title, url, navigation } = props;

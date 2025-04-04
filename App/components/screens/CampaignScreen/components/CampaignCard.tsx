@@ -2,11 +2,7 @@ import React from "react";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-
-interface CampaignCardProps {
-  navigate?: (screen: string, params?: any) => void;
-  title?: string;
-}
+import { CampaignCardProps } from "../../../../../App/types";
 
 const CampaignCard: React.FC<CampaignCardProps> = (props) => {
   const navigation = useNavigation<StackNavigationProp<any>>();

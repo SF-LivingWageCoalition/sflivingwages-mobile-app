@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Linking } from "react-native";
-import { NavigationProp } from "@react-navigation/native";
-
-interface CampaignActionProps {
-  stepText?: string;
-  url?: string;
-  navigation?: NavigationProp<any>;
-}
+import { CampaignActionProps } from "../../../../../App/types";
 
 const CampaignAction: React.FC<CampaignActionProps> = (props) => {
   const [stepText, setStepText] = useState<string | undefined>(props.stepText);
