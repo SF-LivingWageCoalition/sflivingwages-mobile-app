@@ -251,3 +251,7 @@ export type EventListItemProps = {
 export type EventsData = {
   events: EventItem[];
 };
+
+export type EventStackParamList = {
+  Events: undefined;
+};
