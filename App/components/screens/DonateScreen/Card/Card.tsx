@@ -1,18 +1,18 @@
 import {
-  View,
-  StyleSheet,
-  Image,
-  Text,
-  TouchableOpacity,
-  Linking,
-} from "react-native";
-import ItemModal from "../Modal/ItemModal";
-import {
-  useNavigation,
   NavigationProp,
   ParamListBase,
+  useNavigation,
 } from "@react-navigation/native";
+import {
+  Image,
+  Linking,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { CardProps, PreviewScreenParams } from "../../../../../App/types";
+import ItemModal from "../Modal/ItemModal";
 
 const Card: React.FC<CardProps> = ({
   name,

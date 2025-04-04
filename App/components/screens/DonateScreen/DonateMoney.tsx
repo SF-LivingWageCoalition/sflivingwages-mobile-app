@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import {
+  ImageSourcePropType,
+  Linking,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
-  ScrollView,
-  Linking,
   TouchableOpacity,
-  ImageSourcePropType,
+  View,
 } from "react-native";
 import DropDownItem from "react-native-drop-down-item";
 import { DonateContentItem, DonateMoneyState } from "../../../../App/types";

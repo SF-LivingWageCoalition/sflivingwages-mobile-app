@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
-import { CreditCardInput } from "react-native-credit-card-input";
 import { FontAwesome } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
+import { CreditCardInput } from "react-native-credit-card-input";
 import { CardData, PaymentFormViewProps } from "../../../../App/types";
 
 /**

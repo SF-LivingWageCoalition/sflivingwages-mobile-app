@@ -1,10 +1,10 @@
-import React from "react";
-import { Button } from "react-native";
 import {
-  useNavigation,
   NavigationProp,
   ParamListBase,
+  useNavigation,
 } from "@react-navigation/native";
+import React from "react";
+import { Button } from "react-native";
 import {
   MyNavigationButtonProps,
   SalesDetailParams,

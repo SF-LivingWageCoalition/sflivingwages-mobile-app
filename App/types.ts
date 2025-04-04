@@ -204,3 +204,12 @@ export type DonateContentItem = {
 export type DonateMoneyState = {
   contents: DonateContentItem[];
 };
+
+export type ModalScreenProps = {
+  route: {
+    params: {
+      image: string;
+    };
+  };
+  navigation: NavigationProp<ParamListBase>;
+};

@@ -1,11 +1,11 @@
 import { useState } from "react";
 import {
   Modal,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
-  ScrollView,
+  View,
 } from "react-native";
 import { ItemModalProps } from "../../../../../App/types";
 

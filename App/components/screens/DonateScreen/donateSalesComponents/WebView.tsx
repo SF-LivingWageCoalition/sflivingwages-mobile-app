@@ -1,6 +1,6 @@
+import * as WebBrowser from "expo-web-browser";
 import React, { useState } from "react";
 import { Button, Text, View } from "react-native";
-import * as WebBrowser from "expo-web-browser";
 import { WebBrowserResult } from "../../../../../App/types";
 
 export default function WebView(): JSX.Element {

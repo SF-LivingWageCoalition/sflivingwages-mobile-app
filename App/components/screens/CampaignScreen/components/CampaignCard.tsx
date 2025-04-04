@@ -1,7 +1,7 @@
-import React from "react";
-import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import React from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { CampaignCardProps } from "../../../../../App/types";
 
 const CampaignCard: React.FC<CampaignCardProps> = (props) => {

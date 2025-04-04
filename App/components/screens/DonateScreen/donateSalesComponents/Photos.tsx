@@ -1,29 +1,28 @@
-import React, { useState, useEffect } from "react";
 import {
-  Text,
-  View,
-  Image,
-  FlatList,
-  TouchableOpacity,
-  TouchableHighlight,
-  Alert,
-  Linking,
-  ListRenderItem,
-} from "react-native";
-
-import styles from "./style/styles";
-import {
-  useNavigation,
   NavigationProp,
   ParamListBase,
+  useNavigation,
 } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
 import {
+  Alert,
+  FlatList,
+  Image,
+  Linking,
+  ListRenderItem,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import {
+  DetailsScreenParams,
   PhotoItem,
   PhotosProps,
-  TimeLeft,
-  DetailsScreenParams,
   PreviewScreenParams,
+  TimeLeft,
 } from "../../../../../App/types";
+import styles from "./style/styles";
 
 const Photos: React.FC<PhotosProps> = ({ photos }) => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();

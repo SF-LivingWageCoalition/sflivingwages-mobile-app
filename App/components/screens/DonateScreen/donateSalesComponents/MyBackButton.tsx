@@ -1,10 +1,10 @@
-import React from "react";
-import { TouchableOpacity, Text } from "react-native";
 import {
-  useNavigation,
   NavigationProp,
   ParamListBase,
+  useNavigation,
 } from "@react-navigation/native";
+import React from "react";
+import { Text, TouchableOpacity } from "react-native";
 import styles from "./style/styles";
 
 const MyBackButton = () => {

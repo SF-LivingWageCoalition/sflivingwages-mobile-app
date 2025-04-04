@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Linking } from "react-native";
+import { Linking, StyleSheet, Text, View } from "react-native";
 import { CampaignActionProps } from "../../../../../App/types";
 
 const CampaignAction: React.FC<CampaignActionProps> = (props) => {

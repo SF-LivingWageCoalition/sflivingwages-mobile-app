@@ -1,19 +1,19 @@
-import React, { useRef, useCallback, useState } from "react";
+import { BASE_URL, SEND_TO, SITE_KEY_V3 } from "@env";
+import qs from "querystring";
+import React, { useCallback, useRef, useState } from "react";
 import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
   Image,
   Linking,
   Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import Recaptcha from "react-native-recaptcha-that-works";
-import qs from "querystring";
-import { BASE_URL, SITE_KEY_V3, SEND_TO } from "@env";
 import { EmailOptions, RecaptchaRef } from "../../../../App/types";
 
 const sendEmail = async (

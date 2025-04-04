@@ -1,8 +1,7 @@
 import React from "react";
-import { FlatList, ActivityIndicator } from "react-native";
-
-import Card from "../Card/Card";
+import { ActivityIndicator, FlatList } from "react-native";
 import { DvdsProps } from "../../../../../App/types";
+import Card from "../Card/Card";
 
 const Dvds: React.FC<DvdsProps> = ({ dvds, isLoading }) => {
   return (

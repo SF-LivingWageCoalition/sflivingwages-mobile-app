@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import KeyboardSpacer from "react-native-keyboard-spacer";
-import PaymentFormView from "./paymentFormView";
 import { AddSubscriptionViewProps, CardData } from "../../../../App/types";
+import PaymentFormView from "./paymentFormView";
 
 /**
  * Renders a view with PaymentFormView
