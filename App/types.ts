@@ -258,3 +258,7 @@ export type CarouselImageProps = {
 export type NewHomeScreenProps = {
   navigation: NavigationProp<ParamListBase>;
 };
+
+export type LogoHeaderProps = {
+  navigation: NavigationProp<ParamListBase>;
+};
