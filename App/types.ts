@@ -118,3 +118,30 @@ export type SalesDetailParams = {
   bio: string;
   title: string;
 };
+
+export type PhotoItem = {
+  id?: number;
+  title: string;
+  path: string;
+  author_image?: string;
+  long_description?: string;
+  closeDate: string;
+  url: string;
+};
+
+export type PhotosProps = {
+  photos: PhotoItem[];
+};
+
+export type TimeLeft = {
+  days?: number;
+  hours?: number;
+  minutes?: number;
+  seconds?: number;
+};
+
+export type DetailsScreenParams = {
+  image: string;
+  bio: string;
+  title: string;
+};
