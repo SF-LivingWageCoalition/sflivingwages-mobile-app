@@ -213,3 +213,21 @@ export type ModalScreenProps = {
   };
   navigation: NavigationProp<ParamListBase>;
 };
+
+export type ArticleSource = {
+  id?: string;
+  name: string;
+};
+
+export type ArticleItem = {
+  title: string;
+  description?: string;
+  publishedAt?: string;
+  source: ArticleSource;
+  urlToImage?: string;
+  url: string;
+};
+
+export type ArticleProps = {
+  article: ArticleItem;
+};

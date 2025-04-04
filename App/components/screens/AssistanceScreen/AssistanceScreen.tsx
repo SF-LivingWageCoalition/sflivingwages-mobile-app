@@ -238,14 +238,14 @@ const AssistanceScreen: React.FC = () => {
           })}
 
           {/* <View style={styles.inputContainer}>
-                          <Text style={{ marginLeft: 3 }}>Other <Text style={styles.requiredField}>*</Text></Text>
-                          <Text>Short descriprion</Text>
-                          <TextInput
-                              style={styles.textInput}
-                              onChangeText={userNotesInput => setUserNotes(userNotesInput)}
-                              value={userNotes}
-                          />
-                      </View> */}
+                  <Text style={{ marginLeft: 3 }}>Other <Text style={styles.requiredField}>*</Text></Text>
+                  <Text>Short descriprion</Text>
+                  <TextInput
+                      style={styles.textInput}
+                      onChangeText={userNotesInput => setUserNotes(userNotesInput)}
+                      value={userNotes}
+                  />
+              </View> */}
           {isEmpty ? (
             <Text style={styles.recaptchaMessage}>
               Fields marked with an * are required{" "}
