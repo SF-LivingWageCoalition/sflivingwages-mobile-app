@@ -1,0 +1,89 @@
+import React, { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  Dimensions,
+  FlatList,
+  ListRenderItem,
+  SafeAreaView,
+  StyleSheet,
+  View,
+} from "react-native";
+import { EventItem, EventsData } from "../../../../App/types";
+import EventListItem from "./EventListItem";
+
+const { height } = Dimensions.get("window");
+
+/**
+ * Events Screen component
+ * Displays a list of events fetched from the API
+ */
+const Events: React.FC = () => {
+  const [events, setEvents] = useState<EventsData>({ events: [] });
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // Fetch events data when component mounts
+  useEffect(() => {
+    const fetchEvents = async (): Promise<void> => {
+      try {
+        const response = await fetch(
+          "https://www.livingwage-sf.org/wp-json/wp/v2/pages/18493",
+          {
+            method: "GET",
+            headers: { "cache-control": "no-cache" },
+          }
+        );
+
+        if (response.ok && response.status !== 401) {
+          const data = await response.json();
+
+          // Clean the HTML tags and entities from the response
+          const regex = /({([{^}]*)})|(&.+;)|(<([^>]+)>)/gi;
+          const clean = data.content.rendered.replace(regex, "");
+
+          // Parse the cleaned JSON
+          const eventsData = JSON.parse(clean) as EventsData;
+
+          setEvents(eventsData);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  const renderItem: ListRenderItem<EventItem> = ({ item, index }) => (
+    <EventListItem event={item} index={index} />
+  );
+
+  const keyExtractor = (item: EventItem): string => item.date;
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      {loading ? (
+        <View style={styles.spinner}>
+          <ActivityIndicator size="large" color="red" />
+        </View>
+      ) : (
+        <FlatList
+          data={events.events}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+        />
+      )}
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  spinner: {
+    height: height / 2,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
+
+export default Events;

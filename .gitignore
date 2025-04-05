@@ -9,7 +9,6 @@ temp.txt
 
 # IDE for android studio
 .idea/*
-yarn.lock
 
 #tester folder to ignore
 ignore
@@ -80,3 +79,15 @@ dist/
 
 
 .env
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.yarn-integrity
+
+# Keep .yarnrc.yml
+!.yarnrc.yml
