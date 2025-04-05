@@ -5,7 +5,6 @@ import { CampaignActionProps } from "../../../../../App/types";
 const CampaignAction: React.FC<CampaignActionProps> = (props) => {
   const [stepText, setStepText] = useState<string | undefined>(props.stepText);
   const [url, setUrl] = useState<string | undefined>(props.url);
-  // const [navigation, setNavigation] = useState<NavigationProp<any> | undefined>(props.navigation);
 
   return (
     <View>

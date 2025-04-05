@@ -2,10 +2,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { BottomTabParamList } from "../../../App/types";
-import NewHome from "../screens/HomeScreen/NewHome";
 import AssistanceScreen from "../screens/AssistanceScreen/AssistanceScreen";
 import AuctionNav from "../screens/DonateScreen/AuctionNav";
 import DonateMoney from "../screens/DonateScreen/DonateMoney";
+import NewHome from "../screens/HomeScreen/NewHome";
 
 /**
  * Bottom Tab Navigator
@@ -67,7 +67,6 @@ const BottomTabStack: React.FC = () => {
           tabBarLabel: "Assist",
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name={"hands-helping"} color={color} size={20} />
-            // <FontAwesome5 name={'calendar'} color={color} size={20} />
           ),
         }}
       />

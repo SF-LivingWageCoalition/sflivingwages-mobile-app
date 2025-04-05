@@ -25,20 +25,6 @@ const CampaignCard: React.FC<CampaignCardProps> = (props) => {
         >
           Raise Wage
         </Text>
-        {/* Commented out navigation options
-        <Text
-          style={styles.homeNavText}
-          onPress={() => navigateToScreen('Kind')}
-        >
-          In-Kind
-        </Text>
-        <Text
-          style={styles.homeNavText}
-          onPress={() => navigateToScreen('Sales')}
-        >
-          Sales
-        </Text>
-        */}
       </View>
     </ScrollView>
   );

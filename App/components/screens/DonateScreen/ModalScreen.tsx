@@ -1,10 +1,12 @@
 import React from "react";
 import { Dimensions, Image, ScrollView, View } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
-import { ModalScreenProps } from "../../../../App/types";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../../types";
 
-const ModalScreen: React.FC<ModalScreenProps> = ({ route }) => {
-  // Extract image from route params
+type Props = NativeStackScreenProps<RootStackParamList, "Preview">;
+
+const ModalScreen: React.FC<Props> = ({ route }) => {
   const { image } = route.params;
 
   const { width, height } = Dimensions.get("window");

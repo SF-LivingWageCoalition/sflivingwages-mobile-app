@@ -1,12 +1,12 @@
+import moment from "moment";
 import React from "react";
 import {
-  View,
   Linking,
-  TouchableWithoutFeedback,
   StyleSheet,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
-import { Text, Card, Divider } from "react-native-elements";
-import moment from "moment";
+import { Card, Divider, Text } from "react-native-elements";
 import { ArticleProps } from "../../../../App/types";
 
 const Article: React.FC<ArticleProps> = ({ article }) => {

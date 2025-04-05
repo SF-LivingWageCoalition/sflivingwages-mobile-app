@@ -1,11 +1,7 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { CalendarNavProps } from "../../../../App/types";
 
-/**
- * Calendar Navigation Bar component
- * Provides navigation options for calendar-related screens
- */
 const CalendarNav: React.FC<CalendarNavProps> = ({ navigate }) => {
   return (
     <View style={styles.homeNav}>

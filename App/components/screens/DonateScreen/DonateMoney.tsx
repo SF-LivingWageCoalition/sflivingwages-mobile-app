@@ -11,12 +11,10 @@ import {
 import DropDownItem from "react-native-drop-down-item";
 import { DonateContentItem, DonateMoneyState } from "../../../../App/types";
 
-// Import arrow icons
 const IC_ARR_DOWN: ImageSourcePropType = require("./icons/ic_arr_down.png");
 const IC_ARR_UP: ImageSourcePropType = require("./icons/ic_arr_up.png");
 
 const DonateMoney: React.FC = () => {
-  // Initialize state with default values
   const [state] = useState<DonateMoneyState>({
     contents: [
       {
@@ -34,7 +32,6 @@ const DonateMoney: React.FC = () => {
     ],
   });
 
-  // Handle opening URLs
   const handleOpenURL = (url: string): void => {
     Linking.openURL(url);
   };
@@ -64,7 +61,6 @@ const DonateMoney: React.FC = () => {
           >
             <Text
               style={[
-                styles.txt,
                 {
                   fontSize: 16,
                   color: "#100c08",
@@ -110,15 +106,6 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     flexDirection: "row",
     alignItems: "center",
-  },
-  // headerTxt: {
-  //   fontSize: 20,
-  //   color: 'rgb(74,74,74)',
-  //   marginRight: 60,
-  //   flexWrap: 'wrap',
-  // },
-  txt: {
-    // Empty style, but kept for consistency
   },
   dropDownItem: {
     marginTop: 30,

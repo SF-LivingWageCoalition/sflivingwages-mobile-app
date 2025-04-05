@@ -5,12 +5,11 @@
     "baseUrl": "./",
     "paths": {
       "*": ["src/*"]
-    }
+    },
+    "skipLibCheck": true,
+    "types": ["react-navigation"]
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": [
     "node_modules",
     "babel.config.js",

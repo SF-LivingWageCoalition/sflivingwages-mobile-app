@@ -2,7 +2,7 @@ import { NavigationProp, ParamListBase } from "@react-navigation/native";
 
 export type RootStackParamList = {
   TabStack: undefined;
-  Preview: undefined;
+  Preview: { image: string };
   Event: undefined;
 };
 
@@ -200,7 +200,7 @@ export type ModalScreenProps = {
       image: string;
     };
   };
-  navigation: NavigationProp<ParamListBase>;
+  navigation: NavigationProp<RootStackParamList>;
 };
 
 export type ArticleSource = {

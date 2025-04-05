@@ -146,22 +146,6 @@ const AssistanceScreen: React.FC = () => {
       setEmpty(true);
       setIsValid(false);
     }
-    // const secretKey = '<secret_key>' // server
-
-    // // verify token on server
-    // fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`)
-    //  .then(resp => resp.json())
-    //  .then((data) => {
-    //      // If it's not a success..
-    //      if (!data.success) {
-    //          // ERROR
-    //          setIsValid(false)
-    //      } else {
-    //          console.log(data);
-    //          setEmpty(false)
-    //          setIsValid(true);
-    //      }
-    //  });
   };
 
   return (
@@ -208,7 +192,6 @@ const AssistanceScreen: React.FC = () => {
             <Text style={{ marginLeft: 10 }}>
               Phone <Text style={styles.requiredField}>*</Text>
             </Text>
-            {/* <Text style={{ marginLeft: 10, fontSize : 10 }}>format number 000 000 0000</Text> */}
             <TextInput
               style={styles.textInput}
               keyboardType="numeric"
@@ -237,15 +220,6 @@ const AssistanceScreen: React.FC = () => {
             );
           })}
 
-          {/* <View style={styles.inputContainer}>
-                  <Text style={{ marginLeft: 3 }}>Other <Text style={styles.requiredField}>*</Text></Text>
-                  <Text>Short descriprion</Text>
-                  <TextInput
-                      style={styles.textInput}
-                      onChangeText={userNotesInput => setUserNotes(userNotesInput)}
-                      value={userNotes}
-                  />
-              </View> */}
           {isEmpty ? (
             <Text style={styles.recaptchaMessage}>
               Fields marked with an * are required{" "}

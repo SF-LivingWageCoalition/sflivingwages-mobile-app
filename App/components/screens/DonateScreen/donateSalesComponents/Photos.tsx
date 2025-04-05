@@ -3,7 +3,7 @@ import {
   ParamListBase,
   useNavigation,
 } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Alert,
   FlatList,
@@ -47,10 +47,6 @@ const Photos: React.FC<PhotosProps> = ({ photos }) => {
   };
 
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
-
-  useEffect(() => {
-    // Empty useEffect, keeping for future implementation
-  }, []);
 
   const timerComponents: JSX.Element[] = [];
 
@@ -141,7 +137,6 @@ const Photos: React.FC<PhotosProps> = ({ photos }) => {
               <Text style={styles.submitButtonText}> Place bid </Text>
             </TouchableOpacity>
           </View>
-          {/* Product Individual page link */}
         </View>
       </View>
     );

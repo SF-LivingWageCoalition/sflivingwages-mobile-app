@@ -6,8 +6,8 @@ import {
 import React from "react";
 import { Button } from "react-native";
 import {
-  MyNavigationButtonProps,
   DetailParams,
+  MyNavigationButtonProps,
 } from "../../../../../App/types";
 
 const MyNavigationButton: React.FC<MyNavigationButtonProps> = ({
