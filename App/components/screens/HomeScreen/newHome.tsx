@@ -14,7 +14,7 @@ import { Card } from "react-native-paper";
 import Swiper from "react-native-swiper/src";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { WebView } from "react-native-webview";
-import { CarouselImageProps, NewHomeScreenProps } from "../../../../App/types";
+import { CarouselImageProps, NewHomeScreenProps } from "../../../types";
 
 const bodyPageWidth = Dimensions.get("window").width;
 

@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { BottomTabParamList } from "../../../App/types";
-import NewHome from "../../components/screens/HomeScreen/newHome";
+import NewHome from "../screens/HomeScreen/NewHome";
 import AssistanceScreen from "../screens/AssistanceScreen/AssistanceScreen";
 import AuctionNav from "../screens/DonateScreen/AuctionNav";
 import DonateMoney from "../screens/DonateScreen/DonateMoney";
