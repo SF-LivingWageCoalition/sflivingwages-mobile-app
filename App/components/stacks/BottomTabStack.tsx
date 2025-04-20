@@ -75,13 +75,4 @@ const BottomTabStack: React.FC = () => {
   );
 };
 
-const TestComp = () => {
-  return (
-    <>
-      <Text>Test</Text>
-      <AuctionNav />
-    </>
-  );
-};
-
 export default BottomTabStack;
