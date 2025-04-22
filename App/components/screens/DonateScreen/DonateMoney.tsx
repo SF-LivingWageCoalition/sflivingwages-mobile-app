@@ -38,7 +38,7 @@ const DonateMoney: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={{ alignSelf: "stretch" }}>
+      <ScrollView style={styles.scrollView}>
         {state.contents.map((param: DonateContentItem, i: number) => (
           <DropDownItem
             key={i}
@@ -48,28 +48,11 @@ const DonateMoney: React.FC = () => {
             visibleImage={IC_ARR_UP}
             header={
               <View style={styles.header}>
-                <Text
-                  style={{
-                    fontSize: 20,
-                    color: "#0088dc",
-                  }}
-                >
-                  {param.title}
-                </Text>
+                <Text style={styles.headerTitle}>{param.title}</Text>
               </View>
             }
           >
-            <Text
-              style={[
-                {
-                  fontSize: 16,
-                  color: "#100c08",
-                  paddingHorizontal: 12,
-                },
-              ]}
-            >
-              {param.body}
-            </Text>
+            <Text style={styles.bodyText}>{param.body}</Text>
 
             <View style={styles.buttonStyle}>
               {param.btnTitle.length !== 0 && (
@@ -85,7 +68,6 @@ const DonateMoney: React.FC = () => {
             </View>
           </DropDownItem>
         ))}
-        <View style={{ height: 30 }} />
       </ScrollView>
     </View>
   );
@@ -99,6 +81,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5F5F5",
     paddingTop: 0,
   },
+  scrollView: {
+    alignSelf: "stretch",
+  },
   header: {
     width: "100%",
     paddingVertical: 0,
@@ -106,6 +91,15 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     flexDirection: "row",
     alignItems: "center",
+  },
+  headerTitle: {
+    fontSize: 20,
+    color: "#0088dc",
+  },
+  bodyText: {
+    fontSize: 16,
+    color: "#100c08",
+    paddingHorizontal: 12,
   },
   dropDownItem: {
     marginTop: 30,

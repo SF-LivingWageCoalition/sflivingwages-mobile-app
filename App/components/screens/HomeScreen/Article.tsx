@@ -31,13 +31,11 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
         }}
       >
         <View>
-          <Text style={{ marginBottom: 10 }}>
+          <Text style={styles.textDescriptionStyle}>
             {description || "Read More.."}
           </Text>
-          <Divider style={{ backgroundColor: "#dfe6e9" }} />
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
+          <Divider style={styles.dividerStyle} />
+          <View style={styles.sourceTimeStyle}>
             <Text style={styles.noteStyle}>{source.name.toUpperCase()}</Text>
             <Text style={styles.noteStyle}>{time}</Text>
           </View>
@@ -59,6 +57,16 @@ const styles = StyleSheet.create({
     textShadowColor: "#00000f",
     textShadowOffset: { width: 3, height: 3 },
     textShadowRadius: 3,
+  },
+  textDescriptionStyle: {
+    marginBottom: 10,
+  },
+  dividerStyle: {
+    backgroundColor: "#dfe6e9",
+  },
+  sourceTimeStyle: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
 
