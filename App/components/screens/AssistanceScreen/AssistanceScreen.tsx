@@ -158,15 +158,11 @@ const AssistanceScreen: React.FC = () => {
               source={require("../../../../assets/icon.png")}
             />
           </View>
-          <Text style={{ marginLeft: 20, marginTop: 10 }}>
-            We can assist you.
-          </Text>
-          <Text style={{ marginLeft: 20, marginBottom: 30 }}>
-            Complete the form below.
-          </Text>
+          <Text style={styles.intro}>We can assist you.</Text>
+          <Text style={styles.instruction}>Complete the form below.</Text>
 
           <View style={styles.inputContainer}>
-            <Text style={{ marginLeft: 10 }}>
+            <Text style={styles.inputName}>
               Full Name <Text style={styles.requiredField}>*</Text>
             </Text>
             <TextInput
@@ -177,7 +173,7 @@ const AssistanceScreen: React.FC = () => {
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={{ marginLeft: 10 }}>
+            <Text style={styles.inputName}>
               E-mail <Text style={styles.requiredField}>*</Text>
             </Text>
             <TextInput
@@ -189,7 +185,7 @@ const AssistanceScreen: React.FC = () => {
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={{ marginLeft: 10 }}>
+            <Text style={styles.inputName}>
               Phone <Text style={styles.requiredField}>*</Text>
             </Text>
             <TextInput
@@ -203,7 +199,7 @@ const AssistanceScreen: React.FC = () => {
               value={userPhone}
             />
           </View>
-          <Text style={{ marginBottom: 10, marginLeft: 20 }}>
+          <Text style={styles.instruction}>
             Please select one or more option
             <Text style={styles.requiredField}> *</Text>
           </Text>
@@ -278,6 +274,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  intro: {
+    marginLeft: 20,
+    marginTop: 10,
+  },
+  instruction: {
+    marginLeft: 20,
+    marginBottom: 20,
+  },
+  inputName: {
+    marginLeft: 10,
+  },
   card: {
     paddingTop: 35,
     backgroundColor: "white",
@@ -345,7 +352,6 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     textAlign: "center",
   },
-
   inputContainer: {
     margin: 12,
   },
