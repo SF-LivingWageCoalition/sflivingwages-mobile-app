@@ -18,7 +18,6 @@ import {
 
 // Card Render
 const AuctionCard: React.FC<AuctionCardProps> = ({
-  categoryId,
   name,
   description,
   price,
@@ -101,7 +100,7 @@ const styles = StyleSheet.create({
   imageStyle: {
     width: 250,
     height: 250,
-    marginLeft: 40, // Note: original had duplicate marginLeft at 15
+    marginLeft: 30,
     marginRight: 15,
     marginBottom: 10,
   },

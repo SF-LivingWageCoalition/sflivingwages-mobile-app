@@ -10,6 +10,7 @@ import {
   Image,
   Linking,
   ListRenderItem,
+  StyleSheet,
   Text,
   TouchableHighlight,
   TouchableOpacity,
@@ -22,7 +23,6 @@ import {
   PreviewScreenParams,
   TimeLeft,
 } from "../../../../../App/types";
-import styles from "./style/styles";
 
 const Photos: React.FC<PhotosProps> = ({ photos }) => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
@@ -74,19 +74,9 @@ const Photos: React.FC<PhotosProps> = ({ photos }) => {
 
   const renderItem: ListRenderItem<PhotoItem> = ({ item }) => {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={styles.container}>
         <View style={styles.cardImage}>
-          <Text
-            style={{
-              textAlign: "center",
-              fontSize: 18,
-              marginBottom: 15,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            {item.title}{" "}
-          </Text>
+          <Text style={styles.itemTitle}> {item.title} </Text>
           <TouchableHighlight
             underlayColor="gray"
             onPress={() => {
@@ -113,12 +103,12 @@ const Photos: React.FC<PhotosProps> = ({ photos }) => {
           >
             <Image style={styles.imageStyle} source={{ uri: item.path }} />
           </TouchableHighlight>
-          <Text style={{ textAlign: "center", fontStyle: "italic" }}>
+          <Text style={styles.textItalic}>
             Long press to zoom or Tap to show details
           </Text>
 
           <View style={styles.horizontalLine} />
-          <Text style={{ marginTop: 10 }}>
+          <Text style={styles.marginTop}>
             {(() => {
               formatDate(item.closeDate);
               return null;
@@ -151,5 +141,71 @@ const Photos: React.FC<PhotosProps> = ({ photos }) => {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  cardImage: {
+    backgroundColor: "white",
+    margin: 10,
+    padding: 20,
+    flex: 1,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+    elevation: 10,
+  },
+  imageStyle: {
+    width: 250,
+    height: 350,
+    marginLeft: 40,
+    marginRight: 15,
+    marginBottom: 10,
+  },
+  horizontalLine: {
+    marginTop: 10,
+    marginBottom: 10,
+    borderBottomColor: "black",
+    borderBottomWidth: 1,
+  },
+  buttonStyle: {
+    padding: 5,
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    marginTop: 10,
+  },
+  submitButton: {
+    backgroundColor: "#d31623",
+    padding: 10,
+    width: 100,
+    height: 40,
+    marginTop: 5,
+    borderRadius: 10,
+  },
+  submitButtonText: {
+    color: "white",
+    fontWeight: "900",
+    textAlign: "center",
+  },
+  itemTitle: {
+    textAlign: "center",
+    fontSize: 18,
+    marginBottom: 15,
+    fontWeight: "bold",
+  },
+  textItalic: {
+    textAlign: "center",
+    fontStyle: "italic",
+  },
+  marginTop: {
+    marginTop: 10,
+  },
+});
 
 export default Photos;
