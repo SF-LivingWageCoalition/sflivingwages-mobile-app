@@ -10,6 +10,7 @@ import Arts from "./donateSalesComponents/Arts";
 import Books from "./donateSalesComponents/Books";
 import Cds from "./donateSalesComponents/Cds";
 import Dvds from "./donateSalesComponents/Dvds";
+import { CustomTabBar } from "./Components/CustomTabBar";
 
 const Tab = createMaterialTopTabNavigator<AuctionTabParamList>();
 
@@ -102,13 +103,12 @@ const AuctionNav: React.FC = () => {
         tabBarInactiveTintColor: "#000",
         tabBarLabelStyle: { fontSize: 15, fontWeight: "500" },
       }}
+      tabBar={(props) => <CustomTabBar {...props} />}
     >
       <Tab.Screen
         name="Arts"
         children={() => <Arts arts={state.arts} isLoading={state.isLoading} />}
-        options={{
-          tabBarLabel: "Art",
-        }}
+        options={{ tabBarLabel: "Art" }}
       />
 
       <Tab.Screen
