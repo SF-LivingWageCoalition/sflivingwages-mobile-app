@@ -6,7 +6,6 @@ import AssistanceScreen from "../screens/AssistanceScreen/AssistanceScreen";
 import AuctionNav from "../screens/DonateScreen/AuctionNav";
 import DonateMoney from "../screens/DonateScreen/DonateMoney";
 import NewHome from "../screens/HomeScreen/NewHome";
-import { Text } from "react-native";
 
 /**
  * Bottom Tab Navigator

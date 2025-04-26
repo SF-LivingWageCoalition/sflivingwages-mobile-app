@@ -140,9 +140,7 @@ const AssistanceScreen: React.FC = () => {
   }, []);
 
   const onVerify = (token: string): void => {
-    console.log("🚀 ~ onVerify ~ token:>>>>", token);
     if (token) {
-      console.log("🚀 ~ onVerify ~ token:>>>>", token);
       setEmpty(false);
       setIsValid(true);
     } else {
