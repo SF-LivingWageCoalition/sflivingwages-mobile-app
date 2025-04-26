@@ -4,6 +4,7 @@ import React, { useCallback, useRef, useState } from "react";
 import {
   Image,
   Linking,
+  LogBox,
   Platform,
   ScrollView,
   StyleSheet,
@@ -148,6 +149,15 @@ const AssistanceScreen: React.FC = () => {
       setIsValid(false);
     }
   };
+
+  // Ignore the warning about defaultProps - I left it in for now.
+  // We wont see this error in the app (production or dev), but it will show up in the console.
+  // This is a warning from react-native-elements about defaultProps.
+  // Probably we could change package, but I am not sure about the design.
+  // It will not break the app
+  LogBox.ignoreLogs([
+    "Support for defaultProps will be removed from function components",
+  ]);
 
   return (
     <ScrollView>
