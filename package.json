@@ -36,6 +36,7 @@
     "expo": "^52.0.0",
     "expo-asset": "~11.0.4",
     "expo-font": "~13.0.4",
+    "expo-localization": "~16.0.1",
     "expo-splash-screen": "~0.29.22",
     "expo-status-bar": "~2.0.1",
     "expo-web-browser": "~14.0.2",
@@ -89,6 +90,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@types/i18n-js": "^4.0.1",
     "@types/react": "~18.2.0",
     "@types/react-native": "~0.72.0",
     "@types/react-navigation": "^3.4.0",

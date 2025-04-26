@@ -15,6 +15,7 @@ import {
 import { CheckBox } from "react-native-elements";
 import Recaptcha from "react-native-recaptcha-that-works";
 import { EmailOptions, RecaptchaRef } from "../../../../App/types";
+import { translate } from "../../../translation/i18n";
 
 const sendEmail = async (
   to: string,
@@ -56,10 +57,10 @@ const AssistanceScreen: React.FC = () => {
   const [isEmpty, setEmpty] = useState<boolean>(false);
 
   const assistList: string[] = [
-    "Wage theft",
-    "Unpaid overtime",
-    "No break",
-    "Discrimination",
+    translate("assistScreen.assistList.wageTheft"),
+    translate("assistScreen.assistList.unpaidOvertime"),
+    translate("assistScreen.assistList.noBreaks"),
+    translate("assistScreen.assistList.discrimination"),
   ];
   const [isChecked, setCheckState] = useState<boolean[]>(
     new Array(assistList.length).fill(false)
@@ -158,12 +159,15 @@ const AssistanceScreen: React.FC = () => {
               source={require("../../../../assets/icon.png")}
             />
           </View>
-          <Text style={styles.intro}>We can assist you.</Text>
-          <Text style={styles.instruction}>Complete the form below.</Text>
+          <Text style={styles.intro}>{translate("assistScreen.title")}</Text>
+          <Text style={styles.instruction}>
+            {translate("assistScreen.subTitle")}
+          </Text>
 
           <View style={styles.inputContainer}>
             <Text style={styles.inputName}>
-              Full Name <Text style={styles.requiredField}>*</Text>
+              {translate("assistScreen.fullName")}
+              <Text style={styles.requiredField}>*</Text>
             </Text>
             <TextInput
               style={styles.textInput}
@@ -174,7 +178,8 @@ const AssistanceScreen: React.FC = () => {
 
           <View style={styles.inputContainer}>
             <Text style={styles.inputName}>
-              E-mail <Text style={styles.requiredField}>*</Text>
+              {translate("assistScreen.email")}
+              <Text style={styles.requiredField}>*</Text>
             </Text>
             <TextInput
               style={styles.textInput}
@@ -186,7 +191,8 @@ const AssistanceScreen: React.FC = () => {
 
           <View style={styles.inputContainer}>
             <Text style={styles.inputName}>
-              Phone <Text style={styles.requiredField}>*</Text>
+              {translate("assistScreen.phone")}{" "}
+              <Text style={styles.requiredField}>*</Text>
             </Text>
             <TextInput
               style={styles.textInput}
@@ -200,7 +206,7 @@ const AssistanceScreen: React.FC = () => {
             />
           </View>
           <Text style={styles.instruction}>
-            Please select one or more option
+            {translate("assistScreen.options")}
             <Text style={styles.requiredField}> *</Text>
           </Text>
 
@@ -218,7 +224,7 @@ const AssistanceScreen: React.FC = () => {
 
           {isEmpty ? (
             <Text style={styles.recaptchaMessage}>
-              Fields marked with an * are required{" "}
+              {translate("assistScreen.require")}
             </Text>
           ) : null}
           <View style={styles.buttonStylesRecaptcha}>
@@ -229,7 +235,9 @@ const AssistanceScreen: React.FC = () => {
                     style={styles.recaptchaButton}
                     onPress={close}
                   >
-                    <Text style={styles.recaptchaText}>Close</Text>
+                    <Text style={styles.recaptchaText}>
+                      {translate("assistScreen.close")}
+                    </Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -242,26 +250,32 @@ const AssistanceScreen: React.FC = () => {
               theme={"light"}
             />
             <TouchableOpacity style={styles.recaptchaButton} onPress={send}>
-              <Text style={styles.recaptchaText}>Recaptcha</Text>
+              <Text style={styles.recaptchaText}>
+                {translate("assistScreen.recaptcha")}
+              </Text>
             </TouchableOpacity>
           </View>
           {isEmpty ? (
             <Text style={styles.recaptchaMessage}>
-              Please complete recaptcha before submit
+              {translate("assistScreen.complete")}
             </Text>
           ) : null}
           <Text style={styles.submitionInfo}>
-            Please review your information before you submit
+            {translate("assistScreen.review")}
           </Text>
           <View style={styles.buttonStyles}>
             <TouchableOpacity onPress={onSubmitData}>
               <View style={styles.submitButton}>
-                <Text style={styles.submitButtonText}>Submit</Text>
+                <Text style={styles.submitButtonText}>
+                  {translate("assistScreen.submit")}
+                </Text>
               </View>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.submitButton} onPress={resetAll}>
-              <Text style={styles.submitButtonText}>Clear</Text>
+              <Text style={styles.submitButtonText}>
+                {translate("assistScreen.clear")}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
