@@ -169,15 +169,13 @@ const AssistanceScreen: React.FC = () => {
               source={require("../../../../assets/icon.png")}
             />
           </View>
-          <Text style={{ marginLeft: 20, marginTop: 10 }}>
-            {translate("assistScreen.title")}
-          </Text>
-          <Text style={{ marginLeft: 20, marginBottom: 30 }}>
+          <Text style={styles.intro}>{translate("assistScreen.title")}</Text>
+          <Text style={styles.instruction}>
             {translate("assistScreen.subTitle")}
           </Text>
 
           <View style={styles.inputContainer}>
-            <Text style={{ marginLeft: 10 }}>
+            <Text style={styles.inputName}>
               {translate("assistScreen.fullName")}
               <Text style={styles.requiredField}>*</Text>
             </Text>
@@ -189,7 +187,7 @@ const AssistanceScreen: React.FC = () => {
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={{ marginLeft: 10 }}>
+            <Text style={styles.inputName}>
               {translate("assistScreen.email")}
               <Text style={styles.requiredField}>*</Text>
             </Text>
@@ -202,7 +200,7 @@ const AssistanceScreen: React.FC = () => {
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={{ marginLeft: 10 }}>
+            <Text style={styles.inputName}>
               {translate("assistScreen.phone")}{" "}
               <Text style={styles.requiredField}>*</Text>
             </Text>
@@ -217,7 +215,7 @@ const AssistanceScreen: React.FC = () => {
               value={userPhone}
             />
           </View>
-          <Text style={{ marginBottom: 10, marginLeft: 20 }}>
+          <Text style={styles.instruction}>
             {translate("assistScreen.options")}
             <Text style={styles.requiredField}> *</Text>
           </Text>
@@ -300,6 +298,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  intro: {
+    marginLeft: 20,
+    marginTop: 10,
+  },
+  instruction: {
+    marginLeft: 20,
+    marginBottom: 20,
+  },
+  inputName: {
+    marginLeft: 10,
+  },
   card: {
     paddingTop: 35,
     backgroundColor: "white",
@@ -367,7 +376,6 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     textAlign: "center",
   },
-
   inputContainer: {
     margin: 12,
   },

@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, Image, ScrollView, View } from "react-native";
+import { Dimensions, Image, ScrollView, View, StyleSheet } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../types";
@@ -12,7 +12,7 @@ const ModalScreen: React.FC<Props> = ({ route }) => {
   const { width, height } = Dimensions.get("window");
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <ScrollView>
         <ImageZoom
           cropWidth={width}
@@ -29,5 +29,11 @@ const ModalScreen: React.FC<Props> = ({ route }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default ModalScreen;

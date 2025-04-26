@@ -4,22 +4,31 @@ import {
   useNavigation,
 } from "@react-navigation/native";
 import React from "react";
-import { Text, TouchableOpacity } from "react-native";
-import styles from "./style/styles";
+import { Text, TouchableOpacity, StyleSheet } from "react-native";
 
 const MyBackButton = () => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
 
   return (
     <TouchableOpacity
-      style={styles.backButtonSytle}
+      style={styles.backButtonStyle}
       onPress={() => {
         navigation.goBack();
       }}
     >
-      <Text style={{ color: "#c91a1a", fontSize: 16 }}>Back</Text>
+      <Text style={styles.textStyle}>Back</Text>
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  backButtonStyle: {
+    paddingTop: 20,
+  },
+  textStyle: {
+    color: "#c91a1a",
+    fontSize: 16,
+  },
+});
 
 export default MyBackButton;

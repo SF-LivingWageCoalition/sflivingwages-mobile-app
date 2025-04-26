@@ -25,10 +25,10 @@ const CarouselImage: React.FC<CarouselImageProps> = ({ image, onPress }) => (
   <TouchableOpacity key={image.id} onPress={onPress}>
     <ImageBackground
       source={image.src}
-      style={{ alignContent: "center", width: bodyPageWidth - 10, height: 195 }}
+      style={styles.imageBackground}
       imageStyle={{ borderRadius: 10 }}
     >
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={styles.containerBody}>
         <Text style={styles.textEvent}>{image.title}</Text>
       </View>
     </ImageBackground>
@@ -42,29 +42,14 @@ const CarouselImageSmall: React.FC<CarouselImageProps> = ({
   image,
   onPress,
 }) => (
-  <View
-    style={{
-      marginTop: 30,
-      flex: 1,
-      alignItems: "center",
-      alignContent: "center",
-    }}
-  >
+  <View style={styles.imageCarouselSmall}>
     <TouchableOpacity key={image.id} onPress={onPress}>
       <ImageBackground
         source={image.src}
-        style={{
-          flex: 1,
-          alignContent: "center",
-          alignItems: "center",
-          width: 300,
-          height: 300,
-        }}
+        style={styles.imageBackgroundSmall}
         imageStyle={{ borderRadius: 10 }}
       >
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
+        <View style={styles.containerBody}>
           <Text style={styles.textCampaingsImg}>
             {image.title.toUpperCase()}
           </Text>
@@ -137,15 +122,15 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
   ];
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
         {/* Top background section */}
-        <View style={styles.topbackground}>
+        <View style={styles.topBackground}>
           <ImageBackground
             source={require("./../../../../assets/stefan-mitev-Sp3eNPAHB8c-unsplash.jpg")}
             style={styles.background}
           >
-            <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.3)" }}>
+            <View style={styles.header}>
               <Text style={styles.imageTitle}>Who We Are </Text>
               <Text numberOfLines={3} style={styles.imageContent}>
                 The Living Wage Coalition is a low-wage worker advocacy
@@ -158,16 +143,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                   }
                   style={styles.button}
                 >
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      color: "#ffffff",
-                      textAlign: "center",
-                      fontWeight: "700",
-                    }}
-                  >
-                    View More
-                  </Text>
+                  <Text style={styles.buttonText}>View More</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -178,17 +154,9 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
         <View style={styles.bodyPage}>
           {/* Main slider */}
           <View>
-            <View
-              style={{
-                width: bodyPageWidth,
-                alignItems: "center",
-                alignSelf: "center",
-                marginTop: 30,
-                marginLeft: 10,
-              }}
-            >
+            <View style={styles.mainSlider}>
               <Swiper
-                style={{ height: bodyPageWidth / 2 }}
+                style={styles.swiperLower}
                 showsButtons
                 autoplay={true}
                 autoplayTimeout={4}
@@ -215,7 +183,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
           <View style={styles.containerBody}>
             <Text style={{ ...styles.titles, marginTop: 12 }}>Campaigns</Text>
             <Swiper
-              style={{ height: 350 }}
+              style={styles.swiperHigher}
               showsButtons
               autoplay={false}
               activeDotColor={"#70b5ff"}
@@ -252,7 +220,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 />
               </TouchableOpacity>
               <Card.Actions>
-                <View style={{ flex: 1, height: 30 }}>
+                <View style={styles.cardView}>
                   <Text
                     style={styles.actionText}
                     onPress={() =>
@@ -279,7 +247,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 allowsInlineMediaPlayback={true}
               />
               <Card.Actions>
-                <View style={{ flex: 1, height: 30 }}>
+                <View style={styles.cardView}>
                   <Text
                     style={styles.actionText}
                     onPress={() =>
@@ -306,7 +274,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 allowsInlineMediaPlayback={true}
               />
               <Card.Actions>
-                <View style={{ flex: 1, height: 30 }}>
+                <View style={styles.cardView}>
                   <Text
                     style={styles.actionText}
                     onPress={() =>
@@ -326,20 +294,14 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
           <View style={styles.socialMediaArea}>
             <Divider style={styles.divider} />
             <Text style={styles.follow}>Follow Us</Text>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginBottom: 10,
-              }}
-            >
+            <View style={styles.socialMediaView}>
               <TouchableOpacity
                 onPress={() =>
                   Linking.openURL(
                     "https://www.facebook.com/san.francisco.living.wage/"
                   )
                 }
-                style={{ marginRight: 27 }}
+                style={styles.buttonMargin}
               >
                 <FontAwesome name="facebook-square" size={46} color="#177DDC" />
               </TouchableOpacity>
@@ -347,7 +309,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 onPress={() =>
                   Linking.openURL("https://twitter.com/sflivingwage?lang=en/")
                 }
-                style={{ marginRight: 27 }}
+                style={styles.buttonMargin}
               >
                 <FontAwesome name="twitter" size={46} color="#7AB3E8" />
               </TouchableOpacity>
@@ -357,7 +319,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                     "https://www.instagram.com/sflivingwage/?hl=en"
                   )
                 }
-                style={{ marginRight: 27 }}
+                style={styles.buttonMargin}
               >
                 <FontAwesome name="instagram" size={46} color="#F297DE" />
               </TouchableOpacity>
@@ -377,10 +339,18 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+    backgroundColor: "#ffffff",
+  },
   container: {
     flex: 1,
   },
-  topbackground: {
+  header: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.3)",
+  },
+  topBackground: {
     height: 256,
     borderColor: "#95989a",
     borderWidth: 1,
@@ -391,6 +361,11 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#000000",
   },
+  containerBody: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   imageTitle: {
     fontSize: 23,
     fontWeight: "bold",
@@ -398,12 +373,30 @@ const styles = StyleSheet.create({
     marginLeft: 23,
     marginTop: 25,
   },
+  imageBackground: {
+    alignContent: "center",
+    width: bodyPageWidth - 10,
+    height: 195,
+  },
+  imageBackgroundSmall: {
+    flex: 1,
+    alignContent: "center",
+    alignItems: "center",
+    width: 300,
+    height: 300,
+  },
   imageContent: {
     fontSize: 21,
     fontWeight: "400",
     color: "#ffffff",
     marginLeft: 23,
     marginTop: 26,
+  },
+  imageCarouselSmall: {
+    marginTop: 30,
+    flex: 1,
+    alignItems: "center",
+    alignContent: "center",
   },
   buttonView: {
     marginLeft: 23,
@@ -422,6 +415,15 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOffset: { width: 1, height: 1 },
   },
+  buttonText: {
+    fontSize: 18,
+    color: "#ffffff",
+    textAlign: "center",
+    fontWeight: "700",
+  },
+  buttonMargin: {
+    marginRight: 27,
+  },
   bodyPage: {
     flexDirection: "column",
     backgroundColor: "#ffffff",
@@ -430,12 +432,12 @@ const styles = StyleSheet.create({
     width: "100%",
     top: -10,
   },
-  text: {
-    fontSize: 40,
-    color: "#fffdfd",
-    textAlign: "center",
-    textAlignVertical: "center",
-    fontWeight: "800",
+  mainSlider: {
+    width: bodyPageWidth,
+    alignItems: "center",
+    alignSelf: "center",
+    marginTop: 30,
+    marginLeft: 10,
   },
   textCampaingsImg: {
     fontSize: 20,
@@ -451,60 +453,11 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     fontWeight: "800",
   },
-  textDonate: {
-    fontSize: 40,
-    color: "#fffdfd",
-    textAlign: "center",
-    textAlignVertical: "center",
-    fontWeight: "800",
+  swiperLower: {
+    height: bodyPageWidth / 2 + 20,
   },
-  newsArea: {
-    flexDirection: "column",
-    width: bodyPageWidth,
-    marginTop: 30,
-  },
-  newsIamge: {
-    height: 180,
-    marginRight: 23,
-    elevation: 6,
-    shadowColor: "#177ddc",
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: { width: 1, height: 1 },
-  },
-  textNews: {
-    fontFamily: "HelveticaNeue-BoldItalic",
-    fontSize: 15,
-    color: "#fffdfd",
-    textAlign: "center",
-    textAlignVertical: "center",
-    fontWeight: "bold",
-    marginBottom: 20,
-    shadowColor: "#177ddc",
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: { width: 3, height: 3 },
-    textTransform: "uppercase",
-  },
-  textNews2: {
-    fontFamily: "HelveticaNeue-BoldItalic",
-    fontSize: 15,
-    color: "#fffdfd",
-    textAlign: "center",
-    textAlignVertical: "center",
-    fontWeight: "bold",
-    marginBottom: 20,
-    elevation: 6,
-    shadowColor: "#177ddc",
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: { width: 3, height: 3 },
-    textTransform: "uppercase",
-  },
-  mediaArea: {
-    flex: 1,
-    justifyContent: "center",
-    alignContent: "center",
+  swiperHigher: {
+    height: 350,
   },
   youTubeStyle: {
     height: 250,
@@ -523,6 +476,10 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     width: "90%",
   },
+  cardView: {
+    flex: 1,
+    height: 30,
+  },
   actionText: {
     textDecorationLine: "underline",
     alignSelf: "center",
@@ -534,6 +491,11 @@ const styles = StyleSheet.create({
     width: bodyPageWidth,
     marginTop: 40,
     flex: 1,
+  },
+  socialMediaView: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 10,
   },
   divider: {
     borderWidth: 0.5,
@@ -549,25 +511,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginTop: 30,
     marginBottom: 10,
-  },
-  dot: {
-    flexDirection: "row",
-    alignSelf: "center",
-    marginRight: 21,
-    marginTop: 10,
-  },
-  active: {
-    margin: 3,
-    color: "#C4C4C4",
-  },
-  noActive: {
-    margin: 3,
-    color: "#EEEEEE",
-  },
-  containerBody: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
   },
   titles: {
     fontSize: 30,

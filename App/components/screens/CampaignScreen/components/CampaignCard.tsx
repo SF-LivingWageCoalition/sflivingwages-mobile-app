@@ -17,8 +17,8 @@ const CampaignCard: React.FC<CampaignCardProps> = (props) => {
   };
 
   return (
-    <ScrollView style={{ flex: 1 }}>
-      <View style={styles.homeNav}>
+    <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <Text
           style={styles.homeNavText}
           onPress={() => navigateToScreen("CampaignDetailpage")}
@@ -31,21 +31,7 @@ const CampaignCard: React.FC<CampaignCardProps> = (props) => {
 };
 
 const styles = StyleSheet.create({
-  campaignNav: {
-    flex: 1,
-    flexDirection: "row",
-    backgroundColor: "#870c18",
-    height: 40,
-    alignItems: "center",
-  },
-  campaignText: {
-    flex: 1,
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#fff",
-    textAlign: "center",
-  },
-  homeNav: {
+  container: {
     flex: 1,
   },
   homeNavText: {

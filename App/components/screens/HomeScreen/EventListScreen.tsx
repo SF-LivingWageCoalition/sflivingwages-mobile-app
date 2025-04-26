@@ -62,7 +62,7 @@ const Events: React.FC = () => {
   const keyExtractor = (item: EventItem): string => item.date;
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.container}>
       {loading ? (
         <View style={styles.spinner}>
           <ActivityIndicator size="large" color="red" />
@@ -79,6 +79,9 @@ const Events: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   spinner: {
     height: height / 2,
     alignItems: "center",
