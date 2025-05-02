@@ -5,7 +5,7 @@ const es: Translations = {
     title: "Centro de Asistencia",
     subtitle:
       "Elija una opción a continuación para obtener ayuda o conocer sus derechos",
-    getAssistance: "Obtener Asistencia",
+    getAssistance: "Denunciar una Infracción",
     wageRights: "Conozca Sus Derechos Salariales",
   },
   assistScreen: {
@@ -33,18 +33,16 @@ const es: Translations = {
     title: "Conozca Sus Derechos Salariales",
     minimumWage: {
       title: "Salario Mínimo",
-      content:
-        "Los trabajadores tienen derecho al salario mínimo federal de $7.25 por hora. Muchos estados y ciudades tienen salarios mínimos más altos.",
+      point1:
+        "El salario mínimo federal es de $7.25 por hora a partir de 2023.",
+      point2:
+        "El salario mínimo de San Francisco es de $16.99 por hora a partir del 1 de julio de 2023.",
     },
-    overtime: {
+    minimumCompensation: {
       title: "Pago de Horas Extras",
-      content:
-        "La mayoría de los trabajadores tienen derecho a un pago de horas extras de 1.5 veces su tarifa regular por las horas trabajadas más de 40 en una semana laboral.",
-    },
-    breaks: {
-      title: "Períodos de Descanso",
-      content:
-        "Muchos estados requieren que los empleadores proporcionen períodos de descanso y comidas para los empleados.",
+      point1: "Requires $19.18 per hour as of July 1, 2025",
+      point2:
+        "Covers any employee who works at least two hours in a week for an employer within the boundaries of San Francisco",
     },
   },
 };

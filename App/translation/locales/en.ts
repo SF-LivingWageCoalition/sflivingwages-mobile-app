@@ -2,7 +2,7 @@ const en = {
   assistHomeScreen: {
     title: "Assistance Center",
     subtitle: "Choose an option below to get help or learn about your rights",
-    getAssistance: "Get Assistance",
+    getAssistance: "Report Violation",
     wageRights: "Know Your Wage Rights",
   },
   assistScreen: {
@@ -29,19 +29,16 @@ const en = {
   wageRightsScreen: {
     title: "Know Your Wage Rights",
     minimumWage: {
-      title: "Minimum Wage",
-      content:
-        "Workers are entitled to the federal minimum wage of $7.25 per hour. Many states and cities have higher minimum wages.",
+      title: "Minimum Wage Ordinance",
+      point1: "Requires $19.18 per hour as of July 1, 2025",
+      point2:
+        "Covers any employee who works at least two hours in a week for an employer within the boundaries of San Francisco",
     },
-    overtime: {
-      title: "Overtime Pay",
-      content:
-        "Most workers are entitled to overtime pay of 1.5 times their regular rate for hours worked over 40 in a workweek.",
-    },
-    breaks: {
-      title: "Rest Breaks",
-      content:
-        "Many states require employers to provide rest breaks and meal periods for employees.",
+    minimumCompensation: {
+      title: "Minimum Compensation Ordinance",
+      point1: "Requires $19.18 per hour as of July 1, 2025",
+      point2:
+        "Covers any employee who works at least two hours in a week for an employer within the boundaries of San Francisco",
     },
   },
 };
