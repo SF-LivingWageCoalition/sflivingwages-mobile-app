@@ -39,10 +39,82 @@ const es: Translations = {
         "El salario mínimo de San Francisco es de $16.99 por hora a partir del 1 de julio de 2023.",
     },
     minimumCompensation: {
-      title: "Pago de Horas Extras",
-      point1: "Requires $19.18 per hour as of July 1, 2025",
+      title: "Ordenanza de Compensación Mínima",
+      point1:
+        "Las empresas con fines de lucro deben pagar al menos $20.96 por hora; las organizaciones sin fines de lucro deben pagar al menos $20.25 por hora; las entidades públicas (por ejemplo, IHSS) deben pagar al menos $22.00 por hora.",
       point2:
-        "Covers any employee who works at least two hours in a week for an employer within the boundaries of San Francisco",
+        "12 días pagados al año por enfermedad, vacaciones o necesidad personal; y 10 días no pagados por enfermedad o enfermedad de un familiar.",
+      point3: "Esta lista cubre:",
+      subPoint1:
+        "un empleado que trabaja para un contratista o cualquier subcontratista que tenga más de cinco empleados y tenga contratos con la Ciudad y el Condado de San Francisco que sumen $25,000 o más",
+      subPoint2:
+        "participantes en un programa de Bienestar al Trabajo que requiere que un beneficiario de asistencia pública trabaje a cambio de su subsidio",
+      subPoint3:
+        "un empleado que trabaja 10 horas o más en un período de pago de dos semanas en cualquier arrendamiento o concesión en un aeropuerto que exceda los 29 días en un año o cualquier subarrendamiento o contrato de servicio con ese arrendamiento.",
+      point4:
+        "La ley entra en vigor cuando el contrato o arrendamiento se renueva o modifica.",
+    },
+    sickLeave: {
+      title: "Ordenanza de Descanso por Enfermedad",
+      point1:
+        "Cubre a cualquier persona empleada dentro de la Ciudad, incluyendo trabajadores a tiempo parcial y temporales que trabajan 56 horas o más dentro de un año, y participantes en un programa de Bienestar al Trabajo que requiere que un beneficiario de asistencia pública trabaje a cambio de su subsidio",
+      point2:
+        "Comienza el primer día de la contratación, una hora de descanso por enfermedad se acumula por cada 30 horas trabajadas, hasta 40 horas en empresas con menos de 10 empleados y 72 horas para empresas con 10 empleados o más, y se lleva a cabo de año en año",
+      point3:
+        "El tiempo puede ser tomado de trabajo por enfermedad, lesión, condición médica, necesidad de diagnóstico o tratamiento médico, o cualquier otra razón médica de la persona o su pareja, compañero registrado, persona designada, hijo, padre, tutor legal o ward, hermano, abuelo, o nieto, sea biológico, adoptado, familiar, tutor legal o niño de una persona que está en loco parentis",
+      point4:
+        "Un empleador puede requerir una notificación razonable de una ausencia de trabajo o medidas razonables para verificar o documentar el uso de descanso por enfermedad",
+    },
+    healthCareSecurity: {
+      title: "Ordenanza de Seguridad en Salud",
+      point1:
+        "Cubre a cualquier persona que trabaje en la Ciudad por 90 días o más en un año para un empleador, y trabaje al menos 8 horas por semana en la Ciudad (empleados gerenciales, supervisores y confidenciales que ganan más de $60.29 por hora son exentos)",
+      point2:
+        "Requiere que un empleador con 100 o más empleados debe hacer gastos en salud de al menos $3.85 por hora trabajada; un empleador con 20 o más empleados, o no lucrativos de 50 o más empleados, debe hacer gastos en salud de al menos $2.56 por hora, hasta 172 horas en un mes, para proporcionar servicios de salud por:",
+      subPoint1: "a) contribuciones a una cuenta de ahorro de salud",
+      subPoint2:
+        "b) reembolsos a los empleados por gastos de servicios de salud",
+      subPoint3:
+        "c) pagos a un tercero por servicios de salud, como la adquisición de una cobertura de salud",
+      subPoint4: "d) la entrega directa de servicios de salud",
+      subPoint5:
+        "e) pagos a la Ciudad para ser utilizados para financiar la membresía en un Programa de Acceso a la Salud, “Saludable San Francisco,” para residentes de la Ciudad o para establecer cuentas de reembolso para residentes y no residentes",
+      point3:
+        "El Programa de Acceso a la Salud proporciona servicios de salud a través del Hospital General de San Francisco, los clínicas y las agencias sin fines de lucro comunitarias de la Departamento de Salud Pública, y está abierto a residentes de la Ciudad de San Francisco no asegurados, sin importar el estado de empleo.",
+      point4:
+        "Un programa de salud de un empleador que requiere contribuciones por parte de un empleado no cumple con el gasto en salud requerido si el empleado declina participar.",
+    },
+    healthCareAccountability: {
+      title: "Ordenanza de Responsabilidad en Salud",
+      point1:
+        "Requiere que un empleador proporcione uno de los siguientes no más tarde que el primero de mes que comienza 30 días desde el inicio del empleo:",
+      subPoint1:
+        "1) ofrecer beneficios de salud que cumplan con estándares mínimos",
+      subPoint2:
+        "2) pagar $6.75 por hora por empleado a la Ciudad hasta $270 por semana, en el aeropuerto $10.95 por hora hasta $438 por semana, o si el empleado no vive en San Francisco (y no trabaja en la propiedad de la Ciudad), pagar al empleado $6.75 por hora hasta $270 por semana",
+      point2:
+        "Cubre empleados de un contratista o subcontratista, un inquilino o subinquilino de la propiedad de la Ciudad o su contrato de servicio o subcontrato en una alquiler para el uso de la propiedad de la Ciudad por más de 29 días consecutivos, que cumulativamente tengan más de 20 empleados (más de 50 para no lucrativos) en todas las entidades que poseen o controlan, y el contrato es $25,000 o más ($50,000 o más para no lucrativos) o tener contratos cumulativos por $75,000 o más con la Ciudad y el Condado de San Francisco",
+      point3:
+        "Cubre empleados que trabajan en un contrato o propiedad de la Ciudad por 20 o más horas por semana, por 130 días o más por año",
+    },
+    protectionsForWorkers: {
+      title: "Protecciones para Trabajadores Ordinance",
+      point1:
+        "Es ilegal que un empleador retenga, amenace o discrimine a un trabajador por afirmar sus derechos bajo estas leyes o informar a otros trabajadores de sus derechos. Si un empleador toma una acción adversa contra un empleado, se considera una presunción rebuttable que la acción fue en retribución.",
+      point2:
+        "Si un empleador se encuentra en violación de la ley, las sanciones incluyen:",
+      subPoint1:
+        "una orden judicial para la reubicación de cualquier trabajador despedido",
+      subPoint2:
+        "pagar con intereses y multas cualquier salario retroactivo, descanso por enfermedad o gastos de salud",
+      subPoint3: "pagar una multa por cada día en violación",
+      subPoint4: "terminar un contrato o alquiler",
+      subPoint5:
+        "ser barajado de contratar o alquilar con la Ciudad por tres años",
+      subPoint6:
+        "revocar o suspender certificados de registro, permisos o licencias",
+      point3:
+        "Un trabajador tiene derecho a denunciar una infracción al Oficina de Estándares Laborales que mantiene la identidad del trabajador confidencial.",
     },
   },
 };
