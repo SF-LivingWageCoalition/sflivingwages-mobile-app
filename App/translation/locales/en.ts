@@ -111,6 +111,102 @@ const en = {
         "A worker has the right to report a violation to the Office of Labor Standards Enforcement which keeps the worker’s identity confidential.",
     },
   },
+  beReadyForICEScreen: {
+    title: "Be Ready for ICE",
+    makeAPlan: {
+      title: "Make a Plan",
+      point1:
+        "Prepare a packet that contains important, emergency information. To find out what you need to include in the packet, go to resources section below.",
+      point2:
+        "Have someone you trust keep your emergency information in a safe place.",
+      point3:
+        "Designate a trusted adult to take care of your child. Give that person information on child’s schedule and location of schools and other places they might be.",
+      point4:
+        "Update all school, childcare, and after school contact information and release forms. Include the names of who may and may not pick up your children.",
+      point5:
+        "Designate someone who will bring evidence of your ties to the United States to the ICE office.",
+      point6:
+        "Prepare a financial plan to take care of bills and expenses if necessary.",
+      point7: "Talk with your family about the plan.",
+      point8:
+        "Always carry a phone card. ICE does not provide free calls if you are in detention.",
+    },
+    whoToCall: {
+      title: "Who to Call",
+      point1: "La Raza Centro Legal – (415) 575-3500",
+      point2:
+        "Labor Center for Immigrant Justice (WE RISE SF) – (415) 440-8798",
+      point3: "Central American Resource Center – (415) 642-4400",
+      point4:
+        "San Francisco Legal Immigrant and Education Network- (415)282-6209 *115",
+      point5: "Attorney Name & Phone Number",
+      point6: "If you need a lawyer, call (415) 282-6209 ext.115",
+      point7: "Your Emergency Contact Name & Phone Number",
+      point8: "School/Child Care",
+      point9: "Employer/Supervisor",
+      point10: "Friend with Important Documents",
+      point11: "Consulate",
+      point12: "Bail Bond Agency",
+    },
+    ifICEArrives: {
+      title: "If ICE Arrives",
+      point1:
+        "Ask them to slide a search warrant under the door or through a window.",
+      point2:
+        "Do not open the door unless the warrant has your correct name and address and a judge signed it in the past 10 days.",
+      point3:
+        "If they force entry, write down names and badge numbers. Tell them “I do not consent to you being in my home.” If they start to search, tell them “I do not consent to your search.”",
+      point4:
+        "Remain silent and do not talk to an ICE agent. Do not answer any questions, especially about your birthplace, immigration status, or how you entered the United States.",
+      point5:
+        "Do not lie, show false documents, hand over foreign documents or present an AB 60 license.",
+      point6: "Do not sign anything without a lawyer.",
+    },
+    readyToRecord: {
+      title: "Ready to Record",
+      point1:
+        "If there’s a raid at your home, make a record of what happened to give to your attorney. This is a checklist for what you should record – http://www.immdefense.org/wp-content/uploads/2016/03/home-raid-poster-ENG-2017.pdf.",
+      point2: "If you witness an ICE raid, call (415) 200-1548.",
+      point3:
+        "Know how to use the ICE detainee locator: https://locator.ice.gov. This lists people in detention, who are 18 years or older.",
+    },
+    ifDetained: {
+      title: "If Detained",
+      point1: "Demand to make a phone call and speak to a lawyer.",
+      point2:
+        "Demand to make a phone call to your emergency contact to arrange for caretakers for your children.",
+      point3:
+        "Demand the right to be told the amount of bail and to call a bail bond agency.",
+      point4:
+        "ICE will assign you an alien registration number or A number. Write the number down and give it to your emergency contact along with the number of the detention center. They can use it to keep track of you.",
+      point5:
+        "Contact the person who is responsible for your family and your finances. Let them know that you are in detention.",
+      point6:
+        "Tell your assigned deportation officer that you need to be released to care for your children, or if they are taken to Child Protective Services, to contact their hotline right away.",
+      point7:
+        "Have the person who will care for your children pick them up from school or day care, or if picked up by Child Protective Services, to get them within 48 hours. Make sure the caregiver has the signed power of attorney and guardianship paperwork that you completed.",
+    },
+    resources: {
+      title: "Resources",
+      point1:
+        "Informed Immigrant: Preguntas Frecuentes. Lo Que Todos los Immigrantes Deben Saber, https://www.informedimmigrant.com/es/faq/",
+      point2:
+        "Immigrant Legal Resource Center: Plan Familiar en Caso de Emergencia, https://www.ilrc.org/resources/step-step-family-preparedness-plan",
+      point3:
+        "Immigrant Legal Resource Center: Plan de Proteccion Familiar, https://www.ilrc.org/plan-de-proteccion-familiar",
+      point4:
+        "National Immigration Law Center: Rights, Other Immigration Enforcement, https://www.nilc.org/get-involved/community-education-resources/know-your-rights/othimmenf/",
+    },
+    emergencyFile: {
+      title: "Emergency File",
+      point1: "Obtain passports for children under 16",
+      point2:
+        "You can apply for a passport for a child without parent or guardian present. https://travel.state.gov/content/travel/en/passports/need-passport/under-16.htmlYou can apply for a passport for a child without parent or guardian present. https://travel.state.gov/content/travel/en/passports/need-passport/under-16.html",
+      point3: "Make sure someone you trust can get your medical information",
+      point4:
+        "If you have a health condition and someone will need your records, you should sign a HIPAA release form: https://www.immigrantdefenseproject.org/wp-content/uploads/2016/11/4.-HIPAA_auth_English.pdf",
+    },
+  },
 };
 
 export default en;

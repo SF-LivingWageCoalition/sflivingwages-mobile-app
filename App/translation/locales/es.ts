@@ -1,4 +1,4 @@
-import { Translations } from "./en";
+import type { Translations } from "./en";
 
 const es: Translations = {
   assistHomeScreen: {
@@ -115,6 +115,104 @@ const es: Translations = {
         "revocar o suspender certificados de registro, permisos o licencias",
       point3:
         "Un trabajador tiene derecho a denunciar una infracción al Oficina de Estándares Laborales que mantiene la identidad del trabajador confidencial.",
+    },
+  },
+  beReadyForICEScreen: {
+    title: "Esté Listo para ICE",
+    makeAPlan: {
+      title: "Hacer un Plan",
+      point1:
+        "Prepare un paquete que contenga información de emergencia importante. Para averiguar qué debe incluir en el paquete, vaya a la sección de recursos a continuación.",
+      point2:
+        "Tenga a alguien que confíe en él que mantenga su información de emergencia en un lugar seguro.",
+      point3:
+        "Designa a un adulto de confianza para cuidar de su hijo. Dale esa persona información sobre el horario del niño y la ubicación de las escuelas y otros lugares en los que puede estar.",
+      point4:
+        "Actualice toda la información de contacto y los formularios de autorización de escuela, guardería y actividades después de la escuela. Incluya los nombres de quién puede y quién no puede recoger a sus hijos.",
+      point5:
+        "Designa a alguien que traerá pruebas de sus vínculos con los Estados Unidos a la oficina de ICE.",
+      point6:
+        "Prepare un plan financiero para atender las facturas y los gastos si es necesario.",
+      point7: "Hable con su familia sobre el plan.",
+      point8:
+        "Siempre lleve una tarjeta telefónica. ICE no proporciona llamadas gratuitas si está en detención.",
+    },
+    whoToCall: {
+      title: "A quién llamar",
+      point1: "La Raza Centro Legal – (415) 575-3500",
+      point2:
+        "Centro de Trabajo para la Justicia de Inmigrantes (WE RISE SF) – (415) 440-8798",
+      point3: "Centro de Recursos Centroamericano – (415) 642-4400",
+      point4:
+        "San Francisco Legal Immigrant and Education Network- (415)282-6209 *115",
+      point5: "Nombre del abogado y número de teléfono",
+      point6: "Si necesita un abogado, llame al (415) 282-6209 ext.115",
+      point7: "Nombre y número de teléfono de contacto de emergencia",
+      point8: "Escuela / Guardería",
+      point9: "Empleador / Supervisor",
+      point10: "Amigo con documentos importantes",
+      point11: "Consulado",
+      point12: "Agencia de fianza",
+    },
+    ifICEArrives: {
+      title: "Si ICE Llega",
+      point1:
+        "Pídeles que deslizen una orden de búsqueda por debajo de la puerta o a través de una ventana.",
+      point2:
+        "No abra la puerta a menos que la orden de búsqueda tenga su nombre y dirección correctos y un juez lo firmó hace 10 días o menos.",
+      point3:
+        "Si fuerza la entrada, anote los nombres y números de identificación. Dígales “No consento de que estén en mi casa”. Si comienzan a buscar, dígales “No consento de su búsqueda”.",
+      point4:
+        "Manténgase en silencio y no hable con un agente de ICE. No responda a ninguna pregunta, especialmente sobre su lugar de nacimiento, su estado de inmigración o cómo entró a los Estados Unidos.",
+      point5:
+        "No mienta, muestre documentos falsos, entregue documentos extranjeros o presente una licencia AB 60.",
+      point6: "No firme nada sin un abogado.",
+    },
+    readyToRecord: {
+      title: "Listo para Grabar",
+      point1:
+        "Si hay un saqueo en su hogar, haga un registro de lo que pasó para dar a su abogado. Esta es una lista de verificación de lo que debe registrar - http://www.immdefense.org/wp-content/uploads/2016/03/home-raid-poster-ENG-2017.pdf.",
+      point2: "Si testifica un saqueo de ICE, llame al (415) 200-1548.",
+      point3:
+        "Conozca cómo usar el localizador de detenidos de ICE: https://locator.ice.gov. Esto enumera a las personas en detención, que son de 18 años o más.",
+    },
+    ifDetained: {
+      title: "Si es detenido",
+      point1: "Exige hacer una llamada telefónica y hablar con un abogado.",
+      point2:
+        "Exige hacer una llamada telefónica a su contacto de emergencia para organizar cuidadores para sus hijos.",
+      point3:
+        "Exige el derecho de ser informado de la cantidad de fianza y de llamar a una agencia de fianza.",
+      point4:
+        "ICE le asignará un número de registro extranjero o un número A. Anote el número y dígáselo a su contacto de emergencia, junto con el número del centro de detención. Pueden usarlo para rastrearle.",
+      point5:
+        "Póngase en contacto con la persona responsable de su familia y sus finanzas. Déjelo saber que está en detención.",
+      point6:
+        "Si es separado de sus hijos, pídale a su abogado que les dé un poder de abogado y un poder de guardianía. Si no puede pagar, pídale a su abogado que le ayude a obtener un poder de abogado y un poder de guardianía.",
+      point7:
+        "Dígale a su abogado que necesite ser liberado para cuidar de sus hijos, o si son tomados por los Servicios de Protección Infantil, que contacten su línea directa inmediatamente.",
+    },
+
+    resources: {
+      title: "Recursos",
+      point1:
+        "Informed Immigrant: Preguntas Frecuentes. Lo Que Todos los Inmigrantes Deben Saber, https://www.informedimmigrant.com/es/faq/",
+      point2:
+        "Immigrant Legal Resource Center: Plan Familiar en Caso de Emergencia, https://www.ilrc.org/resources/step-step-family-preparedness-plan",
+      point3:
+        "Immigrant Legal Resource Center: Plan de Protección Familiar, https://www.ilrc.org/plan-de-proteccion-familiar",
+      point4:
+        "National Immigration Law Center: Derechos, Otras Aplicaciones de Inmigración, https://www.nilc.org/get-involved/community-education-resources/know-your-rights/othimmenf/",
+    },
+    emergencyFile: {
+      title: "Archivo de Emergencia",
+      point1: "Obtenga pasaportes para niños menores de 16 años",
+      point2:
+        "Puede solicitar un pasaporte para un niño sin que el padre o tutor esté presente. https://travel.state.gov/content/travel/en/passports/need-passport/under-16.htmlPuede solicitar un pasaporte para un niño sin que el padre o tutor esté presente. https://travel.state.gov/content/travel/en/passports/need-passport/under-16.html",
+      point3:
+        "Asegúrese de que alguien de confianza pueda obtener su información médica",
+      point4:
+        "Si tiene una condición de salud y alguien necesitará sus registros, debe firmar un formulario de autorización HIPAA: https://www.immigrantdefenseproject.org/wp-content/uploads/2016/11/4.-HIPAA_auth_English.pdf",
     },
   },
 };

@@ -381,7 +381,6 @@ const WageRights: React.FC = () => {
                   {translate("wageRightsScreen.protectionsForWorkers.point1")}
                 </Text>
               </View>
-              {/* Top-level bullet 2 with nested sub-list */}
               <View style={styles.bulletItem}>
                 <Text style={styles.bulletPoint}>•</Text>
                 <Text style={styles.bulletText}>
