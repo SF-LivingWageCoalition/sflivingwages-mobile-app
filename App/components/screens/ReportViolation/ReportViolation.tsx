@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import Recaptcha from "react-native-recaptcha-that-works";
-import { EmailOptions, RecaptchaRef } from "../../../../App/types";
+import { EmailOptions, RecaptchaRef } from "../../../types";
 import { translate } from "../../../translation/i18n";
 
 const sendEmail = async (
@@ -48,7 +48,7 @@ const sendEmail = async (
   return Linking.openURL(url);
 };
 
-const AssistanceScreen: React.FC = () => {
+const ReportViolation: React.FC = () => {
   const [fullName, setFullName] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
   const [userPhone, setUserPhone] = useState<string>("");
@@ -410,4 +410,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AssistanceScreen;
+export default ReportViolation;

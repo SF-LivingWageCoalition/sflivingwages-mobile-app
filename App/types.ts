@@ -262,9 +262,3 @@ export type NewHomeScreenProps = {
 export type LogoHeaderProps = {
   navigation: NavigationProp<ParamListBase>;
 };
-
-export type AssistanceStackParamList = {
-  AssistanceHome: undefined;
-  AssistanceScreen: undefined;
-  WageRights: undefined;
-};

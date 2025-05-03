@@ -34,7 +34,7 @@ const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate("AssistanceScreen")}
+              onPress={() => navigation.navigate("ReportViolation")}
             >
               <Text style={styles.buttonText}>
                 {translate("assistHomeScreen.getAssistance")}

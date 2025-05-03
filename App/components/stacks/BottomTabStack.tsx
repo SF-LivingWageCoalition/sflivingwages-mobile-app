@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { BottomTabParamList } from "../../../App/types";
-import AssistanceScreen from "../screens/AssistanceScreen/AssistanceScreen";
+import ReportViolation from "../screens/ReportViolation/ReportViolation";
 import AssistanceHome from "../screens/AssistanceHome/AssistanceHome";
 import AuctionNav from "../screens/DonateScreen/AuctionNav";
 import DonateMoney from "../screens/DonateScreen/DonateMoney";
@@ -25,8 +25,8 @@ const AssistanceStackScreen = () => {
         component={AssistanceHome}
       />
       <AssistanceStack.Screen
-        name="AssistanceScreen"
-        component={AssistanceScreen}
+        name="ReportViolation"
+        component={ReportViolation}
       />
       <AssistanceStack.Screen name="WageRights" component={WageRights} />
     </AssistanceStack.Navigator>
