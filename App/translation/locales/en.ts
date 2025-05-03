@@ -4,6 +4,7 @@ const en = {
     subtitle: "Choose an option below to get help or learn about your rights",
     getAssistance: "Report Violation",
     wageRights: "Know Your Wage Rights",
+    beReadyForICE: "Be Ready for ICE",
   },
   assistScreen: {
     title: `We can assist you.`,

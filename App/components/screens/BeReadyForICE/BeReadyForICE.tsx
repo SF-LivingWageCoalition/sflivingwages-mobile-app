@@ -22,6 +22,7 @@ const BeReadyForICE: React.FC = () => {
     false,
     false,
     false,
+    false,
   ]);
 
   const toggleContent = (index: number) => {
@@ -53,7 +54,7 @@ const BeReadyForICE: React.FC = () => {
             </Text>
             <Image
               source={contentVisible[0] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={{ width: 24, height: 24, marginLeft: 8 }}
+              style={styles.arrow}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -121,7 +122,7 @@ const BeReadyForICE: React.FC = () => {
             </Text>
             <Image
               source={contentVisible[1] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={{ width: 24, height: 24, marginLeft: 8 }}
+              style={styles.arrow}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -213,7 +214,7 @@ const BeReadyForICE: React.FC = () => {
             </Text>
             <Image
               source={contentVisible[2] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={{ width: 24, height: 24, marginLeft: 8 }}
+              style={styles.arrow}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -269,7 +270,7 @@ const BeReadyForICE: React.FC = () => {
             </Text>
             <Image
               source={contentVisible[3] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={{ width: 24, height: 24, marginLeft: 8 }}
+              style={styles.arrow}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -307,7 +308,7 @@ const BeReadyForICE: React.FC = () => {
             </Text>
             <Image
               source={contentVisible[4] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={{ width: 24, height: 24, marginLeft: 8 }}
+              style={styles.arrow}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -369,7 +370,7 @@ const BeReadyForICE: React.FC = () => {
             </Text>
             <Image
               source={contentVisible[5] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={{ width: 24, height: 24, marginLeft: 8 }}
+              style={styles.arrow}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -405,19 +406,19 @@ const BeReadyForICE: React.FC = () => {
           {/* Emergency File Dropdown */}
           <TouchableOpacity
             style={styles.header}
-            onPress={() => toggleContent(5)}
+            onPress={() => toggleContent(6)}
             activeOpacity={0.8}
           >
             <Text style={styles.headerTitle}>
               {translate("beReadyForICEScreen.emergencyFile.title")}
             </Text>
             <Image
-              source={contentVisible[5] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={{ width: 24, height: 24, marginLeft: 8 }}
+              source={contentVisible[6] ? IC_ARR_UP : IC_ARR_DOWN}
+              style={styles.arrow}
               resizeMode="contain"
             />
           </TouchableOpacity>
-          <Collapsible collapsed={!contentVisible[5]}>
+          <Collapsible collapsed={!contentVisible[6]}>
             <View style={styles.bulletList}>
               <View style={styles.bulletItem}>
                 <Text style={styles.bulletPoint}>•</Text>
@@ -538,6 +539,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#333",
     lineHeight: 20,
+  },
+  arrow: {
+    width: 24,
+    height: 24,
+    marginLeft: 8,
   },
 });
 

@@ -9,6 +9,7 @@ import DonateMoney from "../screens/DonateScreen/DonateMoney";
 import NewHome from "../screens/HomeScreen/NewHome";
 import WageRights from "../screens/WageRights/WageRights";
 import { createStackNavigator } from "@react-navigation/stack";
+import BeReadyForICE from "../screens/BeReadyForICE/BeReadyForICE";
 
 // Create a stack navigator for the Assistance section
 const AssistanceStack = createStackNavigator();
@@ -29,6 +30,7 @@ const AssistanceStackScreen = () => {
         component={ReportViolation}
       />
       <AssistanceStack.Screen name="WageRights" component={WageRights} />
+      <AssistanceStack.Screen name="BeReadyForICE" component={BeReadyForICE} />
     </AssistanceStack.Navigator>
   );
 };

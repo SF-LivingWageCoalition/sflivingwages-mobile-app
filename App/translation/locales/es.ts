@@ -7,6 +7,7 @@ const es: Translations = {
       "Elija una opción a continuación para obtener ayuda o conocer sus derechos",
     getAssistance: "Denunciar una Infracción",
     wageRights: "Conozca Sus Derechos Salariales",
+    beReadyForICE: "Esté Listo para ICE",
   },
   assistScreen: {
     title: `Podemos ayudarte.`,

@@ -53,7 +53,7 @@ const WageRights: React.FC = () => {
             </Text>
             <Image
               source={contentVisible[0] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={{ width: 24, height: 24, marginLeft: 8 }}
+              style={styles.arrow}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -85,7 +85,7 @@ const WageRights: React.FC = () => {
             </Text>
             <Image
               source={contentVisible[1] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={{ width: 24, height: 24, marginLeft: 8 }}
+              style={styles.arrow}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -163,7 +163,7 @@ const WageRights: React.FC = () => {
             </Text>
             <Image
               source={contentVisible[2] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={{ width: 24, height: 24, marginLeft: 8 }}
+              style={styles.arrow}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -207,7 +207,7 @@ const WageRights: React.FC = () => {
             </Text>
             <Image
               source={contentVisible[3] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={{ width: 24, height: 24, marginLeft: 8 }}
+              style={styles.arrow}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -301,7 +301,7 @@ const WageRights: React.FC = () => {
             </Text>
             <Image
               source={contentVisible[4] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={{ width: 24, height: 24, marginLeft: 8 }}
+              style={styles.arrow}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -369,7 +369,7 @@ const WageRights: React.FC = () => {
             </Text>
             <Image
               source={contentVisible[5] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={{ width: 24, height: 24, marginLeft: 8 }}
+              style={styles.arrow}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -541,6 +541,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#333",
     lineHeight: 20,
+  },
+  arrow: {
+    width: 24,
+    height: 24,
+    marginLeft: 8,
   },
 });
 

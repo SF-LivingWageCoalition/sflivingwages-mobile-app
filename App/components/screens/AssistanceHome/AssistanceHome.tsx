@@ -49,6 +49,15 @@ const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
                 {translate("assistHomeScreen.wageRights")}
               </Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("BeReadyForICE")}
+            >
+              <Text style={styles.buttonText}>
+                {translate("assistHomeScreen.beReadyForICE")}
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
