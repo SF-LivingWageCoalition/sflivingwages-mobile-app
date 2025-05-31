@@ -21,6 +21,13 @@ const es: Translations = {
     review: "Por favor revisa tu información antes de enviar",
     submit: "Enviar",
     clear: "Limpiar",
+    validation: {
+      fullName: "Se requiere nombre completo",
+      userEmail: "Dirección de correo electrónico no válida",
+      userPhone: "Se requiere número de teléfono",
+      userPhoneLength: "El número de teléfono debe tener al menos 10 dígitos",
+      list: "Seleccione al menos una situación",
+    },
   },
 };
 
