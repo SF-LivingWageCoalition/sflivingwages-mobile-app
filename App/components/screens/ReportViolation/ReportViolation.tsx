@@ -15,7 +15,9 @@ import {
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import Recaptcha from "react-native-recaptcha-that-works";
-import { EmailOptions, RecaptchaRef } from "../../../../App/types";
+
+import { useNavigation } from '@react-navigation/native';
+import { EmailOptions, RecaptchaRef } from "../../../types";
 import { translate } from "../../../translation/i18n";
 import { assistanceSchema } from "./assistanceSchema";
 
@@ -49,7 +51,8 @@ const sendEmail = async (
   return Linking.openURL(url);
 };
 
-const AssistanceScreen: React.FC = () => {
+const ReportViolation: React.FC = () => {
+  const navigation = useNavigation();
   const [fullName, setFullName] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
   const [userPhone, setUserPhone] = useState<string>("");
@@ -166,6 +169,12 @@ const AssistanceScreen: React.FC = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
+        <TouchableOpacity
+          style={styles.circleBackButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.backArrow}>{'<'}</Text>
+        </TouchableOpacity>
         <View style={styles.card}>
           <View style={styles.logoContainer}>
             <Image
@@ -312,6 +321,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  circleBackButton: {
+    position: 'absolute',
+    top: 40,
+    left: 20,
+    backgroundColor: '#D31623',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  backArrow: {
+    color: '#fff',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
   intro: {
     marginLeft: 20,
     marginTop: 10,
@@ -430,4 +461,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AssistanceScreen;
+export default ReportViolation;

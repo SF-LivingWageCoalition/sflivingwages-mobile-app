@@ -2,10 +2,38 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { BottomTabParamList } from "../../../App/types";
-import AssistanceScreen from "../screens/AssistanceScreen/AssistanceScreen";
+import ReportViolation from "../screens/ReportViolation/ReportViolation";
+import AssistanceHome from "../screens/AssistanceHome/AssistanceHome";
 import AuctionNav from "../screens/DonateScreen/AuctionNav";
 import DonateMoney from "../screens/DonateScreen/DonateMoney";
 import NewHome from "../screens/HomeScreen/NewHome";
+import WageRights from "../screens/WageRights/WageRights";
+import { createStackNavigator } from "@react-navigation/stack";
+import BeReadyForICE from "../screens/BeReadyForICE/BeReadyForICE";
+
+// Create a stack navigator for the Assistance section
+const AssistanceStack = createStackNavigator();
+
+const AssistanceStackScreen = () => {
+  return (
+    <AssistanceStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <AssistanceStack.Screen
+        name="AssistanceHome"
+        component={AssistanceHome}
+      />
+      <AssistanceStack.Screen
+        name="ReportViolation"
+        component={ReportViolation}
+      />
+      <AssistanceStack.Screen name="WageRights" component={WageRights} />
+      <AssistanceStack.Screen name="BeReadyForICE" component={BeReadyForICE} />
+    </AssistanceStack.Navigator>
+  );
+};
 
 /**
  * Bottom Tab Navigator
@@ -61,7 +89,7 @@ const BottomTabStack: React.FC = () => {
 
       <Tab.Screen
         name="Assist"
-        component={AssistanceScreen}
+        component={AssistanceStackScreen}
         options={{
           headerShown: false,
           tabBarLabel: "Assist",
