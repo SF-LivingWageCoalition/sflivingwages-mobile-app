@@ -17,6 +17,7 @@ import { CheckBox } from "react-native-elements";
 import Recaptcha from "react-native-recaptcha-that-works";
 import { EmailOptions, RecaptchaRef } from "../../../types";
 import { translate } from "../../../translation/i18n";
+import { assistanceSchema } from "./assistanceSchema";
 
 const sendEmail = async (
   to: string,
@@ -68,6 +69,8 @@ const ReportViolation: React.FC = () => {
   );
   const [list, setAssistList] = useState<string[]>([]);
 
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
   const recaptcha = useRef<RecaptchaRef>(null);
 
   const handledState = (position: any, option: string): void => {
@@ -86,39 +89,40 @@ const ReportViolation: React.FC = () => {
   };
 
   const onSubmitData = (): void => {
-    if (
-      fullName.length === 0 ||
-      userEmail.length === 0 ||
-      userPhone.length === 0 ||
-      list.length === 0 ||
-      !valid
-    ) {
+    // Zod validation
+    const result = assistanceSchema.safeParse({
+      fullName,
+      userEmail,
+      userPhone: userPhone.replace(/\D/g, ""), // Only digits
+      list,
+    });
+    if (!result.success) {
+      const fieldErrors: { [key: string]: string } = {};
+      result.error.errors.forEach((err) => {
+        if (err.path[0]) fieldErrors[err.path[0]] = err.message;
+      });
+      setErrors(fieldErrors);
       setEmpty(true);
       return;
     }
-
-    if (
-      valid &&
-      fullName.length > 0 &&
-      userEmail.length > 0 &&
-      userPhone.length > 0 &&
-      list.length > 0
-    ) {
-      setEmpty(false);
-      const strBodyFormat = `
-            \nSan Francisco Living Wage Coalition Assist\n\n\nName :\t\t${fullName}\n\nEmail :\t\t${userEmail}\n\nPhone :\t\t${userPhone}\n\nSituation :\t\t${list.join(
-        ", "
-      )}
-            `;
-
-      sendEmail(
-        SEND_TO, // San Francisco Living Wage Coalition Email.
-        "ASSIST",
-        strBodyFormat
-      ).then(() => {
-        resetAll();
-      });
+    setErrors({});
+    if (!valid) {
+      setEmpty(true);
+      return;
     }
+    setEmpty(false);
+    const strBodyFormat = `
+            \nSan Francisco Living Wage Coalition Assist\n\n\nName :\t\t${fullName}\n\nEmail :\t\t${userEmail}\n\nPhone :\t\t${userPhone}\n\nSituation :\t\t${list.join(
+      ", "
+    )}
+            `;
+    sendEmail(
+      SEND_TO, // San Francisco Living Wage Coalition Email.
+      "ASSIST",
+      strBodyFormat
+    ).then(() => {
+      resetAll();
+    });
   };
 
   const resetAll = (): void => {
@@ -184,6 +188,9 @@ const ReportViolation: React.FC = () => {
               onChangeText={(fullNameInput) => setFullName(fullNameInput)}
               value={fullName}
             />
+            {errors.fullName && (
+              <Text style={styles.inputError}>{errors.fullName}</Text>
+            )}
           </View>
 
           <View style={styles.inputContainer}>
@@ -197,6 +204,9 @@ const ReportViolation: React.FC = () => {
               onChangeText={(userEmailInput) => setUserEmail(userEmailInput)}
               value={userEmail}
             />
+            {errors.userEmail && (
+              <Text style={styles.inputError}>{errors.userEmail}</Text>
+            )}
           </View>
 
           <View style={styles.inputContainer}>
@@ -214,6 +224,9 @@ const ReportViolation: React.FC = () => {
               }
               value={userPhone}
             />
+            {errors.userPhone && (
+              <Text style={styles.inputError}>{errors.userPhone}</Text>
+            )}
           </View>
           <Text style={styles.instruction}>
             {translate("assistScreen.options")}
@@ -231,6 +244,7 @@ const ReportViolation: React.FC = () => {
               />
             );
           })}
+          {errors.list && <Text style={styles.inputError}>{errors.list}</Text>}
 
           {isEmpty ? (
             <Text style={styles.recaptchaMessage}>
@@ -407,6 +421,12 @@ const styles = StyleSheet.create({
     alignContent: "center",
     alignItems: "center",
     backgroundColor: "#D31623",
+  },
+  inputError: {
+    color: "#D31623",
+    fontSize: 13,
+    marginLeft: 10,
+    marginTop: 2,
   },
 });
 

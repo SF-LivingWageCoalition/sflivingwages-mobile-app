@@ -26,6 +26,13 @@ const en = {
     review: "Please review your information before you submit",
     submit: "Submit",
     clear: "Clear",
+    validation: {
+      fullName: "Full name is required",
+      userEmail: "Invalid email address",
+      userPhone: "Phone number is required",
+      userPhoneLength: "Phone number must be at least 10 digits",
+      list: "Select at least one situation",
+    },
   },
   wageRightsScreen: {
     title: "Know Your Wage Rights",
