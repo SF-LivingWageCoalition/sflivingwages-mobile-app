@@ -6,10 +6,12 @@ import {
   ScrollView,
   Image,
   ImageSourcePropType,
+  TouchableOpacity,
 } from "react-native";
 import Collapsible from "react-native-collapsible";
-import { TouchableOpacity } from "react-native";
 import { translate } from "../../../translation/i18n";
+import BulletItem from "../../common/BulletItem";
+import SubBulletItem from "../../common/SubBulletItem";
 
 const IC_ARR_DOWN: ImageSourcePropType = require("../DonateScreen/icons/ic_arr_down.png");
 const IC_ARR_UP: ImageSourcePropType = require("../DonateScreen/icons/ic_arr_up.png");
@@ -59,18 +61,12 @@ const WageRights: React.FC = () => {
           </TouchableOpacity>
           <Collapsible collapsed={!contentVisible[0]}>
             <View style={styles.bulletList}>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("wageRightsScreen.minimumWage.point1")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("wageRightsScreen.minimumWage.point2")}
-                </Text>
-              </View>
+              <BulletItem
+                text={translate("wageRightsScreen.minimumWage.point1")}
+              />
+              <BulletItem
+                text={translate("wageRightsScreen.minimumWage.point2")}
+              />
             </View>
           </Collapsible>
 
@@ -92,63 +88,39 @@ const WageRights: React.FC = () => {
           <Collapsible collapsed={!contentVisible[1]}>
             <View style={styles.bulletList}>
               {/* Top-level bullet 1 */}
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("wageRightsScreen.minimumCompensation.point1")}
-                </Text>
-              </View>
+              <BulletItem
+                text={translate("wageRightsScreen.minimumCompensation.point1")}
+              />
               {/* Top-level bullet 2 */}
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("wageRightsScreen.minimumCompensation.point2")}
-                </Text>
-              </View>
+              <BulletItem
+                text={translate("wageRightsScreen.minimumCompensation.point2")}
+              />
 
               {/* Top-level bullet 3 with nested sub-list */}
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("wageRightsScreen.minimumCompensation.point3")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <View style={{ flex: 1 }}>
-                  {/* Sub-bullets */}
-                  <View style={styles.subBulletItem}>
-                    <Text style={styles.subBulletPoint}>•</Text>
-                    <Text style={styles.subBulletText}>
-                      {translate(
-                        "wageRightsScreen.minimumCompensation.subPoint1"
-                      )}
-                    </Text>
-                  </View>
-                  <View style={styles.subBulletItem}>
-                    <Text style={styles.subBulletPoint}>•</Text>
-                    <Text style={styles.subBulletText}>
-                      {translate(
-                        "wageRightsScreen.minimumCompensation.subPoint2"
-                      )}
-                    </Text>
-                  </View>
-                  <View style={styles.subBulletItem}>
-                    <Text style={styles.subBulletPoint}>•</Text>
-                    <Text style={styles.subBulletText}>
-                      {translate(
-                        "wageRightsScreen.minimumCompensation.subPoint3"
-                      )}
-                    </Text>
-                  </View>
-                </View>
+              <BulletItem
+                text={translate("wageRightsScreen.minimumCompensation.point3")}
+              />
+              <View style={{ marginLeft: 20 }}>
+                <SubBulletItem
+                  text={translate(
+                    "wageRightsScreen.minimumCompensation.subPoint1"
+                  )}
+                />
+                <SubBulletItem
+                  text={translate(
+                    "wageRightsScreen.minimumCompensation.subPoint2"
+                  )}
+                />
+                <SubBulletItem
+                  text={translate(
+                    "wageRightsScreen.minimumCompensation.subPoint3"
+                  )}
+                />
               </View>
               {/* Top-level bullet 4 */}
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("wageRightsScreen.minimumCompensation.point4")}
-                </Text>
-              </View>
+              <BulletItem
+                text={translate("wageRightsScreen.minimumCompensation.point4")}
+              />
             </View>
           </Collapsible>
 
@@ -169,30 +141,18 @@ const WageRights: React.FC = () => {
           </TouchableOpacity>
           <Collapsible collapsed={!contentVisible[2]}>
             <View style={styles.bulletList}>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("wageRightsScreen.sickLeave.point1")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("wageRightsScreen.sickLeave.point2")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("wageRightsScreen.sickLeave.point3")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("wageRightsScreen.sickLeave.point4")}
-                </Text>
-              </View>
+              <BulletItem
+                text={translate("wageRightsScreen.sickLeave.point1")}
+              />
+              <BulletItem
+                text={translate("wageRightsScreen.sickLeave.point2")}
+              />
+              <BulletItem
+                text={translate("wageRightsScreen.sickLeave.point3")}
+              />
+              <BulletItem
+                text={translate("wageRightsScreen.sickLeave.point4")}
+              />
             </View>
           </Collapsible>
 
@@ -214,79 +174,49 @@ const WageRights: React.FC = () => {
           <Collapsible collapsed={!contentVisible[3]}>
             <View style={styles.bulletList}>
               {/* Top-level bullet 1 */}
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("wageRightsScreen.healthCareSecurity.point1")}
-                </Text>
-              </View>
+              <BulletItem
+                text={translate("wageRightsScreen.healthCareSecurity.point1")}
+              />
 
               {/* Top-level bullet 2 with nested sub-list */}
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("wageRightsScreen.healthCareSecurity.point2")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <View style={{ flex: 1 }}>
-                  {/* Sub-bullets */}
-                  <View style={styles.subBulletItem}>
-                    <Text style={styles.subBulletPoint}>•</Text>
-                    <Text style={styles.subBulletText}>
-                      {translate(
-                        "wageRightsScreen.healthCareSecurity.subPoint1"
-                      )}
-                    </Text>
-                  </View>
-                  <View style={styles.subBulletItem}>
-                    <Text style={styles.subBulletPoint}>•</Text>
-                    <Text style={styles.subBulletText}>
-                      {translate(
-                        "wageRightsScreen.healthCareSecurity.subPoint2"
-                      )}
-                    </Text>
-                  </View>
-                  <View style={styles.subBulletItem}>
-                    <Text style={styles.subBulletPoint}>•</Text>
-                    <Text style={styles.subBulletText}>
-                      {translate(
-                        "wageRightsScreen.healthCareSecurity.subPoint3"
-                      )}
-                    </Text>
-                  </View>
-                  <View style={styles.subBulletItem}>
-                    <Text style={styles.subBulletPoint}>•</Text>
-                    <Text style={styles.subBulletText}>
-                      {translate(
-                        "wageRightsScreen.healthCareSecurity.subPoint4"
-                      )}
-                    </Text>
-                  </View>
-                  <View style={styles.subBulletItem}>
-                    <Text style={styles.subBulletPoint}>•</Text>
-                    <Text style={styles.subBulletText}>
-                      {translate(
-                        "wageRightsScreen.healthCareSecurity.subPoint5"
-                      )}
-                    </Text>
-                  </View>
-                </View>
+              <BulletItem
+                text={translate("wageRightsScreen.healthCareSecurity.point2")}
+              />
+              <View style={{ marginLeft: 20 }}>
+                <SubBulletItem
+                  text={translate(
+                    "wageRightsScreen.healthCareSecurity.subPoint1"
+                  )}
+                />
+                <SubBulletItem
+                  text={translate(
+                    "wageRightsScreen.healthCareSecurity.subPoint2"
+                  )}
+                />
+                <SubBulletItem
+                  text={translate(
+                    "wageRightsScreen.healthCareSecurity.subPoint3"
+                  )}
+                />
+                <SubBulletItem
+                  text={translate(
+                    "wageRightsScreen.healthCareSecurity.subPoint4"
+                  )}
+                />
+                <SubBulletItem
+                  text={translate(
+                    "wageRightsScreen.healthCareSecurity.subPoint5"
+                  )}
+                />
               </View>
               {/* Top-level bullet 3 */}
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("wageRightsScreen.healthCareSecurity.point3")}
-                </Text>
-              </View>
+              <BulletItem
+                text={translate("wageRightsScreen.healthCareSecurity.point3")}
+              />
               {/* Top-level bullet 4 */}
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("wageRightsScreen.healthCareSecurity.point4")}
-                </Text>
-              </View>
+              <BulletItem
+                text={translate("wageRightsScreen.healthCareSecurity.point4")}
+              />
             </View>
           </Collapsible>
 
@@ -308,53 +238,35 @@ const WageRights: React.FC = () => {
           <Collapsible collapsed={!contentVisible[4]}>
             <View style={styles.bulletList}>
               {/* Top-level bullet 1 with nested sub-list */}
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate(
-                    "wageRightsScreen.healthCareAccountability.point1"
+              <BulletItem
+                text={translate(
+                  "wageRightsScreen.healthCareAccountability.point1"
+                )}
+              />
+              <View style={{ marginLeft: 20 }}>
+                <SubBulletItem
+                  text={translate(
+                    "wageRightsScreen.healthCareAccountability.subPoint1"
                   )}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <View style={{ flex: 1 }}>
-                  {/* Sub-bullets */}
-                  <View style={styles.subBulletItem}>
-                    <Text style={styles.subBulletPoint}>•</Text>
-                    <Text style={styles.subBulletText}>
-                      {translate(
-                        "wageRightsScreen.healthCareAccountability.subPoint1"
-                      )}
-                    </Text>
-                  </View>
-                  <View style={styles.subBulletItem}>
-                    <Text style={styles.subBulletPoint}>•</Text>
-                    <Text style={styles.subBulletText}>
-                      {translate(
-                        "wageRightsScreen.healthCareAccountability.subPoint2"
-                      )}
-                    </Text>
-                  </View>
-                </View>
+                />
+                <SubBulletItem
+                  text={translate(
+                    "wageRightsScreen.healthCareAccountability.subPoint2"
+                  )}
+                />
               </View>
               {/* Top-level bullet 2 */}
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate(
-                    "wageRightsScreen.healthCareAccountability.point2"
-                  )}
-                </Text>
-              </View>
+              <BulletItem
+                text={translate(
+                  "wageRightsScreen.healthCareAccountability.point2"
+                )}
+              />
               {/* Top-level bullet 3 */}
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate(
-                    "wageRightsScreen.healthCareAccountability.point3"
-                  )}
-                </Text>
-              </View>
+              <BulletItem
+                text={translate(
+                  "wageRightsScreen.healthCareAccountability.point3"
+                )}
+              />
             </View>
           </Collapsible>
 
@@ -375,77 +287,53 @@ const WageRights: React.FC = () => {
           </TouchableOpacity>
           <Collapsible collapsed={!contentVisible[5]}>
             <View style={styles.bulletList}>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("wageRightsScreen.protectionsForWorkers.point1")}
-                </Text>
+              <BulletItem
+                text={translate(
+                  "wageRightsScreen.protectionsForWorkers.point1"
+                )}
+              />
+              <BulletItem
+                text={translate(
+                  "wageRightsScreen.protectionsForWorkers.point2"
+                )}
+              />
+              <View style={{ marginLeft: 20 }}>
+                <SubBulletItem
+                  text={translate(
+                    "wageRightsScreen.protectionsForWorkers.subPoint1"
+                  )}
+                />
+                <SubBulletItem
+                  text={translate(
+                    "wageRightsScreen.protectionsForWorkers.subPoint2"
+                  )}
+                />
+                <SubBulletItem
+                  text={translate(
+                    "wageRightsScreen.protectionsForWorkers.subPoint3"
+                  )}
+                />
+                <SubBulletItem
+                  text={translate(
+                    "wageRightsScreen.protectionsForWorkers.subPoint4"
+                  )}
+                />
+                <SubBulletItem
+                  text={translate(
+                    "wageRightsScreen.protectionsForWorkers.subPoint5"
+                  )}
+                />
+                <SubBulletItem
+                  text={translate(
+                    "wageRightsScreen.protectionsForWorkers.subPoint6"
+                  )}
+                />
               </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("wageRightsScreen.protectionsForWorkers.point2")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <View style={{ flex: 1 }}>
-                  {/* Sub-bullets */}
-                  <View style={styles.subBulletItem}>
-                    <Text style={styles.subBulletPoint}>•</Text>
-                    <Text style={styles.subBulletText}>
-                      {translate(
-                        "wageRightsScreen.protectionsForWorkers.subPoint1"
-                      )}
-                    </Text>
-                  </View>
-                  <View style={styles.subBulletItem}>
-                    <Text style={styles.subBulletPoint}>•</Text>
-                    <Text style={styles.subBulletText}>
-                      {translate(
-                        "wageRightsScreen.protectionsForWorkers.subPoint2"
-                      )}
-                    </Text>
-                  </View>
-                  <View style={styles.subBulletItem}>
-                    <Text style={styles.subBulletPoint}>•</Text>
-                    <Text style={styles.subBulletText}>
-                      {translate(
-                        "wageRightsScreen.protectionsForWorkers.subPoint3"
-                      )}
-                    </Text>
-                  </View>
-                  <View style={styles.subBulletItem}>
-                    <Text style={styles.subBulletPoint}>•</Text>
-                    <Text style={styles.subBulletText}>
-                      {translate(
-                        "wageRightsScreen.protectionsForWorkers.subPoint4"
-                      )}
-                    </Text>
-                  </View>
-                  <View style={styles.subBulletItem}>
-                    <Text style={styles.subBulletPoint}>•</Text>
-                    <Text style={styles.subBulletText}>
-                      {translate(
-                        "wageRightsScreen.protectionsForWorkers.subPoint5"
-                      )}
-                    </Text>
-                  </View>
-                  <View style={styles.subBulletItem}>
-                    <Text style={styles.subBulletPoint}>•</Text>
-                    <Text style={styles.subBulletText}>
-                      {translate(
-                        "wageRightsScreen.protectionsForWorkers.subPoint6"
-                      )}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("wageRightsScreen.protectionsForWorkers.point3")}
-                </Text>
-              </View>
+              <BulletItem
+                text={translate(
+                  "wageRightsScreen.protectionsForWorkers.point3"
+                )}
+              />
             </View>
           </Collapsible>
         </View>

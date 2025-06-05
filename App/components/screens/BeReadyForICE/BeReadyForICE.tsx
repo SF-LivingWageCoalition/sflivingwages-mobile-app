@@ -10,6 +10,8 @@ import {
 import Collapsible from "react-native-collapsible";
 import { TouchableOpacity } from "react-native";
 import { translate } from "../../../translation/i18n";
+import BulletItem from "../../common/BulletItem";
+import SubBulletItem from "../../common/SubBulletItem";
 
 const IC_ARR_DOWN: ImageSourcePropType = require("../DonateScreen/icons/ic_arr_down.png");
 const IC_ARR_UP: ImageSourcePropType = require("../DonateScreen/icons/ic_arr_up.png");
@@ -60,54 +62,30 @@ const BeReadyForICE: React.FC = () => {
           </TouchableOpacity>
           <Collapsible collapsed={!contentVisible[0]}>
             <View style={styles.bulletList}>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.makeAPlan.point1")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.makeAPlan.point2")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.makeAPlan.point3")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.makeAPlan.point4")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.makeAPlan.point5")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.makeAPlan.point6")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.makeAPlan.point7")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.makeAPlan.point8")}
-                </Text>
-              </View>
+              <BulletItem
+                text={translate("beReadyForICEScreen.makeAPlan.point1")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.makeAPlan.point2")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.makeAPlan.point3")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.makeAPlan.point4")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.makeAPlan.point5")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.makeAPlan.point6")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.makeAPlan.point7")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.makeAPlan.point8")}
+              />
             </View>
           </Collapsible>
 
@@ -128,78 +106,42 @@ const BeReadyForICE: React.FC = () => {
           </TouchableOpacity>
           <Collapsible collapsed={!contentVisible[1]}>
             <View style={styles.bulletList}>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.whoToCall.point1")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.whoToCall.point2")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.whoToCall.point3")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.whoToCall.point4")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.whoToCall.point5")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.whoToCall.point6")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.whoToCall.point7")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.whoToCall.point8")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.whoToCall.point9")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.whoToCall.point10")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.whoToCall.point11")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.whoToCall.point12")}
-                </Text>
-              </View>
+              <BulletItem
+                text={translate("beReadyForICEScreen.whoToCall.point1")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.whoToCall.point2")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.whoToCall.point3")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.whoToCall.point4")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.whoToCall.point5")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.whoToCall.point6")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.whoToCall.point7")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.whoToCall.point8")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.whoToCall.point9")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.whoToCall.point10")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.whoToCall.point11")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.whoToCall.point12")}
+              />
             </View>
           </Collapsible>
 
@@ -220,42 +162,24 @@ const BeReadyForICE: React.FC = () => {
           </TouchableOpacity>
           <Collapsible collapsed={!contentVisible[2]}>
             <View style={styles.bulletList}>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.ifICEArrives.point1")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.ifICEArrives.point2")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.ifICEArrives.point3")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.ifICEArrives.point4")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.ifICEArrives.point5")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.ifICEArrives.point6")}
-                </Text>
-              </View>
+              <BulletItem
+                text={translate("beReadyForICEScreen.ifICEArrives.point1")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.ifICEArrives.point2")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.ifICEArrives.point3")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.ifICEArrives.point4")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.ifICEArrives.point5")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.ifICEArrives.point6")}
+              />
             </View>
           </Collapsible>
 
@@ -276,24 +200,15 @@ const BeReadyForICE: React.FC = () => {
           </TouchableOpacity>
           <Collapsible collapsed={!contentVisible[3]}>
             <View style={styles.bulletList}>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.readyToRecord.point1")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.readyToRecord.point2")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.readyToRecord.point3")}
-                </Text>
-              </View>
+              <BulletItem
+                text={translate("beReadyForICEScreen.readyToRecord.point1")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.readyToRecord.point2")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.readyToRecord.point3")}
+              />
             </View>
           </Collapsible>
 
@@ -314,48 +229,27 @@ const BeReadyForICE: React.FC = () => {
           </TouchableOpacity>
           <Collapsible collapsed={!contentVisible[4]}>
             <View style={styles.bulletList}>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.ifDetained.point1")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.ifDetained.point2")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.ifDetained.point3")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.ifDetained.point4")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.ifDetained.point5")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.ifDetained.point6")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.ifDetained.point7")}
-                </Text>
-              </View>
+              <BulletItem
+                text={translate("beReadyForICEScreen.ifDetained.point1")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.ifDetained.point2")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.ifDetained.point3")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.ifDetained.point4")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.ifDetained.point5")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.ifDetained.point6")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.ifDetained.point7")}
+              />
             </View>
           </Collapsible>
 
@@ -376,30 +270,18 @@ const BeReadyForICE: React.FC = () => {
           </TouchableOpacity>
           <Collapsible collapsed={!contentVisible[5]}>
             <View style={styles.bulletList}>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.resources.point1")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.resources.point2")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.resources.point3")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.resources.point4")}
-                </Text>
-              </View>
+              <BulletItem
+                text={translate("beReadyForICEScreen.resources.point1")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.resources.point2")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.resources.point3")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.resources.point4")}
+              />
             </View>
           </Collapsible>
 
@@ -420,30 +302,18 @@ const BeReadyForICE: React.FC = () => {
           </TouchableOpacity>
           <Collapsible collapsed={!contentVisible[6]}>
             <View style={styles.bulletList}>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.emergencyFile.point1")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.emergencyFile.point2")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.emergencyFile.point3")}
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bulletPoint}>•</Text>
-                <Text style={styles.bulletText}>
-                  {translate("beReadyForICEScreen.emergencyFile.point4")}
-                </Text>
-              </View>
+              <BulletItem
+                text={translate("beReadyForICEScreen.emergencyFile.point1")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.emergencyFile.point2")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.emergencyFile.point3")}
+              />
+              <BulletItem
+                text={translate("beReadyForICEScreen.emergencyFile.point4")}
+              />
             </View>
           </Collapsible>
         </View>
