@@ -3758,22 +3758,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-native@npm:~0.72.0":
+"@types/react-native@npm:~0.72.8":
   version: 0.72.8
   resolution: "@types/react-native@npm:0.72.8"
   dependencies:
     "@react-native/virtualized-lists": "npm:^0.72.4"
     "@types/react": "npm:*"
   checksum: 10c0/2dde171c2331ac8f6102f9b7a88616c695d158d3140e7b7aee3a393e3645f2aaa202b3411ae371fbbcd28386459fca8d47bd5d3801a0adfdd8815a8ba5c0d5fe
-  languageName: node
-  linkType: hard
-
-"@types/react-navigation@npm:^3.4.0":
-  version: 3.4.0
-  resolution: "@types/react-navigation@npm:3.4.0"
-  dependencies:
-    react-navigation: "npm:*"
-  checksum: 10c0/0164a4e2a312f7019c052e35c81d786ee263c5ab7deb0e641e192636671b586d9c4a32ff253527bf75466fc2a695c4457514bc3af4c697a9f709b132d5e0e18b
   languageName: node
   linkType: hard
 
@@ -11232,13 +11223,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-navigation@npm:*":
-  version: 5.0.0
-  resolution: "react-navigation@npm:5.0.0"
-  checksum: 10c0/dd385a39f31d033de138e1012269c80ab65b0db03a2f5958347908a479f667090751047d123f2fced911088fb28bb19dfcda485c10cd892e85f45e6f15c0fc91
-  languageName: node
-  linkType: hard
-
 "react-refresh@npm:^0.14.0, react-refresh@npm:^0.14.2":
   version: 0.14.2
   resolution: "react-refresh@npm:0.14.2"
@@ -11886,8 +11870,7 @@ __metadata:
     "@react-navigation/stack": "npm:^6.3.2"
     "@types/i18n-js": "npm:^4.0.1"
     "@types/react": "npm:~19.0.10"
-    "@types/react-native": "npm:~0.72.0"
-    "@types/react-navigation": "npm:^3.4.0"
+    "@types/react-native": "npm:~0.72.8"
     "@typescript-eslint/eslint-plugin": "npm:^6.0.0"
     "@typescript-eslint/parser": "npm:^6.0.0"
     accordion-collapse-react-native: "npm:^1.1.1"
