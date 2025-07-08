@@ -140,7 +140,6 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 <TouchableOpacity
                   onPress={() =>
                     navigation.navigate("WhoWeAre")
-                    // Linking.openURL("https://www.livingwage-sf.org/who-we-are/")
                   }
                   style={styles.button}
                 >
