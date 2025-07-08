@@ -7,6 +7,7 @@ import ModalScreen from "./App/components/screens/DonateScreen/ModalScreen";
 import Events from "./App/components/screens/HomeScreen/EventListScreen";
 import BottomTabStack from "./App/components/stacks/BottomTabStack";
 import { RootStackParamList } from "./App/types";
+import WhoWeAre from "./App/components/screens/HomeScreen/WhoWeAreScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -34,6 +35,7 @@ export default class App extends React.Component {
                 initialParams={{ image: "" }}
               />
               <Stack.Screen name="Event" component={Events} />
+              <Stack.Screen name="WhoWeAre" options={{ title: "Who We Are" }} component={WhoWeAre} />
             </Stack.Navigator>
           </NativeBaseProvider>
         </NavigationContainer>
