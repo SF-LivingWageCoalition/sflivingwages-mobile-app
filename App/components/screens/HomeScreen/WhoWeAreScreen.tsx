@@ -69,7 +69,7 @@ const WhoWeAre: React.FC = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView>
+            <ScrollView style={styles.scrollView}>
                 <View>
                     <View style={styles.logoContainer}>
                         <Image source={require("./../../../../assets/sflwc_logo_finaltemp.png")} style={styles.logo} />
@@ -95,6 +95,10 @@ const WhoWeAre: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         padding: 24,
+        flex: 1
+    },
+    scrollView: {
+        flex: 1,
     },
     logoContainer: {
         padding: 20,
