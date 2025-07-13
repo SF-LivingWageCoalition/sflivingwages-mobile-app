@@ -7,7 +7,7 @@ import ModalScreen from "./App/components/screens/DonateScreen/ModalScreen";
 import Events from "./App/components/screens/HomeScreen/EventListScreen";
 import BottomTabStack from "./App/components/stacks/BottomTabStack";
 import { RootStackParamList } from "./App/types";
-import WhoWeAre from "./App/components/screens/HomeScreen/WhoWeAreScreen";
+import WhoWeAre from "./App/components/screens/WhoWeAreScreen/WhoWeAreScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
