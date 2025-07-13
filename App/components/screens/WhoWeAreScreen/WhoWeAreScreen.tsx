@@ -23,8 +23,8 @@ const WhoWeAre: React.FC = () => {
                         <Image source={logo.src} style={styles.logo} />
                     </View>
                     <View>
-                        {bodyText.map(({ bodyText }) => (
-                            <Text style={styles.bodyText}>{bodyText}</Text>
+                        {bodyText.map((bodyText) => (
+                            <Text style={styles.bodyText} key={bodyText.id}>{bodyText.text}</Text>
                         ))}
                     </View>
                     <View style={styles.memberListContainer}>
