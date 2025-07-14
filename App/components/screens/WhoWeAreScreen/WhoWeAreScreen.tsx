@@ -13,7 +13,7 @@ const WhoWeAre: React.FC = () => {
     // SFLWC Logo
     const logo = {
         src: require("./../../../../assets/sflwc_logo_finaltemp.png")
-    }
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -42,7 +42,7 @@ const WhoWeAre: React.FC = () => {
             </ScrollView>
         </SafeAreaView>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -86,6 +86,6 @@ const styles = StyleSheet.create({
     memberTitleText: {
         fontSize: 14
     }
-})
+});
 
 export default WhoWeAre;
