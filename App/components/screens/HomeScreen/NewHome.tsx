@@ -50,8 +50,8 @@ const CarouselImageSmall: React.FC<CarouselImageProps> = ({
         imageStyle={{ borderRadius: 10 }}
       >
         <View style={styles.containerBody}>
-          <Text style={styles.textCampaingsImg}>
-            {image.title.toUpperCase()}
+          <Text style={styles.textCampaignsImg}>
+            {image.title}
           </Text>
         </View>
       </ImageBackground>
@@ -80,7 +80,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
   ];
 
   // Images for the campaigns section
-  const newsImages = [
+  const campaignImages = [
     {
       id: 1,
       src: require("./../../../../assets/welfare.jpg"),
@@ -91,19 +91,19 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
     {
       id: 2,
       src: require("./../../../../assets/public-sector.png"),
-      title: "Protect Public Sector and union jobs",
+      title: "Protect Public Sector and Union Jobs",
       destination: "https://www.livingwage-sf.org/protect-public-sector-jobs/",
     },
     {
       id: 3,
       src: require("./../../../../assets/Encuentro_2017_021.jpg"),
-      title: "end mass incarceration and prison labor",
+      title: "End Mass Incarceration and Prison Labor",
       destination: "https://www.livingwage-sf.org/mass-incarceration/",
     },
     {
       id: 4,
       src: require("./../../../../assets/immigrant.jpg"),
-      title: "IMMIGRATION REFORM",
+      title: "Immigration Reform",
       destination: "https://www.livingwage-sf.org/immigration-reform/",
     },
     {
@@ -116,7 +116,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
     {
       id: 6,
       src: require("./../../../../assets/campaign3_background.jpg"),
-      title: "RAISE WAGES",
+      title: "Raise Wages",
       destination: "https://www.livingwage-sf.org/raising-wages/",
     },
   ];
@@ -181,7 +181,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
 
           {/* Campaigns section */}
           <View style={styles.containerBody}>
-            <Text style={{ ...styles.titles, marginTop: 12 }}>Campaigns</Text>
+            <Text style={{ ...styles.titles, marginTop: 12, marginBottom: 30 }}>Campaigns</Text>
             <Swiper
               style={styles.swiperHigher}
               showsButtons
@@ -189,7 +189,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
               activeDotColor={"#70b5ff"}
               dotStyle={{ width: 8, height: 8 }}
             >
-              {newsImages.map((image) => (
+              {campaignImages.map((image) => (
                 <CarouselImageSmall
                   key={image.id}
                   image={image}
@@ -384,6 +384,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 300,
     height: 300,
+    padding: 8
   },
   imageContent: {
     fontSize: 21,
@@ -393,10 +394,9 @@ const styles = StyleSheet.create({
     marginTop: 26,
   },
   imageCarouselSmall: {
-    marginTop: 30,
     flex: 1,
     alignItems: "center",
-    alignContent: "center",
+    alignContent: "center"
   },
   buttonView: {
     marginLeft: 23,
@@ -439,11 +439,14 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginLeft: 10,
   },
-  textCampaingsImg: {
+  textCampaignsImg: {
     fontSize: 20,
     backgroundColor: "rgba(0, 0, 0, 0.576)",
     color: "#ffff",
     fontWeight: "900",
+    textTransform: "uppercase",
+    textAlign: "center",
+    padding: 6,
   },
   textEvent: {
     fontSize: 40,
@@ -457,7 +460,7 @@ const styles = StyleSheet.create({
     height: bodyPageWidth / 2 + 20,
   },
   swiperHigher: {
-    height: 350,
+    height: 350
   },
   youTubeStyle: {
     height: 250,
