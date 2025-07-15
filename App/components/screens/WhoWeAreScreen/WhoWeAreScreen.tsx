@@ -16,31 +16,29 @@ const WhoWeAre: React.FC = () => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView style={styles.scrollView}>
-                <View>
-                    <View style={styles.logoContainer}>
-                        <Image source={logo.src} style={styles.logo} />
-                    </View>
-                    <View>
-                        {bodyText.map((bodyText) => (
-                            <Text style={styles.bodyText} key={bodyText.id}>{bodyText.text}</Text>
-                        ))}
-                    </View>
-                    <View style={styles.memberListContainer}>
-                        <Text style={styles.membersHeadingText}>Coordinating Committee</Text>
-                        {committeeData.map((member) => (
-                            <View
-                                style={styles.memberContainer}
-                                key={member.id}>
-                                <Text style={styles.memberNameText}>{member.name}</Text>
-                                <Text style={styles.memberTitleText}>{member.title}</Text>
-                            </View>
-                        ))}
-                    </View>
+        <ScrollView style={styles.scrollView}>
+            <View style={styles.container}>
+                <View style={styles.logoContainer}>
+                    <Image source={logo.src} style={styles.logo} />
                 </View>
-            </ScrollView>
-        </SafeAreaView>
+                <View>
+                    {bodyText.map((bodyText) => (
+                        <Text style={styles.bodyText} key={bodyText.id}>{bodyText.text}</Text>
+                    ))}
+                </View>
+                <View style={styles.memberListContainer}>
+                    <Text style={styles.membersHeadingText}>Coordinating Committee</Text>
+                    {committeeData.map((member) => (
+                        <View
+                            style={styles.memberContainer}
+                            key={member.id}>
+                            <Text style={styles.memberNameText}>{member.name}</Text>
+                            <Text style={styles.memberTitleText}>{member.title}</Text>
+                        </View>
+                    ))}
+                </View>
+            </View>
+        </ScrollView>
     );
 };
 
