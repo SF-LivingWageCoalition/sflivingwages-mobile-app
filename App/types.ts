@@ -4,6 +4,7 @@ export type RootStackParamList = {
   TabStack: undefined;
   Preview: { image: string };
   Event: undefined;
+  WhoWeAre: undefined;
 };
 
 export type BottomTabParamList = {
