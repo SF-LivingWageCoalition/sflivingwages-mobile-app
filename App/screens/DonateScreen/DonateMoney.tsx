@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  ImageSourcePropType,
   Linking,
   ScrollView,
   StyleSheet,
@@ -8,26 +7,48 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import DropDownItem from "react-native-drop-down-item";
-import { DonateContentItem, DonateMoneyState } from "../../types";
-
-const IC_ARR_DOWN: ImageSourcePropType = require("../../assets/icons/ic_arr_down.png");
-const IC_ARR_UP: ImageSourcePropType = require("../../assets/icons/ic_arr_up.png");
+import { Accordion } from "dooboo-ui";
+import { Image } from "react-native";
+import { DonateMoneyState } from "../../types";
 
 const DonateMoney: React.FC = () => {
   const [state] = useState<DonateMoneyState>({
     contents: [
       {
         title: "Checks",
-        body: "Mail to:\n\nSan Francisco Living Wage Coalition, 2940 16th Street, #301 San Francisco, California, 94103",
-        url: "https://livingwage-sf.org/wp-content/uploads/2020/04/Donation-Form.pdf",
-        btnTitle: "",
+        content: (
+          <Text style={styles.bodyText}>
+            {
+              "Mail to:\n\nSan Francisco Living Wage Coalition, 2940 16th Street, #301 San Francisco, California, 94103"
+            }
+          </Text>
+        ),
+        items: [],
       },
       {
         title: "PayPal",
-        body: "A PayPal account is not required. You can also use your credit card or bank account to donate through PayPal. \n\nClick on the button below to be taken to our PayPal site.",
-        url: "https://www.livingwage-sf.org/online-donation-form/",
-        btnTitle: "Donate Online",
+        content: (
+          <View>
+            <Text style={styles.bodyText}>
+              {
+                "A PayPal account is not required. You can also use your credit card or bank account to donate through PayPal. \n\nClick on the button below to be taken to our PayPal site."
+              }
+            </Text>
+            <View style={styles.buttonStyle}>
+              <TouchableOpacity
+                style={styles.donationButton}
+                onPress={() =>
+                  handleOpenURL(
+                    "https://www.livingwage-sf.org/online-donation-form/"
+                  )
+                }
+              >
+                <Text style={styles.donationButtonText}>{"Donate Online"}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ),
+        items: [],
       },
     ],
   });
@@ -36,38 +57,23 @@ const DonateMoney: React.FC = () => {
     Linking.openURL(url);
   };
 
+  const renderTitle = (title: string) => {
+    return (
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>{title}</Text>
+      </View>
+    );
+  };
+
+  
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        {state.contents.map((param: DonateContentItem, i: number) => (
-          <DropDownItem
-            key={i}
-            style={styles.dropDownItem}
-            contentVisible={true}
-            invisibleImage={IC_ARR_DOWN}
-            visibleImage={IC_ARR_UP}
-            header={
-              <View style={styles.header}>
-                <Text style={styles.headerTitle}>{param.title}</Text>
-              </View>
-            }
-          >
-            <Text style={styles.bodyText}>{param.body}</Text>
-
-            <View style={styles.buttonStyle}>
-              {param.btnTitle.length !== 0 && (
-                <TouchableOpacity
-                  style={styles.donationButton}
-                  onPress={() => handleOpenURL(param.url)}
-                >
-                  <Text style={styles.donationButtonText}>
-                    {param.btnTitle}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            </View>
-          </DropDownItem>
-        ))}
+        <Accordion
+          data={state.contents}
+          renderTitle={renderTitle}
+        />
       </ScrollView>
     </View>
   );
