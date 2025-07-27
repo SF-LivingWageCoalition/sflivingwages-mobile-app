@@ -13,8 +13,8 @@ import { TouchableOpacity } from "react-native";
 import { translate } from "../../translation/i18n";
 import BulletItem from "../../components/lists/BulletItem";
 
-const IC_ARR_DOWN: ImageSourcePropType = require("../../../assets/icons/ic_arr_down.png");
-const IC_ARR_UP: ImageSourcePropType = require("../../../assets/icons/ic_arr_up.png");
+const IC_ARR_DOWN: ImageSourcePropType = require("../../assets/icons/ic_arr_down.png");
+const IC_ARR_UP: ImageSourcePropType = require("../../assets/icons/ic_arr_up.png");
 
 const BeReadyForICE: React.FC = () => {
   const navigation = useNavigation();
@@ -45,7 +45,7 @@ const BeReadyForICE: React.FC = () => {
           <View style={styles.logoContainer}>
             <Image
               style={styles.logo}
-              source={require("../../../../assets/icon.png")}
+              source={require("../../../assets/icon.png")}
             />
           </View>
           <Text style={styles.title}>

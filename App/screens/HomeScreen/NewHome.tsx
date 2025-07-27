@@ -68,13 +68,13 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
     {
       id: 2,
       title: "Donate",
-      src: require("./../../../../assets/campaign2_background.jpg"),
+      src: require("../../assets/images/campaign2_background.jpg"),
       destination: "https://www.livingwage-sf.org/donations-and-membership/",
     },
     {
       id: 3,
       title: "Events",
-      src: require("./../../../../assets/p1040208.jpg"),
+      src: require("../../assets/images/p1040208.jpg"),
       destination: "Event",
     },
   ];
@@ -83,39 +83,39 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
   const campaignImages = [
     {
       id: 1,
-      src: require("./../../../../assets/welfare.jpg"),
+      src: require("../../assets/images/welfare.jpg"),
       title: "Transform Welfare",
       destination:
         "https://www.livingwage-sf.org/transform-welfare-to-work-programs/",
     },
     {
       id: 2,
-      src: require("./../../../../assets/public-sector.png"),
+      src: require("../../assets/images/public-sector.png"),
       title: "Protect Public Sector and Union Jobs",
       destination: "https://www.livingwage-sf.org/protect-public-sector-jobs/",
     },
     {
       id: 3,
-      src: require("./../../../../assets/Encuentro_2017_021.jpg"),
+      src: require("../../assets/images/Encuentro_2017_021.jpg"),
       title: "End Mass Incarceration and Prison Labor",
       destination: "https://www.livingwage-sf.org/mass-incarceration/",
     },
     {
       id: 4,
-      src: require("./../../../../assets/immigrant.jpg"),
+      src: require("../../assets/images/immigrant.jpg"),
       title: "Immigration Reform",
       destination: "https://www.livingwage-sf.org/immigration-reform/",
     },
     {
       id: 5,
-      src: require("./../../../../assets/fairtrade.jpg"),
+      src: require("../../assets/images/fairtrade.jpg"),
       title: "Fair Trade",
       destination:
         "https://www.livingwage-sf.org/transform-welfare-to-work-programs/",
     },
     {
       id: 6,
-      src: require("./../../../../assets/campaign3_background.jpg"),
+      src: require("../../assets/images/campaign3_background.jpg"),
       title: "Raise Wages",
       destination: "https://www.livingwage-sf.org/raising-wages/",
     },
@@ -127,7 +127,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
         {/* Top background section */}
         <View style={styles.topBackground}>
           <ImageBackground
-            source={require("./../../../../assets/stefan-mitev-Sp3eNPAHB8c-unsplash.jpg")}
+            source={require("../../assets/images/stefan-mitev-Sp3eNPAHB8c-unsplash.jpg")}
             style={styles.background}
           >
             <View style={styles.header}>

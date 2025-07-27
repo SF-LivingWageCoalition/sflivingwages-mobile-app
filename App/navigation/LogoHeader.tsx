@@ -19,7 +19,7 @@ const LogoHeader: React.FC<LogoHeaderProps> = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={() => nav.navigate("Home")}>
       <Image
-        source={require("../../../assets/sflwc_logo_finaltemp.png")}
+        source={require("../assets/icons/sflwc_logo_finaltemp.png")}
         style={styles.logoHeaderImageStyle}
       />
     </TouchableWithoutFeedback>

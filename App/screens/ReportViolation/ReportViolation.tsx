@@ -179,7 +179,7 @@ const ReportViolation: React.FC = () => {
           <View style={styles.logoContainer}>
             <Image
               style={styles.logo}
-              source={require("../../../../assets/icon.png")}
+              source={require("../../../assets/icon.png")}
             />
           </View>
           <Text style={styles.intro}>{translate("assistScreen.title")}</Text>

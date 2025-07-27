@@ -5,7 +5,7 @@ import {
 } from "@react-navigation/native";
 import React from "react";
 import { Button } from "react-native";
-import { DetailParams, MyNavigationButtonProps } from "../../../types";
+import { DetailParams, MyNavigationButtonProps } from "../../../../types";
 
 const MyNavigationButton: React.FC<MyNavigationButtonProps> = ({
   author,

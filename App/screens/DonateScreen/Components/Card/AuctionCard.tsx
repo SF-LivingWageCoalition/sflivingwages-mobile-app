@@ -11,10 +11,13 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { CardProps, PreviewScreenParams } from "../../../types";
-import ItemModal from "../Modal/ItemModal";
+import {
+  AuctionCardProps,
+  PreviewScreenParams,
+} from "../../../../types";
 
-const Card: React.FC<CardProps> = ({
+// Card Render
+const AuctionCard: React.FC<AuctionCardProps> = ({
   name,
   description,
   price,
@@ -51,7 +54,7 @@ const Card: React.FC<CardProps> = ({
         <Text>tap picture to enlarge</Text>
         <View style={styles.horizontalLine} />
         <View>
-          <ItemModal title={name} description={cleanDescription} />
+          <Text>{cleanDescription}</Text>
           <Text>${itemPrice}</Text>
         </View>
         {/* Product Individual page link */}
@@ -62,7 +65,7 @@ const Card: React.FC<CardProps> = ({
               Linking.openURL(link);
             }}
           >
-            <Text style={styles.submitButtonText}>Shop</Text>
+            <Text style={styles.submitButtonText}>Place bid</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -75,7 +78,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cardTitle: {
-    textAlign: "center", // <-- the magic
+    textAlign: "center",
     fontWeight: "bold",
     fontSize: 18,
     margin: 5,
@@ -126,4 +129,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Card;
+export default AuctionCard;

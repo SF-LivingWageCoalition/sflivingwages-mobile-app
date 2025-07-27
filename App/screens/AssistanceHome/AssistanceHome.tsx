@@ -21,7 +21,7 @@ const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
           <View style={styles.logoContainer}>
             <Image
               style={styles.logo}
-              source={require("../../../../assets/icon.png")}
+              source={require("../../../assets/icon.png")}
             />
           </View>
           <Text style={styles.title}>

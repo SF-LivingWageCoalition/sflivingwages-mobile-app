@@ -1,7 +1,7 @@
 import * as WebBrowser from "expo-web-browser";
 import React, { JSX, useState } from "react";
 import { Button, Text, View, StyleSheet } from "react-native";
-import { WebBrowserResult } from "../../../types";
+import { WebBrowserResult } from "../../../../types";
 
 export default function WebView(): JSX.Element {
   const [result, setResult] = useState<WebBrowserResult | null>(null);

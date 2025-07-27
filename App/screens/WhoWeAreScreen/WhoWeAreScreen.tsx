@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import bodyText from "./bodyText.json"
-import committeeData from "./committee.json"
+import bodyText from "./bodyText.json";
+import committeeData from "./committee.json";
 
 /**
  * Who We Are Screen component
@@ -9,81 +9,80 @@ import committeeData from "./committee.json"
  * source: (https://www.livingwage-sf.org/who-we-are/)
  */
 const WhoWeAre: React.FC = () => {
+  // SFLWC Logo
+  const logo = {
+    src: require("../../assets/icons/sflwc_logo_finaltemp.png"),
+  };
 
-    // SFLWC Logo
-    const logo = {
-        src: require("./../../../../assets/sflwc_logo_finaltemp.png")
-    };
-
-    return (
-        <ScrollView style={styles.scrollView}>
-            <View style={styles.container}>
-                <View style={styles.logoContainer}>
-                    <Image source={logo.src} style={styles.logo} />
-                </View>
-                <View>
-                    {bodyText.map((bodyText) => (
-                        <Text style={styles.bodyText} key={bodyText.id}>{bodyText.text}</Text>
-                    ))}
-                </View>
-                <View style={styles.memberListContainer}>
-                    <Text style={styles.membersHeadingText}>Coordinating Committee</Text>
-                    {committeeData.map((member) => (
-                        <View
-                            style={styles.memberContainer}
-                            key={member.id}>
-                            <Text style={styles.memberNameText}>{member.name}</Text>
-                            <Text style={styles.memberTitleText}>{member.title}</Text>
-                        </View>
-                    ))}
-                </View>
+  return (
+    <ScrollView style={styles.scrollView}>
+      <View style={styles.container}>
+        <View style={styles.logoContainer}>
+          <Image source={logo.src} style={styles.logo} />
+        </View>
+        <View>
+          {bodyText.map((bodyText) => (
+            <Text style={styles.bodyText} key={bodyText.id}>
+              {bodyText.text}
+            </Text>
+          ))}
+        </View>
+        <View style={styles.memberListContainer}>
+          <Text style={styles.membersHeadingText}>Coordinating Committee</Text>
+          {committeeData.map((member) => (
+            <View style={styles.memberContainer} key={member.id}>
+              <Text style={styles.memberNameText}>{member.name}</Text>
+              <Text style={styles.memberTitleText}>{member.title}</Text>
             </View>
-        </ScrollView>
-    );
+          ))}
+        </View>
+      </View>
+    </ScrollView>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 24,
-        flex: 1
-    },
-    scrollView: {
-        flex: 1,
-    },
-    logoContainer: {
-        padding: 20,
-        backgroundColor: "#CD1621",
-        alignItems: "center",
-        marginBottom: 18
-    },
-    logo: {
-        maxWidth: "100%",
-        resizeMode: "contain",
-    },
-    bodyText: {
-        fontSize: 18,
-        marginBottom: 18
-    },
-    membersHeadingText: {
-        fontSize: 18,
-        fontWeight: "bold",
-        marginBottom: 18,
-        textTransform: "uppercase"
-    },
-    memberListContainer: {
-        alignItems: "center"
-    },
-    memberContainer: {
-        alignItems: "center",
-        marginBottom: 18
-    },
-    memberNameText: {
-        fontSize: 18,
-        fontWeight: "500"
-    },
-    memberTitleText: {
-        fontSize: 14
-    }
+  container: {
+    padding: 24,
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  logoContainer: {
+    padding: 20,
+    backgroundColor: "#CD1621",
+    alignItems: "center",
+    marginBottom: 18,
+  },
+  logo: {
+    maxWidth: "100%",
+    resizeMode: "contain",
+  },
+  bodyText: {
+    fontSize: 18,
+    marginBottom: 18,
+  },
+  membersHeadingText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 18,
+    textTransform: "uppercase",
+  },
+  memberListContainer: {
+    alignItems: "center",
+  },
+  memberContainer: {
+    alignItems: "center",
+    marginBottom: 18,
+  },
+  memberNameText: {
+    fontSize: 18,
+    fontWeight: "500",
+  },
+  memberTitleText: {
+    fontSize: 14,
+  },
 });
 
 export default WhoWeAre;

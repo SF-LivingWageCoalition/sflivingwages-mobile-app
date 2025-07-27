@@ -1,9 +1,9 @@
 import React from "react";
 import { ActivityIndicator, FlatList } from "react-native";
-import { DvdsProps } from "../../../types";
+import { CdsProps } from "../../../../types";
 import Card from "../Card/Card";
 
-const Dvds: React.FC<DvdsProps> = ({ dvds, isLoading }) => {
+const Cds: React.FC<CdsProps> = ({ cds, isLoading }) => {
   return (
     <>
       {isLoading ? (
@@ -11,7 +11,7 @@ const Dvds: React.FC<DvdsProps> = ({ dvds, isLoading }) => {
       ) : (
         <FlatList
           horizontal={false}
-          data={dvds}
+          data={cds}
           renderItem={({ item }) => (
             <Card
               key={item.id}
@@ -30,4 +30,4 @@ const Dvds: React.FC<DvdsProps> = ({ dvds, isLoading }) => {
   );
 };
 
-export default Dvds;
+export default Cds;

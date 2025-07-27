@@ -1,6 +1,6 @@
 import React from "react";
 import { ActivityIndicator, FlatList } from "react-native";
-import { ArtsProps } from "../../../types";
+import { ArtsProps } from "../../../../types";
 import AuctionCard from "../Card/AuctionCard";
 
 const Arts: React.FC<ArtsProps> = ({ arts, isLoading }) => {

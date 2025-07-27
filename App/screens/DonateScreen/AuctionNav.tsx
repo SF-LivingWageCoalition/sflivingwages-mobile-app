@@ -6,11 +6,11 @@ import {
   AuctionTabParamList,
   ProductItem,
 } from "../../types";
-import Arts from "./donateSalesComponents/Arts";
-import Books from "./donateSalesComponents/Books";
-import Cds from "./donateSalesComponents/Cds";
-import Dvds from "./donateSalesComponents/Dvds";
-import { CustomTabBar } from "./Components/CustomTabBar";
+import Arts from "./components/donateSalesComponents/Arts";
+import Books from "./components/donateSalesComponents/Books";
+import Cds from "./components/donateSalesComponents/Cds";
+import Dvds from "./components/donateSalesComponents/Dvds";
+import { CustomTabBar } from "./components/CustomTabBar";
 
 const Tab = createMaterialTopTabNavigator<AuctionTabParamList>();
 
