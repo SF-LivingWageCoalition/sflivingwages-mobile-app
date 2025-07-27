@@ -3,11 +3,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NativeBaseProvider } from "native-base";
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import ModalScreen from "./App/components/screens/DonateScreen/ModalScreen";
-import Events from "./App/components/screens/HomeScreen/EventListScreen";
-import BottomTabStack from "./App/components/stacks/BottomTabStack";
+import ModalScreen from "./App/screens/DonateScreen/ModalScreen";
+import Events from "./App/screens/HomeScreen/EventListScreen";
+import BottomTabStack from "./App/navigation/BottomTabStack";
 import { RootStackParamList } from "./App/types";
-import WhoWeAre from "./App/components/screens/WhoWeAreScreen/WhoWeAreScreen";
+import WhoWeAre from "./App/screens/WhoWeAreScreen/WhoWeAreScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
