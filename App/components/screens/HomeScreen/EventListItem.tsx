@@ -1,6 +1,6 @@
 import React from "react";
 import { Dimensions, Linking, StyleSheet, Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 import { Paragraph, Title } from "react-native-paper";
 import { EventListItemProps } from "../../../../App/types";
 
