@@ -7,12 +7,11 @@ import {
   Image,
   ImageSourcePropType,
 } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import Collapsible from "react-native-collapsible";
 import { TouchableOpacity } from "react-native";
 import { translate } from "../../../translation/i18n";
 import BulletItem from "../../common/BulletItem";
-import SubBulletItem from "../../common/SubBulletItem";
 
 const IC_ARR_DOWN: ImageSourcePropType = require("../DonateScreen/icons/ic_arr_down.png");
 const IC_ARR_UP: ImageSourcePropType = require("../DonateScreen/icons/ic_arr_up.png");
@@ -40,7 +39,7 @@ const BeReadyForICE: React.FC = () => {
           style={styles.circleBackButton}
           onPress={() => navigation.goBack()}
         >
-          <Text style={styles.backArrow}>{'<'}</Text>
+          <Text style={styles.backArrow}>{"<"}</Text>
         </TouchableOpacity>
         <View style={styles.card}>
           <View style={styles.logoContainer}>
@@ -337,26 +336,26 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5F5F5",
   },
   circleBackButton: {
-    position: 'absolute',
+    position: "absolute",
     top: 40,
     left: 20,
-    backgroundColor: '#D31623',
+    backgroundColor: "#D31623",
     width: 40,
     height: 40,
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     zIndex: 10,
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
   backArrow: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   card: {
     backgroundColor: "#ffffff",

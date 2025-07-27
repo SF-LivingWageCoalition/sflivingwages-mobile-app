@@ -35,8 +35,6 @@ In the app, users will be able to share pieces of art (paintings, drawings and d
 
 The organization's main campaigns and goals are listed here and provide links to the petition websites as well as extra information.
 
-<!-- ![Screenshot_20200414-124009_samsung-galaxynote5-silvertitanium-portrait](https://user-images.githubusercontent.com/27458911/95143311-96812900-072a-11eb-9bfb-63663c2679c3.png) -->
-
 #### Auction/Shop
 
 The organization occasionally hosts auction events where users of this app can participate in bidding on items to support the organization's movement.
@@ -45,13 +43,9 @@ The organization occasionally hosts auction events where users of this app can p
 
 In the events section, users will have more detailed information about events that the organization will be hosting. Tap on the red dot to get event info.
 
-<!-- ![Screenshot_20200414-124251_samsung-galaxynote5-silvertitanium-portrait](https://user-images.githubusercontent.com/27458911/95143732-b9f8a380-072b-11eb-9fae-2855291b24e2.png) -->
-
 #### Assist
 
 Users can get assistance by describing their situation and sending it to the organization for help, either in English or Spanish.
-
-<!-- ![Assist Screen shot](https://raw.githubusercontent.com/kent5i5/sflivingwages-mobile-app/main/doc/Screenshot_1619756579.png) -->
 
 ## Resources
 
