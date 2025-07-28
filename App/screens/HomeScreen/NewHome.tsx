@@ -50,9 +50,7 @@ const CarouselImageSmall: React.FC<CarouselImageProps> = ({
         imageStyle={{ borderRadius: 10 }}
       >
         <View style={styles.containerBody}>
-          <Text style={styles.textCampaignsImg}>
-            {image.title}
-          </Text>
+          <Text style={styles.textCampaignsImg}>{image.title}</Text>
         </View>
       </ImageBackground>
     </TouchableOpacity>
@@ -138,9 +136,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
               </Text>
               <View style={styles.buttonView}>
                 <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate("WhoWeAre")
-                  }
+                  onPress={() => navigation.navigate("WhoWeAre")}
                   style={styles.button}
                 >
                   <Text style={styles.buttonText}>View More</Text>
@@ -181,7 +177,9 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
 
           {/* Campaigns section */}
           <View style={styles.containerBody}>
-            <Text style={{ ...styles.titles, marginTop: 12, marginBottom: 30 }}>Campaigns</Text>
+            <Text style={{ ...styles.titles, marginTop: 12, marginBottom: 30 }}>
+              Campaigns
+            </Text>
             <Swiper
               style={styles.swiperHigher}
               showsButtons
@@ -384,7 +382,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 300,
     height: 300,
-    padding: 8
+    padding: 8,
   },
   imageContent: {
     fontSize: 21,
@@ -396,7 +394,7 @@ const styles = StyleSheet.create({
   imageCarouselSmall: {
     flex: 1,
     alignItems: "center",
-    alignContent: "center"
+    alignContent: "center",
   },
   buttonView: {
     marginLeft: 23,
@@ -405,12 +403,12 @@ const styles = StyleSheet.create({
     height: 40,
   },
   button: {
-    backgroundColor: "#177ddc",
-    borderRadius: 10,
+    backgroundColor: "#d31623",
+    borderRadius: 30,
     paddingVertical: 6,
     paddingHorizontal: 10,
     elevation: 6,
-    shadowColor: "#177ddc",
+    shadowColor: "#d31623",
     shadowOpacity: 0.3,
     shadowRadius: 3,
     shadowOffset: { width: 1, height: 1 },
@@ -460,7 +458,7 @@ const styles = StyleSheet.create({
     height: bodyPageWidth / 2 + 20,
   },
   swiperHigher: {
-    height: 350
+    height: 350,
   },
   youTubeStyle: {
     height: 250,

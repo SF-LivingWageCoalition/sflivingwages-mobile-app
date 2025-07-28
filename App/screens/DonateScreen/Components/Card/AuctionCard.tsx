@@ -11,10 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import {
-  AuctionCardProps,
-  PreviewScreenParams,
-} from "../../../../types";
+import { AuctionCardProps, PreviewScreenParams } from "../../../../types";
 
 // Card Render
 const AuctionCard: React.FC<AuctionCardProps> = ({
@@ -120,7 +117,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#d31623",
     width: 100,
     height: 40,
-    borderRadius: 10,
+    borderRadius: 30,
   },
   submitButtonText: {
     color: "white",

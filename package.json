@@ -50,7 +50,7 @@
     "html-metadata": "^1.7.1",
     "link-preview-js": "^3.0.4",
     "mysql": "^2.18.1",
-    "native-base": "^3.4.19",
+    "native-base": "^3.4.28",
     "nodemon": "^2.0.20",
     "npm": "^8.19.2",
     "querystring": "^0.2.1",

@@ -21,13 +21,13 @@ const DonateMoney: React.FC = () => {
             {
               "Mail to:\n\nSan Francisco Living Wage Coalition, 2940 16th Street, #301 San Francisco, California, 94103"
             }
-          </Text>
+          </Text>,
         ],
       },
       {
         title: "PayPal",
         items: [
-          <View>
+          <View style={styles.viewStyle}>
             <Text style={styles.bodyText}>
               {
                 "A PayPal account is not required. You can also use your credit card or bank account to donate through PayPal. \n\nClick on the button below to be taken to our PayPal site."
@@ -45,7 +45,7 @@ const DonateMoney: React.FC = () => {
                 <Text style={styles.donationButtonText}>{"Donate Online"}</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </View>,
         ],
       },
     ],
@@ -54,8 +54,6 @@ const DonateMoney: React.FC = () => {
   const handleOpenURL = (url: string): void => {
     Linking.openURL(url);
   };
-
-
 
   const renderTitle = (title: string) => {
     return (
@@ -86,9 +84,14 @@ const DonateMoney: React.FC = () => {
 const styles = StyleSheet.create({
   content: {
     padding: 12,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
-
+  viewStyle: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -124,12 +127,11 @@ const styles = StyleSheet.create({
     padding: 10,
     width: 200,
     height: 40,
-    marginTop: 5,
+    marginTop: 20,
+    borderRadius: 30,
   },
   buttonStyle: {
     padding: 5,
-    flex: 1,
-    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
   },
