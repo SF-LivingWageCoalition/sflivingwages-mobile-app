@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Image,
   Linking,
   ScrollView,
   StyleSheet,
@@ -8,7 +9,6 @@ import {
   View,
 } from "react-native";
 import { Accordion } from "dooboo-ui";
-import { Image } from "react-native";
 import { DonateMoneyState } from "../../types";
 
 const DonateMoney: React.FC = () => {
@@ -16,18 +16,17 @@ const DonateMoney: React.FC = () => {
     contents: [
       {
         title: "Checks",
-        content: (
+        items: [
           <Text style={styles.bodyText}>
             {
               "Mail to:\n\nSan Francisco Living Wage Coalition, 2940 16th Street, #301 San Francisco, California, 94103"
             }
           </Text>
-        ),
-        items: [],
+        ],
       },
       {
         title: "PayPal",
-        content: (
+        items: [
           <View>
             <Text style={styles.bodyText}>
               {
@@ -47,8 +46,7 @@ const DonateMoney: React.FC = () => {
               </TouchableOpacity>
             </View>
           </View>
-        ),
-        items: [],
+        ],
       },
     ],
   });
@@ -56,6 +54,8 @@ const DonateMoney: React.FC = () => {
   const handleOpenURL = (url: string): void => {
     Linking.openURL(url);
   };
+
+
 
   const renderTitle = (title: string) => {
     return (
@@ -65,7 +65,9 @@ const DonateMoney: React.FC = () => {
     );
   };
 
-  
+  const renderItem = (item: React.ReactNode) => {
+    return <View style={styles.content}>{item}</View>;
+  };
 
   return (
     <View style={styles.container}>
@@ -73,6 +75,8 @@ const DonateMoney: React.FC = () => {
         <Accordion
           data={state.contents}
           renderTitle={renderTitle}
+          renderItem={renderItem}
+          style={styles.dropDownItem}
         />
       </ScrollView>
     </View>
@@ -80,6 +84,11 @@ const DonateMoney: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  content: {
+    padding: 12,
+    backgroundColor: '#fff',
+  },
+
   container: {
     flex: 1,
     justifyContent: "center",
