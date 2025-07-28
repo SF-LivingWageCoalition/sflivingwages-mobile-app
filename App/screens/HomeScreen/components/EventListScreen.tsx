@@ -8,7 +8,7 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { EventItem, EventsData } from "../../types";
+import { EventItem, EventsData } from "../../../types";
 import EventListItem from "./EventListItem";
 
 const { height } = Dimensions.get("window");

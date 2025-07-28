@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import { Card, Divider, Text } from "react-native-elements";
-import { ArticleProps } from "../../types";
+import { ArticleProps } from "../../../types";
 
 const Article: React.FC<ArticleProps> = ({ article }) => {
   const { title, description, publishedAt, source, urlToImage, url } = article;

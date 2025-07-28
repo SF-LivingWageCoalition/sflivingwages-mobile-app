@@ -2,7 +2,7 @@ import React from "react";
 import { Dimensions, Linking, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Paragraph, Title } from "react-native-paper";
-import { EventListItemProps } from "../../types";
+import { EventListItemProps } from "../../../types";
 
 const { width } = Dimensions.get("window");
 

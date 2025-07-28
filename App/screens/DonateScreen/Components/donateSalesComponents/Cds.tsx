@@ -1,7 +1,7 @@
 import React from "react";
 import { ActivityIndicator, FlatList } from "react-native";
 import { CdsProps } from "../../../../types";
-import Card from "../Card/Card";
+import Card from "../cards/Card";
 
 const Cds: React.FC<CdsProps> = ({ cds, isLoading }) => {
   return (

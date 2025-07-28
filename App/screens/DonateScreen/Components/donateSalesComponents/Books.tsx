@@ -1,7 +1,7 @@
 import React from "react";
 import { ActivityIndicator, FlatList } from "react-native";
 import { BooksProps } from "../../../../types";
-import Card from "../Card/Card";
+import Card from "../cards/Card";
 
 const Books: React.FC<BooksProps> = ({ books, isLoading }) => {
   return (
