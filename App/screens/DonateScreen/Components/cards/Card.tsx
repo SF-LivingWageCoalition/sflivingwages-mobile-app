@@ -12,6 +12,7 @@ import {
   View,
 } from "react-native";
 import { CardProps, PreviewScreenParams } from "../../../../types";
+import { colors } from "../../../../theme";
 import ItemModal from "../modalComponent/ItemModal";
 
 const Card: React.FC<CardProps> = ({
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 20,
     flex: 1,
-    shadowColor: "#000",
+    shadowColor: colors.light.shadow,
     shadowOffset: {
       width: 0,
       height: 5,
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
   horizontalLine: {
     marginTop: 10,
     marginBottom: 10,
-    borderBottomColor: "black",
+    borderBottomColor: colors.light.textPrimary,
     borderBottomWidth: 1,
   },
   submitButtonContainer: {
@@ -114,13 +115,13 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     justifyContent: "center",
-    backgroundColor: "#d31623",
+    backgroundColor: colors.light.primary,
     width: 100,
     height: 40,
     borderRadius: 30,
   },
   submitButtonText: {
-    color: "white",
+    color: colors.light.textOnPrimary,
     fontWeight: "900",
     textAlign: "center",
   },

@@ -23,6 +23,7 @@ import {
   PreviewScreenParams,
   TimeLeft,
 } from "../../../../types";
+import { colors } from "../../../../theme";
 
 const Photos: React.FC<PhotosProps> = ({ photos }) => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
@@ -151,7 +152,7 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 20,
     flex: 1,
-    shadowColor: "#000",
+    shadowColor: colors.light.shadow,
     shadowOffset: {
       width: 0,
       height: 5,
@@ -170,7 +171,7 @@ const styles = StyleSheet.create({
   horizontalLine: {
     marginTop: 10,
     marginBottom: 10,
-    borderBottomColor: "black",
+    borderBottomColor: colors.light.textPrimary,
     borderBottomWidth: 1,
   },
   buttonStyle: {
@@ -181,7 +182,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   submitButton: {
-    backgroundColor: "#d31623",
+    backgroundColor: colors.light.primary,
     padding: 10,
     width: 100,
     height: 40,
@@ -189,7 +190,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   submitButtonText: {
-    color: "white",
+    color: colors.light.textOnPrimary,
     fontWeight: "900",
     textAlign: "center",
   },

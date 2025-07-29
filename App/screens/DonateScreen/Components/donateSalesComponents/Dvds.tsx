@@ -1,13 +1,14 @@
 import React from "react";
 import { ActivityIndicator, FlatList } from "react-native";
 import { DvdsProps } from "../../../../types";
+import { colors } from "../../../../theme";
 import Card from "../cards/Card";
 
 const Dvds: React.FC<DvdsProps> = ({ dvds, isLoading }) => {
   return (
     <>
       {isLoading ? (
-        <ActivityIndicator size="large" color="red" />
+        <ActivityIndicator size="large" color={colors.light.primary} />
       ) : (
         <FlatList
           horizontal={false}

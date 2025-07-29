@@ -1,5 +1,6 @@
 import { MaterialTopTabBarProps } from "@react-navigation/material-top-tabs";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { colors } from "../../../theme";
 
 export const CustomTabBar: React.FC<MaterialTopTabBarProps> = (props) => {
   return (
@@ -16,7 +17,7 @@ export const CustomTabBar: React.FC<MaterialTopTabBarProps> = (props) => {
               style={[
                 styles.label,
                 {
-                  color: isFocused ? "#CD1621" : "#000",
+                  color: isFocused ? colors.light.primary : colors.light.textPrimary,
                   fontWeight: isFocused ? "bold" : "normal",
                 },
               ]}

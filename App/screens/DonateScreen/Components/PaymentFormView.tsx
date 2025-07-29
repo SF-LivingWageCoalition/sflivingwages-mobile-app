@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { CreditCardInput } from "react-native-credit-card-input";
 import { CardData, ViewProps } from "../../../types";
+import { colors } from "../../../theme";
 
 /**
  * Renders the payment form and handles the credit card data
@@ -37,7 +38,7 @@ const PaymentFormView: React.FC<ViewProps> = ({
               <FontAwesome
                 name="exclamation-circle"
                 size={20}
-                style={{ color: "#c22" }}
+                style={{ color: colors.light.error }}
               />
             </View>
             <View style={styles.alertTextWrapper}>
@@ -73,12 +74,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   alertText: {
-    color: "#c22",
+    color: colors.light.error,
     fontSize: 16,
     fontWeight: "400",
   },
   alertWrapper: {
-    backgroundColor: "#ecb7b7",
+    backgroundColor: colors.light.errorContainer,
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",

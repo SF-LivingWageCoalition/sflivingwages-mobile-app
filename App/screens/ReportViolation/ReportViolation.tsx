@@ -18,6 +18,7 @@ import Recaptcha from "react-native-recaptcha-that-works";
 
 import { useNavigation } from '@react-navigation/native';
 import { EmailOptions, RecaptchaRef } from "../../types";
+import { colors } from "../../theme";
 import { translate } from "../../translation/i18n";
 import { assistanceSchema } from "./assistanceSchema";
 
@@ -325,7 +326,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 40,
     left: 20,
-    backgroundColor: '#D31623',
+    backgroundColor: colors.light.primary,
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -333,13 +334,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 10,
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: colors.light.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
   backArrow: {
-    color: '#fff',
+    color: colors.light.textOnPrimary,
     fontSize: 24,
     fontWeight: 'bold',
   },
@@ -370,18 +371,18 @@ const styles = StyleSheet.create({
   },
   textInput: {
     height: 30,
-    borderBottomColor: "#d31623",
+    borderBottomColor: colors.light.primary,
     borderBottomWidth: 1,
     margin: 10,
   },
   requiredField: {
-    color: "#d31623",
+    color: colors.light.primary,
     fontSize: 16,
     fontWeight: "900",
   },
   submitButton: {
-    backgroundColor: "white",
-    borderColor: "#d31623",
+    backgroundColor: colors.light.surface,
+    borderColor: colors.light.primary,
     borderWidth: 1,
     padding: 10,
     width: 100,
@@ -404,7 +405,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "600",
     textAlign: "center",
-    color: "#D31623",
+    color: colors.light.primary,
   },
   logo: {
     width: 200,
@@ -417,7 +418,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   submitButtonText: {
-    color: "#d31623",
+    color: colors.light.primary,
     fontWeight: "900",
     textAlign: "center",
   },
@@ -430,11 +431,11 @@ const styles = StyleSheet.create({
     // fontWeight: '900',
     fontStyle: "italic",
     fontSize: 13,
-    color: "#D31623",
+    color: colors.light.primary,
   },
   recaptchaButton: {
-    backgroundColor: "#1C94EF",
-    borderColor: "#1C94EF",
+    backgroundColor: colors.light.secondary,
+    borderColor: colors.light.secondary,
     // borderWidth: 1,
     padding: 10,
     width: 100,
@@ -442,7 +443,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   recaptchaText: {
-    color: "#fff",
+    color: colors.light.textOnSecondary,
     fontWeight: "700",
     textAlign: "center",
   },
@@ -451,10 +452,10 @@ const styles = StyleSheet.create({
     padding: Platform.OS === "ios" ? 18 : 13,
     alignContent: "center",
     alignItems: "center",
-    backgroundColor: "#D31623",
+    backgroundColor: colors.light.primary,
   },
   inputError: {
-    color: "#D31623",
+    color: colors.light.error,
     fontSize: 13,
     marginLeft: 10,
     marginTop: 2,

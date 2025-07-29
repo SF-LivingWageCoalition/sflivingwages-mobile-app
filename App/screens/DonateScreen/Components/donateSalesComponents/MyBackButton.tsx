@@ -5,6 +5,7 @@ import {
 } from "@react-navigation/native";
 import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
+import { colors } from "../../../../theme";
 
 const MyBackButton = () => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   textStyle: {
-    color: "#c91a1a",
+    color: colors.light.primary,
     fontSize: 16,
   },
 });

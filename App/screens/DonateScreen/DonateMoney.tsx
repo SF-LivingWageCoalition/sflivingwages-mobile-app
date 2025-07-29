@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Accordion } from "dooboo-ui";
 import { DonateMoneyState } from "../../types";
+import { colors } from "../../theme";
 
 const DonateMoney: React.FC = () => {
   const [state] = useState<DonateMoneyState>({
@@ -84,7 +85,7 @@ const DonateMoney: React.FC = () => {
 const styles = StyleSheet.create({
   content: {
     padding: 12,
-    backgroundColor: "#fff",
+    backgroundColor: colors.light.surface,
   },
   viewStyle: {
     display: "flex",
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5F5F5",
+    backgroundColor: colors.light.backgroundSecondary,
     paddingTop: 0,
   },
   scrollView: {
@@ -112,18 +113,18 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 20,
-    color: "#0088dc",
+    color: colors.light.secondary,
   },
   bodyText: {
     fontSize: 16,
-    color: "#100c08",
+    color: colors.light.textPrimary,
     paddingHorizontal: 12,
   },
   dropDownItem: {
     marginTop: 30,
   },
   donationButton: {
-    backgroundColor: "#d31623",
+    backgroundColor: colors.light.primary,
     padding: 10,
     width: 200,
     height: 40,
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   donationButtonText: {
-    color: "white",
+    color: colors.light.textOnPrimary,
     fontWeight: "900",
     textAlign: "center",
   },

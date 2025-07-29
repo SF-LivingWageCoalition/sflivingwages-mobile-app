@@ -6,6 +6,7 @@ import {
   AuctionTabParamList,
   ProductItem,
 } from "../../types";
+import { colors } from "../../theme";
 import Arts from "./components/donateSalesComponents/Arts";
 import Books from "./components/donateSalesComponents/Books";
 import Cds from "./components/donateSalesComponents/Cds";
@@ -99,8 +100,8 @@ const AuctionNav: React.FC = () => {
     <Tab.Navigator
       initialRouteName="Arts"
       screenOptions={{
-        tabBarActiveTintColor: "#CD1621",
-        tabBarInactiveTintColor: "#000",
+        tabBarActiveTintColor: colors.light.primary,
+        tabBarInactiveTintColor: colors.light.textPrimary,
         tabBarLabelStyle: { fontSize: 15, fontWeight: "500" },
       }}
       tabBar={(props) => <CustomTabBar {...props} />}

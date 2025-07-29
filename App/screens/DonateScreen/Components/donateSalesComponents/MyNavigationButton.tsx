@@ -6,6 +6,7 @@ import {
 import React from "react";
 import { Button } from "react-native";
 import { DetailParams, MyNavigationButtonProps } from "../../../../types";
+import { colors } from "../../../../theme";
 
 const MyNavigationButton: React.FC<MyNavigationButtonProps> = ({
   author,
@@ -17,7 +18,7 @@ const MyNavigationButton: React.FC<MyNavigationButtonProps> = ({
   return (
     <Button
       title="Details"
-      color="#c91a1a"
+      color={colors.light.primary}
       onPress={() => {
         navigation.navigate("SalesDetail", {
           image: author,

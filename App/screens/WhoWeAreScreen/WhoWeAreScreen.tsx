@@ -2,6 +2,7 @@ import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import bodyText from "./bodyText.json";
 import committeeData from "./committee.json";
+import { colors } from "../../theme";
 
 /**
  * Who We Are Screen component
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     padding: 20,
-    backgroundColor: "#CD1621",
+    backgroundColor: colors.light.primary,
     alignItems: "center",
     marginBottom: 18,
   },
