@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import Collapsible from "react-native-collapsible";
 import { TouchableOpacity } from "react-native";
 import { translate } from "../../translation/i18n";
+import { colors } from "../../theme";
 import BulletItem from "../../components/lists/BulletItem";
 
 const IC_ARR_DOWN: ImageSourcePropType = require("../../assets/icons/ic_arr_down.png");
@@ -333,13 +334,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: colors.light.surfaceVariant,
   },
   circleBackButton: {
     position: "absolute",
     top: 40,
     left: 20,
-    backgroundColor: "#D31623",
+    backgroundColor: colors.light.primary,
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -347,21 +348,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     zIndex: 10,
     elevation: 5,
-    shadowColor: "#000",
+    shadowColor: colors.light.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
   backArrow: {
-    color: "#fff",
+    color: colors.light.textOnPrimary,
     fontSize: 24,
     fontWeight: "bold",
   },
   card: {
-    backgroundColor: "#ffffff",
+    backgroundColor: colors.light.background,
     borderRadius: 10,
     padding: 20,
-    shadowColor: "#000",
+    shadowColor: colors.light.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -395,7 +396,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#0088dc",
+    color: colors.light.secondary,
   },
   bulletList: {
     marginLeft: 10,
@@ -430,13 +431,13 @@ const styles = StyleSheet.create({
   subBulletPoint: {
     fontSize: 14,
     marginRight: 5,
-    color: "#555",
+    color: colors.light.textSecondary,
     lineHeight: 20,
   },
   subBulletText: {
     flex: 1,
     fontSize: 14,
-    color: "#333",
+    color: colors.light.textPrimary,
     lineHeight: 20,
   },
   arrow: {

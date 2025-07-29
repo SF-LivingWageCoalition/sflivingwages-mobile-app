@@ -3,6 +3,7 @@ import { Dimensions, Linking, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Paragraph, Title } from "react-native-paper";
 import { EventListItemProps } from "../../../types";
+import { colors } from "../../../theme";
 
 const { width } = Dimensions.get("window");
 
@@ -35,7 +36,7 @@ const EventListItem: React.FC<EventListItemProps> = ({ event, index }) => {
     <View
       style={[
         styles.container,
-        { backgroundColor: index % 2 === 0 ? "white" : "#F5F5F5" },
+        { backgroundColor: index % 2 === 0 ? colors.light.background : colors.light.surfaceVariant },
       ]}
     >
       <View style={{ marginTop: 13, width: 90 }}>
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   registerText: {
-    color: "#fff",
+    color: colors.light.textOnPrimary,
     fontSize: 18,
     fontWeight: "700",
     alignContent: "center",
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
   registerButton: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#d31623",
+    backgroundColor: colors.light.primary,
     width: 100,
     height: 40,
     borderRadius: 10,

@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Card, Divider, Text } from "react-native-elements";
 import { ArticleProps } from "../../../types";
+import { colors } from "../../../theme";
 
 const Article: React.FC<ArticleProps> = ({ article }) => {
   const { title, description, publishedAt, source, urlToImage, url } = article;
@@ -49,12 +50,12 @@ const styles = StyleSheet.create({
   noteStyle: {
     margin: 5,
     fontStyle: "italic",
-    color: "#b2bec3",
+    color: colors.light.textSecondary,
     fontSize: 10,
   },
   featuredTitleStyle: {
     marginHorizontal: 5,
-    textShadowColor: "#00000f",
+    textShadowColor: colors.light.shadow,
     textShadowOffset: { width: 3, height: 3 },
     textShadowRadius: 3,
   },
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   dividerStyle: {
-    backgroundColor: "#dfe6e9",
+    backgroundColor: colors.light.divider,
   },
   sourceTimeStyle: {
     flexDirection: "row",

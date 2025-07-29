@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { CalendarNavProps } from "../../../types";
+import { colors } from "../../../theme";
 
 const CalendarNav: React.FC<CalendarNavProps> = ({ navigate }) => {
   return (
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
   homeNav: {
     flex: 1,
     flexDirection: "row",
-    backgroundColor: "white",
+    backgroundColor: colors.light.background,
     height: 20,
     alignItems: "center",
   },

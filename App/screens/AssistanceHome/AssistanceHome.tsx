@@ -8,6 +8,7 @@ import {
   Image,
 } from "react-native";
 import { translate } from "../../translation/i18n";
+import { colors } from "../../theme";
 
 interface AssistanceHomeProps {
   navigation: any;
@@ -69,13 +70,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: colors.light.surfaceVariant,
   },
   card: {
-    backgroundColor: "#ffffff",
+    backgroundColor: colors.light.background,
     borderRadius: 10,
     padding: 20,
-    shadowColor: "#000",
+    shadowColor: colors.light.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -100,26 +101,26 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     marginBottom: 30,
-    color: "#555",
+    color: colors.light.textSecondary,
   },
   buttonContainer: {
     marginTop: 20,
     gap: 20,
   },
   button: {
-    backgroundColor: "#d31623",
+    backgroundColor: colors.light.primary,
     borderRadius: 30,
     paddingVertical: 10,
     paddingHorizontal: 15,
     elevation: 6,
-    shadowColor: "#d31623",
+    shadowColor: colors.light.primary,
     shadowOpacity: 0.3,
     shadowRadius: 3,
     shadowOffset: { width: 1, height: 1 },
   },
   buttonText: {
     fontSize: 18,
-    color: "#ffffff",
+    color: colors.light.textOnPrimary,
     textAlign: "center",
     fontWeight: "700",
   },
