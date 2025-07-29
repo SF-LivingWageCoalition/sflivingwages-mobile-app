@@ -7,6 +7,7 @@ import {
   View,
 } from "react-native";
 import { CampaignTitleProps } from "../../../types";
+import { colors } from "../../../theme";
 
 const CampaignTitle: React.FC<CampaignTitleProps> = (props) => {
   const { title, url, navigation } = props;
@@ -14,7 +15,7 @@ const CampaignTitle: React.FC<CampaignTitleProps> = (props) => {
 
   const touchProps = {
     activeOpacity: 0.7,
-    underlayColor: "#f0f0f0",
+    underlayColor: colors.light.surfaceVariant,
     style: isPress ? styles.btnPress : styles.btnNormal,
     onHideUnderlay: () => setIsPress(false),
     onShowUnderlay: () => setIsPress(true),
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
   backButtonText: {
     fontSize: 18,
     height: 30,
-    color: "#c91a1a",
+    color: colors.light.primaryDark,
     paddingTop: 6,
     paddingLeft: 4,
     textAlign: "center",
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     width: 300,
     height: 100,
-    color: "#c91a1a",
+    color: colors.light.primaryDark,
     paddingLeft: 20,
     textAlign: "center",
   },

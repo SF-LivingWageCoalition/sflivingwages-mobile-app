@@ -3,6 +3,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { CampaignCardProps } from "../../../types";
+import { colors } from "../../../theme";
 
 const CampaignCard: React.FC<CampaignCardProps> = (props) => {
   const navigation = useNavigation<StackNavigationProp<any>>();
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
   },
   homeNavText: {
     fontSize: 18,
-    color: "#c91a1a",
+    color: colors.light.primaryDark,
     textAlign: "center",
     padding: 10,
   },

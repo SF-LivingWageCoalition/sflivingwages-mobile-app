@@ -15,6 +15,7 @@ import Swiper from "react-native-swiper/src";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { WebView } from "react-native-webview";
 import { CarouselImageProps, NewHomeScreenProps } from "../../types";
+import { colors } from "../../theme";
 
 const bodyPageWidth = Dimensions.get("window").width;
 
@@ -157,7 +158,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 autoplay={true}
                 autoplayTimeout={4}
                 dotColor={"white"}
-                activeDotColor={"#70b5ff"}
+                activeDotColor={colors.light.secondary}
                 dotStyle={{ width: 8, height: 8 }}
               >
                 {images.map((image) => (
@@ -301,7 +302,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 }
                 style={styles.buttonMargin}
               >
-                <FontAwesome name="facebook-square" size={46} color="#177DDC" />
+                <FontAwesome name="facebook-square" size={46} color={colors.light.secondary} />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() =>
@@ -309,7 +310,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 }
                 style={styles.buttonMargin}
               >
-                <FontAwesome name="twitter" size={46} color="#7AB3E8" />
+                <FontAwesome name="twitter" size={46} color={colors.light.secondary} />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() =>
@@ -319,14 +320,14 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 }
                 style={styles.buttonMargin}
               >
-                <FontAwesome name="instagram" size={46} color="#F297DE" />
+                <FontAwesome name="instagram" size={46} color={colors.light.secondary} />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() =>
                   Linking.openURL("https://www.youtube.com/user/sflivingwage")
                 }
               >
-                <FontAwesome name="youtube" size={42} color="#E10505" />
+                <FontAwesome name="youtube" size={42} color={colors.light.primary} />
               </TouchableOpacity>
             </View>
           </View>
@@ -339,25 +340,25 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
-    backgroundColor: "#ffffff",
+    backgroundColor: colors.light.background,
   },
   container: {
     flex: 1,
   },
   header: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.3)",
+    backgroundColor: colors.light.elevation,
   },
   topBackground: {
     height: 256,
-    borderColor: "#95989a",
+    borderColor: colors.light.outline,
     borderWidth: 1,
     backgroundColor: "white",
   },
   background: {
     height: 256,
     width: "100%",
-    backgroundColor: "#000000",
+    backgroundColor: colors.light.textPrimary,
   },
   containerBody: {
     flex: 1,
@@ -367,7 +368,7 @@ const styles = StyleSheet.create({
   imageTitle: {
     fontSize: 23,
     fontWeight: "bold",
-    color: "#ffffff",
+    color: colors.light.textOnPrimary,
     marginLeft: 23,
     marginTop: 25,
   },
@@ -387,7 +388,7 @@ const styles = StyleSheet.create({
   imageContent: {
     fontSize: 21,
     fontWeight: "400",
-    color: "#ffffff",
+    color: colors.light.textOnPrimary,
     marginLeft: 23,
     marginTop: 26,
   },
@@ -403,19 +404,19 @@ const styles = StyleSheet.create({
     height: 40,
   },
   button: {
-    backgroundColor: "#d31623",
+    backgroundColor: colors.light.primary,
     borderRadius: 30,
     paddingVertical: 6,
     paddingHorizontal: 10,
     elevation: 6,
-    shadowColor: "#d31623",
+    shadowColor: colors.light.primary,
     shadowOpacity: 0.3,
     shadowRadius: 3,
     shadowOffset: { width: 1, height: 1 },
   },
   buttonText: {
     fontSize: 18,
-    color: "#ffffff",
+    color: colors.light.textOnPrimary,
     textAlign: "center",
     fontWeight: "700",
   },
@@ -424,7 +425,7 @@ const styles = StyleSheet.create({
   },
   bodyPage: {
     flexDirection: "column",
-    backgroundColor: "#ffffff",
+    backgroundColor: colors.light.background,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     width: "100%",
@@ -439,8 +440,8 @@ const styles = StyleSheet.create({
   },
   textCampaignsImg: {
     fontSize: 20,
-    backgroundColor: "rgba(0, 0, 0, 0.576)",
-    color: "#ffff",
+    backgroundColor: colors.light.elevation,
+    color: colors.light.textOnPrimary,
     fontWeight: "900",
     textTransform: "uppercase",
     textAlign: "center",
@@ -449,7 +450,7 @@ const styles = StyleSheet.create({
   textEvent: {
     fontSize: 40,
     paddingVertical: 40,
-    color: "#fffdfd",
+    color: colors.light.textOnPrimary,
     textAlign: "center",
     textAlignVertical: "center",
     fontWeight: "800",
@@ -468,7 +469,7 @@ const styles = StyleSheet.create({
     opacity: 0.99,
   },
   cardStyle: {
-    shadowColor: "#000000",
+    shadowColor: colors.light.shadow,
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 1,
@@ -485,7 +486,7 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     alignSelf: "center",
     fontSize: 18,
-    color: "#4169e1",
+    color: colors.light.secondary,
   },
   socialMediaArea: {
     flexDirection: "column",
@@ -500,7 +501,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     borderWidth: 0.5,
-    shadowColor: "#000000",
+    shadowColor: colors.light.shadow,
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.3,
     shadowRadius: 2,
