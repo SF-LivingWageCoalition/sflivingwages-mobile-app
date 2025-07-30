@@ -303,7 +303,11 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 }
                 style={styles.buttonMargin}
               >
-                <FontAwesome name="facebook-square" size={46} color={colors.light.secondary} />
+                <FontAwesome
+                  name="facebook-square"
+                  size={46}
+                  color={colors.light.secondary}
+                />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() =>
@@ -311,7 +315,11 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 }
                 style={styles.buttonMargin}
               >
-                <FontAwesome name="twitter" size={46} color={colors.light.secondary} />
+                <FontAwesome
+                  name="twitter"
+                  size={46}
+                  color={colors.light.secondary}
+                />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() =>
@@ -321,14 +329,22 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 }
                 style={styles.buttonMargin}
               >
-                <FontAwesome name="instagram" size={46} color={colors.light.secondary} />
+                <FontAwesome
+                  name="instagram"
+                  size={46}
+                  color={colors.light.secondary}
+                />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() =>
                   Linking.openURL("https://www.youtube.com/user/sflivingwage")
                 }
               >
-                <FontAwesome name="youtube" size={42} color={colors.light.primary} />
+                <FontAwesome
+                  name="youtube"
+                  size={42}
+                  color={colors.light.primary}
+                />
               </TouchableOpacity>
             </View>
           </View>
@@ -368,7 +384,7 @@ const styles = StyleSheet.create({
   },
   imageTitle: {
     fontSize: fontSize.lg,
-    fontWeight: "bold",
+    fontWeight: fontWeight.bold,
     color: colors.light.textOnPrimary,
     marginLeft: 23,
     marginTop: 25,
@@ -388,7 +404,7 @@ const styles = StyleSheet.create({
   },
   imageContent: {
     fontSize: fontSize.lg,
-    fontWeight: "400",
+    fontWeight: fontWeight.normal,
     color: colors.light.textOnPrimary,
     marginLeft: 23,
     marginTop: 26,
@@ -419,7 +435,7 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.light.textOnPrimary,
     textAlign: "center",
-    fontWeight: "700",
+    fontWeight: fontWeight.bold,
   },
   buttonMargin: {
     marginRight: 27,
@@ -440,7 +456,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   textCampaignsImg: {
-    fontSize: 20,
+    fontSize: fontSize.xl,
     backgroundColor: colors.light.elevation,
     color: colors.light.textOnPrimary,
     fontWeight: fontWeight.bold,
@@ -510,15 +526,15 @@ const styles = StyleSheet.create({
   },
   follow: {
     textAlign: "center",
-    fontSize: 20,
+    fontSize: fontSize.xl,
     fontWeight: fontWeight.semibold,
     marginTop: 30,
     marginBottom: 10,
   },
   titles: {
-    fontSize: 30,
+    fontSize: fontSize.xl,
     lineHeight: 35,
-    fontWeight: "bold",
+    fontWeight: fontWeight.bold,
   },
 });
 

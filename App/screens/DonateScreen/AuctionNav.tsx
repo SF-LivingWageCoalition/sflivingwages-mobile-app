@@ -1,17 +1,14 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import React, { useEffect, useState } from "react";
 import "react-native-gesture-handler";
-import {
-  AuctionNavState,
-  AuctionTabParamList,
-  ProductItem,
-} from "../../types";
 import { colors } from "../../theme";
+import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { AuctionNavState, AuctionTabParamList, ProductItem } from "../../types";
+import { CustomTabBar } from "./components/CustomTabBar";
 import Arts from "./components/donateSalesComponents/Arts";
 import Books from "./components/donateSalesComponents/Books";
 import Cds from "./components/donateSalesComponents/Cds";
 import Dvds from "./components/donateSalesComponents/Dvds";
-import { CustomTabBar } from "./components/CustomTabBar";
 
 const Tab = createMaterialTopTabNavigator<AuctionTabParamList>();
 
@@ -102,7 +99,10 @@ const AuctionNav: React.FC = () => {
       screenOptions={{
         tabBarActiveTintColor: colors.light.primary,
         tabBarInactiveTintColor: colors.light.textPrimary,
-        tabBarLabelStyle: { fontSize: 15, fontWeight: "500" },
+        tabBarLabelStyle: {
+          fontSize: fontSize.md,
+          fontWeight: fontWeight.medium,
+        },
       }}
       tabBar={(props) => <CustomTabBar {...props} />}
     >
