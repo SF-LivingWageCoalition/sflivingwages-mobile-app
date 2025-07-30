@@ -1,0 +1,45 @@
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { fontSize } from "../../theme/fontStyles";
+
+interface BulletItemProps {
+  text: string;
+  bulletSymbol?: string;
+  style?: {
+    container?: object;
+    bullet?: object;
+    text?: object;
+  };
+}
+
+const BulletItem: React.FC<BulletItemProps> = ({
+  text,
+  bulletSymbol = "•",
+  style = {},
+}) => {
+  return (
+    <View style={[styles.bulletItem, style.container]}>
+      <Text style={[styles.bulletPoint, style.bullet]}>{bulletSymbol}</Text>
+      <Text style={[styles.bulletText, style.text]}>{text}</Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  bulletItem: {
+    flexDirection: "row",
+    marginBottom: 10,
+  },
+  bulletPoint: {
+    fontSize: fontSize.sm,
+    marginRight: 5,
+    lineHeight: 24,
+  },
+  bulletText: {
+    flex: 1,
+    fontSize: fontSize.sm,
+    lineHeight: 24,
+  },
+});
+
+export default BulletItem;

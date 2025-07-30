@@ -3,43 +3,49 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NativeBaseProvider } from "native-base";
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import ModalScreen from "./App/components/screens/DonateScreen/ModalScreen";
-import Events from "./App/components/screens/HomeScreen/EventListScreen";
-import BottomTabStack from "./App/components/stacks/BottomTabStack";
+import BottomTabStack from "./App/navigation/BottomTabStack";
+import ModalScreen from "./App/screens/DonateScreen/ModalScreen";
+import Events from "./App/screens/HomeScreen/components/EventListScreen";
+import WhoWeAre from "./App/screens/WhoWeAreScreen/WhoWeAreScreen";
+import { colors } from "./App/theme";
+import { fontWeight } from "./App/theme/fontStyles";
 import { RootStackParamList } from "./App/types";
-import WhoWeAre from "./App/components/screens/WhoWeAreScreen/WhoWeAreScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <SafeAreaProvider>
-        <NavigationContainer>
-          <NativeBaseProvider>
-            <Stack.Navigator
-              screenOptions={{
-                headerStyle: { backgroundColor: "#CD1621" },
-                headerTintColor: "#fff",
-                headerTitleStyle: { fontWeight: "bold" },
-              }}
-            >
-              <Stack.Screen
-                name="TabStack"
-                component={BottomTabStack}
-                options={{ title: "San Francisco Living Wage Coalition" }}
-              />
-              <Stack.Screen
-                name="Preview"
-                component={ModalScreen}
-                initialParams={{ image: "" }}
-              />
-              <Stack.Screen name="Event" component={Events} />
-              <Stack.Screen name="WhoWeAre" options={{ title: "Who We Are" }} component={WhoWeAre} />
-            </Stack.Navigator>
-          </NativeBaseProvider>
-        </NavigationContainer>
-      </SafeAreaProvider>
-    );
-  }
-}
+const App: React.FC = () => {
+  return (
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <NativeBaseProvider>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: colors.light.primary },
+              headerTintColor: colors.light.textOnPrimary,
+              headerTitleStyle: { fontWeight: fontWeight.bold },
+            }}
+          >
+            <Stack.Screen
+              name="TabStack"
+              component={BottomTabStack}
+              options={{ title: "San Francisco Living Wage Coalition" }}
+            />
+            <Stack.Screen
+              name="Preview"
+              component={ModalScreen}
+              initialParams={{ image: "" }}
+            />
+            <Stack.Screen name="Event" component={Events} />
+            <Stack.Screen
+              name="WhoWeAre"
+              options={{ title: "Who We Are" }}
+              component={WhoWeAre}
+            />
+          </Stack.Navigator>
+        </NativeBaseProvider>
+      </NavigationContainer>
+    </SafeAreaProvider>
+  );
+};
+
+export default App;

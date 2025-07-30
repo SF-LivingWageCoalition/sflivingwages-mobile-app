@@ -186,9 +186,7 @@ export type AuctionTabParamList = {
 
 export type DonateContentItem = {
   title: string;
-  body: string;
-  url: string;
-  btnTitle: string;
+  items: React.ReactNode[];
 };
 
 export type DonateMoneyState = {
