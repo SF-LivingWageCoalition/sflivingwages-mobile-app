@@ -1,4 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { colors } from "../theme";
 import * as React from "react";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { BottomTabParamList } from "../types";
@@ -46,10 +47,10 @@ const BottomTabStack: React.FC = () => {
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: "#CD1621",
+          backgroundColor: colors.light.primary,
         },
-        tabBarActiveTintColor: "#fff",
-        tabBarInactiveTintColor: "#000",
+        tabBarActiveTintColor: colors.light.textOnPrimary,
+        tabBarInactiveTintColor: colors.light.textPrimary,
       }}
     >
       <Tab.Screen

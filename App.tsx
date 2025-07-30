@@ -5,6 +5,8 @@ import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ThemeProvider } from "@dooboo-ui/theme";
 import ModalScreen from "./App/screens/DonateScreen/ModalScreen";
+import { colors } from "./App/theme";
+import { fontWeight } from "./App/theme/fontStyles";
 import Events from "./App/screens/HomeScreen/components/EventListScreen";
 import BottomTabStack from "./App/navigation/BottomTabStack";
 import { RootStackParamList } from "./App/types";
@@ -20,9 +22,9 @@ const App: React.FC = () => {
           <NativeBaseProvider>
             <Stack.Navigator
               screenOptions={{
-                headerStyle: { backgroundColor: "#CD1621" },
-                headerTintColor: "#fff",
-                headerTitleStyle: { fontWeight: "bold" },
+                headerStyle: { backgroundColor: colors.light.primary },
+                headerTintColor: colors.light.textOnPrimary,
+                headerTitleStyle: { fontWeight: fontWeight.bold },
               }}
             >
               <Stack.Screen

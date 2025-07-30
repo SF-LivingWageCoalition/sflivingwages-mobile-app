@@ -69,25 +69,25 @@ const styles = StyleSheet.create({
   },
   dayText: {
     textAlign: "center",
-    fontWeight: "bold",
-    color: "grey",
+    fontWeight: fontWeight.bold,
+    color: colors.light.textSecondary,
     fontSize: fontSize.xl,
   },
   monthText: {
     fontSize: fontSize.sm,
     marginBottom: 6,
-    fontWeight: "bold",
-    color: "grey",
+    fontWeight: fontWeight.bold,
+    color: colors.light.textSecondary,
     textAlign: "center",
   },
   descriptionText: {
     fontSize: fontSize.md,
-    fontWeight: "bold",
+    fontWeight: fontWeight.bold,
     marginBottom: 6,
   },
   timeText: {
     fontSize: fontSize.xs,
-    fontWeight: "bold",
+    fontWeight: fontWeight.bold,
     marginBottom: 6,
   },
   eventInfo: {

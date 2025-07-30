@@ -248,7 +248,7 @@ const ReportViolation: React.FC = () => {
               <CheckBox
                 key={index}
                 title={assist}
-                checkedColor={"#D31623"} // or change to green
+                checkedColor={colors.light.primary} // or change to green
                 checked={isChecked[index]}
                 onPress={() => handledState(index, assist)}
               />
@@ -341,8 +341,8 @@ const styles = StyleSheet.create({
   },
   backArrow: {
     color: colors.light.textOnPrimary,
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: fontSize.lg,
+    fontWeight: fontWeight.bold,
   },
   intro: {
     marginLeft: 20,
@@ -357,10 +357,10 @@ const styles = StyleSheet.create({
   },
   card: {
     paddingTop: 35,
-    backgroundColor: "white",
+    backgroundColor: colors.light.background,
     margin: 10,
     padding: 1,
-    shadowColor: "#000",
+    shadowColor: colors.light.shadow,
     shadowOffset: {
       width: 0,
       height: 10,

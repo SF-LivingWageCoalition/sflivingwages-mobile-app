@@ -8,6 +8,7 @@ import {
   StyleSheet,
   View,
 } from "react-native";
+import { colors } from "../../../theme";
 import { EventItem, EventsData } from "../../../types";
 import EventListItem from "./EventListItem";
 
@@ -65,7 +66,7 @@ const Events: React.FC = () => {
     <SafeAreaView style={styles.container}>
       {loading ? (
         <View style={styles.spinner}>
-          <ActivityIndicator size="large" color="red" />
+          <ActivityIndicator size="large" color={colors.light.primary} />
         </View>
       ) : (
         <FlatList
