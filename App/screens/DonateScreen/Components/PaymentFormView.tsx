@@ -4,6 +4,7 @@ import { Button, StyleSheet, Text, View } from "react-native";
 import { CreditCardInput } from "react-native-credit-card-input";
 import { CardData, ViewProps } from "../../../types";
 import { colors } from "../../../theme";
+import { fontSize, fontWeight } from "../../../theme/fontStyles";
 
 /**
  * Renders the payment form and handles the credit card data
@@ -75,8 +76,8 @@ const styles = StyleSheet.create({
   },
   alertText: {
     color: colors.light.error,
-    fontSize: 16,
-    fontWeight: "400",
+    fontSize: fontSize.sm,
+    fontWeight: fontWeight.normal,
   },
   alertWrapper: {
     backgroundColor: colors.light.errorContainer,

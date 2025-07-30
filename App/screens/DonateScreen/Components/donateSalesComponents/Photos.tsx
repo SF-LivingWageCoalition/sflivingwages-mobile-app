@@ -24,6 +24,8 @@ import {
   TimeLeft,
 } from "../../../../types";
 import { colors } from "../../../../theme";
+import { fontSize, fontWeight } from "../../../../theme/fontStyles";
+
 
 const Photos: React.FC<PhotosProps> = ({ photos }) => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
@@ -191,14 +193,14 @@ const styles = StyleSheet.create({
   },
   submitButtonText: {
     color: colors.light.textOnPrimary,
-    fontWeight: "900",
+    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
   itemTitle: {
     textAlign: "center",
-    fontSize: 18,
+    fontSize: fontSize.md,
     marginBottom: 15,
-    fontWeight: "bold",
+    fontWeight: fontWeight.bold,
   },
   textItalic: {
     textAlign: "center",

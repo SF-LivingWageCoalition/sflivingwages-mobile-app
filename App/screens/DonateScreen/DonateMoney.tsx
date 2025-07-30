@@ -11,6 +11,7 @@ import {
 import { Accordion } from "dooboo-ui";
 import { DonateMoneyState } from "../../types";
 import { colors } from "../../theme";
+import { fontSize, fontWeight } from "../../theme/fontStyles";
 
 const DonateMoney: React.FC = () => {
   const [state] = useState<DonateMoneyState>({
@@ -112,11 +113,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   headerTitle: {
-    fontSize: 20,
+    fontSize: fontSize.lg,
     color: colors.light.secondary,
   },
   bodyText: {
-    fontSize: 16,
+    fontSize: fontSize.sm,
     color: colors.light.textPrimary,
     paddingHorizontal: 12,
   },
@@ -138,7 +139,7 @@ const styles = StyleSheet.create({
   },
   donationButtonText: {
     color: colors.light.textOnPrimary,
-    fontWeight: "900",
+    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
 });
