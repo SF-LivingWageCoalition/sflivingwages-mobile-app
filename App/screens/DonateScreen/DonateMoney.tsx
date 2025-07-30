@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Image,
   Linking,
   ScrollView,
   StyleSheet,
@@ -8,76 +7,79 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Accordion } from "dooboo-ui";
-import { DonateMoneyState } from "../../types";
+import Accordion from "react-native-collapsible/Accordion";
+
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 
+type Section = { title: string; content: React.ReactNode };
+
 const DonateMoney: React.FC = () => {
-  const [state] = useState<DonateMoneyState>({
-    contents: [
-      {
-        title: "Checks",
-        items: [
-          <Text style={styles.bodyText}>
-            {
-              "Mail to:\n\nSan Francisco Living Wage Coalition, 2940 16th Street, #301 San Francisco, California, 94103"
-            }
-          </Text>,
-        ],
-      },
-      {
-        title: "PayPal",
-        items: [
-          <View style={styles.viewStyle}>
-            <Text style={styles.bodyText}>
-              {
-                "A PayPal account is not required. You can also use your credit card or bank account to donate through PayPal. \n\nClick on the button below to be taken to our PayPal site."
-              }
-            </Text>
-            <View style={styles.buttonStyle}>
-              <TouchableOpacity
-                style={styles.donationButton}
-                onPress={() =>
-                  handleOpenURL(
-                    "https://www.livingwage-sf.org/online-donation-form/"
-                  )
-                }
-              >
-                <Text style={styles.donationButtonText}>{"Donate Online"}</Text>
-              </TouchableOpacity>
-            </View>
-          </View>,
-        ],
-      },
-    ],
-  });
+  const [activeSections, setActiveSections] = useState<number[]>([]);
 
   const handleOpenURL = (url: string): void => {
     Linking.openURL(url);
   };
 
-  const renderTitle = (title: string) => {
-    return (
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>{title}</Text>
-      </View>
-    );
-  };
+  const SECTIONS: Section[] = [
+    {
+      title: "Checks",
+      content: (
+        <Text style={styles.bodyText}>
+          Mail to:{"\n\n"}
+          San Francisco Living Wage Coalition, 2940 16th Street, #301 San
+          Francisco, California, 94103
+        </Text>
+      ),
+    },
+    {
+      title: "PayPal",
+      content: (
+        <View style={styles.viewStyle}>
+          <Text style={styles.bodyText}>
+            A PayPal account is not required. You can also use your credit card or
+            bank account to donate through PayPal.{"\n\n"}Click on the button below to
+            be taken to our PayPal site.
+          </Text>
+          <View style={styles.buttonStyle}>
+            <TouchableOpacity
+              style={styles.donationButton}
+              onPress={() =>
+                handleOpenURL(
+                  "https://www.livingwage-sf.org/online-donation-form/"
+                )
+              }
+            >
+              <Text style={styles.donationButtonText}>{"Donate Online"}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      ),
+    },
+  ];
 
-  const renderItem = (item: React.ReactNode) => {
-    return <View style={styles.content}>{item}</View>;
-  };
+  const renderHeader = (section: Section) => (
+    <View style={styles.header}>
+      <Text style={styles.headerTitle}>{section.title}</Text>
+    </View>
+  );
+
+  const renderContent = (section: Section) => (
+    <View style={styles.content}>{section.content}</View>
+  );
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        <Accordion
-          data={state.contents}
-          renderTitle={renderTitle}
-          renderItem={renderItem}
-          style={styles.dropDownItem}
-        />
+        <View style={styles.dropDownItem}>
+          <Accordion
+            sections={SECTIONS}
+            activeSections={activeSections}
+            renderHeader={renderHeader}
+            renderContent={renderContent}
+            onChange={setActiveSections}
+          />
+        </View>
       </ScrollView>
     </View>
   );

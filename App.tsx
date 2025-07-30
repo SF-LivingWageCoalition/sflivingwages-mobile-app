@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NativeBaseProvider } from "native-base";
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { ThemeProvider } from "@dooboo-ui/theme";
+
 import ModalScreen from "./App/screens/DonateScreen/ModalScreen";
 import { colors } from "./App/theme";
 import { fontWeight } from "./App/theme/fontStyles";
@@ -17,8 +17,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 const App: React.FC = () => {
   return (
     <SafeAreaProvider>
-      <ThemeProvider>
-        <NavigationContainer>
+      <NavigationContainer>
           <NativeBaseProvider>
             <Stack.Navigator
               screenOptions={{
@@ -46,8 +45,7 @@ const App: React.FC = () => {
             </Stack.Navigator>
           </NativeBaseProvider>
         </NavigationContainer>
-      </ThemeProvider>
-    </SafeAreaProvider>
+      </SafeAreaProvider>
   );
 };
 
