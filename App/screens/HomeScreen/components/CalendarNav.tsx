@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { CalendarNavProps } from "../../../types";
 import { colors } from "../../../theme";
+import { fontSize } from "../../../theme/fontStyles";
 
 const CalendarNav: React.FC<CalendarNavProps> = ({ navigate }) => {
   return (
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
   },
   homeNavText: {
     flex: 1,
-    fontSize: 18,
+    fontSize: fontSize.md,
     textAlign: "center",
   },
 });

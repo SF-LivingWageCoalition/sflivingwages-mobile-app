@@ -17,6 +17,7 @@ import {
 import { CheckBox } from "react-native-elements";
 import Recaptcha from "react-native-recaptcha-that-works";
 import { colors } from "../../theme";
+import { fontSize, fontWeight } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { EmailOptions, RecaptchaRef } from "../../types";
 import { assistanceSchema } from "./assistanceSchema";
@@ -376,8 +377,8 @@ const styles = StyleSheet.create({
   },
   requiredField: {
     color: colors.light.primary,
-    fontSize: 16,
-    fontWeight: "900",
+    fontSize: fontSize.sm,
+    fontWeight: fontWeight.bold,
   },
   submitButton: {
     backgroundColor: colors.light.surface,
@@ -401,8 +402,8 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   recaptchaMessage: {
-    fontSize: 15,
-    fontWeight: "600",
+    fontSize: fontSize.xs,
+    fontWeight: fontWeight.semibold,
     textAlign: "center",
     color: colors.light.primary,
   },
@@ -418,7 +419,7 @@ const styles = StyleSheet.create({
   },
   submitButtonText: {
     color: colors.light.primary,
-    fontWeight: "900",
+    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
   inputContainer: {
@@ -429,7 +430,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     // fontWeight: '900',
     fontStyle: "italic",
-    fontSize: 13,
+    fontSize: fontSize.xxs,
     color: colors.light.primary,
   },
   recaptchaButton: {
@@ -443,7 +444,7 @@ const styles = StyleSheet.create({
   },
   recaptchaText: {
     color: colors.light.textOnSecondary,
-    fontWeight: "700",
+    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
   headerComponentView: {
@@ -455,7 +456,7 @@ const styles = StyleSheet.create({
   },
   inputError: {
     color: colors.light.error,
-    fontSize: 13,
+    fontSize: fontSize.xxs,
     marginLeft: 10,
     marginTop: 2,
   },

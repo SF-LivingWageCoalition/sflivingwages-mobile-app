@@ -4,6 +4,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Paragraph, Title } from "react-native-paper";
 import { EventListItemProps } from "../../../types";
 import { colors } from "../../../theme";
+import { fontSize, fontWeight } from "../../../theme/fontStyles";
 
 const { width } = Dimensions.get("window");
 
@@ -70,22 +71,22 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     color: "grey",
-    fontSize: 28,
+    fontSize: fontSize.xl,
   },
   monthText: {
-    fontSize: 16,
+    fontSize: fontSize.sm,
     marginBottom: 6,
     fontWeight: "bold",
     color: "grey",
     textAlign: "center",
   },
   descriptionText: {
-    fontSize: 18,
+    fontSize: fontSize.md,
     fontWeight: "bold",
     marginBottom: 6,
   },
   timeText: {
-    fontSize: 14,
+    fontSize: fontSize.xs,
     fontWeight: "bold",
     marginBottom: 6,
   },
@@ -100,8 +101,8 @@ const styles = StyleSheet.create({
   },
   registerText: {
     color: colors.light.textOnPrimary,
-    fontSize: 18,
-    fontWeight: "700",
+    fontSize: fontSize.md,
+    fontWeight: fontWeight.bold,
     alignContent: "center",
     justifyContent: "center",
     alignItems: "center",

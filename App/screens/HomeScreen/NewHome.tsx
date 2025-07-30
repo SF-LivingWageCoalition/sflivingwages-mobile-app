@@ -16,6 +16,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { WebView } from "react-native-webview";
 import { CarouselImageProps, NewHomeScreenProps } from "../../types";
 import { colors } from "../../theme";
+import { fontSize, fontWeight } from "../../theme/fontStyles";
 
 const bodyPageWidth = Dimensions.get("window").width;
 
@@ -366,7 +367,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   imageTitle: {
-    fontSize: 23,
+    fontSize: fontSize.lg,
     fontWeight: "bold",
     color: colors.light.textOnPrimary,
     marginLeft: 23,
@@ -386,7 +387,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   imageContent: {
-    fontSize: 21,
+    fontSize: fontSize.lg,
     fontWeight: "400",
     color: colors.light.textOnPrimary,
     marginLeft: 23,
@@ -415,7 +416,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: fontSize.md,
     color: colors.light.textOnPrimary,
     textAlign: "center",
     fontWeight: "700",
@@ -442,18 +443,18 @@ const styles = StyleSheet.create({
     fontSize: 20,
     backgroundColor: colors.light.elevation,
     color: colors.light.textOnPrimary,
-    fontWeight: "900",
+    fontWeight: fontWeight.bold,
     textTransform: "uppercase",
     textAlign: "center",
     padding: 6,
   },
   textEvent: {
-    fontSize: 40,
+    fontSize: fontSize.xxl,
     paddingVertical: 40,
     color: colors.light.textOnPrimary,
     textAlign: "center",
     textAlignVertical: "center",
-    fontWeight: "800",
+    fontWeight: fontWeight.bold,
   },
   swiperLower: {
     height: bodyPageWidth / 2 + 20,
@@ -485,7 +486,7 @@ const styles = StyleSheet.create({
   actionText: {
     textDecorationLine: "underline",
     alignSelf: "center",
-    fontSize: 18,
+    fontSize: fontSize.md,
     color: colors.light.secondary,
   },
   socialMediaArea: {
@@ -510,7 +511,7 @@ const styles = StyleSheet.create({
   follow: {
     textAlign: "center",
     fontSize: 20,
-    fontWeight: "600",
+    fontWeight: fontWeight.semibold,
     marginTop: 30,
     marginBottom: 10,
   },

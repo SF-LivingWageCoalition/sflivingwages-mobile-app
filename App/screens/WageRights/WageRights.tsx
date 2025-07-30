@@ -14,6 +14,7 @@ import { translate } from "../../translation/i18n";
 import BulletItem from "../../components/lists/BulletItem";
 import SubBulletItem from "../../components/lists/SubBulletItem";
 import { colors } from "../../theme";
+import { fontSize, fontWeight } from "../../theme/fontStyles";
 
 const IC_ARR_DOWN: ImageSourcePropType = require("../../assets/icons/ic_arr_down.png");
 const IC_ARR_UP: ImageSourcePropType = require("../../assets/icons/ic_arr_up.png");
@@ -376,8 +377,8 @@ const styles = StyleSheet.create({
   },
   backArrow: {
     color: colors.light.textOnPrimary,
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: fontSize.md,
+    fontWeight: fontWeight.medium,
   },
   card: {
     backgroundColor: colors.light.surface,
@@ -399,8 +400,8 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: fontSize.md,
+    fontWeight: fontWeight.medium,
     textAlign: "center",
     marginBottom: 20,
   },
@@ -415,8 +416,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   headerTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: fontSize.md,
+    fontWeight: fontWeight.medium,
     color: colors.light.secondary,
   },
   bulletList: {
@@ -429,17 +430,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   bulletPoint: {
-    fontSize: 16,
+    fontSize: fontSize.sm,
     marginRight: 5,
     lineHeight: 24,
   },
   bulletText: {
     flex: 1,
-    fontSize: 16,
+    fontSize: fontSize.sm,
     lineHeight: 24,
   },
   sectionText: {
-    fontSize: 16,
+    fontSize: fontSize.sm,
     lineHeight: 24,
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -450,14 +451,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   subBulletPoint: {
-    fontSize: 14,
+    fontSize: fontSize.xs,
     marginRight: 5,
     color: colors.light.textSecondary,
     lineHeight: 20,
   },
   subBulletText: {
     flex: 1,
-    fontSize: 14,
+    fontSize: fontSize.xs,
     color: colors.light.textPrimary,
     lineHeight: 20,
   },

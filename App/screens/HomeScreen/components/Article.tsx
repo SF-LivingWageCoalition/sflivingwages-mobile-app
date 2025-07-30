@@ -9,6 +9,7 @@ import {
 import { Card, Divider, Text } from "react-native-elements";
 import { ArticleProps } from "../../../types";
 import { colors } from "../../../theme";
+import { fontSize } from "../../../theme/fontStyles";
 
 const Article: React.FC<ArticleProps> = ({ article }) => {
   const { title, description, publishedAt, source, urlToImage, url } = article;
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
     margin: 5,
     fontStyle: "italic",
     color: colors.light.textSecondary,
-    fontSize: 10,
+    fontSize: fontSize.xxs,
   },
   featuredTitleStyle: {
     marginHorizontal: 5,
