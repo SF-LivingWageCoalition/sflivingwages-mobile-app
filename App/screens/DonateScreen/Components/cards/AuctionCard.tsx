@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import { AuctionCardProps, PreviewScreenParams } from "../../../../types";
 import { colors } from "../../../../theme";
+import { fontSize, fontWeight } from "../../../../theme/fontStyles";
 
 // Card Render
 const AuctionCard: React.FC<AuctionCardProps> = ({
@@ -78,8 +79,8 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 18,
+    fontWeight: fontWeight.bold,
+    fontSize: fontSize.md,
     margin: 5,
   },
   cardImage: {
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
   },
   submitButtonText: {
     color: colors.light.textOnPrimary,
-    fontWeight: "900",
+    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
 });

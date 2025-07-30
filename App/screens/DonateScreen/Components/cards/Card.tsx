@@ -14,6 +14,7 @@ import {
 import { CardProps, PreviewScreenParams } from "../../../../types";
 import { colors } from "../../../../theme";
 import ItemModal from "../modalComponent/ItemModal";
+import { fontSize, fontWeight } from "../../../../theme/fontStyles";
 
 const Card: React.FC<CardProps> = ({
   name,
@@ -77,8 +78,8 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     textAlign: "center", // <-- the magic
-    fontWeight: "bold",
-    fontSize: 18,
+    fontWeight: fontWeight.bold,
+    fontSize: fontSize.md,
     margin: 5,
   },
   cardImage: {
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
   },
   submitButtonText: {
     color: colors.light.textOnPrimary,
-    fontWeight: "900",
+    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
 });

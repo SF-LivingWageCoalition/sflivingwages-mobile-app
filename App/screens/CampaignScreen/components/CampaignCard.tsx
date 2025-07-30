@@ -4,6 +4,7 @@ import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { CampaignCardProps } from "../../../types";
 import { colors } from "../../../theme";
+import { fontSize, fontWeight } from "../../../theme/fontStyles";
 
 const CampaignCard: React.FC<CampaignCardProps> = (props) => {
   const navigation = useNavigation<StackNavigationProp<any>>();
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   homeNavText: {
-    fontSize: 18,
+    fontSize: fontSize.md,
     color: colors.light.primaryDark,
     textAlign: "center",
     padding: 10,

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Linking, StyleSheet, Text, View } from "react-native";
 import { CampaignActionProps } from "../../../types";
 import { colors } from "../../../theme";
+import { fontSize, fontWeight } from "../../../theme/fontStyles";
 
 const CampaignAction: React.FC<CampaignActionProps> = (props) => {
   const [stepText, setStepText] = useState<string | undefined>(props.stepText);
@@ -42,12 +43,12 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontFamily: "sans-serif",
-    fontSize: 24,
+    fontSize: fontSize.lg,
     width: 260,
     height: 30,
     color: colors.light.textPrimary,
     paddingLeft: 20,
-    fontWeight: "bold",
+    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
   stepContainer: {
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   linkText: {
-    color: "blue",
+    color: colors.light.primary,
   },
 });
 

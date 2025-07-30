@@ -12,6 +12,7 @@ import Collapsible from "react-native-collapsible";
 import { TouchableOpacity } from "react-native";
 import { translate } from "../../translation/i18n";
 import { colors } from "../../theme";
+import { fontSize, fontWeight } from "../../theme/fontStyles";
 import BulletItem from "../../components/lists/BulletItem";
 
 const IC_ARR_DOWN: ImageSourcePropType = require("../../assets/icons/ic_arr_down.png");
@@ -355,8 +356,8 @@ const styles = StyleSheet.create({
   },
   backArrow: {
     color: colors.light.textOnPrimary,
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: fontSize.lg,
+    fontWeight: fontWeight.bold,
   },
   card: {
     backgroundColor: colors.light.background,
@@ -378,8 +379,8 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: fontSize.lg,
+    fontWeight: fontWeight.bold,
     textAlign: "center",
     marginBottom: 20,
   },
@@ -394,8 +395,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   headerTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: fontSize.md,
+    fontWeight: fontWeight.bold,
     color: colors.light.secondary,
   },
   bulletList: {
@@ -408,17 +409,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   bulletPoint: {
-    fontSize: 16,
+    fontSize: fontSize.sm,
     marginRight: 5,
     lineHeight: 24,
   },
   bulletText: {
     flex: 1,
-    fontSize: 16,
+    fontSize: fontSize.sm,
     lineHeight: 24,
   },
   sectionText: {
-    fontSize: 16,
+    fontSize: fontSize.sm,
     lineHeight: 24,
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -429,14 +430,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   subBulletPoint: {
-    fontSize: 14,
+    fontSize: fontSize.xs,
     marginRight: 5,
     color: colors.light.textSecondary,
     lineHeight: 20,
   },
   subBulletText: {
     flex: 1,
-    fontSize: 14,
+    fontSize: fontSize.xs,
     color: colors.light.textPrimary,
     lineHeight: 20,
   },

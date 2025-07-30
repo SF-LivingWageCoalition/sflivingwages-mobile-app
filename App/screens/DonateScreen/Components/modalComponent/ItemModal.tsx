@@ -8,6 +8,8 @@ import {
   View,
 } from "react-native";
 import { ItemModalProps } from "../../../../types";
+import { colors } from "../../../../theme";
+import { fontSize, fontWeight } from "../../../../theme/fontStyles";
 
 const ItemModal: React.FC<ItemModalProps> = ({ description, title }) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -51,11 +53,11 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: colors.light.background,
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: colors.light.shadow,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -68,32 +70,32 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    color: "black",
+    color: colors.light.textPrimary,
   },
   buttonClose: {
     marginTop: 15,
-    backgroundColor: "#D31623",
+    backgroundColor: colors.light.primary,
   },
   titleText: {
     padding: 10,
-    fontSize: 21,
-    color: "#000",
-    fontWeight: "bold",
+    fontSize: fontSize.lg,
+    color: colors.light.textPrimary,
+    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
   textStyleOpen: {
-    color: "#000",
-    fontWeight: "bold",
+    color: colors.light.textPrimary,
+    fontWeight: fontWeight.bold,
   },
   textStyleClose: {
-    color: "#fff",
-    fontWeight: "bold",
+    color: colors.light.textOnPrimary,
+    fontWeight: fontWeight.bold,
     textAlign: "center",
-    fontSize: 20,
+    fontSize: fontSize.lg,
   },
   modalText: {
     marginBottom: 15,
-    fontSize: 19,
+    fontSize: fontSize.md,
   },
 });
 

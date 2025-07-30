@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { translate } from "../../translation/i18n";
 import { colors } from "../../theme";
+import { fontSize, fontWeight } from "../../theme/fontStyles";
 
 interface AssistanceHomeProps {
   navigation: any;
@@ -92,13 +93,13 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: fontSize.lg,
+    fontWeight: fontWeight.bold,
     textAlign: "center",
     marginBottom: 10,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: fontSize.sm,
     textAlign: "center",
     marginBottom: 30,
     color: colors.light.textSecondary,
@@ -119,10 +120,10 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: fontSize.md,
     color: colors.light.textOnPrimary,
     textAlign: "center",
-    fontWeight: "700",
+    fontWeight: fontWeight.bold,
   },
 });
 
