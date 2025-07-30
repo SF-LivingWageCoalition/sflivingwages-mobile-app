@@ -1,13 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { Linking, StyleSheet, Text, View } from "react-native";
 import { CampaignActionProps } from "../../../types";
 import { colors } from "../../../theme";
 import { fontSize, fontWeight } from "../../../theme/fontStyles";
 
-const CampaignAction: React.FC<CampaignActionProps> = (props) => {
-  const [stepText, setStepText] = useState<string | undefined>(props.stepText);
-  const [url, setUrl] = useState<string | undefined>(props.url);
-
+const CampaignAction: React.FC<CampaignActionProps> = ({ stepText, url }) => {
   return (
     <View>
       <View style={styles.headerContainer}>

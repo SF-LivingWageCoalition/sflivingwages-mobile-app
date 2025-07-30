@@ -200,15 +200,6 @@ const darkTheme = {
   onInfo: palette.blue900,
   onInfoContainer: palette.blue100,
 
-  // Interactive states
-  ripple: `${palette.gray400}20`, // 20% opacity
-  hover: `${palette.gray400}08`, // 8% opacity
-  focus: `${palette.red400}12`, // 12% opacity
-  pressed: `${palette.gray400}12`, // 12% opacity
-  selected: `${palette.red400}08`, // 8% opacity
-  disabled: palette.gray600,
-  disabledContainer: palette.gray800,
-
   // Shadow colors
   shadow: `${palette.black}40`, // 40% opacity
   shadowLight: `${palette.black}20`, // 20% opacity
