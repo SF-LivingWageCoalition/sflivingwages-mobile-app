@@ -3,6 +3,7 @@ import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import bodyText from "./bodyText.json";
 import committeeData from "./committee.json";
 import { colors } from "../../theme";
+import { fontSize, fontWeight } from "../../theme/fontStyles";
 
 /**
  * Who We Are Screen component
@@ -61,12 +62,12 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   bodyText: {
-    fontSize: 18,
+    fontSize: fontSize.md,
     marginBottom: 18,
   },
   membersHeadingText: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: fontSize.xl,
+    fontWeight: fontWeight.bold,
     marginBottom: 18,
     textTransform: "uppercase",
   },
@@ -78,11 +79,11 @@ const styles = StyleSheet.create({
     marginBottom: 18,
   },
   memberNameText: {
-    fontSize: 18,
-    fontWeight: "500",
+    fontSize: fontSize.md,
+    fontWeight: fontWeight.medium,
   },
   memberTitleText: {
-    fontSize: 14,
+    fontSize: fontSize.sm,
   },
 });
 

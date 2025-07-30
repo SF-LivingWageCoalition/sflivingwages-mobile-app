@@ -1,4 +1,5 @@
 import { BASE_URL, SEND_TO, SITE_KEY_V3 } from "@env";
+import { useNavigation } from "@react-navigation/native";
 import qs from "querystring";
 import React, { useCallback, useRef, useState } from "react";
 import {
@@ -15,11 +16,9 @@ import {
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import Recaptcha from "react-native-recaptcha-that-works";
-
-import { useNavigation } from '@react-navigation/native';
-import { EmailOptions, RecaptchaRef } from "../../types";
 import { colors } from "../../theme";
 import { translate } from "../../translation/i18n";
+import { EmailOptions, RecaptchaRef } from "../../types";
 import { assistanceSchema } from "./assistanceSchema";
 
 const sendEmail = async (
@@ -174,7 +173,7 @@ const ReportViolation: React.FC = () => {
           style={styles.circleBackButton}
           onPress={() => navigation.goBack()}
         >
-          <Text style={styles.backArrow}>{'<'}</Text>
+          <Text style={styles.backArrow}>{"<"}</Text>
         </TouchableOpacity>
         <View style={styles.card}>
           <View style={styles.logoContainer}>
@@ -323,15 +322,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   circleBackButton: {
-    position: 'absolute',
+    position: "absolute",
     top: 40,
     left: 20,
     backgroundColor: colors.light.primary,
     width: 40,
     height: 40,
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     zIndex: 10,
     elevation: 5,
     shadowColor: colors.light.shadow,
@@ -342,7 +341,7 @@ const styles = StyleSheet.create({
   backArrow: {
     color: colors.light.textOnPrimary,
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   intro: {
     marginLeft: 20,
