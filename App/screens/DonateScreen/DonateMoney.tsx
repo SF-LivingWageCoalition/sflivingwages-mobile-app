@@ -37,9 +37,9 @@ const DonateMoney: React.FC = () => {
       content: (
         <View style={styles.viewStyle}>
           <Text style={styles.bodyText}>
-            A PayPal account is not required. You can also use your credit card or
-            bank account to donate through PayPal.{"\n\n"}Click on the button below to
-            be taken to our PayPal site.
+            A PayPal account is not required. You can also use your credit card
+            or bank account to donate through PayPal.{"\n\n"}Click on the button
+            below to be taken to our PayPal site.
           </Text>
           <View style={styles.buttonStyle}>
             <TouchableOpacity
@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    paddingVertical: 0,
-    paddingHorizontal: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 40,
     flexWrap: "wrap",
     flexDirection: "row",
     alignItems: "center",
@@ -117,6 +117,8 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: fontSize.lg,
     color: colors.light.secondary,
+    fontWeight: fontWeight.bold,
+    textAlign: "center",
   },
   bodyText: {
     fontSize: fontSize.sm,
