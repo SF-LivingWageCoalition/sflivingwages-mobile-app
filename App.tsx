@@ -10,6 +10,7 @@ import WhoWeAre from "./App/screens/WhoWeAreScreen/WhoWeAreScreen";
 import { colors } from "./App/theme";
 import { fontWeight } from "./App/theme/fontStyles";
 import { RootStackParamList } from "./App/types";
+import "react-native-gesture-handler";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
