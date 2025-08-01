@@ -225,7 +225,8 @@ const es: Translations = {
   },
   whoWeAreHeader: {
     title: "Quienes Somos",
-    body: "La Coalición por un Salario Digno es una organización de defensa de los trabajadores con bajos salarios que lucha por la justicia económica."
+    body: "La Coalición por un Salario Digno es una organización de defensa de los trabajadores con bajos salarios que lucha por la justicia económica.",
+    buttonText: "Ver Más"
   },
   whoWeAreScreen: {
     title: "Quienes Somos",
