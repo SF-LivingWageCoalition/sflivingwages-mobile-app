@@ -217,7 +217,8 @@ const en = {
   },
   whoWeAreHeader: {
     title: "Who We Are",
-    body: "The Living Wage Coalition is a low-wage worker advocacy organization fighting for economic justice."
+    body: "The Living Wage Coalition is a low-wage worker advocacy organization fighting for economic justice.",
+    buttonText: "View More"
   },
   whoWeAreScreen: {
     title: "Who We Are",
