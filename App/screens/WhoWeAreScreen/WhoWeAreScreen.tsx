@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-// import committeeData from "./committee.json";
+import committeeData from "./committee.json";
 import { translate } from "../../translation/i18n";
 import en from "../../translation/locales/en";
 import { colors } from "../../theme";
@@ -32,6 +32,26 @@ const WhoWeAre: React.FC = () => {
           <Text style={styles.membersHeadingText}>
             {translate("whoWeAreScreen.committeeTitle")}
           </Text>
+          {committeeData.map((member) => (
+            <View style={styles.memberContainer} key={member.id}>
+              <Text style={styles.memberNameText}>{member.name}</Text>
+              <Text style={styles.memberTitleText}>
+                {member.title}
+              </Text>
+            </View>
+          ))}
+
+          {/* Begin separator for testing */}
+          <View
+            style={{
+              borderBottomColor: 'black',
+              borderBottomWidth: StyleSheet.hairlineWidth,
+              width: '100%',
+              marginBottom: 14
+            }}
+          />
+          {/* End separator for testing */}
+
           {en.whoWeAreScreen.committeeMembers.map((member) => (
             <View style={styles.memberContainer} key={member.id}>
               <Text style={styles.memberNameText}>{member.name}</Text>
