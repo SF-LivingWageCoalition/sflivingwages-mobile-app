@@ -15,6 +15,7 @@ import Swiper from "react-native-swiper/src";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { WebView } from "react-native-webview";
 import { CarouselImageProps, NewHomeScreenProps } from "../../types";
+import { translate } from "../../translation/i18n";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 
@@ -131,17 +132,20 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
             style={styles.background}
           >
             <View style={styles.header}>
-              <Text style={styles.imageTitle}>Who We Are </Text>
+              <Text style={styles.imageTitle}>
+                {translate("whoWeAreHeader.title")}
+              </Text>
               <Text numberOfLines={3} style={styles.imageContent}>
-                The Living Wage Coalition is a low-wage worker advocacy
-                organization fighting for economic justice.
+                {translate("whoWeAreHeader.body")}
               </Text>
               <View style={styles.buttonView}>
                 <TouchableOpacity
                   onPress={() => navigation.navigate("WhoWeAre")}
                   style={styles.button}
                 >
-                  <Text style={styles.buttonText}>View More</Text>
+                  <Text style={styles.buttonText}>
+                    {translate("whoWeAreHeader.buttonText")}
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
