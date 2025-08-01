@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import bodyText from "./bodyText.json";
 import committeeData from "./committee.json";
+import { translate } from "../../translation/i18n";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 
@@ -23,14 +23,14 @@ const WhoWeAre: React.FC = () => {
           <Image source={logo.src} style={styles.logo} />
         </View>
         <View>
-          {bodyText.map((bodyText) => (
-            <Text style={styles.bodyText} key={bodyText.id}>
-              {bodyText.text}
-            </Text>
-          ))}
+          <Text style={styles.bodyText}>
+            {translate("whoWeAreScreen.body")}
+          </Text>
         </View>
         <View style={styles.memberListContainer}>
-          <Text style={styles.membersHeadingText}>Coordinating Committee</Text>
+          <Text style={styles.membersHeadingText}>
+            {translate("whoWeAreScreen.committeeTitle")}
+          </Text>
           {committeeData.map((member) => (
             <View style={styles.memberContainer} key={member.id}>
               <Text style={styles.memberNameText}>{member.name}</Text>
