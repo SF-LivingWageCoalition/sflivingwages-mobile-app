@@ -1,8 +1,6 @@
 import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import committeeData from "./committee.json";
 import { translate } from "../../translation/i18n";
-import en from "../../translation/locales/en";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 
@@ -17,8 +15,10 @@ const WhoWeAre: React.FC = () => {
     src: require("../../assets/icons/sflwc_logo_finaltemp.png"),
   };
 
-  const theMembers = translate('whoWeAreScreen.committeeMembers');
+  // We need to tranlate the entire committeeMembers first
+  const committeeMembers = translate('whoWeAreScreen.committeeMembers');
 
+  // Now change the translated committeeMembers into an array
   const objToArr = (obj) => {
     if (obj.length > 0) {
       return obj;
@@ -26,6 +26,8 @@ const WhoWeAre: React.FC = () => {
     let arr = [];
     for (let i = 0; i < Object.keys(obj).length; i++) {
       const n = `member${i + 1}`;
+      console.log("Test");
+      console.log(n);
       arr.push(obj[n]);
     }
     return arr;
@@ -42,64 +44,22 @@ const WhoWeAre: React.FC = () => {
             {translate("whoWeAreScreen.body")}
           </Text>
         </View>
+
+        {/* Committe Members */}
         <View style={styles.memberListContainer}>
           <Text style={styles.membersHeadingText}>
             {translate("whoWeAreScreen.committeeTitle")}
           </Text>
-
-          {/* Using original JSON, no translationg */}
-          {/* {committeeData.map((member) => (
+          {objToArr(committeeMembers).map((member) => (
             <View style={styles.memberContainer} key={member.id}>
               <Text style={styles.memberNameText}>{member.name}</Text>
               <Text style={styles.memberTitleText}>
                 {member.title}
-              </Text>
-            </View>
-          ))} */}
-
-          {/* Begin separator for testing */}
-          <View
-            style={{
-              borderBottomColor: 'black',
-              borderBottomWidth: StyleSheet.hairlineWidth,
-              width: '100%',
-              marginBottom: 14
-            }}
-          />
-          {/* End separator for testing */}
-
-          {/* Trying to use committeeMembers array, doesn't work*/}
-          {/* {en.whoWeAreScreen.committeeMembers.map((member) => (
-            <View style={styles.memberContainer} key={member.id}>
-              <Text style={styles.memberNameText}>{member.name}</Text>
-              <Text style={styles.memberTitleText}>
-                {member.title}
-              </Text>
-            </View>
-          ))} */}
-
-          {/* Begin separator for testing */}
-          <View
-            style={{
-              borderBottomColor: 'black',
-              borderBottomWidth: StyleSheet.hairlineWidth,
-              width: '100%',
-              marginBottom: 14
-            }}
-          />
-          {/* End separator for testing */}
-
-          {/* This Works */}
-          {objToArr(theMembers).map((theMember) => (
-            <View style={styles.memberContainer} key={theMember.id}>
-              <Text style={styles.memberNameText}>{theMember.name}</Text>
-              <Text style={styles.memberTitleText}>
-                {theMember.title}
               </Text>
             </View>
           ))}
-
         </View>
+
       </View>
     </ScrollView>
   );
