@@ -19,7 +19,7 @@ const WhoWeAre: React.FC = () => {
   const committeeMembers = translate('whoWeAreScreen.committeeMembers');
 
   // Now change the translated committeeMembers into an array
-  const objToArr = (obj) => {
+  const objToArr = (obj: any) => {
     if (obj.length > 0) {
       return obj;
     }
@@ -50,7 +50,7 @@ const WhoWeAre: React.FC = () => {
           <Text style={styles.membersHeadingText}>
             {translate("whoWeAreScreen.committeeTitle")}
           </Text>
-          {objToArr(committeeMembers).map((member) => (
+          {objToArr(committeeMembers).map((member: any) => (
             <View style={styles.memberContainer} key={member.id}>
               <Text style={styles.memberNameText}>{member.name}</Text>
               <Text style={styles.memberTitleText}>
