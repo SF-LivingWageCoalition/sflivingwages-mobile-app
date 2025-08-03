@@ -15,7 +15,7 @@ const WhoWeAre: React.FC = () => {
     src: require("../../assets/icons/sflwc_logo_finaltemp.png"),
   };
 
-  // We need to tranlate the entire committeeMembers first
+  // We need to translate the entire committeeMembers first
   const committeeMembers = translate('whoWeAreScreen.committeeMembers');
 
   // Now change the translated committeeMembers into an array
@@ -25,9 +25,7 @@ const WhoWeAre: React.FC = () => {
     }
     let arr = [];
     for (let i = 0; i < Object.keys(obj).length; i++) {
-      const n = `member${i + 1}`;
-      console.log("Test");
-      console.log(n);
+      const n = `element${i + 1}`;
       arr.push(obj[n]);
     }
     return arr;
@@ -50,7 +48,7 @@ const WhoWeAre: React.FC = () => {
           <Text style={styles.membersHeadingText}>
             {translate("whoWeAreScreen.committeeTitle")}
           </Text>
-          {objToArr(committeeMembers).map((member: any) => (
+          {objToArr(committeeMembers).map((member: { id: number; name: string; title: number }) => (
             <View style={styles.memberContainer} key={member.id}>
               <Text style={styles.memberNameText}>{member.name}</Text>
               <Text style={styles.memberTitleText}>
