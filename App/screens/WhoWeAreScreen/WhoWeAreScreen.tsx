@@ -3,6 +3,7 @@ import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { translate } from "../../translation/i18n";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { CommitteeMember } from "../../types";
 
 /**
  * Who We Are Screen component
@@ -10,6 +11,7 @@ import { fontSize, fontWeight } from "../../theme/fontStyles";
  * source: (https://www.livingwage-sf.org/who-we-are/)
  */
 const WhoWeAre: React.FC = () => {
+
   // SFLWC Logo
   const logo = {
     src: require("../../assets/icons/sflwc_logo_finaltemp.png"),
@@ -48,9 +50,11 @@ const WhoWeAre: React.FC = () => {
           <Text style={styles.membersHeadingText}>
             {translate("whoWeAreScreen.committeeTitle")}
           </Text>
-          {objToArr(committeeMembers).map((member: { id: number; name: string; title: number }) => (
+          {objToArr(committeeMembers).map((member: CommitteeMember) => (
             <View style={styles.memberContainer} key={member.id}>
-              <Text style={styles.memberNameText}>{member.name}</Text>
+              <Text style={styles.memberNameText}>
+                {member.name}
+              </Text>
               <Text style={styles.memberTitleText}>
                 {member.title}
               </Text>
