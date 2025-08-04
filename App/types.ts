@@ -262,8 +262,12 @@ export type LogoHeaderProps = {
   navigation: NavigationProp<ParamListBase>;
 };
 
-export type CommitteeMember = {
+export type CommitteeMemberType = {
   id: number;
   name: string;
   title: number
 }
+
+export type CommitteMemberProps = {
+  member: CommitteeMemberType
+};
