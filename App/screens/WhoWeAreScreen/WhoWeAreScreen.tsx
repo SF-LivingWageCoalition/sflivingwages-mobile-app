@@ -3,7 +3,8 @@ import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { translate } from "../../translation/i18n";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
-import { CommitteeMember } from "../../types";
+import CommitteeMember from "./components/CommitteeMember";
+import { CommitteeMemberType } from "../../types";
 
 /**
  * Who We Are Screen component
@@ -17,10 +18,7 @@ const WhoWeAre: React.FC = () => {
     src: require("../../assets/icons/sflwc_logo_finaltemp.png"),
   };
 
-  // We need to translate the entire committeeMembers first
-  const committeeMembers = translate('whoWeAreScreen.committeeMembers');
-
-  // Now change the translated committeeMembers into an array
+  // Change a translated nested object into an array
   const objToArr = (obj: any) => {
     if (obj.length > 0) {
       return obj;
@@ -45,20 +43,14 @@ const WhoWeAre: React.FC = () => {
           </Text>
         </View>
 
-        {/* Committe Members */}
-        <View style={styles.memberListContainer}>
+        {/* Committe Members section */}
+        <View style={styles.membersListContainer}>
           <Text style={styles.membersHeadingText}>
             {translate("whoWeAreScreen.committeeTitle")}
           </Text>
-          {objToArr(committeeMembers).map((member: CommitteeMember) => (
-            <View style={styles.memberContainer} key={member.id}>
-              <Text style={styles.memberNameText}>
-                {member.name}
-              </Text>
-              <Text style={styles.memberTitleText}>
-                {member.title}
-              </Text>
-            </View>
+          {/* Committee Members List */}
+          {objToArr(translate('whoWeAreScreen.committeeMembers')).map((member: CommitteeMemberType) => (
+            <CommitteeMember key={member.id} member={member} />
           ))}
         </View>
 
@@ -95,19 +87,8 @@ const styles = StyleSheet.create({
     marginBottom: 18,
     textTransform: "uppercase",
   },
-  memberListContainer: {
+  membersListContainer: {
     alignItems: "center",
-  },
-  memberContainer: {
-    alignItems: "center",
-    marginBottom: 18,
-  },
-  memberNameText: {
-    fontSize: fontSize.md,
-    fontWeight: fontWeight.medium,
-  },
-  memberTitleText: {
-    fontSize: fontSize.sm,
   },
 });
 
