@@ -121,26 +121,6 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
     },
   ];
 
-  // Redux toolkit example usage
-  // Make sure to import the necessary hooks and types from your Redux store
-  {
-    /*
-    const dispatch = useDispatch<AppDispatch>();
-    const userData = useSelector((state: RootState) => state.userData);
-
-    const handleSave = () => {
-      dispatch(setData({ name: "Alice", email: "test@gmail.com" }));
-    };
-    return (
-        <View>
-          <Text>Name: {userData.name}</Text>
-          <Text>Email: {userData.email}</Text>
-          <Button title="Save" onPress={handleSave} />
-        </View>
-);
-          */
-  }
-
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>

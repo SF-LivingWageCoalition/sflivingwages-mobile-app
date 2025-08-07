@@ -12,7 +12,7 @@ import { fontWeight } from "./App/theme/fontStyles";
 import { RootStackParamList } from "./App/types";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { persistor, store } from "./redux/store/store";
+import { persistor, store } from "./App/redux/store/store";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
