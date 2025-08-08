@@ -265,7 +265,7 @@ export type LogoHeaderProps = {
 export type CommitteeMemberData = {
   id: number;
   name: string;
-  title: number
+  title: string
 }
 
 export type CommitteMemberProps = {
