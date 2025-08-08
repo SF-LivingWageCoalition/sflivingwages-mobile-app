@@ -57,6 +57,29 @@ const WhoWeAre: React.FC = () => {
           ))}
         </View>
 
+        {/* Output the string for debugging */}
+        {/* <View style={styles.membersListContainer}>
+          <Text style={styles.membersHeadingText}>
+            {translate("whoWeAreScreen.committeeTitle")}
+          </Text>
+
+          <Text>
+            {JSON.stringify(translate('whoWeAreScreen.committeeMembers'))}
+          </Text>
+        </View> */}
+
+        {/* Test: use Array.from method */}
+        {/* Committe Members section */}
+        <View style={styles.membersListContainer}>
+          <Text style={styles.membersHeadingText}>
+            {translate("whoWeAreScreen.committeeTitle")}
+          </Text>
+          {/* Committee Members List */}
+          {Array.from(translate('whoWeAreScreen.committeeMembers')).map((member: any) => (
+            <CommitteeMember key={member.id} member={member} />
+          ))}
+        </View>
+
       </View>
     </ScrollView>
   );
