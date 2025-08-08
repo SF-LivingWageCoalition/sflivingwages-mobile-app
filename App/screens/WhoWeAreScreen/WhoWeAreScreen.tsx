@@ -21,8 +21,6 @@ const WhoWeAre: React.FC = () => {
   /**
    * Change an object into an array
    * Used to change a translated object (containing an arrary of objects) into an mappable array
-   * @param obj 
-   * @returns arr The translated array
    */
   const objToArr = (obj: any) => {
     if (obj.length > 0) {
