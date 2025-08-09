@@ -4,6 +4,7 @@ import { translate } from "../../translation/i18n";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 import CommitteeMember from "./components/CommitteeMember";
+import { CommitteeMemberData } from "../../types";
 
 /**
  * Who We Are Screen component
@@ -35,7 +36,7 @@ const WhoWeAre: React.FC = () => {
             {translate("whoWeAreScreen.committeeTitle")}
           </Text>
           {/* Committee Members List */}
-          {Array.from(translate('whoWeAreScreen.committeeMembers')).map((member: any) => (
+          {(translate('whoWeAreScreen.committeeMembers', { returnObjects: true }) as unknown as CommitteeMemberData[]).map((member: CommitteeMemberData) => (
             <CommitteeMember key={member.id} member={member} />
           ))}
         </View>
