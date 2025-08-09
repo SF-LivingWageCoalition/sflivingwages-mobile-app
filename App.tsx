@@ -13,6 +13,7 @@ import { RootStackParamList } from "./App/types";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./App/redux/store/store";
+import "react-native-gesture-handler";
 
 const Stack = createStackNavigator<RootStackParamList>();
 

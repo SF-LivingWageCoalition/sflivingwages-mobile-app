@@ -1,6 +1,5 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import React, { useEffect, useState } from "react";
-import "react-native-gesture-handler";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 import { AuctionNavState, AuctionTabParamList, ProductItem } from "../../types";
