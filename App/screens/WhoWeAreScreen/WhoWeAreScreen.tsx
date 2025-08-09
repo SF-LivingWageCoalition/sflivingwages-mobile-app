@@ -4,7 +4,6 @@ import { translate } from "../../translation/i18n";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 import CommitteeMember from "./components/CommitteeMember";
-import { CommitteeMemberData } from "../../types";
 
 /**
  * Who We Are Screen component
@@ -16,22 +15,6 @@ const WhoWeAre: React.FC = () => {
   // SFLWC Logo
   const logo = {
     src: require("../../assets/icons/sflwc_logo_finaltemp.png"),
-  };
-
-  /**
-   * Change an object into an array
-   * Used to change a translated object (containing an arrary of objects) into an mappable array
-   */
-  const objToArr = (obj: any) => {
-    if (obj.length > 0) {
-      return obj;
-    }
-    let arr = [];
-    for (let i = 0; i < Object.keys(obj).length; i++) {
-      const n = `element${i + 1}`;
-      arr.push(obj[n]);
-    }
-    return arr;
   };
 
   return (
@@ -46,29 +29,6 @@ const WhoWeAre: React.FC = () => {
           </Text>
         </View>
 
-        {/* Committe Members section */}
-        <View style={styles.membersListContainer}>
-          <Text style={styles.membersHeadingText}>
-            {translate("whoWeAreScreen.committeeTitle")}
-          </Text>
-          {/* Committee Members List */}
-          {objToArr(translate('whoWeAreScreen.committeeMembers')).map((member: CommitteeMemberData) => (
-            <CommitteeMember key={member.id} member={member} />
-          ))}
-        </View>
-
-        {/* Output the string for debugging */}
-        {/* <View style={styles.membersListContainer}>
-          <Text style={styles.membersHeadingText}>
-            {translate("whoWeAreScreen.committeeTitle")}
-          </Text>
-
-          <Text>
-            {JSON.stringify(translate('whoWeAreScreen.committeeMembers'))}
-          </Text>
-        </View> */}
-
-        {/* Test: use Array.from method */}
         {/* Committe Members section */}
         <View style={styles.membersListContainer}>
           <Text style={styles.membersHeadingText}>
