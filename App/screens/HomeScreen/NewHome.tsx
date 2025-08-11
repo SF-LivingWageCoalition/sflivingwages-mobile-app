@@ -125,7 +125,8 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
-        {/* Top background section */}
+
+        {/* Top background section: Who we Are */}
         <View style={styles.topBackground}>
           <ImageBackground
             source={require("../../assets/images/golden-gate-bridge.png")}
