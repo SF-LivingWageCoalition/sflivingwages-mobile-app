@@ -45,7 +45,7 @@ const App: React.FC = () => {
                 <Stack.Screen name="Event" component={Events} />
                 <Stack.Screen
                   name="WhoWeAre"
-                  options={{ title: "Who We Are" }}
+                  options={{ title: translate("whoWeAreScreen.title") }}
                   component={WhoWeAre}
                 />
               </Stack.Navigator>
@@ -53,34 +53,6 @@ const App: React.FC = () => {
           </NavigationContainer>
         </PersistGate>
       </Provider>
-      <NavigationContainer>
-        <NativeBaseProvider>
-          <Stack.Navigator
-            screenOptions={{
-              headerStyle: { backgroundColor: colors.light.primary },
-              headerTintColor: colors.light.textOnPrimary,
-              headerTitleStyle: { fontWeight: fontWeight.bold },
-            }}
-          >
-            <Stack.Screen
-              name="TabStack"
-              component={BottomTabStack}
-              options={{ title: "San Francisco Living Wage Coalition" }}
-            />
-            <Stack.Screen
-              name="Preview"
-              component={ModalScreen}
-              initialParams={{ image: "" }}
-            />
-            <Stack.Screen name="Event" component={Events} />
-            <Stack.Screen
-              name="WhoWeAre"
-              options={{ title: translate("whoWeAreScreen.title") }}
-              component={WhoWeAre}
-            />
-          </Stack.Navigator>
-        </NativeBaseProvider>
-      </NavigationContainer>
     </SafeAreaProvider>
   );
 };
