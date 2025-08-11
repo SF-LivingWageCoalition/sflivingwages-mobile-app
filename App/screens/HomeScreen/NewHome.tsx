@@ -128,7 +128,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
         {/* Top background section */}
         <View style={styles.topBackground}>
           <ImageBackground
-            source={require("../../assets/images/stefan-mitev-Sp3eNPAHB8c-unsplash.jpg")}
+            source={require("../../assets/images/golden-gate-bridge.png")}
             style={styles.background}
           >
             <View style={styles.header}>
