@@ -5,7 +5,7 @@ import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import BottomTabStack from "./App/navigation/BottomTabStack";
 import ModalScreen from "./App/screens/DonateScreen/ModalScreen";
-import Events from "./App/screens/HomeScreen/components/EventListScreen";
+import Events from "./App/screens/EventsScreen/EventsScreen";
 import WhoWeAre from "./App/screens/WhoWeAreScreen/WhoWeAreScreen";
 import { translate } from "./App/translation/i18n";
 import { colors } from "./App/theme";
@@ -42,7 +42,11 @@ const App: React.FC = () => {
                   component={ModalScreen}
                   initialParams={{ image: "" }}
                 />
-                <Stack.Screen name="Event" component={Events} />
+                <Stack.Screen
+                  name="Events"
+                  options={{ title: translate("eventsScreen.title") }}
+                  component={Events}
+                />
                 <Stack.Screen
                   name="WhoWeAre"
                   options={{ title: translate("whoWeAreScreen.title") }}

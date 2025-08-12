@@ -271,7 +271,10 @@ const en = {
         title: "Member"
       }
     ]
-  }
+  },
+  eventsScreen: {
+    title: "Events"
+  },
 };
 
 export default en;

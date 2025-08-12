@@ -3,7 +3,7 @@ import { NavigationProp, ParamListBase } from "@react-navigation/native";
 export type RootStackParamList = {
   TabStack: undefined;
   Preview: { image: string };
-  Event: undefined;
+  Events: undefined;
   WhoWeAre: undefined;
 };
 
@@ -265,9 +265,9 @@ export type LogoHeaderProps = {
 export type CommitteeMemberData = {
   id: number;
   name: string;
-  title: string
+  title: string;
 }
 
 export type CommitteMemberProps = {
-  member: CommitteeMemberData
+  member: CommitteeMemberData;
 };
