@@ -36,7 +36,7 @@ const WhoWeAre: React.FC = () => {
             {translate("whoWeAreScreen.committeeTitle")}
           </Text>
           {/* Committee Members List */}
-          {(translate('whoWeAreScreen.committeeMembers') as unknown as CommitteeMemberData[]).map((member: CommitteeMemberData) => (
+          {(translate<CommitteeMemberData[]>('whoWeAreScreen.committeeMembers')).map((member: CommitteeMemberData) => (
             <CommitteeMember key={member.id} member={member} />
           ))}
         </View>
