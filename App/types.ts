@@ -261,3 +261,13 @@ export type NewHomeScreenProps = {
 export type LogoHeaderProps = {
   navigation: NavigationProp<ParamListBase>;
 };
+
+export type CommitteeMemberData = {
+  id: number;
+  name: string;
+  title: string
+}
+
+export type CommitteMemberProps = {
+  member: CommitteeMemberData
+};

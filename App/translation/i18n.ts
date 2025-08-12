@@ -57,6 +57,6 @@ interface TranslateOptions {
   [key: string]: any; // Adjust this based on the actual options the library supports
 }
 
-export function translate(key: TxKeyPath, options?: TranslateOptions): string {
-  return i18n.t(key, options);
+export function translate<T = string>(key: TxKeyPath, options?: TranslateOptions): T {
+  return i18n.t(key, options) as T;
 }
