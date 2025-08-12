@@ -65,18 +65,18 @@ const CarouselImageSmall: React.FC<CarouselImageProps> = ({
  */
 const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
   // Images for the main slider
-  const images = [
+  const mainSliderImages = [
     {
-      id: 2,
+      id: 1,
       title: "Donate",
       src: require("../../assets/images/campaign2_background.jpg"),
       destination: "https://www.livingwage-sf.org/donations-and-membership/",
     },
     {
-      id: 3,
-      title: "Events",
-      src: require("../../assets/images/p1040208.jpg"),
-      destination: "Event",
+      id: 2,
+      title: translate("eventsScreen.title"),
+      src: require("../../assets/images/events-slide.jpg"),
+      destination: "Events",
     },
   ];
 
@@ -167,12 +167,12 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 activeDotColor={colors.light.secondary}
                 dotStyle={{ width: 8, height: 8 }}
               >
-                {images.map((image) => (
+                {mainSliderImages.map((image) => (
                   <CarouselImage
                     image={image}
                     key={image.id}
                     onPress={() => {
-                      image.id === 2
+                      image.id === 1
                         ? Linking.openURL(image.destination)
                         : navigation.navigate(image.destination);
                     }}

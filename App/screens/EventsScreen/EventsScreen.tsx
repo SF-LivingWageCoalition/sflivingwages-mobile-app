@@ -8,9 +8,9 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { colors } from "../../../theme";
-import { EventItem, EventsData } from "../../../types";
-import EventListItem from "./EventListItem";
+import { colors } from "../../theme";
+import { EventItem, EventsData } from "../../types";
+import EventListItem from "./components/EventListItem";
 
 const { height } = Dimensions.get("window");
 

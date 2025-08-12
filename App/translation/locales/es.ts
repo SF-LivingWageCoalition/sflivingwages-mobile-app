@@ -279,6 +279,9 @@ const es: Translations = {
         title: "Miembro"
       }
     ]
+  },
+  eventsScreen: {
+    title: "Eventos"
   }
 };
 
