@@ -3,7 +3,7 @@ import { NavigationProp, ParamListBase } from "@react-navigation/native";
 export type RootStackParamList = {
   TabStack: undefined;
   Preview: { image: string };
-  Event: undefined;
+  Events: undefined;
   WhoWeAre: undefined;
 };
 
@@ -260,4 +260,14 @@ export type NewHomeScreenProps = {
 
 export type LogoHeaderProps = {
   navigation: NavigationProp<ParamListBase>;
+};
+
+export type CommitteeMemberData = {
+  id: number;
+  name: string;
+  title: string;
+}
+
+export type CommitteMemberProps = {
+  member: CommitteeMemberData;
 };

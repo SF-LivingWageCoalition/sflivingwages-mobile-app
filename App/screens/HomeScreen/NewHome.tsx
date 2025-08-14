@@ -15,6 +15,7 @@ import Swiper from "react-native-swiper/src";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { WebView } from "react-native-webview";
 import { CarouselImageProps, NewHomeScreenProps } from "../../types";
+import { translate } from "../../translation/i18n";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 
@@ -64,18 +65,18 @@ const CarouselImageSmall: React.FC<CarouselImageProps> = ({
  */
 const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
   // Images for the main slider
-  const images = [
+  const mainSliderImages = [
     {
-      id: 2,
+      id: 1,
       title: "Donate",
       src: require("../../assets/images/campaign2_background.jpg"),
       destination: "https://www.livingwage-sf.org/donations-and-membership/",
     },
     {
-      id: 3,
-      title: "Events",
-      src: require("../../assets/images/p1040208.jpg"),
-      destination: "Event",
+      id: 2,
+      title: translate("eventsScreen.title"),
+      src: require("../../assets/images/events-slide.jpg"),
+      destination: "Events",
     },
   ];
 
@@ -124,24 +125,28 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
-        {/* Top background section */}
+
+        {/* Top background section: Who we Are */}
         <View style={styles.topBackground}>
           <ImageBackground
-            source={require("../../assets/images/stefan-mitev-Sp3eNPAHB8c-unsplash.jpg")}
+            source={require("../../assets/images/golden-gate-bridge.png")}
             style={styles.background}
           >
             <View style={styles.header}>
-              <Text style={styles.imageTitle}>Who We Are </Text>
+              <Text style={styles.imageTitle}>
+                {translate("whoWeAreHeader.title")}
+              </Text>
               <Text numberOfLines={3} style={styles.imageContent}>
-                The Living Wage Coalition is a low-wage worker advocacy
-                organization fighting for economic justice.
+                {translate("whoWeAreHeader.body")}
               </Text>
               <View style={styles.buttonView}>
                 <TouchableOpacity
                   onPress={() => navigation.navigate("WhoWeAre")}
                   style={styles.button}
                 >
-                  <Text style={styles.buttonText}>View More</Text>
+                  <Text style={styles.buttonText}>
+                    {translate("whoWeAreHeader.buttonText")}
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -162,12 +167,12 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 activeDotColor={colors.light.secondary}
                 dotStyle={{ width: 8, height: 8 }}
               >
-                {images.map((image) => (
+                {mainSliderImages.map((image) => (
                   <CarouselImage
                     image={image}
                     key={image.id}
                     onPress={() => {
-                      image.id === 2
+                      image.id === 1
                         ? Linking.openURL(image.destination)
                         : navigation.navigate(image.destination);
                     }}
