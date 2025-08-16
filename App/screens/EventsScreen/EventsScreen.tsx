@@ -26,6 +26,8 @@ const Events: React.FC = () => {
   useEffect(() => {
     const fetchEvents = async (): Promise<void> => {
       try {
+        const todayDate = new Date();
+        todayDate.setHours(0, 0, 0, 0);
         const response = await fetch(
           /**
            * ex: /events/ defaults to
