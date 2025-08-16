@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   ImageSourcePropType,
@@ -11,12 +11,35 @@ import {
 } from "react-native";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
+import RenderHTML from "react-native-render-html";
+import { useWindowDimensions } from "react-native";
+import { WebView } from "react-native-webview";
 
 const IC_ARR_DOWN: ImageSourcePropType = require("../../assets/icons/ic_arr_down.png");
 const IC_ARR_UP: ImageSourcePropType = require("../../assets/icons/ic_arr_up.png");
 
 const LivingWageCalculator: React.FC = () => {
   const navigation = useNavigation();
+
+  const [LWC, setLWC] = useState({});
+  const [LWCContent, setLWCContent] = useState({});
+  const [LWCContentRendered, setLWCContentRendered] = useState();
+
+  const { width } = useWindowDimensions();
+
+  const fetchLWC = (): void => {
+    fetch(
+      "https://www.livingwage-sf.org/wp-json/wp/v2/pages/9299?_fields=content.rendered"
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        setLWCContentRendered(data.content.rendered);
+      });
+  };
+
+  useEffect(() => {
+    fetchLWC();
+  }, []);
 
   return (
     <ScrollView>
@@ -36,6 +59,13 @@ const LivingWageCalculator: React.FC = () => {
           </View>
           <Text style={styles.title}>Living Wage Calculator</Text>
         </View>
+        {LWCContentRendered && (
+          <WebView
+            originWhitelist={["*"]}
+            source={{ html: LWCContentRendered }}
+            style={{ height: 600, width: "100%" }}
+          />
+        )}
       </View>
     </ScrollView>
   );
