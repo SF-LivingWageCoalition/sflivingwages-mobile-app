@@ -26,15 +26,12 @@ const Events: React.FC = () => {
   useEffect(() => {
     const fetchEvents = async (): Promise<void> => {
       try {
-        const todayDate = new Date();
-        todayDate.setHours(0, 0, 0, 0);
         const response = await fetch(
-          "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/?status=publish&start_date=" +
-          todayDate.toISOString(),
-          {
-            method: "GET",
-            // headers: { "cache-control": "no-cache" },
-          }
+          // ex: https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/?page=1&per_page=5&start_date=2025-08-15 00:00:00&end_date=2027-08-16 23:59:59&status=publish
+          "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/", {
+          method: "GET",
+          // headers: { "cache-control": "no-cache" },
+        }
         );
 
         if (response.ok && response.status !== 401) {
