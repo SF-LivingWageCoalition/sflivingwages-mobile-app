@@ -21,8 +21,6 @@ const IC_ARR_UP: ImageSourcePropType = require("../../assets/icons/ic_arr_up.png
 const LivingWageCalculator: React.FC = () => {
   const navigation = useNavigation();
 
-  const [LWC, setLWC] = useState({});
-  const [LWCContent, setLWCContent] = useState({});
   const [LWCContentRendered, setLWCContentRendered] = useState();
 
   const { width } = useWindowDimensions();
@@ -40,6 +38,8 @@ const LivingWageCalculator: React.FC = () => {
   useEffect(() => {
     fetchLWC();
   }, []);
+
+  console.log("LWCContentRendered", LWCContentRendered);
 
   return (
     <ScrollView>
@@ -59,13 +59,19 @@ const LivingWageCalculator: React.FC = () => {
           </View>
           <Text style={styles.title}>Living Wage Calculator</Text>
         </View>
-        {LWCContentRendered && (
+        {/* {LWCContentRendered && (
           <WebView
             originWhitelist={["*"]}
             source={{ html: LWCContentRendered }}
             style={{ height: 600, width: "100%" }}
           />
-        )}
+        )} */}
+        <WebView
+          source={{
+            uri: "https://www.livingwage-sf.org/living-wage-calculator/",
+          }}
+          style={{ height: 600, width: "100%" }}
+        />
       </View>
     </ScrollView>
   );
