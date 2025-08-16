@@ -60,6 +60,13 @@ const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
                 {translate("assistHomeScreen.beReadyForICE")}
               </Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("LivingWageCalculator")}
+            >
+              <Text style={styles.buttonText}>Living Wage Calculator</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
