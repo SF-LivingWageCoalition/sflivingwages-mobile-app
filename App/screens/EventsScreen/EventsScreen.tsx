@@ -26,11 +26,14 @@ const Events: React.FC = () => {
   useEffect(() => {
     const fetchEvents = async (): Promise<void> => {
       try {
+        const todayDate = new Date();
+        todayDate.setHours(0, 0, 0, 0);
         const response = await fetch(
-          "https://www.livingwage-sf.org/wp-json/wp/v2/pages/18493",
+          "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/?status=publish&start_date=" +
+          todayDate.toISOString(),
           {
             method: "GET",
-            headers: { "cache-control": "no-cache" },
+            // headers: { "cache-control": "no-cache" },
           }
         );
 
@@ -38,13 +41,13 @@ const Events: React.FC = () => {
           const data = await response.json();
 
           // Clean the HTML tags and entities from the response
-          const regex = /({([{^}]*)})|(&.+;)|(<([^>]+)>)/gi;
-          const clean = data.content.rendered.replace(regex, "");
+          // const regex = /({([{^}]*)})|(&.+;)|(<([^>]+)>)/gi;
+          // const clean = data.content.rendered.replace(regex, "");
 
           // Parse the cleaned JSON
-          const eventsData = JSON.parse(clean) as EventsData;
+          // const eventsData = JSON.parse(clean) as EventsData;
 
-          setEvents(eventsData);
+          setEvents(data);
           setLoading(false);
         }
       } catch (error) {
@@ -60,7 +63,7 @@ const Events: React.FC = () => {
     <EventListItem event={item} index={index} />
   );
 
-  const keyExtractor = (item: EventItem): string => item.date;
+  const keyExtractor = (item: EventItem): string => item.id.toString();
 
   return (
     <SafeAreaView style={styles.container}>

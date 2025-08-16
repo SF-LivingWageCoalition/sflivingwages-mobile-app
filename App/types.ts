@@ -225,10 +225,11 @@ export type CalendarNavProps = {
 };
 
 export type EventItem = {
-  date: string;
+  id: number;
+  title: string;
   description: string;
-  time: string;
-  location: string;
+  start_date: string;
+  end_date: string;
 };
 
 export type EventListItemProps = {
