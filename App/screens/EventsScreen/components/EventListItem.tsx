@@ -35,9 +35,19 @@ const EventListItem: React.FC<EventListItemProps> = ({ event, index }) => {
   ];
 
   // Parse the date from the event
-  const newDate = new Date(event.date);
-  const month = monthNames[newDate.getMonth()];
-  const day = newDate.getDate() + 1;
+  const startDate = new Date(event.start_date);
+  const startMonth = monthNames[startDate.getMonth()];
+  const startDay = startDate.getDate();
+  const startTime = startDate.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const endDate = new Date(event.end_date);
+  const endTime = endDate.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
 
   return (
     <View
@@ -52,21 +62,22 @@ const EventListItem: React.FC<EventListItemProps> = ({ event, index }) => {
       ]}
     >
       <View style={{ marginTop: 13, width: 90 }}>
-        <Text style={styles.dayText}>{day}</Text>
-        <Text style={styles.monthText}>{month}</Text>
+        <Text style={styles.dayText}>{startDay}</Text>
+        <Text style={styles.monthText}>{startMonth}</Text>
       </View>
       <View style={styles.eventInfo}>
-        <Title style={styles.descriptionText}>{event.description}</Title>
-        <Paragraph style={styles.timeText}>{event.time}</Paragraph>
-        <TouchableOpacity
+        <Title style={styles.descriptionText}>{event.title}</Title>
+        <Paragraph style={styles.timeText}>{startTime} - {endTime}</Paragraph>
+        {/* <TouchableOpacity
           style={styles.registerButton}
           onPress={() => {
             Linking.openURL(event.location);
           }}
         >
           <Text style={styles.registerText}>Register</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
+      <View style={styles.eventMoreButton}><Paragraph>{'>'}</Paragraph></View>
     </View>
   );
 };
@@ -109,6 +120,17 @@ const styles = StyleSheet.create({
     padding: 3,
     marginTop: 8,
     marginLeft: 10,
+    // marginRight: 10,
+  },
+  eventMoreButton: {
+    flexDirection: "column",
+    alignContent: "center",
+    justifyContent: "center",
+    marginLeft: 8,
+    marginRight: 8,
+  },
+  eventMoreArrow: {
+
   },
   registerText: {
     color: colors.light.textOnPrimary,
