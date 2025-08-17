@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
+import RNPickerSelect from 'react-native-picker-select';
 import {
   Image,
   ImageSourcePropType,
@@ -19,6 +20,14 @@ const IC_ARR_DOWN: ImageSourcePropType = require("../../assets/icons/ic_arr_down
 const IC_ARR_UP: ImageSourcePropType = require("../../assets/icons/ic_arr_up.png");
 
 const LivingWageCalculator: React.FC = () => {
+  const [adults, setAdults] = useState<number>(1);
+  const [children, setChildren] = useState<number>(0);
+
+  const handleSubmit = () => {
+    // Placeholder: calculation logic will go here
+    console.log(`Adults: ${adults}, Children: ${children}`);
+  };
+
   const navigation = useNavigation();
 
   const [LWCContentRendered, setLWCContentRendered] = useState();
@@ -59,19 +68,62 @@ const LivingWageCalculator: React.FC = () => {
           </View>
           <Text style={styles.title}>Living Wage Calculator</Text>
         </View>
-        {/* {LWCContentRendered && (
-          <WebView
-            originWhitelist={["*"]}
-            source={{ html: LWCContentRendered }}
-            style={{ height: 600, width: "100%" }}
-          />
-        )} */}
-        <WebView
-          source={{
-            uri: "https://www.livingwage-sf.org/living-wage-calculator/",
-          }}
-          style={{ height: 600, width: "100%" }}
-        />
+        <View style={{ marginTop: 24, paddingHorizontal: 16 }}>
+          <View style={{ marginBottom: 24 }}>
+            <Text style={{ fontWeight: 'bold', marginBottom: 8 }}>Number of adults in your household</Text>
+            <View style={{ borderWidth: 1, borderRadius: 8, borderColor: '#ccc', backgroundColor: '#fff', overflow: 'hidden' }}>
+              <RNPickerSelect
+                value={adults}
+                onValueChange={(itemValue: number) => setAdults(itemValue)}
+                items={[
+                  { label: '1', value: 1 },
+                  { label: '2', value: 2 },
+                ]}
+                style={pickerSelectStyles}
+                useNativeAndroidPickerStyle={false}
+                placeholder={{ label: 'Select number of adults', value: null, color: '#999' }}
+                Icon={() => (
+                  <Image source={IC_ARR_DOWN} style={{ width: 20, height: 20, position: 'absolute', right: 12, top: 15 }} />
+                )}
+              />
+            </View>
+          </View>
+
+          <View style={{ marginBottom: 32 }}>
+            <Text style={{ fontWeight: 'bold', marginBottom: 8 }}>Number of children in your household</Text>
+            <View style={{ borderWidth: 1, borderRadius: 8, borderColor: '#ccc', backgroundColor: '#fff', overflow: 'hidden' }}>
+              <RNPickerSelect
+                value={children}
+                onValueChange={(itemValue: number) => setChildren(itemValue)}
+                items={[
+                  { label: '0', value: 0 },
+                  { label: '1', value: 1 },
+                  { label: '2', value: 2 },
+                  { label: '3', value: 3 },
+                ]}
+                style={pickerSelectStyles}
+                useNativeAndroidPickerStyle={false}
+                placeholder={{ label: 'Select number of children', value: null, color: '#999' }}
+                Icon={() => (
+                  <Image source={IC_ARR_DOWN} style={{ width: 20, height: 20, position: 'absolute', right: 12, top: 15 }} />
+                )}
+              />
+            </View>
+          </View>
+
+          <TouchableOpacity
+            style={{
+              backgroundColor: colors.light.primary,
+              padding: 16,
+              borderRadius: 12,
+              alignItems: 'center',
+              width: '100%',
+            }}
+            onPress={handleSubmit}
+          >
+            <Text style={{ color: colors.light.textOnPrimary, fontWeight: 'bold', fontSize: 18 }}>Submit</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );
@@ -129,6 +181,33 @@ const styles = StyleSheet.create({
     fontWeight: fontWeight.medium,
     textAlign: "center",
     marginBottom: 20,
+  },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    height: 50,
+    width: '100%',
+    paddingHorizontal: 12,
+    borderWidth: 0,
+    borderRadius: 8,
+    color: '#333',
+    backgroundColor: '#fff',
+    fontSize: 16,
+  },
+  inputAndroid: {
+    height: 50,
+    width: '100%',
+    paddingHorizontal: 12,
+    borderWidth: 0,
+    borderRadius: 8,
+    color: '#333',
+    backgroundColor: '#fff',
+    fontSize: 16,
+  },
+  placeholder: {
+    color: '#999',
+    fontSize: 16,
   },
 });
 
