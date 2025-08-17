@@ -12,9 +12,6 @@ import {
 } from "react-native";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
-import RenderHTML from "react-native-render-html";
-import { useWindowDimensions } from "react-native";
-import { WebView } from "react-native-webview";
 
 const IC_ARR_DOWN: ImageSourcePropType = require("../../assets/icons/ic_arr_down.png");
 const IC_ARR_UP: ImageSourcePropType = require("../../assets/icons/ic_arr_up.png");
@@ -22,8 +19,9 @@ const IC_ARR_UP: ImageSourcePropType = require("../../assets/icons/ic_arr_up.png
 const LivingWageCalculator: React.FC = () => {
   const [adults, setAdults] = useState<number>(1);
   const [children, setChildren] = useState<number>(0);
-  const wageData = require("./livingwage.json");
   const [calculationResult, setCalculationResult] = useState<any | null>(null);
+
+  const wageData = require("./livingwage.json");
 
   function formatNumber(num: number) {
     return num.toLocaleString();
@@ -67,24 +65,6 @@ const LivingWageCalculator: React.FC = () => {
 
   const navigation = useNavigation();
 
-  const [LWCContentRendered, setLWCContentRendered] = useState();
-
-  const { width } = useWindowDimensions();
-
-  const fetchLWC = (): void => {
-    fetch(
-      "https://www.livingwage-sf.org/wp-json/wp/v2/pages/9299?_fields=content.rendered"
-    )
-      .then((resp) => resp.json())
-      .then((data) => {
-        setLWCContentRendered(data.content.rendered);
-      });
-  };
-
-  useEffect(() => {
-    fetchLWC();
-  }, []);
-
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -95,13 +75,7 @@ const LivingWageCalculator: React.FC = () => {
           <Text style={styles.backArrow}>{"<"}</Text>
         </TouchableOpacity>
         <View style={styles.card}>
-          <View style={styles.logoContainer}>
-            <Image
-              style={styles.logo}
-              source={require("../../../assets/icon.png")}
-            />
-          </View>
-          <Text style={styles.title}>Living Wage Calculator</Text>
+          <Text style={styles.title}>LIVING WAGE CALCULATOR</Text>
         </View>
         <View style={{ marginTop: 24, paddingHorizontal: 16 }}>
           <View style={{ marginBottom: 24 }}>
@@ -288,8 +262,8 @@ const styles = StyleSheet.create({
   },
   circleBackButton: {
     position: "absolute",
-    top: 40,
-    left: 20,
+    top: 27,
+    left: 27,
     backgroundColor: colors.light.primary,
     width: 40,
     height: 40,
@@ -325,13 +299,12 @@ const styles = StyleSheet.create({
   logo: {
     width: 100,
     height: 100,
-    resizeMode: "contain",
+    resizeMode: "cover",
   },
   title: {
     fontSize: fontSize.md,
-    fontWeight: fontWeight.medium,
-    textAlign: "center",
-    marginBottom: 20,
+    fontWeight: fontWeight.bold,
+    textAlign: "right",
   },
 });
 
