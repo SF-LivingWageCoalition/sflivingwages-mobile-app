@@ -1,28 +1,24 @@
 import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import { translate } from "../../translation/i18n";
+import sflwcLogo from "../../assets/icons/sflwc_logo_finaltemp.png";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
-import CommitteeMember from "./components/CommitteeMember";
+import { translate } from "../../translation/i18n";
 import { CommitteeMemberData } from "../../types";
+import CommitteeMember from "./components/CommitteeMember";
 
 /**
  * Who We Are Screen component
  * Displays information about the Living Wage Coalition
  * source: (https://www.livingwage-sf.org/who-we-are/)
  */
+
 const WhoWeAre: React.FC = () => {
-
-  // SFLWC Logo
-  const logo = {
-    src: require("../../assets/icons/sflwc_logo_finaltemp.png"),
-  };
-
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
         <View style={styles.logoContainer}>
-          <Image source={logo.src} style={styles.logo} />
+          <Image source={sflwcLogo} style={styles.logo} />
         </View>
         <View>
           <Text style={styles.bodyText}>
@@ -36,11 +32,12 @@ const WhoWeAre: React.FC = () => {
             {translate("whoWeAreScreen.committeeTitle")}
           </Text>
           {/* Committee Members List */}
-          {(translate<CommitteeMemberData[]>('whoWeAreScreen.committeeMembers')).map((member: CommitteeMemberData) => (
+          {translate<CommitteeMemberData[]>(
+            "whoWeAreScreen.committeeMembers"
+          ).map((member: CommitteeMemberData) => (
             <CommitteeMember key={member.id} member={member} />
           ))}
         </View>
-
       </View>
     </ScrollView>
   );

@@ -7,11 +7,11 @@ import BeReadyForICE from "../screens/BeReadyForICE/BeReadyForICE";
 import AuctionNav from "../screens/DonateScreen/AuctionNav";
 import DonateMoney from "../screens/DonateScreen/DonateMoney";
 import NewHome from "../screens/HomeScreen/NewHome";
+import LivingWageCalculator from "../screens/LivingWageCalculator/LivingWageCalculator";
 import ReportViolation from "../screens/ReportViolation/ReportViolation";
 import WageRights from "../screens/WageRights/WageRights";
 import { colors } from "../theme";
 import { BottomTabParamList } from "../types";
-import LivingWageCalculator from "../screens/LivingWageCalculator/LivingWageCalculator";
 
 // Create a stack navigator for the Assistance section
 const AssistanceStack = createStackNavigator();

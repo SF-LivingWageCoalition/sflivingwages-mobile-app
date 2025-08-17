@@ -2,9 +2,9 @@ import { FontAwesome } from "@expo/vector-icons";
 import React, { useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { CreditCardInput } from "react-native-credit-card-input";
-import { CardData, ViewProps } from "../../../types";
 import { colors } from "../../../theme";
 import { fontSize, fontWeight } from "../../../theme/fontStyles";
+import { CardData, ViewProps } from "../../../types";
 
 /**
  * Renders the payment form and handles the credit card data

@@ -1,20 +1,20 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
   Image,
   ImageSourcePropType,
+  ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import Collapsible from "react-native-collapsible";
-import { translate } from "../../translation/i18n";
 import BulletItem from "../../components/lists/BulletItem";
 import SubBulletItem from "../../components/lists/SubBulletItem";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { translate } from "../../translation/i18n";
 
 const IC_ARR_DOWN: ImageSourcePropType = require("../../assets/icons/ic_arr_down.png");
 const IC_ARR_UP: ImageSourcePropType = require("../../assets/icons/ic_arr_up.png");

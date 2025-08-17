@@ -6,9 +6,9 @@ import {
   TouchableHighlight,
   View,
 } from "react-native";
-import { CampaignTitleProps } from "../../../types";
 import { colors } from "../../../theme";
 import { fontSize } from "../../../theme/fontStyles";
+import { CampaignTitleProps } from "../../../types";
 
 const CampaignTitle: React.FC<CampaignTitleProps> = (props) => {
   const { title, url, navigation } = props;

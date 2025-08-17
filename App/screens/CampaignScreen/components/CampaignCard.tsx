@@ -2,9 +2,9 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { CampaignCardProps } from "../../../types";
 import { colors } from "../../../theme";
-import { fontSize, fontWeight } from "../../../theme/fontStyles";
+import { fontSize } from "../../../theme/fontStyles";
+import { CampaignCardProps } from "../../../types";
 
 const CampaignCard: React.FC<CampaignCardProps> = (props) => {
   const navigation = useNavigation<StackNavigationProp<any>>();

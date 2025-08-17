@@ -1,27 +1,26 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
-import RNPickerSelect from "react-native-picker-select";
+import React, { useState } from "react";
 import {
   Image,
-  ImageSourcePropType,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import RNPickerSelect from "react-native-picker-select";
+import IC_ARR_DOWN from "../../assets/icons/ic_arr_down.png";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { WageData } from "../../types";
+import wageDataRaw from "./livingwage.json";
 
-const IC_ARR_DOWN: ImageSourcePropType = require("../../assets/icons/ic_arr_down.png");
-const IC_ARR_UP: ImageSourcePropType = require("../../assets/icons/ic_arr_up.png");
+const wageData = wageDataRaw as WageData;
 
 const LivingWageCalculator: React.FC = () => {
   const [adults, setAdults] = useState<number>(1);
   const [children, setChildren] = useState<number>(0);
   const [calculationResult, setCalculationResult] = useState<any | null>(null);
-
-  const wageData = require("./livingwage.json");
 
   function formatNumber(num: number) {
     return num.toLocaleString();
@@ -31,11 +30,13 @@ const LivingWageCalculator: React.FC = () => {
     const adultKey = adults === 1 ? "adult1" : "adult2";
     const kidKey = `kid${children}`;
     const entry = wageData[adultKey][kidKey];
+
     if (!entry) {
       console.error("No data found for selection", { adultKey, kidKey });
       setCalculationResult(null);
       return;
     }
+
     const { poverty, expenses } = entry;
     const housing = expenses.housing;
     const food = expenses.food;
@@ -48,6 +49,7 @@ const LivingWageCalculator: React.FC = () => {
       housing + food + childcare + medical + transportation + other + taxes;
     const livingWage = totalMonthly / 173.32;
     const totalAnnual = totalMonthly * 12;
+
     setCalculationResult({
       povertyWage: poverty,
       livingWage,
@@ -79,18 +81,10 @@ const LivingWageCalculator: React.FC = () => {
         </View>
         <View style={{ marginTop: 24, paddingHorizontal: 16 }}>
           <View style={{ marginBottom: 24 }}>
-            <Text style={{ fontWeight: "bold", marginBottom: 8 }}>
+            <Text style={styles.numInHousehold}>
               Number of adults in your household
             </Text>
-            <View
-              style={{
-                borderWidth: 1,
-                borderRadius: 8,
-                borderColor: "#ccc",
-                backgroundColor: "#fff",
-                overflow: "hidden",
-              }}
-            >
+            <View style={styles.inputContainer}>
               <RNPickerSelect
                 value={adults}
                 onValueChange={(itemValue: number) => setAdults(itemValue)}
@@ -103,37 +97,20 @@ const LivingWageCalculator: React.FC = () => {
                 placeholder={{
                   label: "Select number of adults",
                   value: null,
-                  color: "#999",
+                  color: colors.light.textDisabled,
                 }}
                 Icon={() => (
-                  <Image
-                    source={IC_ARR_DOWN}
-                    style={{
-                      width: 20,
-                      height: 20,
-                      position: "absolute",
-                      right: 12,
-                      top: 15,
-                    }}
-                  />
+                  <Image source={IC_ARR_DOWN} style={styles.arrowIcon} />
                 )}
               />
             </View>
           </View>
 
           <View style={{ marginBottom: 32 }}>
-            <Text style={{ fontWeight: "bold", marginBottom: 8 }}>
+            <Text style={styles.numInHousehold}>
               Number of children in your household
             </Text>
-            <View
-              style={{
-                borderWidth: 1,
-                borderRadius: 8,
-                borderColor: "#ccc",
-                backgroundColor: "#fff",
-                overflow: "hidden",
-              }}
-            >
+            <View style={styles.inputContainer}>
               <RNPickerSelect
                 value={children}
                 onValueChange={(itemValue: number) => setChildren(itemValue)}
@@ -148,19 +125,10 @@ const LivingWageCalculator: React.FC = () => {
                 placeholder={{
                   label: "Select number of children",
                   value: null,
-                  color: "#999",
+                  color: colors.light.textDisabled,
                 }}
                 Icon={() => (
-                  <Image
-                    source={IC_ARR_DOWN}
-                    style={{
-                      width: 20,
-                      height: 20,
-                      position: "absolute",
-                      right: 12,
-                      top: 15,
-                    }}
-                  />
+                  <Image source={IC_ARR_DOWN} style={styles.arrowIcon} />
                 )}
               />
             </View>
@@ -179,8 +147,8 @@ const LivingWageCalculator: React.FC = () => {
             <Text
               style={{
                 color: colors.light.textOnPrimary,
-                fontWeight: "bold",
-                fontSize: 18,
+                fontWeight: fontWeight.semibold,
+                fontSize: fontSize.md,
               }}
             >
               Submit
@@ -190,11 +158,11 @@ const LivingWageCalculator: React.FC = () => {
         {calculationResult && (
           <View
             style={{
-              backgroundColor: "#fff",
+              backgroundColor: colors.light.background,
               borderRadius: 12,
               padding: 20,
               marginTop: 32,
-              shadowColor: "#000",
+              shadowColor: colors.light.shadow,
               shadowOffset: { width: 0, height: 2 },
               shadowOpacity: 0.08,
               shadowRadius: 8,
@@ -202,36 +170,42 @@ const LivingWageCalculator: React.FC = () => {
             }}
           >
             <Text
-              style={{ fontWeight: "bold", fontSize: 18, marginBottom: 12 }}
+              style={{
+                fontWeight: fontWeight.semibold,
+                fontSize: fontSize.md,
+                marginBottom: 12,
+              }}
             >
               Results
             </Text>
             <Text>
               Poverty wage:{" "}
-              <Text style={{ fontWeight: "bold" }}>
+              <Text style={styles.infoText}>
                 ${calculationResult.povertyWage} /hour/adult
               </Text>
             </Text>
             <Text>
               Living wage:{" "}
-              <Text style={{ fontWeight: "bold" }}>
+              <Text style={styles.infoText}>
                 ${calculationResult.livingWage.toFixed(2)} /hour/adult
               </Text>
             </Text>
             <Text style={{ marginTop: 10 }}>
               Monthly total:{" "}
-              <Text style={{ fontWeight: "bold" }}>
+              <Text style={styles.infoText}>
                 ${formatNumber(calculationResult.totalMonthly)}
               </Text>
             </Text>
             <Text>
               Annual total:{" "}
-              <Text style={{ fontWeight: "bold" }}>
+              <Text style={styles.infoText}>
                 ${formatNumber(calculationResult.totalAnnual)}
               </Text>
             </Text>
             <View style={{ marginTop: 16 }}>
-              <Text style={{ fontWeight: "bold", marginBottom: 4 }}>
+              <Text
+                style={{ fontWeight: fontWeight.semibold, marginBottom: 4 }}
+              >
                 Breakdown:
               </Text>
               <Text>Housing: ${formatNumber(calculationResult.housing)}</Text>
@@ -303,8 +277,29 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: fontSize.md,
-    fontWeight: fontWeight.bold,
+    fontWeight: fontWeight.semibold,
     textAlign: "right",
+  },
+  numInHousehold: {
+    fontWeight: fontWeight.semibold,
+    marginBottom: 8,
+  },
+  inputContainer: {
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: colors.light.outline,
+    backgroundColor: colors.light.background,
+    overflow: "hidden",
+  },
+  arrowIcon: {
+    width: 20,
+    height: 20,
+    position: "absolute",
+    right: 12,
+    top: 15,
+  },
+  infoText: {
+    fontWeight: fontWeight.semibold,
   },
 });
 
@@ -315,9 +310,9 @@ const pickerSelectStyles = StyleSheet.create({
     paddingHorizontal: 12,
     borderWidth: 0,
     borderRadius: 8,
-    color: "#333",
-    backgroundColor: "#fff",
-    fontSize: 16,
+    color: colors.light.textPrimary,
+    backgroundColor: colors.light.background,
+    fontSize: fontSize.sm,
   },
   inputAndroid: {
     height: 50,
@@ -325,13 +320,13 @@ const pickerSelectStyles = StyleSheet.create({
     paddingHorizontal: 12,
     borderWidth: 0,
     borderRadius: 8,
-    color: "#333",
-    backgroundColor: "#fff",
-    fontSize: 16,
+    color: colors.light.textPrimary,
+    backgroundColor: colors.light.background,
+    fontSize: fontSize.sm,
   },
   placeholder: {
-    color: "#999",
-    fontSize: 16,
+    color: colors.light.textDisabled,
+    fontSize: fontSize.sm,
   },
 });
 

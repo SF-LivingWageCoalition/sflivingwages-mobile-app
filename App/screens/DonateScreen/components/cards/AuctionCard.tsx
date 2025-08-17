@@ -1,9 +1,9 @@
-import React from "react";
 import {
   NavigationProp,
   ParamListBase,
   useNavigation,
 } from "@react-navigation/native";
+import React from "react";
 import {
   Image,
   Linking,
@@ -12,9 +12,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { AuctionCardProps, PreviewScreenParams } from "../../../../types";
 import { colors } from "../../../../theme";
 import { fontSize, fontWeight } from "../../../../theme/fontStyles";
+import { AuctionCardProps, PreviewScreenParams } from "../../../../types";
 
 // Card Render
 const AuctionCard: React.FC<AuctionCardProps> = ({

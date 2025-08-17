@@ -1,10 +1,16 @@
 import React from "react";
-import { Dimensions, Linking, StyleSheet, Text, View } from "react-native";
-import { TouchableOpacity } from "react-native";
+import {
+  Dimensions,
+  Linking,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Paragraph, Title } from "react-native-paper";
-import { EventListItemProps } from "../../../types";
 import { colors } from "../../../theme";
 import { fontSize, fontWeight } from "../../../theme/fontStyles";
+import { EventListItemProps } from "../../../types";
 
 const { width } = Dimensions.get("window");
 
@@ -37,7 +43,12 @@ const EventListItem: React.FC<EventListItemProps> = ({ event, index }) => {
     <View
       style={[
         styles.container,
-        { backgroundColor: index % 2 === 0 ? colors.light.background : colors.light.surfaceVariant },
+        {
+          backgroundColor:
+            index % 2 === 0
+              ? colors.light.background
+              : colors.light.surfaceVariant,
+        },
       ]}
     >
       <View style={{ marginTop: 13, width: 90 }}>
