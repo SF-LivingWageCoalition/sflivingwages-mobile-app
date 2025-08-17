@@ -1,0 +1,14 @@
+{
+  "adult1": {
+    "kid0": {"poverty":7.1,"expenses":{"housing":2200,"food":357,"childcare":0,"medical":660,"transport":913,"other":292,"taxes":763}},
+    "kid1": {"poverty":9.55,"expenses":{"housing":4625,"food":393,"childcare":1732,"medical":1872,"transport":913,"other":292,"taxes":2130}},
+    "kid2": {"poverty":12,"expenses":{"housing":5250,"food":428,"childcare":3464,"medical":1872,"transport":913,"other":292,"taxes":3063}},
+    "kid3": {"poverty":14.5,"expenses":{"housing":5250,"food":464,"childcare":5196,"medical":1872,"transport":913,"other":292,"taxes":5336}}
+  },
+  "adult2": {
+    "kid0": {"poverty":9.55,"expenses":{"housing":3125,"food":428,"childcare":0,"medical":1320,"transport":1826,"other":351,"taxes":1218}},
+    "kid1": {"poverty":12,"expenses":{"housing":4625,"food":464,"childcare":433,"medical":1872,"transport":1826,"other":351,"taxes":2107}},
+    "kid2": {"poverty":14.5,"expenses":{"housing":5250,"food":500,"childcare":866,"medical":1872,"transport":1826,"other":351,"taxes":2153}},
+    "kid3": {"poverty":17,"expenses":{"housing":5250,"food":535,"childcare":1299,"medical":1872,"transport":1826,"other":351,"taxes":4976}}
+  }
+}
