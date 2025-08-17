@@ -324,8 +324,8 @@ const styles = StyleSheet.create({
   },
   circleBackButton: {
     position: "absolute",
-    top: 40,
-    left: 20,
+    top: 27,
+    left: 27,
     backgroundColor: colors.light.primary,
     width: 40,
     height: 40,

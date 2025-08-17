@@ -8,7 +8,7 @@ import {
   ImageSourcePropType,
   TouchableOpacity,
 } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import Collapsible from "react-native-collapsible";
 import { translate } from "../../translation/i18n";
 import BulletItem from "../../components/lists/BulletItem";
@@ -41,7 +41,7 @@ const WageRights: React.FC = () => {
           style={styles.circleBackButton}
           onPress={() => navigation.goBack()}
         >
-          <Text style={styles.backArrow}>{'<'}</Text>
+          <Text style={styles.backArrow}>{"<"}</Text>
         </TouchableOpacity>
         <View style={styles.card}>
           <View style={styles.logoContainer}>
@@ -359,15 +359,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light.backgroundSecondary,
   },
   circleBackButton: {
-    position: 'absolute',
-    top: 40,
-    left: 20,
+    position: "absolute",
+    top: 27,
+    left: 27,
     backgroundColor: colors.light.primary,
     width: 40,
     height: 40,
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     zIndex: 10,
     elevation: 5,
     shadowColor: colors.light.shadow,
