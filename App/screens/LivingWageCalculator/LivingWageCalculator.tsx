@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   Image,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -93,15 +94,18 @@ const LivingWageCalculator: React.FC = () => {
                   { label: "2", value: 2 },
                 ]}
                 style={pickerSelectStyles}
-                useNativeAndroidPickerStyle={false}
                 placeholder={{
                   label: "Select number of adults",
                   value: null,
                   color: colors.light.textDisabled,
                 }}
-                Icon={() => (
-                  <Image source={IC_ARR_DOWN} style={styles.arrowIcon} />
-                )}
+                Icon={
+                  Platform.OS === "ios"
+                    ? () => (
+                        <Image source={IC_ARR_DOWN} style={styles.arrowIcon} />
+                      )
+                    : undefined
+                }
               />
             </View>
           </View>
@@ -121,15 +125,18 @@ const LivingWageCalculator: React.FC = () => {
                   { label: "3", value: 3 },
                 ]}
                 style={pickerSelectStyles}
-                useNativeAndroidPickerStyle={false}
                 placeholder={{
                   label: "Select number of children",
                   value: null,
                   color: colors.light.textDisabled,
                 }}
-                Icon={() => (
-                  <Image source={IC_ARR_DOWN} style={styles.arrowIcon} />
-                )}
+                Icon={
+                  Platform.OS === "ios"
+                    ? () => (
+                        <Image source={IC_ARR_DOWN} style={styles.arrowIcon} />
+                      )
+                    : undefined
+                }
               />
             </View>
           </View>
@@ -305,16 +312,6 @@ const styles = StyleSheet.create({
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
-    height: 50,
-    width: "100%",
-    paddingHorizontal: 12,
-    borderWidth: 0,
-    borderRadius: 8,
-    color: colors.light.textPrimary,
-    backgroundColor: colors.light.background,
-    fontSize: fontSize.sm,
-  },
-  inputAndroid: {
     height: 50,
     width: "100%",
     paddingHorizontal: 12,
