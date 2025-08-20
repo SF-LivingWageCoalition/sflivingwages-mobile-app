@@ -27,7 +27,17 @@ const Events: React.FC = () => {
     const fetchEvents = async (): Promise<void> => {
       try {
         const response = await fetch(
-          // ex: /events/ defaults to https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/?page=1&per_page=5&start_date=2025-08-15 00:00:00&end_date=2027-08-16 23:59:59&status=publish
+          /**
+           * ex: /events/ defaults to
+           * https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/?page=1&per_page=5&start_date=2025-08-15 00:00:00&end_date=2027-08-16 23:59:59&status=publish
+           *
+           * Default Parameters:
+           * page=1
+           * per_page=5
+           * start_date=2025-08-15 00:00:00 (today)
+           * end_date=2027-08-16 23:59:59 (today + 2 years)
+           * status=publish
+           */
           "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/",
           {
             method: "GET",
