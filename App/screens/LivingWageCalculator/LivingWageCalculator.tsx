@@ -93,12 +93,8 @@ const LivingWageCalculator: React.FC = () => {
                   { label: "1", value: 1 },
                   { label: "2", value: 2 },
                 ]}
+                placeholder={{}}
                 style={pickerSelectStyles}
-                placeholder={{
-                  label: "Select number of adults",
-                  value: null,
-                  color: colors.light.textDisabled,
-                }}
                 Icon={
                   Platform.OS === "ios"
                     ? () => (
@@ -124,12 +120,8 @@ const LivingWageCalculator: React.FC = () => {
                   { label: "2", value: 2 },
                   { label: "3", value: 3 },
                 ]}
+                placeholder={{}}
                 style={pickerSelectStyles}
-                placeholder={{
-                  label: "Select number of children",
-                  value: null,
-                  color: colors.light.textDisabled,
-                }}
                 Icon={
                   Platform.OS === "ios"
                     ? () => (
