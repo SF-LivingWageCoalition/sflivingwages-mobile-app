@@ -226,7 +226,7 @@ const es: Translations = {
   whoWeAreHeader: {
     title: "Quienes Somos",
     body: "La Coalición por un Salario Digno es una organización de defensa de los trabajadores con bajos salarios que lucha por la justicia económica.",
-    buttonText: "Ver Más"
+    buttonText: "Ver Más",
   },
   whoWeAreScreen: {
     title: "Quienes Somos",
@@ -236,53 +236,56 @@ const es: Translations = {
       {
         id: 1,
         name: "Karl Kramer",
-        title: "Codirector de Campaña"
+        title: "Codirector de Campaña",
       },
       {
         id: 2,
         name: "David Frias",
-        title: "Codirector de Campaña"
+        title: "Codirector de Campaña",
       },
       {
         id: 3,
         name: "Anne Jayne",
-        title: "Secretario de Actas"
+        title: "Secretario de Actas",
       },
       {
         id: 4,
         name: "Peter Miller",
-        title: "Tesorero"
+        title: "Tesorero",
       },
       {
         id: 5,
         name: "Alice Rogoff",
-        title: "Miembro"
+        title: "Miembro",
       },
       {
         id: 6,
         name: "David Williams",
-        title: "Miembro"
+        title: "Miembro",
       },
       {
         id: 7,
         name: "Nancy Esteva",
-        title: "Miembro"
+        title: "Miembro",
       },
       {
         id: 8,
         name: "Peter Miller",
-        title: "Miembro"
+        title: "Miembro",
       },
       {
         id: 9,
         name: "Rodger Scott",
-        title: "Miembro"
-      }
-    ]
+        title: "Miembro",
+      },
+    ],
   },
   eventsScreen: {
-    title: "Eventos"
-  }
+    title: "Eventos",
+  },
+  eventsDetails: {
+    title: "Detalles del Evento",
+  },
 };
 
 export default es;
