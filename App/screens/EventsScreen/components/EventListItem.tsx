@@ -48,9 +48,8 @@ const EventListItem: React.FC<EventListItemProps> = ({ event, index }) => {
     minute: "2-digit",
   });
 
-
   return (
-    <View
+    <TouchableOpacity
       style={[
         styles.container,
         {
@@ -60,25 +59,23 @@ const EventListItem: React.FC<EventListItemProps> = ({ event, index }) => {
               : colors.light.surfaceVariant,
         },
       ]}
+      onPress={() => {
+        // Navigate to Event Details screen with event data
+        // navigation.navigate("EventDetails", { event });
+      }}
     >
-      <View style={{ marginTop: 13, width: 90 }}>
+      <View style={styles.dateWrapper}>
         <Text style={styles.dayText}>{startDay}</Text>
         <Text style={styles.monthText}>{startMonth}</Text>
       </View>
       <View style={styles.eventInfo}>
         <Title style={styles.descriptionText}>{event.title}</Title>
-        <Paragraph style={styles.timeText}>{startTime} - {endTime}</Paragraph>
-        {/* <TouchableOpacity
-          style={styles.registerButton}
-          onPress={() => {
-            Linking.openURL(event.location);
-          }}
-        >
-          <Text style={styles.registerText}>Register</Text>
-        </TouchableOpacity> */}
+        <Paragraph style={styles.timeText}>
+          {startTime} - {endTime}
+        </Paragraph>
       </View>
-      <View style={styles.eventMoreButton}><Paragraph>{'>'}</Paragraph></View>
-    </View>
+      {/* <View style={styles.eventMoreButton}><Paragraph>{'>'}</Paragraph></View> */}
+    </TouchableOpacity>
   );
 };
 
@@ -88,6 +85,12 @@ const styles = StyleSheet.create({
     padding: 6,
     width: width,
     flex: 1,
+  },
+  dateWrapper: {
+    display: "flex",
+    flexDirection: "column",
+    marginTop: 13,
+    width: 90,
   },
   dayText: {
     textAlign: "center",
@@ -120,7 +123,7 @@ const styles = StyleSheet.create({
     padding: 3,
     marginTop: 8,
     marginLeft: 10,
-    // marginRight: 10,
+    marginRight: 10,
   },
   eventMoreButton: {
     flexDirection: "column",
@@ -129,9 +132,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     marginRight: 8,
   },
-  eventMoreArrow: {
-
-  },
+  eventMoreArrow: {},
   registerText: {
     color: colors.light.textOnPrimary,
     fontSize: fontSize.md,

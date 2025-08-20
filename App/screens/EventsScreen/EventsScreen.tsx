@@ -27,23 +27,16 @@ const Events: React.FC = () => {
     const fetchEvents = async (): Promise<void> => {
       try {
         const response = await fetch(
-          // ex: https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/?page=1&per_page=5&start_date=2025-08-15 00:00:00&end_date=2027-08-16 23:59:59&status=publish
-          "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/", {
-          method: "GET",
-          // headers: { "cache-control": "no-cache" },
-        }
+          // ex: /events/ defaults to https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/?page=1&per_page=5&start_date=2025-08-15 00:00:00&end_date=2027-08-16 23:59:59&status=publish
+          "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/",
+          {
+            method: "GET",
+            // headers: { "cache-control": "no-cache" },
+          }
         );
 
         if (response.ok && response.status !== 401) {
           const data = await response.json();
-
-          // Clean the HTML tags and entities from the response
-          // const regex = /({([{^}]*)})|(&.+;)|(<([^>]+)>)/gi;
-          // const clean = data.content.rendered.replace(regex, "");
-
-          // Parse the cleaned JSON
-          // const eventsData = JSON.parse(clean) as EventsData;
-
           setEvents(data);
           setLoading(false);
         }
