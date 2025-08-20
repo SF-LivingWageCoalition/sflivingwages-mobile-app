@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { colors } from "../../theme";
 import { EventItem, EventsListData } from "../../types";
-import EventsListItem from "./components/EvenstListItem";
+import EventsListItem from "./components/EventsListItem";
 
 const { height } = Dimensions.get("window");
 
