@@ -8,9 +8,9 @@ import {
   View,
 } from "react-native";
 import { Paragraph, Title } from "react-native-paper";
+import { EventsListItemProps } from "../../../types";
 import { colors } from "../../../theme";
 import { fontSize, fontWeight } from "../../../theme/fontStyles";
-import { EventListItemProps } from "../../../types";
 
 const { width } = Dimensions.get("window");
 
@@ -18,7 +18,7 @@ const { width } = Dimensions.get("window");
  * Event List Item component
  * Displays an individual event with date, description, time, and registration button
  */
-const EventListItem: React.FC<EventListItemProps> = ({ event, index }) => {
+const EventsListItem: React.FC<EventsListItemProps> = ({ event, index }) => {
   const monthNames = [
     "JAN",
     "FEB",
@@ -151,4 +151,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EventListItem;
+export default EventsListItem;

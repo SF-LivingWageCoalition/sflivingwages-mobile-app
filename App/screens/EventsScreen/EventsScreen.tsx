@@ -9,8 +9,8 @@ import {
   View,
 } from "react-native";
 import { colors } from "../../theme";
-import { EventItem, EventsData } from "../../types";
-import EventListItem from "./components/EventListItem";
+import { EventItem, EventsListData } from "../../types";
+import EventsListItem from "./components/EvenstListItem";
 
 const { height } = Dimensions.get("window");
 
@@ -19,7 +19,7 @@ const { height } = Dimensions.get("window");
  * Displays a list of events fetched from the API
  */
 const Events: React.FC = () => {
-  const [events, setEvents] = useState<EventsData>({ events: [] });
+  const [events, setEvents] = useState<EventsListData>({ events: [] });
   const [loading, setLoading] = useState<boolean>(true);
 
   // Fetch events data when component mounts
@@ -50,7 +50,7 @@ const Events: React.FC = () => {
   }, []);
 
   const renderItem: ListRenderItem<EventItem> = ({ item, index }) => (
-    <EventListItem event={item} index={index} />
+    <EventsListItem event={item} index={index} />
   );
 
   const keyExtractor = (item: EventItem): string => item.id.toString();

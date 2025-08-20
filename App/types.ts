@@ -242,12 +242,12 @@ export type EventItem = {
   end_date: string;
 };
 
-export type EventListItemProps = {
+export type EventsListItemProps = {
   event: EventItem;
   index: number;
 };
 
-export type EventsData = {
+export type EventsListData = {
   events: EventItem[];
 };
 
