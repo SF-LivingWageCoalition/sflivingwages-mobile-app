@@ -11,10 +11,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { CardProps, PreviewScreenParams } from "../../../../types";
 import { colors } from "../../../../theme";
-import ItemModal from "../modalComponent/ItemModal";
 import { fontSize, fontWeight } from "../../../../theme/fontStyles";
+import { CardProps, PreviewScreenParams } from "../../../../types";
+import ItemModal from "../modalComponent/ItemModal";
 
 const Card: React.FC<CardProps> = ({
   name,

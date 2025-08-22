@@ -1,18 +1,20 @@
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
   Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { translate } from "../../translation/i18n";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { translate } from "../../translation/i18n";
+import { AssistanceTabParamList } from "../../types";
 
 interface AssistanceHomeProps {
-  navigation: any;
+  navigation: NativeStackNavigationProp<AssistanceTabParamList>;
 }
 
 const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
@@ -59,6 +61,13 @@ const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
               <Text style={styles.buttonText}>
                 {translate("assistHomeScreen.beReadyForICE")}
               </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("LivingWageCalculator")}
+            >
+              <Text style={styles.buttonText}>Living Wage Calculator</Text>
             </TouchableOpacity>
           </View>
         </View>

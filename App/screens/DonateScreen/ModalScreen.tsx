@@ -1,7 +1,7 @@
-import React from "react";
-import { Dimensions, Image, ScrollView, View, StyleSheet } from "react-native";
-import ImageZoom from "react-native-image-pan-zoom";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import React from "react";
+import { Dimensions, Image, ScrollView, StyleSheet, View } from "react-native";
+import ImageZoom from "react-native-image-pan-zoom";
 import { RootStackParamList } from "../../types";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Preview">;

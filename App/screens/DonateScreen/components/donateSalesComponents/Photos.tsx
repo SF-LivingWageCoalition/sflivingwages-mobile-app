@@ -16,6 +16,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { colors } from "../../../../theme";
+import { fontSize, fontWeight } from "../../../../theme/fontStyles";
 import {
   DetailParams,
   PhotoItem,
@@ -23,9 +25,6 @@ import {
   PreviewScreenParams,
   TimeLeft,
 } from "../../../../types";
-import { colors } from "../../../../theme";
-import { fontSize, fontWeight } from "../../../../theme/fontStyles";
-
 
 const Photos: React.FC<PhotosProps> = ({ photos }) => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();

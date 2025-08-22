@@ -1,8 +1,8 @@
 import React from "react";
 import { Linking, StyleSheet, Text, View } from "react-native";
-import { CampaignActionProps } from "../../../types";
 import { colors } from "../../../theme";
 import { fontSize, fontWeight } from "../../../theme/fontStyles";
+import { CampaignActionProps } from "../../../types";
 
 const CampaignAction: React.FC<CampaignActionProps> = ({ stepText, url }) => {
   return (

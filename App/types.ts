@@ -14,6 +14,14 @@ export type BottomTabParamList = {
   Assist: undefined;
 };
 
+export type AssistanceTabParamList = {
+  AssistanceHome: undefined;
+  ReportViolation: undefined;
+  WageRights: undefined;
+  BeReadyForICE: undefined;
+  LivingWageCalculator: undefined;
+};
+
 export type WebBrowserResult = {
   type: string;
   url?: string;
@@ -184,6 +192,8 @@ export type AuctionTabParamList = {
   Dvds: undefined;
 };
 
+export type DonateSection = { title: string; content: React.ReactNode };
+
 export type DonateContentItem = {
   title: string;
   items: React.ReactNode[];
@@ -266,8 +276,33 @@ export type CommitteeMemberData = {
   id: number;
   name: string;
   title: string;
-}
+};
 
 export type CommitteMemberProps = {
   member: CommitteeMemberData;
 };
+
+export interface Expenses {
+  housing: number;
+  food: number;
+  childcare: number;
+  medical: number;
+  transport: number;
+  other: number;
+  taxes: number;
+}
+export interface WageEntry {
+  poverty: number;
+  expenses: Expenses;
+}
+export interface Household {
+  [kid: string]: WageEntry;
+  kid0: WageEntry;
+  kid1: WageEntry;
+  kid2: WageEntry;
+  kid3: WageEntry;
+}
+export interface WageData {
+  adult1: Household;
+  adult2: Household;
+}

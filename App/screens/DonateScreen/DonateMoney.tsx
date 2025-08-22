@@ -8,11 +8,9 @@ import {
   View,
 } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
-
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
-
-type Section = { title: string; content: React.ReactNode };
+import { DonateSection } from "../../types";
 
 const DonateMoney: React.FC = () => {
   const [activeSections, setActiveSections] = useState<number[]>([]);
@@ -21,7 +19,7 @@ const DonateMoney: React.FC = () => {
     Linking.openURL(url);
   };
 
-  const SECTIONS: Section[] = [
+  const SECTIONS: DonateSection[] = [
     {
       title: "Checks",
       content: (
@@ -58,13 +56,13 @@ const DonateMoney: React.FC = () => {
     },
   ];
 
-  const renderHeader = (section: Section) => (
+  const renderHeader = (section: DonateSection) => (
     <View style={styles.header}>
       <Text style={styles.headerTitle}>{section.title}</Text>
     </View>
   );
 
-  const renderContent = (section: Section) => (
+  const renderContent = (section: DonateSection) => (
     <View style={styles.content}>{section.content}</View>
   );
 

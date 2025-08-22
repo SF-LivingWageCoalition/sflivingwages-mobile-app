@@ -1,16 +1,17 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { colors } from "../theme";
+import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import { BottomTabParamList } from "../types";
-import ReportViolation from "../screens/ReportViolation/ReportViolation";
 import AssistanceHome from "../screens/AssistanceHome/AssistanceHome";
+import BeReadyForICE from "../screens/BeReadyForICE/BeReadyForICE";
 import AuctionNav from "../screens/DonateScreen/AuctionNav";
 import DonateMoney from "../screens/DonateScreen/DonateMoney";
 import NewHome from "../screens/HomeScreen/NewHome";
+import LivingWageCalculator from "../screens/LivingWageCalculator/LivingWageCalculator";
+import ReportViolation from "../screens/ReportViolation/ReportViolation";
 import WageRights from "../screens/WageRights/WageRights";
-import { createStackNavigator } from "@react-navigation/stack";
-import BeReadyForICE from "../screens/BeReadyForICE/BeReadyForICE";
+import { colors } from "../theme";
+import { BottomTabParamList } from "../types";
 
 // Create a stack navigator for the Assistance section
 const AssistanceStack = createStackNavigator();
@@ -32,6 +33,10 @@ const AssistanceStackScreen = () => {
       />
       <AssistanceStack.Screen name="WageRights" component={WageRights} />
       <AssistanceStack.Screen name="BeReadyForICE" component={BeReadyForICE} />
+      <AssistanceStack.Screen
+        name="LivingWageCalculator"
+        component={LivingWageCalculator}
+      />
     </AssistanceStack.Navigator>
   );
 };

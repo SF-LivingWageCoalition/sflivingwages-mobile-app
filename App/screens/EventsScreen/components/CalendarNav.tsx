@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { CalendarNavProps } from "../../../types";
 import { colors } from "../../../theme";
 import { fontSize } from "../../../theme/fontStyles";
+import { CalendarNavProps } from "../../../types";
 
 const CalendarNav: React.FC<CalendarNavProps> = ({ navigate }) => {
   return (

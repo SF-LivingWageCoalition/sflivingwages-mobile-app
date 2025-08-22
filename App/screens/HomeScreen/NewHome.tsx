@@ -14,10 +14,10 @@ import { Card } from "react-native-paper";
 import Swiper from "react-native-swiper/src";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { WebView } from "react-native-webview";
-import { CarouselImageProps, NewHomeScreenProps } from "../../types";
-import { translate } from "../../translation/i18n";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { translate } from "../../translation/i18n";
+import { CarouselImageProps, NewHomeScreenProps } from "../../types";
 
 const bodyPageWidth = Dimensions.get("window").width;
 
@@ -125,7 +125,6 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
-
         {/* Top background section: Who we Are */}
         <View style={styles.topBackground}>
           <ImageBackground
