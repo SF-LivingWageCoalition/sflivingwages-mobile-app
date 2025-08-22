@@ -51,6 +51,13 @@ const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
               title="Living Wage Calculator"
               onPress={() => navigation.navigate("LivingWageCalculator")}
             />
+            <Button
+              variant="primary"
+              title={translate("assistHomeScreen.reportBusiness")}
+              onPress={() =>
+                navigation.navigate("Assistance", { screen: "ReportBusiness" })
+              }
+            />
           </View>
         </View>
       </View>
