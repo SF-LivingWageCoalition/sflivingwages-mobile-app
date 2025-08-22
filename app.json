@@ -21,7 +21,10 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#d31623"
       },
-      "permissions": [],
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ],
       "package": "com.sfLiving.sflivingwagesappbeta",
       "versionCode": 17
     },
@@ -41,7 +44,19 @@
       "**/*"
     ],
     "plugins": [
-      "expo-localization"
-    ]
+      "expo-localization",
+      [
+        "expo-maps",
+        {
+          "requestLocationPermission": true,
+          "locationPermission": "Allow $(PRODUCT_NAME) to use your location"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "50c24863-5dd8-46ec-be8e-8e121b0c3775"
+      }
+    }
   }
 }
