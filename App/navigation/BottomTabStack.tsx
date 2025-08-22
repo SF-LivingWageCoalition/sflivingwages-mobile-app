@@ -11,7 +11,9 @@ import LivingWageCalculator from "../screens/LivingWageCalculator/LivingWageCalc
 import ReportViolation from "../screens/ReportViolation/ReportViolation";
 import WageRights from "../screens/WageRights/WageRights";
 import { colors } from "../theme";
-import { BottomTabParamList } from "../types/types";
+import { BottomTabParamList } from "../types";
+import ReportBusiness from "../screens/ReportBusiness/ReportBusiness";
+import ReportBusinessMap from "../screens/ReportBusinessMap/ReportBusinessMap";
 
 // Create a stack navigator for the Assistance section
 const AssistanceStack = createStackNavigator();
@@ -36,6 +38,20 @@ const AssistanceStackScreen = () => {
       <AssistanceStack.Screen
         name="LivingWageCalculator"
         component={LivingWageCalculator}
+      />
+      <AssistanceStack.Screen
+        name="ReportBusiness"
+        component={ReportBusiness}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <AssistanceStack.Screen
+        name="ReportBusinessMap"
+        component={ReportBusinessMap}
+        options={{
+          headerShown: false,
+        }}
       />
     </AssistanceStack.Navigator>
   );

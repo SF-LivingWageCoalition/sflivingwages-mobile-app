@@ -8,6 +8,8 @@ const es: Translations = {
     getAssistance: "Denunciar una Infracción",
     wageRights: "Conozca Sus Derechos Salariales",
     beReadyForICE: "Esté Listo para ICE",
+    reportBusiness:
+      "Denunciar empresas que violan los derechos de los trabajadores",
   },
   assistScreen: {
     title: `Podemos ayudarte.`,
