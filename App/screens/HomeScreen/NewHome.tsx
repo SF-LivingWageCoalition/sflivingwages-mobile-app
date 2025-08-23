@@ -76,7 +76,9 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
       id: 2,
       title: translate("eventsScreen.title"),
       src: require("../../assets/images/events-slide.jpg"),
-      destination: "Events",
+      destination: "EventsNavigator",
+      destinationScreen: "Events",
+      // destination: {name: "EventsNavigator", screen: "Events" },
     },
   ];
 
@@ -173,7 +175,9 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                     onPress={() => {
                       image.id === 1
                         ? Linking.openURL(image.destination)
-                        : navigation.navigate(image.destination);
+                        : navigation.navigate(image.destination, {
+                            screen: image.destinationScreen,
+                          });
                     }}
                   />
                 ))}

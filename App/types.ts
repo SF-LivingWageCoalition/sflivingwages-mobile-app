@@ -3,7 +3,8 @@ import { NavigationProp, ParamListBase } from "@react-navigation/native";
 export type RootStackParamList = {
   TabStack: undefined;
   Preview: { image: string };
-  Events: undefined;
+  // Events: undefined;
+  EventsNavigator: undefined;
   WhoWeAre: undefined;
 };
 
@@ -241,6 +242,9 @@ export type EventItem = {
   start_date: string;
   end_date: string;
 };
+export type EventDetailsProps = {
+  route: any;
+};
 
 export type EventsListItemProps = {
   event: EventItem;
@@ -253,6 +257,7 @@ export type EventsListData = {
 
 export type EventStackParamList = {
   Events: any;
+  EventDetails: any;
 };
 
 export type CarouselImageProps = {
