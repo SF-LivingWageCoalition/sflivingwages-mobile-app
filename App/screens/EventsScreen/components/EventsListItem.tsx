@@ -1,16 +1,16 @@
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
   Dimensions,
-  Linking,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import { Paragraph, Title } from "react-native-paper";
-import { EventsListItemProps } from "../../../types";
 import { colors } from "../../../theme";
 import { fontSize, fontWeight } from "../../../theme/fontStyles";
+import { EventsListItemProps } from "../../../types";
 
 const { width } = Dimensions.get("window");
 
@@ -19,6 +19,7 @@ const { width } = Dimensions.get("window");
  * Displays an individual event with date, description, time, and registration button
  */
 const EventsListItem: React.FC<EventsListItemProps> = ({ event, index }) => {
+  const navigation = useNavigation<NavigationProp<any>>();
   const monthNames = [
     "JAN",
     "FEB",
@@ -61,7 +62,7 @@ const EventsListItem: React.FC<EventsListItemProps> = ({ event, index }) => {
       ]}
       onPress={() => {
         // Navigate to Event Details screen with event data
-        // navigation.navigate("EventDetails", { event });
+        navigation.navigate("EventDetails", { event: event });
       }}
     >
       <View style={styles.dateWrapper}>
@@ -74,7 +75,6 @@ const EventsListItem: React.FC<EventsListItemProps> = ({ event, index }) => {
           {startTime} - {endTime}
         </Paragraph>
       </View>
-      {/* <View style={styles.eventMoreButton}><Paragraph>{'>'}</Paragraph></View> */}
     </TouchableOpacity>
   );
 };
