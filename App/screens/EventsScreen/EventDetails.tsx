@@ -46,7 +46,6 @@ const EventDetails: React.FC<EventDetailsProps> = ({ route }) => {
       <View style={styles.container}>
         <Text style={styles.eventTitle}>{event.title}</Text>
         <View style={styles.dateLocWrapper}>
-          {" "}
           <Text>
             {startMonth} {startDay} {startTime} - {endTime}
           </Text>
