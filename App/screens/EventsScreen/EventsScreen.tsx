@@ -4,7 +4,6 @@ import {
   Dimensions,
   FlatList,
   ListRenderItem,
-  SafeAreaView,
   StyleSheet,
   View,
 } from "react-native";
@@ -41,7 +40,6 @@ const Events: React.FC = () => {
           "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/",
           {
             method: "GET",
-            // headers: { "cache-control": "no-cache" },
           }
         );
 
@@ -66,7 +64,7 @@ const Events: React.FC = () => {
   const keyExtractor = (item: EventItem): string => item.id.toString();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       {loading ? (
         <View style={styles.spinner}>
           <ActivityIndicator size="large" color={colors.light.primary} />
@@ -78,7 +76,7 @@ const Events: React.FC = () => {
           keyExtractor={keyExtractor}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 
