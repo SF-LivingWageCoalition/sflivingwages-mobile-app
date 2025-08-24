@@ -20,6 +20,7 @@ export type AssistanceTabParamList = {
   WageRights: undefined;
   BeReadyForICE: undefined;
   LivingWageCalculator: undefined;
+  ReportBusiness: undefined;
 };
 
 export type WebBrowserResult = {
