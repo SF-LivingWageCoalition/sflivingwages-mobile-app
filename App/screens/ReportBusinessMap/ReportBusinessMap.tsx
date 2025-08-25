@@ -114,6 +114,11 @@ const ReportBusinessMap = () => {
     />
   );
 
+  console.log(
+    "Markers Android:>>>>>",
+    process.env.EXPO_PUBLIC_GOOGLE_AUTOCOMPLETE_API_KEY
+  );
+
   return (
     <GestureHandlerRootView style={styles.containerBS}>
       <View style={styles.flex1}>
@@ -152,7 +157,7 @@ const ReportBusinessMap = () => {
             />
 
             <GooglePlacesTextInput
-              apiKey={process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY}
+              apiKey={process.env.EXPO_PUBLIC_GOOGLE_AUTOCOMPLETE_API_KEY}
               onPlaceSelect={(places: Place) => handlePlaceSelect(places)}
               fetchDetails={true}
               detailsFields={[
