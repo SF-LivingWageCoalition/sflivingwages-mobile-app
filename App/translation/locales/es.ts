@@ -40,6 +40,11 @@ const es: Translations = {
       list: "Seleccione al menos una situación",
     },
   },
+  reportBusiness: {
+    title: "Reportar Empresas Abusivas en el Mapa",
+    body: "Empodera a los trabajadores al permitirles informar de forma anónima sobre empresas que violan los derechos de los trabajadores. Esta función basada en un mapa ayuda a exponer el robo de salarios, las condiciones inseguras y otros abusos, lo que facilita que la comunidad se mantenga informada y tome medidas.",
+    cta: "Continuar",
+  },
   wageRightsScreen: {
     title: "Conozca Sus Derechos Salariales",
     minimumWage: {

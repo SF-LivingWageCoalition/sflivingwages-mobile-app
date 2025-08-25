@@ -5,6 +5,7 @@ export type RootStackParamList = {
   Preview: { image: string };
   EventsNavigator: undefined;
   WhoWeAre: undefined;
+  Assistance: { screen?: keyof AssistanceTabParamList };
 };
 
 export type BottomTabParamList = {
@@ -21,6 +22,7 @@ export type AssistanceTabParamList = {
   BeReadyForICE: undefined;
   LivingWageCalculator: undefined;
   ReportBusiness: undefined;
+  ReportBusinessMap: undefined;
 };
 
 export type WebBrowserResult = {

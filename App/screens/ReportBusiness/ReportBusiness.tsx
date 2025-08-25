@@ -1,68 +1,76 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-
-import MainButton from "../../components/MainButton/MainButton";
-import { fontSize, fontWeight } from "../../theme/fontStyles";
-import { colors } from "../../theme";
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
   NavigationProp,
   ParamListBase,
   useNavigation,
 } from "@react-navigation/native";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+
+import MainButton from "../../components/MainButton/MainButton";
+import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { colors } from "../../theme";
+import { translate } from "../../translation";
 
 const ReportBusiness = () => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
   return (
-    <View style={{ marginHorizontal: 16, flex: 1 }}>
-      <Image
-        style={{
-          width: 300,
-          height: 200,
-          alignSelf: "center",
-          marginTop: 30,
-        }}
-        resizeMode="contain"
-        source={require("../../assets/images/map-intro.png")}
-      />
-      <Text
-        style={{
-          fontWeight: fontWeight.bold,
-          fontSize: fontSize.md,
-          marginVertical: 40,
-          color: colors.palette.gray800,
-        }}
-      >
-        Report Abusive Employers on the Map
-      </Text>
-      <Text
-        style={{
-          fontSize: fontSize.sm,
-          color: colors.palette.gray700,
-          lineHeight: 22,
-        }}
-      >
-        Empower workers by allowing them to anonymously report businesses that
-        violate workers’ rights. This map-based feature helps expose wage theft,
-        unsafe conditions, and other abuses — making it easier for the community
-        to stay informed and take action.
-      </Text>
-
-      <View style={{ flex: 1, justifyContent: "flex-end" }}>
-        <MainButton
-          title="Continue"
-          onPress={() => navigation.navigate("ReportBusinessMap")}
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <MaterialIcons name="arrow-back-ios" size={30} color="black" />
+        </TouchableOpacity>
+        <Image
+          style={styles.image}
+          resizeMode="contain"
+          source={require("../../assets/images/map-intro.png")}
         />
+        <Text style={styles.title}>{translate("reportBusiness.title")}</Text>
+        <Text style={styles.description}>
+          {translate("reportBusiness.body")}
+        </Text>
+
+        <View style={styles.buttonContainer}>
+          <MainButton
+            title={translate("reportBusiness.cta")}
+            onPress={() => navigation.navigate("ReportBusinessMap")}
+          />
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default ReportBusiness;
 
 const styles = StyleSheet.create({
-  image: {
+  safeArea: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  },
+  container: {
+    marginHorizontal: 16,
+    flex: 1,
+  },
+  image: {
+    width: 300,
+    height: 200,
+    alignSelf: "center",
+    marginTop: 30,
+  },
+  title: {
+    fontWeight: fontWeight.bold,
+    fontSize: fontSize.md,
+    marginVertical: 40,
+    color: colors.palette.gray800,
+  },
+  description: {
+    fontSize: fontSize.sm,
+    color: colors.palette.gray700,
+    lineHeight: 22,
+  },
+  buttonContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
   },
 });

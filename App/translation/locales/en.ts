@@ -36,6 +36,11 @@ const en = {
       list: "Select at least one situation",
     },
   },
+  reportBusiness: {
+    title: "Report Abusive Employers on the Map",
+    body: "Empower workers by allowing them to anonymously report businesses that  violate workers’ rights. This map-based feature helps expose wage theft, unsafe conditions, and other abuses — making it easier for the community to stay informed and take action.",
+    cta: "Continue",
+  },
   wageRightsScreen: {
     title: "Know Your Wage Rights",
     minimumWage: {
