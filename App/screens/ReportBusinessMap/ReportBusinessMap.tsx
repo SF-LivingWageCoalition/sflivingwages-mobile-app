@@ -13,9 +13,30 @@ import { Dropdown } from "react-native-element-dropdown";
 
 import FloatingActionButton from "../../components/FloatingActionButton/FloatingActionButton";
 import PlatformMap from "../../components/PlatformMap/PlatformMap";
+import { Platform } from "react-native";
 import MainButton from "../../components/MainButton/MainButton";
 import { fontSize } from "../../theme/fontStyles";
 import { colors } from "../../theme";
+
+// Use state for markers
+const initialAndroidMarker = {
+  coordinates: {
+    latitude: 37.773972,
+    longitude: -122.431297,
+  },
+  title: "Test Marker",
+  snippet: "This is a test marker",
+  draggable: false,
+};
+const initialIOSMarker = {
+  coordinates: {
+    latitude: 37.773972,
+    longitude: -122.431297,
+  },
+  title: "Test Marker",
+  tintColor: colors.palette.red400,
+  systemImageName: "mappin.circle.fill",
+};
 
 const ReportBusinessMap = () => {
   const DEFAULT_LATITUDE = 37.773972;
@@ -42,15 +63,48 @@ const ReportBusinessMap = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const [violationType, setViolationType] = useState(null);
+  const [description, setDescription] = useState("");
   const [sheetIndex, setSheetIndex] = useState(-1);
+
+  // Markers state
+  const [markersAndroid, setMarkersAndroid] = useState([initialAndroidMarker]);
+  const [markersIOS, setMarkersIOS] = useState([initialIOSMarker]);
 
   const handleSheetChanges = useCallback((index: number) => {
     console.log("handleSheetChanges", index);
   }, []);
+
   const handlePlaceSelect = (place: Place) => {
-    //TODO: handle logic here
+    // Extract data from selected place safely
+    const latitude = place.details?.location?.latitude ?? DEFAULT_LATITUDE;
+    const longitude = place.details?.location?.longitude ?? DEFAULT_LONGITUDE;
+    const title =
+      place.structuredFormat?.mainText?.text ||
+      place.structuredFormat?.secondaryText?.text ||
+      "Selected Place";
+    const address = `Violation Type: ${violationType} - ${description}`;
+
+    // Android marker
+    const newAndroidMarker = {
+      coordinates: { latitude, longitude },
+      title,
+      snippet: address,
+      draggable: false,
+    };
+
+    // iOS marker
+    const newIOSMarker = {
+      coordinates: { latitude, longitude },
+      title,
+      tintColor: colors.palette.red400,
+      systemImageName: "mappin.circle.fill",
+    };
+
+    setMarkersAndroid((prev) => [...prev, newAndroidMarker]);
+    setMarkersIOS((prev) => [...prev, newIOSMarker]);
     console.log("Selected place:", JSON.stringify(place, null, 2));
   };
+
   const renderBackdrop = (props: BottomSheetBackdropProps) => (
     <BottomSheetBackdrop
       {...props}
@@ -63,7 +117,11 @@ const ReportBusinessMap = () => {
   return (
     <GestureHandlerRootView style={styles.containerBS}>
       <View style={styles.flex1}>
-        <PlatformMap style={styles.flex1} cameraPosition={initialCamera} />
+        <PlatformMap
+          style={styles.flex1}
+          cameraPosition={initialCamera}
+          markers={Platform.OS === "ios" ? markersIOS : markersAndroid}
+        />
         <FloatingActionButton onPress={() => setSheetIndex(0)} />
         <BottomSheet
           ref={bottomSheetRef}
@@ -73,6 +131,26 @@ const ReportBusinessMap = () => {
           backdropComponent={renderBackdrop}
         >
           <BottomSheetView style={styles.contentContainer}>
+            <Dropdown
+              style={styles.dropdown}
+              placeholder="Select violation type"
+              placeholderStyle={styles.dropdownPlaceholder}
+              data={violationData}
+              labelField="label"
+              valueField="value"
+              value={violationType}
+              onChange={(item) => setViolationType(item.value)}
+            />
+
+            <TextInput
+              value={description}
+              onChangeText={setDescription}
+              placeholder="Description"
+              style={styles.textArea}
+              multiline
+              numberOfLines={4}
+            />
+
             <GooglePlacesTextInput
               apiKey={process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY}
               onPlaceSelect={(places: Place) => handlePlaceSelect(places)}
@@ -90,23 +168,6 @@ const ReportBusinessMap = () => {
                 suggestionsContainer: styles.placesSuggestions,
                 placeholder: styles.placesPlaceholder,
               }}
-            />
-            <Dropdown
-              style={styles.dropdown}
-              placeholder="Select violation type"
-              placeholderStyle={styles.dropdownPlaceholder}
-              data={violationData}
-              labelField="label"
-              valueField="value"
-              value={violationType}
-              onChange={(item) => setViolationType(item.value)}
-            />
-
-            <TextInput
-              placeholder="Description"
-              style={styles.textArea}
-              multiline
-              numberOfLines={4}
             />
 
             <View style={styles.submitButtonContainer}>
@@ -172,6 +233,7 @@ const styles = StyleSheet.create({
     borderColor: colors.palette.gray300,
     borderRadius: 10,
     marginTop: 16,
+    marginBottom: 16,
     fontSize: fontSize.md,
     paddingHorizontal: 12,
   },
