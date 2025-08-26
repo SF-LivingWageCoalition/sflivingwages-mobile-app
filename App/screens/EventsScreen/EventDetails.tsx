@@ -1,6 +1,5 @@
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 import { EventDetailsProps } from "../../types";
 
@@ -56,16 +55,18 @@ const EventDetails: React.FC<EventDetailsProps> = ({ route }) => {
           </Text>
           {event.venue.venue ? (
             <View style={styles.venueWrapper}>
-              <Text>{event.venue.venue}</Text>
-              <Text>{event.venue.address}</Text>
-              <Text>
+              <Text style={styles.venueText}>{event.venue.venue}</Text>
+              <Text style={styles.venueText}>{event.venue.address}</Text>
+              <Text style={styles.venueText}>
                 {event.venue.city}, {event.venue.state}
               </Text>
             </View>
           ) : null}
         </View>
         <View style={styles.descriptionWrapper}>
-          <Text>{parseHtmlDash(stripHtmlRegex(event.description))}</Text>
+          <Text style={styles.descriptionText}>
+            {parseHtmlDash(stripHtmlRegex(event.description))}
+          </Text>
         </View>
       </View>
     </ScrollView>
@@ -81,22 +82,30 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   eventTitle: {
-    fontSize: fontSize.lg,
+    fontSize: fontSize.xl,
     fontWeight: fontWeight.bold,
     textAlign: "center",
-    marginBottom: 10,
+    marginBottom: 12,
   },
   dateLocWrapper: {
     alignItems: "center",
-    marginBottom: 10,
+    marginBottom: 24,
   },
   dateText: {
-    fontSize: fontSize.xs,
+    fontSize: fontSize.md,
     fontWeight: fontWeight.bold,
-    marginBottom: 6,
+    marginBottom: 12,
   },
   venueWrapper: {},
+  venueText: {
+    fontSize: fontSize.sm,
+    textAlign: "center",
+  },
   descriptionWrapper: {},
+  descriptionText: {
+    fontSize: fontSize.md,
+    marginBottom: 18,
+  },
 });
 
 export default EventDetails;
