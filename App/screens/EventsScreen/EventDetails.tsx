@@ -41,22 +41,31 @@ const EventDetails: React.FC<EventDetailsProps> = ({ route }) => {
     return htmlString.replace(/<[^>]*>/g, "");
   }
 
+  // TODO: Handle other HTML entities as needed
+  function parseHtmlDash(htmlString: string): string {
+    return htmlString.replace(/&#8211;/g, "-");
+  }
+
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
         <Text style={styles.eventTitle}>{event.title}</Text>
         <View style={styles.dateLocWrapper}>
-          <Text>
+          <Text style={styles.dateText}>
             {startMonth} {startDay} {startTime} - {endTime}
           </Text>
-          <Text>{event.venue.venue}</Text>
-          <Text>{event.venue.address}</Text>
-          <Text>
-            {event.venue.city}, {event.venue.state}
-          </Text>
+          {event.venue.venue ? (
+            <View style={styles.venueWrapper}>
+              <Text>{event.venue.venue}</Text>
+              <Text>{event.venue.address}</Text>
+              <Text>
+                {event.venue.city}, {event.venue.state}
+              </Text>
+            </View>
+          ) : null}
         </View>
         <View style={styles.descriptionWrapper}>
-          <Text>{stripHtmlRegex(event.description)}</Text>
+          <Text>{parseHtmlDash(stripHtmlRegex(event.description))}</Text>
         </View>
       </View>
     </ScrollView>
@@ -81,6 +90,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
   },
+  dateText: {
+    fontSize: fontSize.xs,
+    fontWeight: fontWeight.bold,
+    marginBottom: 6,
+  },
+  venueWrapper: {},
   descriptionWrapper: {},
 });
 
