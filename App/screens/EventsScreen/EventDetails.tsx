@@ -1,3 +1,4 @@
+import { decode } from "html-entities";
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
@@ -40,9 +41,9 @@ const EventDetails: React.FC<EventDetailsProps> = ({ route }) => {
     return htmlString.replace(/<[^>]*>/g, "");
   }
 
-  // TODO: Handle other HTML entities as needed
-  function parseHtmlDash(htmlString: string): string {
-    return htmlString.replace(/&#8211;/g, "-");
+  // Fix newline characters
+  function fixNewlineRegex(htmlString: string): string {
+    return htmlString.replace(/(\r\n|\n|\r)/gm, "\n\n");
   }
 
   return (
@@ -65,7 +66,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ route }) => {
         </View>
         <View style={styles.descriptionWrapper}>
           <Text style={styles.descriptionText}>
-            {parseHtmlDash(stripHtmlRegex(event.description))}
+            {decode(stripHtmlRegex(fixNewlineRegex(event.description)))}
           </Text>
         </View>
       </View>
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
   descriptionWrapper: {},
   descriptionText: {
     fontSize: fontSize.md,
-    marginBottom: 18,
+    // marginBottom: 18,
   },
 });
 

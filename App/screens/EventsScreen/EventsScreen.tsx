@@ -36,6 +36,8 @@ const Events: React.FC = () => {
            * start_date=2025-08-15 00:00:00 (today)
            * end_date=2027-08-16 23:59:59 (today + 2 years)
            * status=publish
+           *
+           * alternative using  the WP REST API: https://www.livingwage-sf.org/wp-json/wp/v2/tribe_events
            */
           "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/",
           {
