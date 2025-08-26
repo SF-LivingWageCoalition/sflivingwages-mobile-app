@@ -16,6 +16,7 @@ const MyStack: React.FC = () => {
         headerStyle: { backgroundColor: colors.light.primary },
         headerTintColor: colors.light.textOnPrimary,
         headerTitleStyle: { fontWeight: fontWeight.bold },
+        headerTitleAlign: "center",
       }}
     >
       <Stack.Screen
