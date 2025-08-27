@@ -171,6 +171,10 @@ const Events: React.FC = () => {
       <View style={styles.loadMoreSpinner}>
         <ActivityIndicator size="large" color={colors.light.primary} />
       </View>
+    ) : currentPage >= events.total_pages ? (
+      <View style={styles.emptyListFooter}>
+        <Text style={styles.noMoreEventsText}>No more events to show</Text>
+      </View>
     ) : (
       <View style={styles.emptyListFooter}></View>
     );
@@ -216,7 +220,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   emptyListFooter: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     height: 50,
+  },
+  noMoreEventsText: {
+    textAlign: "center",
+    color: colors.light.textSecondary,
+    fontStyle: "italic",
   },
 });
 
