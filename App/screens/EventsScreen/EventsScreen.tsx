@@ -5,8 +5,8 @@ import {
   FlatList,
   ListRenderItem,
   StyleSheet,
-  View,
   Text,
+  View,
 } from "react-native";
 import { colors } from "../../theme";
 import { EventItem, EventsListData } from "../../types";
@@ -32,10 +32,8 @@ const Events: React.FC = () => {
   // Trigger fetch on pull-to-refresh
   const onRefresh = () => {
     setRefreshing(true);
-    // setLoading(true);
     fetchEvents().then(() => {
       setRefreshing(false);
-      // setLoading(false);
     });
   };
 
@@ -46,6 +44,7 @@ const Events: React.FC = () => {
       const fetchParams = `?per_page=${per_page}&page=1`;
       const response = await fetch(
         /**
+         * Using The Events Calendar REST API
          * ex: /events/ defaults to
          * https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/?page=1&per_page=5&start_date=2025-08-15 00:00:00&end_date=2027-08-16 23:59:59&status=publish
          *
@@ -56,7 +55,7 @@ const Events: React.FC = () => {
          * end_date=2027-08-16 23:59:59 (today + 2 years)
          * status=publish
          *
-         * alternative using  the WP REST API: https://www.livingwage-sf.org/wp-json/wp/v2/tribe_events
+         * Alternatively using the WP REST API: https://www.livingwage-sf.org/wp-json/wp/v2/tribe_events
          */
         "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/" +
           fetchParams,
@@ -87,18 +86,10 @@ const Events: React.FC = () => {
     if (events.next_rest_url) {
       setLoadingMore(true);
       try {
-        const per_page = 10;
-        const nextPage = currentPage + 1;
-        const fetchParams = `?per_page=${per_page}&page=${nextPage}`;
-        const response = await fetch(
-          events.next_rest_url,
-          // "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/" +
-          //   fetchParams,
-          {
-            method: "GET",
-            headers: { "cache-control": "no-cache" },
-          }
-        );
+        const response = await fetch(events.next_rest_url, {
+          method: "GET",
+          headers: { "cache-control": "no-cache" },
+        });
 
         if (response.ok && response.status !== 401) {
           const data = await response.json();
@@ -107,11 +98,9 @@ const Events: React.FC = () => {
             total_pages: data.total_pages,
             next_rest_url: data.next_rest_url,
           });
-          setCurrentPage(nextPage);
+          setCurrentPage(currentPage + 1);
           setLoading(false);
           setLoadingMore(false);
-          // } else {
-          //   setLoadingMore(false);
         }
       } catch (error) {
         console.error("Error fetching events:", error);
@@ -123,40 +112,6 @@ const Events: React.FC = () => {
 
   // Fetch events data when component mounts
   useEffect(() => {
-    // const fetchEvents = async (): Promise<void> => {
-    //   try {
-    //     const response = await fetch(
-    //       /**
-    //        * ex: /events/ defaults to
-    //        * https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/?page=1&per_page=5&start_date=2025-08-15 00:00:00&end_date=2027-08-16 23:59:59&status=publish
-    //        *
-    //        * Default Parameters:
-    //        * page=1
-    //        * per_page=5
-    //        * start_date=2025-08-15 00:00:00 (today)
-    //        * end_date=2027-08-16 23:59:59 (today + 2 years)
-    //        * status=publish
-    //        *
-    //        * alternative using  the WP REST API: https://www.livingwage-sf.org/wp-json/wp/v2/tribe_events
-    //        */
-    //       "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/",
-    //       {
-    //         method: "GET",
-    //         headers: { "cache-control": "no-cache" },
-    //       }
-    //     );
-
-    //     if (response.ok && response.status !== 401) {
-    //       const data = await response.json();
-    //       setEvents(data);
-    //       setLoading(false);
-    //     }
-    //   } catch (error) {
-    //     console.error("Error fetching events:", error);
-    //     setLoading(false);
-    //   }
-    // };
-
     fetchEvents();
   }, []);
 
@@ -223,7 +178,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    height: 50,
+    height: height / 10,
   },
   noMoreEventsText: {
     textAlign: "center",

@@ -3,7 +3,6 @@ import { NavigationProp, ParamListBase } from "@react-navigation/native";
 export type RootStackParamList = {
   TabStack: undefined;
   Preview: { image: string };
-  // Events: undefined;
   EventsNavigator: undefined;
   WhoWeAre: undefined;
 };
@@ -229,10 +228,6 @@ export type ArticleItem = {
 
 export type ArticleProps = {
   article: ArticleItem;
-};
-
-export type CalendarNavProps = {
-  navigate: (screen: string) => void;
 };
 
 export type EventItem = {

@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
   descriptionWrapper: {},
   descriptionText: {
     fontSize: fontSize.md,
-    // marginBottom: 18,
   },
 });
 
