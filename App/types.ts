@@ -254,6 +254,7 @@ export type EventsListItemProps = {
 export type EventsListData = {
   events: EventItem[];
   total_pages: number;
+  next_rest_url?: string;
 };
 
 export type EventStackParamList = {

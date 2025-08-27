@@ -22,6 +22,7 @@ const Events: React.FC = () => {
   const [events, setEvents] = useState<EventsListData>({
     events: [],
     total_pages: 0,
+    next_rest_url: "",
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
@@ -70,6 +71,7 @@ const Events: React.FC = () => {
         setEvents({
           events: data.events,
           total_pages: data.total_pages,
+          next_rest_url: data.next_rest_url,
         });
         setCurrentPage(1);
         setLoading(false);
@@ -82,36 +84,40 @@ const Events: React.FC = () => {
 
   // Fetch more events for pagination
   const fetchMoreEvents = async (): Promise<void> => {
-    setLoadingMore(true);
-    try {
-      const per_page = 10;
-      const nextPage = currentPage + 1;
-      const fetchParams = `?per_page=${per_page}&page=${nextPage}`;
-      const response = await fetch(
-        "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/" +
-          fetchParams,
-        {
-          method: "GET",
-          headers: { "cache-control": "no-cache" },
-        }
-      );
+    if (events.next_rest_url) {
+      setLoadingMore(true);
+      try {
+        const per_page = 10;
+        const nextPage = currentPage + 1;
+        const fetchParams = `?per_page=${per_page}&page=${nextPage}`;
+        const response = await fetch(
+          events.next_rest_url,
+          // "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/" +
+          //   fetchParams,
+          {
+            method: "GET",
+            headers: { "cache-control": "no-cache" },
+          }
+        );
 
-      if (response.ok && response.status !== 401) {
-        const data = await response.json();
-        setEvents({
-          events: [...events.events, ...data.events],
-          total_pages: data.total_pages,
-        });
-        setCurrentPage(nextPage);
+        if (response.ok && response.status !== 401) {
+          const data = await response.json();
+          setEvents({
+            events: [...events.events, ...data.events],
+            total_pages: data.total_pages,
+            next_rest_url: data.next_rest_url,
+          });
+          setCurrentPage(nextPage);
+          setLoading(false);
+          setLoadingMore(false);
+          // } else {
+          //   setLoadingMore(false);
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error);
         setLoading(false);
         setLoadingMore(false);
-      } else {
-        setLoadingMore(false);
       }
-    } catch (error) {
-      console.error("Error fetching events:", error);
-      setLoading(false);
-      setLoadingMore(false);
     }
   };
 
@@ -183,7 +189,9 @@ const Events: React.FC = () => {
           onRefresh={() => onRefresh()}
           refreshing={refreshing}
           onEndReached={() =>
-            currentPage < events.total_pages ? fetchMoreEvents() : null
+            currentPage < events.total_pages && events.next_rest_url
+              ? fetchMoreEvents()
+              : null
           }
           onEndReachedThreshold={0.1}
           ListFooterComponent={listFooterComponent}
