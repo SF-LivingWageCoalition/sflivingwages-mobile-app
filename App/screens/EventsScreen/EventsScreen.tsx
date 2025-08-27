@@ -4,9 +4,9 @@ import {
   Dimensions,
   FlatList,
   ListRenderItem,
-  RefreshControl,
   StyleSheet,
   View,
+  Text,
 } from "react-native";
 import { colors } from "../../theme";
 import { EventItem, EventsListData } from "../../types";
@@ -19,9 +19,14 @@ const { height } = Dimensions.get("window");
  * Displays a list of events fetched from the API
  */
 const Events: React.FC = () => {
-  const [events, setEvents] = useState<EventsListData>({ events: [] });
+  const [events, setEvents] = useState<EventsListData>({
+    events: [],
+    total_pages: 0,
+  });
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingMore, setLoadingMore] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   // Trigger fetch on pull-to-refresh
   const onRefresh = () => {
@@ -33,8 +38,11 @@ const Events: React.FC = () => {
     });
   };
 
+  // Fetch first page of events
   const fetchEvents = async (): Promise<void> => {
     try {
+      const per_page = 10;
+      const fetchParams = `?per_page=${per_page}&page=1`;
       const response = await fetch(
         /**
          * ex: /events/ defaults to
@@ -49,7 +57,8 @@ const Events: React.FC = () => {
          *
          * alternative using  the WP REST API: https://www.livingwage-sf.org/wp-json/wp/v2/tribe_events
          */
-        "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/?per_page=10",
+        "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/" +
+          fetchParams,
         {
           method: "GET",
           headers: { "cache-control": "no-cache" },
@@ -58,12 +67,51 @@ const Events: React.FC = () => {
 
       if (response.ok && response.status !== 401) {
         const data = await response.json();
-        setEvents(data);
+        setEvents({
+          events: data.events,
+          total_pages: data.total_pages,
+        });
+        setCurrentPage(1);
         setLoading(false);
       }
     } catch (error) {
       console.error("Error fetching events:", error);
       setLoading(false);
+    }
+  };
+
+  // Fetch more events for pagination
+  const fetchMoreEvents = async (): Promise<void> => {
+    setLoadingMore(true);
+    try {
+      const per_page = 10;
+      const nextPage = currentPage + 1;
+      const fetchParams = `?per_page=${per_page}&page=${nextPage}`;
+      const response = await fetch(
+        "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/" +
+          fetchParams,
+        {
+          method: "GET",
+          headers: { "cache-control": "no-cache" },
+        }
+      );
+
+      if (response.ok && response.status !== 401) {
+        const data = await response.json();
+        setEvents({
+          events: [...events.events, ...data.events],
+          total_pages: data.total_pages,
+        });
+        setCurrentPage(nextPage);
+        setLoading(false);
+        setLoadingMore(false);
+      } else {
+        setLoadingMore(false);
+      }
+    } catch (error) {
+      console.error("Error fetching events:", error);
+      setLoading(false);
+      setLoadingMore(false);
     }
   };
 
@@ -112,6 +160,15 @@ const Events: React.FC = () => {
 
   const keyExtractor = (item: EventItem): string => item.id.toString();
 
+  const listFooterComponent = () =>
+    loadingMore ? (
+      <View style={styles.loadMoreSpinner}>
+        <ActivityIndicator size="large" color={colors.light.primary} />
+      </View>
+    ) : (
+      <View style={styles.emptyListFooter}></View>
+    );
+
   return (
     <View style={styles.container}>
       {loading || refreshing ? (
@@ -125,6 +182,11 @@ const Events: React.FC = () => {
           keyExtractor={keyExtractor}
           onRefresh={() => onRefresh()}
           refreshing={refreshing}
+          onEndReached={() =>
+            currentPage < events.total_pages ? fetchMoreEvents() : null
+          }
+          onEndReachedThreshold={0.1}
+          ListFooterComponent={listFooterComponent}
         />
       )}
     </View>
@@ -139,6 +201,14 @@ const styles = StyleSheet.create({
     height: height / 2,
     alignItems: "center",
     justifyContent: "center",
+  },
+  loadMoreSpinner: {
+    height: height / 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  emptyListFooter: {
+    height: 50,
   },
 });
 
