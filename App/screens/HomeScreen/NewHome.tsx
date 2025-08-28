@@ -68,9 +68,9 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
   const mainSliderImages = [
     {
       id: 1,
-      title: "Donate",
+      title:  translate("donateScreen.title"),
       src: require("../../assets/images/campaign2_background.jpg"),
-      destination: "https://www.livingwage-sf.org/donations-and-membership/",
+      destination: "Donate",
     },
     {
       id: 2,
@@ -171,9 +171,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                     image={image}
                     key={image.id}
                     onPress={() => {
-                      image.id === 1
-                        ? Linking.openURL(image.destination)
-                        : navigation.navigate(image.destination);
+                         navigation.navigate(image.destination);
                     }}
                   />
                 ))}

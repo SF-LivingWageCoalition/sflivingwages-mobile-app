@@ -271,6 +271,9 @@ const en = {
         title: "Member"
       }
     ]
+    },
+  donateScreen: {
+    title: "Donate"
   },
   eventsScreen: {
     title: "Events"
