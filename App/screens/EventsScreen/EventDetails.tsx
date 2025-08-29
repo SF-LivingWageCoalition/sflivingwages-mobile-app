@@ -38,7 +38,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ route }) => {
 
   // Strip HTML tags
   function stripHtmlRegex(htmlString: string): string {
-    return htmlString.replace(/<[^>]*>/g, "");
+    return htmlString.replace(/(<([^>]+)>)/gi, "");
   }
 
   // Fix newline characters
