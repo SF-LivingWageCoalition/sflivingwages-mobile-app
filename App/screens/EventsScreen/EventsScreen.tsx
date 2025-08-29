@@ -21,7 +21,6 @@ const { height } = Dimensions.get("window");
 const Events: React.FC = () => {
   const [events, setEvents] = useState<EventsListData>({
     events: [],
-    total_pages: 0,
     next_rest_url: "",
   });
   const [loading, setLoading] = useState<boolean>(true);
@@ -61,7 +60,6 @@ const Events: React.FC = () => {
         const data = await response.json();
         setEvents({
           events: data.events,
-          total_pages: data.total_pages,
           next_rest_url: data.next_rest_url,
         });
         setLoading(false);
@@ -86,7 +84,6 @@ const Events: React.FC = () => {
           const data = await response.json();
           setEvents({
             events: [...events.events, ...data.events],
-            total_pages: data.total_pages,
             next_rest_url: data.next_rest_url,
           });
           setLoadingMore(false);
