@@ -148,7 +148,7 @@ const Events: React.FC = () => {
           onRefresh={() => onRefresh()}
           refreshing={refreshing}
           onEndReached={() => (events.next_rest_url ? fetchMoreEvents() : null)}
-          onEndReachedThreshold={0.1}
+          onEndReachedThreshold={0.5}
           ListFooterComponent={listFooterComponent}
         />
       )}
