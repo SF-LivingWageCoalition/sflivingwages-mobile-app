@@ -27,15 +27,7 @@ const Events: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-
-  // Trigger fetch on pull-to-refresh
-  const onRefresh = () => {
-    setRefreshing(true);
-    fetchEvents().then(() => {
-      setRefreshing(false);
-    });
-  };
+  // const [currentPage, setCurrentPage] = useState<number>(1);
 
   // Fetch first page of events
   const fetchEvents = async (): Promise<void> => {
@@ -72,7 +64,7 @@ const Events: React.FC = () => {
           total_pages: data.total_pages,
           next_rest_url: data.next_rest_url,
         });
-        setCurrentPage(1);
+        // setCurrentPage(1);
         setLoading(false);
       }
     } catch (error) {
@@ -98,13 +90,13 @@ const Events: React.FC = () => {
             total_pages: data.total_pages,
             next_rest_url: data.next_rest_url,
           });
-          setCurrentPage(currentPage + 1);
-          setLoading(false);
+          // setCurrentPage(currentPage + 1);
+          // setLoading(false);
           setLoadingMore(false);
         }
       } catch (error) {
         console.error("Error fetching events:", error);
-        setLoading(false);
+        // setLoading(false);
         setLoadingMore(false);
       }
     }
@@ -114,6 +106,14 @@ const Events: React.FC = () => {
   useEffect(() => {
     fetchEvents();
   }, []);
+
+  // Trigger fetch on pull-to-refresh
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchEvents().then(() => {
+      setRefreshing(false);
+    });
+  };
 
   const renderItem: ListRenderItem<EventItem> = ({ item, index }) => (
     <EventsListItem event={item} index={index} />
@@ -126,7 +126,7 @@ const Events: React.FC = () => {
       <View style={styles.loadMoreSpinner}>
         <ActivityIndicator size="large" color={colors.light.primary} />
       </View>
-    ) : currentPage >= events.total_pages ? (
+    ) : !events.next_rest_url ? (
       <View style={styles.emptyListFooter}>
         <Text style={styles.noMoreEventsText}>No more events to show</Text>
       </View>
@@ -147,11 +147,7 @@ const Events: React.FC = () => {
           keyExtractor={keyExtractor}
           onRefresh={() => onRefresh()}
           refreshing={refreshing}
-          onEndReached={() =>
-            currentPage < events.total_pages && events.next_rest_url
-              ? fetchMoreEvents()
-              : null
-          }
+          onEndReached={() => (events.next_rest_url ? fetchMoreEvents() : null)}
           onEndReachedThreshold={0.1}
           ListFooterComponent={listFooterComponent}
         />
