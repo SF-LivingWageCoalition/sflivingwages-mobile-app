@@ -102,7 +102,9 @@ const styles = StyleSheet.create({
     fontSize: fontSize.sm,
     textAlign: "center",
   },
-  descriptionWrapper: {},
+  descriptionWrapper: {
+    marginBottom: 12,
+  },
   descriptionText: {
     fontSize: fontSize.md,
   },
