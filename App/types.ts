@@ -236,6 +236,12 @@ export type EventItem = {
   description: string;
   start_date: string;
   end_date: string;
+  venue: {
+    venue: string;
+    address: string;
+    city: string;
+    state: string;
+  };
 };
 export type EventDetailsProps = {
   route: any;
