@@ -82,10 +82,10 @@ const Events: React.FC = () => {
 
         if (response.ok && response.status !== 401) {
           const data = await response.json();
-          setEvents({
-            events: [...events.events, ...data.events],
+          setEvents((prevEvents) => ({
+            events: [...prevEvents.events, ...data.events],
             next_rest_url: data.next_rest_url,
-          });
+          }));
           setLoadingMore(false);
         }
       } catch (error) {
