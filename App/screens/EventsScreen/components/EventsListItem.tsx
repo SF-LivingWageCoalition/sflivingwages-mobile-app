@@ -91,7 +91,6 @@ const styles = StyleSheet.create({
   dateWrapper: {
     display: "flex",
     flexDirection: "column",
-    // marginLeft: 12,
   },
   dayText: {
     textAlign: "center",
@@ -109,7 +108,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignContent: "center",
     flexShrink: 1,
-    width: width / 1.2,
   },
   titleText: {
     fontSize: fontSize.md,

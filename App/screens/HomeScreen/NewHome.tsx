@@ -78,7 +78,6 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
       src: require("../../assets/images/events-slide.jpg"),
       destination: "EventsNavigator",
       destinationScreen: "Events",
-      // destination: {name: "EventsNavigator", screen: "Events" },
     },
   ];
 

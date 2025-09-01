@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   loadMoreSpinner: {
-    height: height / 10,
+    height: 80,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    height: height / 10,
+    height: 80,
   },
   noMoreEventsText: {
     textAlign: "center",
