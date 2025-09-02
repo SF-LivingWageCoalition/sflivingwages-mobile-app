@@ -20,6 +20,8 @@
       },
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION"
       ],
       "package": "com.sfLiving.sflivingwagesappbeta",
@@ -40,7 +42,8 @@
       "backgroundColor": "#d31623"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/90d63262-40d7-4c1f-907d-8fa839d6e0ff"
     },
     "assetBundlePatterns": ["**/*"],
     "plugins": [
@@ -57,6 +60,9 @@
       "eas": {
         "projectId": "90d63262-40d7-4c1f-907d-8fa839d6e0ff"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     }
   }
 }
