@@ -45,11 +45,8 @@ const Events: React.FC = () => {
    */
   const fetchEvents = async (): Promise<void> => {
     try {
-      const per_page = 10;
-      const fetchParams = `?per_page=${per_page}&page=1`;
       const response = await fetch(
-        "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/" +
-          fetchParams,
+        "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/?per_page=10&page=1",
         {
           method: "GET",
           headers: { "cache-control": "no-cache" },
