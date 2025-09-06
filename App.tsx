@@ -2,19 +2,19 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NativeBaseProvider } from "native-base";
 import React from "react";
+import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import BottomTabStack from "./App/navigation/BottomTabStack";
-import ModalScreen from "./App/screens/DonateScreen/ModalScreen";
-import Events from "./App/screens/EventsScreen/EventsScreen";
-import WhoWeAre from "./App/screens/WhoWeAreScreen/WhoWeAreScreen";
-import { translate } from "./App/translation/i18n";
-import { colors } from "./App/theme";
-import { fontWeight } from "./App/theme/fontStyles";
-import { RootStackParamList } from "./App/types";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import BottomTabStack from "./App/navigation/BottomTabStack";
 import { persistor, store } from "./App/redux/store/store";
-import "react-native-gesture-handler";
+import ModalScreen from "./App/screens/DonateScreen/ModalScreen";
+import EventsNavigator from "./App/screens/EventsScreen/components/EventsNav";
+import WhoWeAre from "./App/screens/WhoWeAreScreen/WhoWeAreScreen";
+import { colors } from "./App/theme";
+import { fontWeight } from "./App/theme/fontStyles";
+import { translate } from "./App/translation/i18n";
+import { RootStackParamList } from "./App/types";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -30,6 +30,7 @@ const App: React.FC = () => {
                   headerStyle: { backgroundColor: colors.light.primary },
                   headerTintColor: colors.light.textOnPrimary,
                   headerTitleStyle: { fontWeight: fontWeight.bold },
+                  headerTitleAlign: "center",
                 }}
               >
                 <Stack.Screen
@@ -43,9 +44,12 @@ const App: React.FC = () => {
                   initialParams={{ image: "" }}
                 />
                 <Stack.Screen
-                  name="Events"
-                  options={{ title: translate("eventsScreen.title") }}
-                  component={Events}
+                  name="EventsNavigator"
+                  options={{
+                    title: translate("eventsScreen.title"),
+                    headerShown: false,
+                  }}
+                  component={EventsNavigator}
                 />
                 <Stack.Screen
                   name="WhoWeAre"

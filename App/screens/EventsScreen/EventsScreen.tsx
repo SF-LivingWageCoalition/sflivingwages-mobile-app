@@ -4,13 +4,13 @@ import {
   Dimensions,
   FlatList,
   ListRenderItem,
-  SafeAreaView,
   StyleSheet,
+  Text,
   View,
 } from "react-native";
 import { colors } from "../../theme";
-import { EventItem, EventsData } from "../../types";
-import EventListItem from "./components/EventListItem";
+import { EventItem, EventsListData } from "../../types";
+import EventsListItem from "./components/EventsListItem";
 
 const { height } = Dimensions.get("window");
 
@@ -19,52 +19,114 @@ const { height } = Dimensions.get("window");
  * Displays a list of events fetched from the API
  */
 const Events: React.FC = () => {
-  const [events, setEvents] = useState<EventsData>({ events: [] });
+  const [events, setEvents] = useState<EventsListData>({
+    events: [],
+    next_rest_url: "",
+  });
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingMore, setLoadingMore] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
-  // Fetch events data when component mounts
-  useEffect(() => {
-    const fetchEvents = async (): Promise<void> => {
+  /**
+   * Fetch first page of events
+   *
+   * Using The Events Calendar REST API
+   * ex: /events/ defaults to
+   * https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/?page=1&per_page=5&start_date=2025-08-15 00:00:00&end_date=2027-08-16 23:59:59&status=publish
+   *
+   * Default Parameters:
+   * page=1
+   * per_page=5
+   * start_date=2025-08-15 00:00:00 (today)
+   * end_date=2027-08-16 23:59:59 (today + 2 years)
+   * status=publish
+   *
+   * Alternatively using the WP REST API: https://www.livingwage-sf.org/wp-json/wp/v2/tribe_events
+   */
+  const fetchEvents = async (): Promise<void> => {
+    try {
+      const response = await fetch(
+        "https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/?per_page=10&page=1",
+        {
+          method: "GET",
+          headers: { "cache-control": "no-cache" },
+        }
+      );
+
+      if (response.ok && response.status !== 401) {
+        const data = await response.json();
+        setEvents({
+          events: data.events,
+          next_rest_url: data.next_rest_url,
+        });
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error fetching events:", error);
+      setLoading(false);
+    }
+  };
+
+  // Fetch more events for pagination
+  const fetchMoreEvents = async (): Promise<void> => {
+    if (events.next_rest_url) {
+      setLoadingMore(true);
       try {
-        const response = await fetch(
-          "https://www.livingwage-sf.org/wp-json/wp/v2/pages/18493",
-          {
-            method: "GET",
-            headers: { "cache-control": "no-cache" },
-          }
-        );
+        const response = await fetch(events.next_rest_url, {
+          method: "GET",
+          headers: { "cache-control": "no-cache" },
+        });
 
         if (response.ok && response.status !== 401) {
           const data = await response.json();
-
-          // Clean the HTML tags and entities from the response
-          const regex = /({([{^}]*)})|(&.+;)|(<([^>]+)>)/gi;
-          const clean = data.content.rendered.replace(regex, "");
-
-          // Parse the cleaned JSON
-          const eventsData = JSON.parse(clean) as EventsData;
-
-          setEvents(eventsData);
-          setLoading(false);
+          setEvents((prevEvents) => ({
+            events: [...prevEvents.events, ...data.events],
+            next_rest_url: data.next_rest_url,
+          }));
+          setLoadingMore(false);
         }
       } catch (error) {
         console.error("Error fetching events:", error);
-        setLoading(false);
+        setLoadingMore(false);
       }
-    };
+    }
+  };
 
+  // Fetch events data when component mounts
+  useEffect(() => {
     fetchEvents();
   }, []);
 
+  // Trigger fetch on pull-to-refresh
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchEvents().then(() => {
+      setRefreshing(false);
+    });
+  };
+
   const renderItem: ListRenderItem<EventItem> = ({ item, index }) => (
-    <EventListItem event={item} index={index} />
+    <EventsListItem event={item} index={index} />
   );
 
-  const keyExtractor = (item: EventItem): string => item.date;
+  const keyExtractor = (item: EventItem): string => item.id.toString();
+
+  const listFooterComponent = () =>
+    loadingMore ? (
+      <View style={styles.loadMoreSpinner}>
+        <ActivityIndicator size="large" color={colors.light.primary} />
+      </View>
+    ) : !events.next_rest_url ? (
+      <View style={styles.emptyListFooter}>
+        <Text style={styles.noMoreEventsText}>No more events to show</Text>
+      </View>
+    ) : (
+      <View style={styles.emptyListFooter}></View>
+    );
 
   return (
-    <SafeAreaView style={styles.container}>
-      {loading ? (
+    <View style={styles.container}>
+      {loading || refreshing ? (
         <View style={styles.spinner}>
           <ActivityIndicator size="large" color={colors.light.primary} />
         </View>
@@ -73,9 +135,14 @@ const Events: React.FC = () => {
           data={events.events}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
+          onRefresh={() => onRefresh()}
+          refreshing={refreshing}
+          onEndReached={() => (events.next_rest_url ? fetchMoreEvents() : null)}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={listFooterComponent}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -87,6 +154,22 @@ const styles = StyleSheet.create({
     height: height / 2,
     alignItems: "center",
     justifyContent: "center",
+  },
+  loadMoreSpinner: {
+    height: 80,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  emptyListFooter: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    height: 80,
+  },
+  noMoreEventsText: {
+    textAlign: "center",
+    color: colors.light.textSecondary,
+    fontStyle: "italic",
   },
 });
 

@@ -218,7 +218,7 @@ const en = {
   whoWeAreHeader: {
     title: "Who We Are",
     body: "The Living Wage Coalition is a low-wage worker advocacy organization fighting for economic justice.",
-    buttonText: "View More"
+    buttonText: "View More",
   },
   whoWeAreScreen: {
     title: "Who We Are",
@@ -228,52 +228,55 @@ const en = {
       {
         id: 1,
         name: "Karl Kramer",
-        title: "Campaign Co-director"
+        title: "Campaign Co-director",
       },
       {
         id: 2,
         name: "David Frias",
-        title: "Campaign Co-director"
+        title: "Campaign Co-director",
       },
       {
         id: 3,
         name: "Anne Jayne",
-        title: "Recording Secretary"
+        title: "Recording Secretary",
       },
       {
         id: 4,
         name: "Peter Miller",
-        title: "Treasurer"
+        title: "Treasurer",
       },
       {
         id: 5,
         name: "Alice Rogoff",
-        title: "Member"
+        title: "Member",
       },
       {
         id: 6,
         name: "David Williams",
-        title: "Member"
+        title: "Member",
       },
       {
         id: 7,
         name: "Nancy Esteva",
-        title: "Member"
+        title: "Member",
       },
       {
         id: 8,
         name: "Peter Miller",
-        title: "Member"
+        title: "Member",
       },
       {
         id: 9,
         name: "Rodger Scott",
-        title: "Member"
-      }
-    ]
+        title: "Member",
+      },
+    ],
   },
   eventsScreen: {
-    title: "Events"
+    title: "Events",
+  },
+  eventsDetails: {
+    title: "Event Details",
   },
 };
 
