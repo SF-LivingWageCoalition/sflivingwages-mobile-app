@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Button,
   ScrollView,
   StyleSheet,
   Text,
@@ -17,10 +16,64 @@ const Account: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
+  const [responseData, setResponseData] = useState<any>(null);
+  const [userData, setUserData] = useState<any>(null);
+  const [token, setToken] = useState<any>(null);
+
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const onLogin = () => {
-    setIsLoggedIn(true);
+  const onLogin = async (): Promise<void> => {
+    // Get the JWT Token
+    try {
+      const response = await fetch(
+        // `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth&username=${username}&password=${password}`,
+        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth&username=admin&password=wordpress80!`,
+        {
+          method: "POST",
+          headers: { "cache-control": "no-cache" },
+        }
+      );
+
+      // JWT Token retrieved
+      if (response.ok && response.status !== 401) {
+        const data = await response.json();
+        // console.log("Token request data:", data.data.jwt);
+        setResponseData(data);
+        setToken(data.data.jwt);
+
+        // Fetch protected data using the token
+        try {
+          console.log("Fetching protected data...");
+          console.log("Using token:", data.data.jwt);
+          const protectedResponse = await fetch(
+            "https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth/validate&JWT=" +
+              data.data.jwt,
+            {
+              method: "POST",
+              // headers: {
+              //   // Authorization: `Bearer ${data.data.jwt}`,
+              //   alg: "HS256",
+              //   typ: "JWT",
+              //   "cache-control": "no-cache",
+              // },
+            }
+          );
+          console.log("Protected response status:", protectedResponse.status);
+          if (protectedResponse.ok) {
+            const protectedData = await protectedResponse.json();
+            console.log("Protected data:", protectedData);
+            setUserData(protectedData);
+            setIsLoggedIn(true);
+          }
+        } catch (error) {
+          console.error("Error fetching protected data:", error);
+        }
+      }
+    } catch (error) {
+      // Error getting JWT token
+      console.error("Error logging in:", error);
+      setIsLoggedIn(false);
+    }
     const newErrors: { [key: string]: string } = {};
   };
 
@@ -30,6 +83,12 @@ const Account: React.FC = () => {
 
   const onLogout = () => {
     setIsLoggedIn(false);
+    setUsername("");
+    setPassword("");
+    setResponseData(null);
+    setToken(null);
+    setUserData(null);
+    // Clear errors
     const newErrors: { [key: string]: string } = {};
   };
 
@@ -110,6 +169,21 @@ const Account: React.FC = () => {
               {translate("accountScreen.logout")}
             </Text>
           </TouchableOpacity>
+        </View>
+
+        <View>
+          <Text>Response Data:</Text>
+          <Text>
+            {responseData ? JSON.stringify(responseData) : "No response data"}
+          </Text>
+          <Text> </Text>
+          <Text>Token:</Text>
+          <Text>{token ? token : "No token"}</Text>
+          <Text> </Text>
+          <Text>Protected Data:</Text>
+          <Text>
+            {userData ? JSON.stringify(userData) : "No protected data"}
+          </Text>
         </View>
       </View>
     </ScrollView>
