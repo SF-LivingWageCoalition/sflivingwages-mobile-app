@@ -203,6 +203,79 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
     );
   };
 
+  const LoginForm: React.FC = () => {
+    return (
+      <View style={styles.inputContainer}>
+        {/* Username Input */}
+        <Text style={styles.inputName}>
+          {translate("accountScreen.username")}
+          <Text style={styles.requiredField}>*</Text>
+        </Text>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={(usernameInput) => setUsername(usernameInput)}
+          value={username}
+          autoCorrect={false}
+          autoCapitalize="none"
+        />
+        {errors.username && (
+          <Text style={styles.inputError}>{errors.username}</Text>
+        )}
+
+        {/* Password Input */}
+        <Text style={styles.inputName}>
+          {translate("accountScreen.password")}
+          <Text style={styles.requiredField}>*</Text>
+        </Text>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={(passwordInput) => setPassword(passwordInput)}
+          value={password}
+          autoCorrect={false}
+          autoCapitalize="none"
+        />
+        {errors.password && (
+          <Text style={styles.inputError}>{errors.password}</Text>
+        )}
+      </View>
+    );
+  };
+
+  // Login Button
+  const LoginButton: React.FC = () => {
+    return (
+      <TouchableOpacity style={styles.button} onPress={onLogin}>
+        <Text style={styles.buttonText}>
+          {translate("accountScreen.login")}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
+  // Register Button
+  {
+    /* TODO: User separate page for registration? */
+  }
+  const RegisterButton: React.FC = () => {
+    return (
+      <TouchableOpacity style={styles.button} onPress={onRegister}>
+        <Text style={styles.buttonText}>
+          {translate("accountScreen.register")}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
+  // Logout Button
+  const LogoutButton: React.FC = () => {
+    return (
+      <TouchableOpacity style={styles.button} onPress={onLogout}>
+        <Text style={styles.buttonText}>
+          {translate("accountScreen.logout")}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
   return (
     <ScrollView>
       <View style={styles.container}>
