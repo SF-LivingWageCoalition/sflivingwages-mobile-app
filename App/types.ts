@@ -12,6 +12,7 @@ export type BottomTabParamList = {
   Auction: undefined;
   Donate: undefined;
   Assist: undefined;
+  Account: undefined;
 };
 
 export type AssistanceTabParamList = {
