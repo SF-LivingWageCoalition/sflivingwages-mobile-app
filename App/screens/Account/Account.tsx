@@ -16,14 +16,14 @@ const Account: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-  const [responseData, setResponseData] = useState<any>(null);
-  const [userData, setUserData] = useState<any>(null);
+  const [authenticationData, setAuthenticationData] = useState<any>(null);
+  const [validationData, setValidationData] = useState<any>(null);
   const [token, setToken] = useState<any>(null);
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const onLogin = async (): Promise<void> => {
-    // Get the JWT Token
+    // Get the JWT Token (Authenticate)
     try {
       const response = await fetch(
         // `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth&username=${username}&password=${password}`,
@@ -38,10 +38,10 @@ const Account: React.FC = () => {
       if (response.ok && response.status !== 401) {
         const data = await response.json();
         // console.log("Token request data:", data.data.jwt);
-        setResponseData(data);
+        setAuthenticationData(data);
         setToken(data.data.jwt);
 
-        // Fetch protected data using the token
+        // Fetch protected data using the token (Validate)
         try {
           console.log("Fetching protected data...");
           console.log("Using token:", data.data.jwt);
@@ -62,18 +62,19 @@ const Account: React.FC = () => {
           if (protectedResponse.ok) {
             const protectedData = await protectedResponse.json();
             console.log("Protected data:", protectedData);
-            setUserData(protectedData);
+            setValidationData(protectedData);
             setIsLoggedIn(true);
           }
         } catch (error) {
           console.error("Error fetching protected data:", error);
-        }
+        } // end Validate
       }
     } catch (error) {
       // Error getting JWT token
       console.error("Error logging in:", error);
       setIsLoggedIn(false);
-    }
+    } // end Authenticate
+
     const newErrors: { [key: string]: string } = {};
   };
 
@@ -85,13 +86,86 @@ const Account: React.FC = () => {
     setIsLoggedIn(false);
     setUsername("");
     setPassword("");
-    setResponseData(null);
+    setAuthenticationData(null);
     setToken(null);
-    setUserData(null);
+    setValidationData(null);
     // Clear errors
     const newErrors: { [key: string]: string } = {};
   };
 
+  const LoginForm: React.FC = () => {
+    return (
+      <View style={styles.inputContainer}>
+        {/* Username Input */}
+        <Text style={styles.inputName}>
+          {translate("accountScreen.username")}
+          <Text style={styles.requiredField}>*</Text>
+        </Text>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={(usernameInput) => setUsername(usernameInput)}
+          value={username}
+          autoCorrect={false}
+          autoCapitalize="none"
+        />
+        {errors.username && (
+          <Text style={styles.inputError}>{errors.username}</Text>
+        )}
+
+        {/* Password Input */}
+        <Text style={styles.inputName}>
+          {translate("accountScreen.password")}
+          <Text style={styles.requiredField}>*</Text>
+        </Text>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={(passwordInput) => setPassword(passwordInput)}
+          value={password}
+          autoCorrect={false}
+          autoCapitalize="none"
+        />
+        {errors.password && (
+          <Text style={styles.inputError}>{errors.password}</Text>
+        )}
+      </View>
+    );
+  };
+
+  // Login Button
+  const LoginButton: React.FC = () => {
+    return (
+      <TouchableOpacity style={styles.button} onPress={onLogin}>
+        <Text style={styles.buttonText}>
+          {translate("accountScreen.login")}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
+  // Register Button
+  {
+    /* TODO: User separate page for registration? */
+  }
+  const RegisterButton: React.FC = () => {
+    return (
+      <TouchableOpacity style={styles.button} onPress={onRegister}>
+        <Text style={styles.buttonText}>
+          {translate("accountScreen.register")}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
+  // Logout Button
+  const LogoutButton: React.FC = () => {
+    return (
+      <TouchableOpacity style={styles.button} onPress={onLogout}>
+        <Text style={styles.buttonText}>
+          {translate("accountScreen.logout")}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -108,81 +182,31 @@ const Account: React.FC = () => {
           )}
         </View>
 
-        {/* Login Inputs */}
-        <View style={styles.inputContainer}>
-          {/* Username Input */}
-          <Text style={styles.inputName}>
-            {translate("accountScreen.username")}
-            <Text style={styles.requiredField}>*</Text>
-          </Text>
-          <TextInput
-            style={styles.textInput}
-            onChangeText={(usernameInput) => setUsername(usernameInput)}
-            value={username}
-            autoCorrect={false}
-            autoCapitalize="none"
-          />
-          {errors.username && (
-            <Text style={styles.inputError}>{errors.username}</Text>
-          )}
+        {!isLoggedIn && <LoginForm />}
 
-          {/* Password Input */}
-          <Text style={styles.inputName}>
-            {translate("accountScreen.password")}
-            <Text style={styles.requiredField}>*</Text>
-          </Text>
-          <TextInput
-            style={styles.textInput}
-            onChangeText={(passwordInput) => setPassword(passwordInput)}
-            value={password}
-            autoCorrect={false}
-            autoCapitalize="none"
-          />
-          {errors.password && (
-            <Text style={styles.inputError}>{errors.password}</Text>
-          )}
-        </View>
-
-        {/* Login Buttons */}
+        {/* Login/Register/Logout Buttons */}
         <View style={styles.buttonContainer}>
-          {/* Login Button */}
-          <TouchableOpacity style={styles.button} onPress={onLogin}>
-            <Text style={styles.buttonText}>
-              {translate("accountScreen.login")}
-            </Text>
-          </TouchableOpacity>
-
-          {/* Register Button */}
-          {/* TODO: User separate page for registration? */}
-          <TouchableOpacity style={styles.button} onPress={onRegister}>
-            <Text style={styles.buttonText}>
-              {translate("accountScreen.register")}
-            </Text>
-          </TouchableOpacity>
+          {!isLoggedIn && <LoginButton />}
+          {!isLoggedIn && <RegisterButton />}
+          {isLoggedIn && <LogoutButton />}
         </View>
 
-        {/* Logout Button */}
-        <View style={styles.buttonContainer}>
-          {/* Logout Button */}
-          <TouchableOpacity style={styles.button} onPress={onLogout}>
-            <Text style={styles.buttonText}>
-              {translate("accountScreen.logout")}
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <View>
-          <Text>Response Data:</Text>
+        <View style={styles.outputDataContainer}>
+          <Text>Authentication Data:</Text>
           <Text>
-            {responseData ? JSON.stringify(responseData) : "No response data"}
+            {authenticationData
+              ? JSON.stringify(authenticationData)
+              : "No response data"}
           </Text>
           <Text> </Text>
           <Text>Token:</Text>
           <Text>{token ? token : "No token"}</Text>
           <Text> </Text>
-          <Text>Protected Data:</Text>
+          <Text>Validation Data:</Text>
           <Text>
-            {userData ? JSON.stringify(userData) : "No protected data"}
+            {validationData
+              ? JSON.stringify(validationData)
+              : "No protected data"}
           </Text>
         </View>
       </View>
@@ -255,6 +279,9 @@ const styles = StyleSheet.create({
     color: colors.light.textOnPrimary,
     textAlign: "center",
     fontWeight: fontWeight.bold,
+  },
+  outputDataContainer: {
+    marginTop: 30,
   },
 });
 
