@@ -289,6 +289,16 @@ const es: Translations = {
   eventsDetails: {
     title: "Detalles del Evento",
   },
+  accountScreen: {
+    title: "Cuenta",
+    username: "Nombre de Usuario o Correo Electrónico",
+    password: "Contraseña",
+    login: "Iniciar Sesión",
+    register: "Registrarse",
+    logout: "Cerrar Sesión",
+    isLoggedIn: "Bienvenido, ¡has iniciado sesión!",
+    isLoggedOut: "No has iniciado sesión.",
+  },
 };
 
 export default es;
