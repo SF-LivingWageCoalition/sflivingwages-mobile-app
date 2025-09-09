@@ -12,8 +12,10 @@ import { fontSize, fontWeight } from "../../theme/fontStyles";
 import { translate } from "../../translation";
 
 const Account: React.FC = () => {
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [emailAddress, setEmailAddress] = useState<string>(
+    "scott@scottmotion.com"
+  );
+  const [password, setPassword] = useState<string>("wordpress80!");
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   const [authenticationData, setAuthenticationData] = useState<any>(null);
@@ -26,8 +28,7 @@ const Account: React.FC = () => {
     // Get the JWT Token (Authenticate)
     try {
       const response = await fetch(
-        // `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth&username=${username}&password=${password}`,
-        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth&username=admin&password=wordpress80!`,
+        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth&email=${emailAddress}&password=${password}`,
         {
           method: "POST",
           headers: { "cache-control": "no-cache" },
@@ -37,14 +38,11 @@ const Account: React.FC = () => {
       // JWT Token retrieved
       if (response.ok && response.status !== 401) {
         const data = await response.json();
-        // console.log("Token request data:", data.data.jwt);
         setAuthenticationData(data);
         setToken(data.data.jwt);
 
         // Fetch protected data using the token (Validate)
         try {
-          console.log("Fetching protected data...");
-          console.log("Using token:", data.data.jwt);
           const protectedResponse = await fetch(
             "https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth/validate&JWT=" +
               data.data.jwt,
@@ -61,7 +59,6 @@ const Account: React.FC = () => {
           console.log("Protected response status:", protectedResponse.status);
           if (protectedResponse.ok) {
             const protectedData = await protectedResponse.json();
-            console.log("Protected data:", protectedData);
             setValidationData(protectedData);
             setIsLoggedIn(true);
           }
@@ -84,8 +81,8 @@ const Account: React.FC = () => {
 
   const onLogout = () => {
     setIsLoggedIn(false);
-    setUsername("");
-    setPassword("");
+    // setEmailAddress("");
+    // setPassword("");
     setAuthenticationData(null);
     setToken(null);
     setValidationData(null);
@@ -98,18 +95,20 @@ const Account: React.FC = () => {
       <View style={styles.inputContainer}>
         {/* Username Input */}
         <Text style={styles.inputName}>
-          {translate("accountScreen.username")}
+          {translate("accountScreen.emailAddress")}
           <Text style={styles.requiredField}>*</Text>
         </Text>
         <TextInput
           style={styles.textInput}
-          onChangeText={(usernameInput) => setUsername(usernameInput)}
-          value={username}
+          onChangeText={(emailAddressInput) =>
+            setEmailAddress(emailAddressInput)
+          }
+          value={emailAddress}
           autoCorrect={false}
           autoCapitalize="none"
         />
-        {errors.username && (
-          <Text style={styles.inputError}>{errors.username}</Text>
+        {errors.emailAddress && (
+          <Text style={styles.inputError}>{errors.emailAddress}</Text>
         )}
 
         {/* Password Input */}
