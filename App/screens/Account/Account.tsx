@@ -109,18 +109,20 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
       <View style={styles.inputContainer}>
         {/* Username Input */}
         <Text style={styles.inputName}>
-          {translate("accountScreen.username")}
+          {translate("accountScreen.emailAddress")}
           <Text style={styles.requiredField}>*</Text>
         </Text>
         <TextInput
           style={styles.textInput}
-          onChangeText={(usernameInput) => setUsername(usernameInput)}
-          value={username}
+          onChangeText={(emailAddressInput) =>
+            setEmailAddress(emailAddressInput)
+          }
+          value={emailAddress}
           autoCorrect={false}
           autoCapitalize="none"
         />
-        {errors.username && (
-          <Text style={styles.inputError}>{errors.username}</Text>
+        {errors.emailAddress && (
+          <Text style={styles.inputError}>{errors.emailAddress}</Text>
         )}
 
         {/* Password Input */}
