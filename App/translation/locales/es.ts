@@ -291,7 +291,7 @@ const es: Translations = {
   },
   accountScreen: {
     title: "Cuenta",
-    username: "Nombre de Usuario o Correo Electrónico",
+    emailAddress: "Correo Electrónico",
     password: "Contraseña",
     login: "Iniciar Sesión",
     register: "Registrarse",
