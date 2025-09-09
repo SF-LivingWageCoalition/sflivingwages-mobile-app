@@ -280,7 +280,7 @@ const en = {
   },
   accountScreen: {
     title: "Account",
-    username: "Username or Email",
+    emailAddress: "Email Address",
     password: "Password",
     login: "Login",
     register: "Register",
