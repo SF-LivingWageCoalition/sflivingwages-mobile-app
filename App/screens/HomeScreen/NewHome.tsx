@@ -1,4 +1,3 @@
-import { Text } from "native-base";
 import React from "react";
 import {
   Dimensions,
@@ -8,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  Text,
 } from "react-native";
 import { Divider } from "react-native-elements";
 import { Card } from "react-native-paper";
