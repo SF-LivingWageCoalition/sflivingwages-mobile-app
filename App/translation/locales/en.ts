@@ -284,9 +284,19 @@ const en = {
     password: "Password",
     login: "Login",
     register: "Register",
+    forgotPassword: "Forgot Password",
     logout: "Logout",
     isLoggedIn: "Welcome, you are logged in!",
     isLoggedOut: "You are not logged in.",
+  },
+  loginScreen: {
+    title: "Login",
+  },
+  registerScreen: {
+    title: "Register",
+  },
+  forgotPasswordScreen: {
+    title: "Forgot Password",
   },
 };
 
