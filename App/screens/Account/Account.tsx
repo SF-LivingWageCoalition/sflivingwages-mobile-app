@@ -24,8 +24,8 @@ const Account: React.FC = () => {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const onLogin = async (): Promise<void> => {
-    // Get the JWT Token (Authenticate)
+  // Fetch JWT Token (Authenticate)
+  const fetchToken = async (): Promise<void> => {
     try {
       const response = await fetch(
         `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth&email=${emailAddress}&password=${password}`,
@@ -34,45 +34,96 @@ const Account: React.FC = () => {
           headers: { "cache-control": "no-cache" },
         }
       );
-
-      // JWT Token retrieved
-      if (response.ok && response.status !== 401) {
+      if (response.ok) {
         const data = await response.json();
         setAuthenticationData(data);
         setToken(data.data.jwt);
-
-        // Fetch protected data using the token (Validate)
-        try {
-          const protectedResponse = await fetch(
-            "https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth/validate&JWT=" +
-              data.data.jwt,
-            {
-              method: "POST",
-              // headers: {
-              //   // Authorization: `Bearer ${data.data.jwt}`,
-              //   alg: "HS256",
-              //   typ: "JWT",
-              //   "cache-control": "no-cache",
-              // },
-            }
-          );
-          console.log("Protected response status:", protectedResponse.status);
-          if (protectedResponse.ok) {
-            const protectedData = await protectedResponse.json();
-            setValidationData(protectedData);
-            setIsLoggedIn(true);
-          }
-        } catch (error) {
-          console.error("Error fetching protected data:", error);
-        } // end Validate
+        await validateToken(data.data.jwt);
       }
     } catch (error) {
-      // Error getting JWT token
-      console.error("Error logging in:", error);
-      setIsLoggedIn(false);
-    } // end Authenticate
+      console.error("Error fetching token:", error);
+    }
+  };
 
-    const newErrors: { [key: string]: string } = {};
+  // Validate JWT Token (Validate)
+  const validateToken = async (jwtToken: string): Promise<void> => {
+    try {
+      const response = await fetch(
+        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth/validate&JWT=${jwtToken}`,
+        {
+          method: "POST",
+          // headers: {
+          //   // Authorization: `Bearer ${data.data.jwt}`,
+          //   alg: "HS256",
+          //   typ: "JWT",
+          //   "cache-control": "no-cache",
+          // },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setValidationData(data);
+        setIsLoggedIn(true); // TODO: Move to login function
+      }
+    } catch (error) {
+      console.error("Error validating token:", error);
+    }
+  };
+
+  const onLogin = async (): Promise<void> => {
+    await fetchToken();
+    // if (token) {
+    //   await validateToken(token);
+    // }
+
+    // // Get the JWT Token (Authenticate)
+    // try {
+    //   const response = await fetch(
+    //     `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth&email=${emailAddress}&password=${password}`,
+    //     {
+    //       method: "POST",
+    //       headers: { "cache-control": "no-cache" },
+    //     }
+    //   );
+
+    //   // JWT Token retrieved
+    //   if (response.ok && response.status !== 401) {
+    //     const data = await response.json();
+    //     setAuthenticationData(data);
+    //     setToken(data.data.jwt);
+
+    //     // Fetch protected data using the token (Validate)
+    //     try {
+    //       const protectedResponse = await fetch(
+    //         "https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth/validate&JWT=" +
+    //           data.data.jwt,
+    //         {
+    //           method: "POST",
+    //           // headers: {
+    //           //   // Authorization: `Bearer ${data.data.jwt}`,
+    //           //   alg: "HS256",
+    //           //   typ: "JWT",
+    //           //   "cache-control": "no-cache",
+    //           // },
+    //         }
+    //       );
+    //       console.log("Protected response status:", protectedResponse.status);
+    //       if (protectedResponse.ok) {
+    //         const protectedData = await protectedResponse.json();
+    //         setValidationData(protectedData);
+    //         setIsLoggedIn(true);
+    //       }
+    //     } catch (error) {
+    //       console.error("Error fetching protected data:", error);
+    //     } // end Validate
+    //   }
+    // } catch (error) {
+    //   // Error getting JWT token
+    //   console.error("Error logging in:", error);
+    //   setIsLoggedIn(false);
+    // } // end Authenticate
+
+    // const newErrors: { [key: string]: string } = {};
   };
 
   const onRegister = () => {
