@@ -254,14 +254,22 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
     );
   };
 
+  // Forgot Password Button
+  const ForgotPasswordButton: React.FC = () => {
+    return (
+      <TouchableOpacity style={styles.textButton} onPress={onForgotPassword}>
+        <Text style={styles.textButtonText}>
+          {translate("accountScreen.forgotPassword")}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
   // Register Button
-  {
-    /* TODO: User separate page for registration? */
-  }
   const RegisterButton: React.FC = () => {
     return (
-      <TouchableOpacity style={styles.button} onPress={onRegister}>
-        <Text style={styles.buttonText}>
+      <TouchableOpacity style={styles.textButton} onPress={onRegister}>
+        <Text style={styles.textButtonText}>
           {translate("accountScreen.register")}
         </Text>
       </TouchableOpacity>
@@ -271,13 +279,29 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
   // Logout Button
   const LogoutButton: React.FC = () => {
     return (
-      <TouchableOpacity style={styles.button} onPress={onLogout}>
-        <Text style={styles.buttonText}>
-          {translate("accountScreen.logout")}
-        </Text>
-      </TouchableOpacity>
+      <View style={styles.authButtonsContainer}>
+        <TouchableOpacity style={styles.button} onPress={onLogout}>
+          <Text style={styles.buttonText}>
+            {translate("accountScreen.logout")}
+          </Text>
+        </TouchableOpacity>
+      </View>
     );
   };
+
+  // Auth Buttons Container (Login, Register, Forgot Password)
+  const AuthButtons: React.FC = () => {
+    return (
+      <View style={styles.authButtonsContainer}>
+        <LoginButton />
+        <View style={styles.textButtonContainer}>
+          <ForgotPasswordButton />
+          <RegisterButton />
+        </View>
+      </View>
+    );
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
