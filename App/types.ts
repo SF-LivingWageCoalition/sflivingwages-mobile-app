@@ -5,6 +5,7 @@ export type RootStackParamList = {
   Preview: { image: string };
   EventsNavigator: undefined;
   WhoWeAre: undefined;
+  AuthNavigator: undefined;
 };
 
 export type BottomTabParamList = {
@@ -315,3 +316,13 @@ export interface WageData {
   adult1: Household;
   adult2: Household;
 }
+
+export type AuthStackParamList = {
+  Login: any;
+  Register: any;
+  ForgotPassword: any;
+};
+
+export type AccountScreenProps = {
+  navigation: NavigationProp<ParamListBase>;
+};
