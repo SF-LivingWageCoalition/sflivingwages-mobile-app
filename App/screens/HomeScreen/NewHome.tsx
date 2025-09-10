@@ -1,4 +1,3 @@
-import { Text } from "native-base";
 import React from "react";
 import {
   Dimensions,
@@ -8,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  Text,
 } from "react-native";
 import { Divider } from "react-native-elements";
 import { Card } from "react-native-paper";
@@ -430,7 +430,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: colors.light.primary,
     borderRadius: 30,
-    paddingVertical: 10,
+    paddingVertical: 7,
     paddingHorizontal: 15,
     elevation: 6,
     shadowColor: colors.light.primary,

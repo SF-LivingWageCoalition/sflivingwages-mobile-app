@@ -1,6 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { NativeBaseProvider } from "native-base";
 import React from "react";
 import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -24,40 +23,38 @@ const App: React.FC = () => {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <NavigationContainer>
-            <NativeBaseProvider>
-              <Stack.Navigator
-                screenOptions={{
-                  headerStyle: { backgroundColor: colors.light.primary },
-                  headerTintColor: colors.light.textOnPrimary,
-                  headerTitleStyle: { fontWeight: fontWeight.bold },
-                  headerTitleAlign: "center",
+            <Stack.Navigator
+              screenOptions={{
+                headerStyle: { backgroundColor: colors.light.primary },
+                headerTintColor: colors.light.textOnPrimary,
+                headerTitleStyle: { fontWeight: fontWeight.bold },
+                headerTitleAlign: "center",
+              }}
+            >
+              <Stack.Screen
+                name="TabStack"
+                component={BottomTabStack}
+                options={{ title: "San Francisco Living Wage Coalition" }}
+              />
+              <Stack.Screen
+                name="Preview"
+                component={ModalScreen}
+                initialParams={{ image: "" }}
+              />
+              <Stack.Screen
+                name="EventsNavigator"
+                options={{
+                  title: translate("eventsScreen.title"),
+                  headerShown: false,
                 }}
-              >
-                <Stack.Screen
-                  name="TabStack"
-                  component={BottomTabStack}
-                  options={{ title: "San Francisco Living Wage Coalition" }}
-                />
-                <Stack.Screen
-                  name="Preview"
-                  component={ModalScreen}
-                  initialParams={{ image: "" }}
-                />
-                <Stack.Screen
-                  name="EventsNavigator"
-                  options={{
-                    title: translate("eventsScreen.title"),
-                    headerShown: false,
-                  }}
-                  component={EventsNavigator}
-                />
-                <Stack.Screen
-                  name="WhoWeAre"
-                  options={{ title: translate("whoWeAreScreen.title") }}
-                  component={WhoWeAre}
-                />
-              </Stack.Navigator>
-            </NativeBaseProvider>
+                component={EventsNavigator}
+              />
+              <Stack.Screen
+                name="WhoWeAre"
+                options={{ title: translate("whoWeAreScreen.title") }}
+                component={WhoWeAre}
+              />
+            </Stack.Navigator>
           </NavigationContainer>
         </PersistGate>
       </Provider>
