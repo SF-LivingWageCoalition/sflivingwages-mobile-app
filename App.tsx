@@ -63,14 +63,6 @@ const App: React.FC = () => {
                 }}
                 component={AuthNavigator}
               />
-              <Stack.Screen
-                name="AuthNavigator"
-                options={{
-                  title: translate("loginScreen.title"),
-                  headerShown: false,
-                }}
-                component={AuthNavigator}
-              />
             </Stack.Navigator>
           </NavigationContainer>
         </PersistGate>
