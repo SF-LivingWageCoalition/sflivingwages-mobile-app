@@ -295,9 +295,19 @@ const es: Translations = {
     password: "Contraseña",
     login: "Iniciar Sesión",
     register: "Registrarse",
+    forgotPassword: "Olvidé Mi Contraseña",
     logout: "Cerrar Sesión",
     isLoggedIn: "Bienvenido, ¡has iniciado sesión!",
     isLoggedOut: "No has iniciado sesión.",
+  },
+  loginScreen: {
+    title: "Iniciar Sesión",
+  },
+  registerScreen: {
+    title: "Registrarse",
+  },
+  forgotPasswordScreen: {
+    title: "Olvidé Mi Contraseña",
   },
 };
 

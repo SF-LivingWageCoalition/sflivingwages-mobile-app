@@ -14,6 +14,7 @@ import { colors } from "./App/theme";
 import { fontWeight } from "./App/theme/fontStyles";
 import { translate } from "./App/translation/i18n";
 import { RootStackParamList } from "./App/types";
+import AuthNavigator from "./App/auth/AuthNav";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -53,6 +54,14 @@ const App: React.FC = () => {
                 name="WhoWeAre"
                 options={{ title: translate("whoWeAreScreen.title") }}
                 component={WhoWeAre}
+              />
+              <Stack.Screen
+                name="AuthNavigator"
+                options={{
+                  title: translate("loginScreen.title"),
+                  headerShown: false,
+                }}
+                component={AuthNavigator}
               />
             </Stack.Navigator>
           </NavigationContainer>
