@@ -280,6 +280,9 @@ const es: Translations = {
       },
     ],
   },
+    donateScreen: {
+    title: "Donar"
+  },
   eventsScreen: {
     title: "Eventos",
   },

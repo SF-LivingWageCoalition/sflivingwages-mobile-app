@@ -268,9 +268,12 @@ const en = {
       {
         id: 9,
         name: "Rodger Scott",
-        title: "Member",
-      },
-    ],
+        title: "Member"
+      }
+    ]
+    },
+  donateScreen: {
+    title: "Donate"
   },
   eventsScreen: {
     title: "Events",
