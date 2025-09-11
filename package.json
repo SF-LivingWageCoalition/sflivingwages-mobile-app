@@ -10,7 +10,7 @@
   "jest": {
     "preset": "react-native",
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|@sentry/.*)"
     ],
     "setupFiles": [
       "./node_modules/react-native-gesture-handler/jestSetup.js"
@@ -42,8 +42,8 @@
     "expo-status-bar": "~2.2.3",
     "expo-web-browser": "~14.2.0",
     "express": "^4.17.1",
+    "html-entities": "^2.6.0",
     "mysql": "^2.18.1",
-    "native-base": "^3.4.28",
     "npm": "^8.19.2",
     "querystring": "^0.2.1",
     "react": "19.0.0",
