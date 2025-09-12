@@ -299,6 +299,7 @@ const es: Translations = {
     logout: "Cerrar Sesión",
     isLoggedIn: "Bienvenido, ¡has iniciado sesión!",
     isLoggedOut: "No has iniciado sesión.",
+    submit: "Enviar",
   },
   loginScreen: {
     title: "Iniciar Sesión",
