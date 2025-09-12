@@ -48,7 +48,8 @@ const LivingWageCalculator: React.FC = () => {
     const taxes = expenses.taxes;
     const totalMonthly =
       housing + food + childcare + medical + transportation + other + taxes;
-    const livingWage = totalMonthly / 173.32;
+    const livingWage =
+      adultKey === "adult1" ? totalMonthly / 173.32 : totalMonthly / 173.32 / 2;
     const totalAnnual = totalMonthly * 12;
 
     setCalculationResult({
