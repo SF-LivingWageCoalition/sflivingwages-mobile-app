@@ -291,6 +291,7 @@ const en = {
     logout: "Logout",
     isLoggedIn: "Welcome, you are logged in!",
     isLoggedOut: "You are not logged in.",
+    submit: "Submit",
   },
   loginScreen: {
     title: "Login",
