@@ -99,6 +99,13 @@ const App: React.FC = () => {
                 options={{ title: translate("whoWeAreScreen.title") }}
                 component={WhoWeAre}
               />
+              <Stack.Screen
+                options={{
+                  headerShown: false,
+                }}
+                name="Assistance"
+                component={AssistStack}
+              />
             </Stack.Navigator>
           </NavigationContainer>
         </PersistGate>
