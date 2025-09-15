@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import ReportViolation from "../screens/ReportViolation/ReportViolation";
@@ -8,6 +8,8 @@ import LivingWageCalculator from "../screens/LivingWageCalculator/LivingWageCalc
 import ReportBusiness from "../screens/ReportBusiness/ReportBusiness";
 import ReportBusinessMap from "../screens/ReportBusinessMap/ReportBusinessMap";
 import { AssistanceTabParamList } from "../types";
+import ListReportScreen from "../screens/ListReportScreen/ListReportScreen";
+import ReportDetailScreen from "../screens/ReportDetailScreen/ReportDetailScreen";
 
 // Create a stack navigator for the Assistance section
 const AssistanceStack = createStackNavigator<AssistanceTabParamList>();
@@ -35,6 +37,20 @@ const AssistStack = () => {
       <AssistanceStack.Screen
         name="ReportBusinessMap"
         component={ReportBusinessMap}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <AssistanceStack.Screen
+        name="ListReportScreen"
+        component={ListReportScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <AssistanceStack.Screen
+        name="ReportDetailScreen"
+        component={ReportDetailScreen}
         options={{
           headerShown: false,
         }}
