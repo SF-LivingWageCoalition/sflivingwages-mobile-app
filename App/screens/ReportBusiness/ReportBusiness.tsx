@@ -10,8 +10,8 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 import MainButton from "../../components/MainButton/MainButton";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
-import { colors } from "../../theme";
 import { translate } from "../../translation";
+import { colors } from "../../theme";
 
 const ReportBusiness = () => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();

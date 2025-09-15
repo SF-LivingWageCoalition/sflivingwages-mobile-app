@@ -1,15 +1,30 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from "react-native";
 import React from "react";
 import { colors } from "../../theme";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface FloatingActionButtonProps {
   onPress: () => void;
+  style?: StyleProp<ViewStyle>;
+  icon?: React.ReactNode;
 }
 
 const FloatingActionButton = (props: FloatingActionButtonProps) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={props.onPress}>
-      <Text style={styles.fabText}>+</Text>
+    <TouchableOpacity
+      style={[styles.container, props.style]}
+      onPress={props.onPress}
+    >
+      {props.icon || (
+        <Ionicons name="add" size={30} color={colors.palette.red200} />
+      )}
     </TouchableOpacity>
   );
 };

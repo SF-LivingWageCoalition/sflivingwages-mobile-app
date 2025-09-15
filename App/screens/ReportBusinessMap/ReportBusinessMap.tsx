@@ -7,15 +7,22 @@ import BottomSheet, {
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import GooglePlacesTextInput, {
+  GooglePlacesTextInputRef,
   Place,
 } from "react-native-google-places-textinput";
 import { Dropdown } from "react-native-element-dropdown";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from "@react-navigation/native";
 
 import FloatingActionButton from "../../components/FloatingActionButton/FloatingActionButton";
 import PlatformMap from "../../components/PlatformMap/PlatformMap";
-import { Platform } from "react-native";
 import MainButton from "../../components/MainButton/MainButton";
 import { fontSize } from "../../theme/fontStyles";
+import { Platform } from "react-native";
 import { colors } from "../../theme";
 
 // Use state for markers
@@ -60,7 +67,9 @@ const ReportBusinessMap = () => {
     { label: "Other", value: "other" },
   ];
 
+  const navigation = useNavigation<NavigationProp<ParamListBase>>();
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const placesRef = useRef<GooglePlacesTextInputRef | null>(null);
 
   const [violationType, setViolationType] = useState(null);
   const [description, setDescription] = useState("");
@@ -70,39 +79,58 @@ const ReportBusinessMap = () => {
   const [markersAndroid, setMarkersAndroid] = useState([initialAndroidMarker]);
   const [markersIOS, setMarkersIOS] = useState([initialIOSMarker]);
 
+  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
+
   const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
+    setSheetIndex(index);
   }, []);
 
   const handlePlaceSelect = (place: Place) => {
-    // Extract data from selected place safely
-    const latitude = place.details?.location?.latitude ?? DEFAULT_LATITUDE;
-    const longitude = place.details?.location?.longitude ?? DEFAULT_LONGITUDE;
-    const title =
-      place.structuredFormat?.mainText?.text ||
-      place.structuredFormat?.secondaryText?.text ||
-      "Selected Place";
-    const address = `Violation Type: ${violationType} - ${description}`;
+    setSelectedPlace(place);
+  };
 
-    // Android marker
-    const newAndroidMarker = {
-      coordinates: { latitude, longitude },
-      title,
-      snippet: address,
-      draggable: false,
-    };
+  const handleSubmit = () => {
+    if (selectedPlace) {
+      // Extract data from selected place safely
+      const latitude =
+        selectedPlace.details?.location?.latitude ?? DEFAULT_LATITUDE;
+      const longitude =
+        selectedPlace.details?.location?.longitude ?? DEFAULT_LONGITUDE;
+      const title =
+        selectedPlace.structuredFormat?.mainText?.text ||
+        selectedPlace.structuredFormat?.secondaryText?.text ||
+        "Selected Place";
+      const address = `Violation Type: ${violationType} - ${description}`;
 
-    // iOS marker
-    const newIOSMarker = {
-      coordinates: { latitude, longitude },
-      title,
-      tintColor: colors.palette.red400,
-      systemImageName: "mappin.circle.fill",
-    };
+      // Android marker
+      const newAndroidMarker = {
+        coordinates: { latitude, longitude },
+        title,
+        snippet: address,
+        draggable: false,
+      };
 
-    setMarkersAndroid((prev) => [...prev, newAndroidMarker]);
-    setMarkersIOS((prev) => [...prev, newIOSMarker]);
-    console.log("Selected place:", JSON.stringify(place, null, 2));
+      // iOS marker
+      const newIOSMarker = {
+        coordinates: { latitude, longitude },
+        title,
+        tintColor: colors.palette.red400,
+        systemImageName: "mappin.circle.fill",
+      };
+
+      setMarkersAndroid((prev) => [...prev, newAndroidMarker]);
+      setMarkersIOS((prev) => [...prev, newIOSMarker]);
+
+      // Reset form
+      setViolationType(null);
+      setDescription("");
+      setSelectedPlace(null);
+      placesRef.current?.clear();
+    }
+  };
+
+  const renderIcon = () => {
+    return <Ionicons name="list" size={30} color={colors.palette.red200} />;
   };
 
   const renderBackdrop = (props: BottomSheetBackdropProps) => (
@@ -114,11 +142,6 @@ const ReportBusinessMap = () => {
     />
   );
 
-  console.log(
-    "Markers Android:>>>>>",
-    process.env.EXPO_PUBLIC_GOOGLE_AUTOCOMPLETE_API_KEY
-  );
-
   return (
     <GestureHandlerRootView style={styles.containerBS}>
       <View style={styles.flex1}>
@@ -128,6 +151,12 @@ const ReportBusinessMap = () => {
           markers={Platform.OS === "ios" ? markersIOS : markersAndroid}
         />
         <FloatingActionButton onPress={() => setSheetIndex(0)} />
+        <FloatingActionButton
+          style={styles.listViewBtn}
+          icon={renderIcon()}
+          onPress={() => navigation.navigate("ListReportScreen")}
+        />
+
         <BottomSheet
           ref={bottomSheetRef}
           onChange={handleSheetChanges}
@@ -157,6 +186,7 @@ const ReportBusinessMap = () => {
             />
 
             <GooglePlacesTextInput
+              ref={placesRef}
               apiKey={process.env.EXPO_PUBLIC_GOOGLE_AUTOCOMPLETE_API_KEY}
               onPlaceSelect={(places: Place) => handlePlaceSelect(places)}
               fetchDetails={true}
@@ -180,6 +210,7 @@ const ReportBusinessMap = () => {
                 title="Submit"
                 onPress={() => {
                   Keyboard.dismiss();
+                  handleSubmit();
                   setTimeout(() => {
                     setSheetIndex(-1);
                     bottomSheetRef.current?.close();
@@ -197,6 +228,25 @@ const ReportBusinessMap = () => {
 export default ReportBusinessMap;
 
 const styles = StyleSheet.create({
+  listViewBtn: { backgroundColor: colors.palette.gray800, bottom: 120 },
+  //
+  header: {
+    position: "absolute",
+    top: 50,
+    left: 20,
+    zIndex: 1,
+  },
+  listViewButton: {
+    marginLeft: 10,
+    backgroundColor: colors.palette.red400,
+    padding: 10,
+    borderRadius: 5,
+  },
+  listViewText: {
+    color: "white",
+    fontSize: fontSize.md,
+  },
+  //
   container: {
     flex: 1,
   },
