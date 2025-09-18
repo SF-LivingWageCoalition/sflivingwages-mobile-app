@@ -5,7 +5,7 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import AssistanceHome from "../screens/AssistanceHome/AssistanceHome";
 import BeReadyForICE from "../screens/BeReadyForICE/BeReadyForICE";
 import AuctionNav from "../screens/DonateScreen/AuctionNav";
-import DonateMoney from "../screens/DonateScreen/DonateMoney";
+import DonateScreen from "../screens/DonateScreen/DonateScreen";
 import NewHome from "../screens/HomeScreen/NewHome";
 import LivingWageCalculator from "../screens/LivingWageCalculator/LivingWageCalculator";
 import ReportViolation from "../screens/ReportViolation/ReportViolation";
@@ -83,7 +83,7 @@ const BottomTabStack: React.FC = () => {
 
       <Tab.Screen
         name="Donate"
-        component={DonateMoney}
+        component={DonateScreen}
         options={{
           headerShown: false,
           tabBarLabel: "Donate",
