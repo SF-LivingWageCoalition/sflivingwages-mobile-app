@@ -76,7 +76,7 @@ const BottomTabStack: React.FC = () => {
           headerShown: false,
           tabBarLabel: "Auction",
           tabBarIcon: ({ color }) => (
-            <FontAwesome5 name={"hammer"} color={color} size={20} />
+            <FontAwesome5 name={"gavel"} color={color} size={20} />
           ),
         }}
       />
