@@ -4,10 +4,10 @@ import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 import { AuctionNavState, AuctionTabParamList, ProductItem } from "../../types";
 import { CustomTabBar } from "./components/CustomTabBar";
-import Arts from "./components/donateSalesComponents/Arts";
-import Books from "./components/donateSalesComponents/Books";
-import Cds from "./components/donateSalesComponents/Cds";
-import Dvds from "./components/donateSalesComponents/Dvds";
+import Arts from "./components/auctionSalesComponents/Arts";
+import Books from "./components/auctionSalesComponents/Books";
+import Cds from "./components/auctionSalesComponents/Cds";
+import Dvds from "./components/auctionSalesComponents/Dvds";
 
 const Tab = createMaterialTopTabNavigator<AuctionTabParamList>();
 
