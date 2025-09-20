@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import BottomTabStack from "./App/navigation/BottomTabStack";
 import { persistor, store } from "./App/redux/store/store";
-import ModalScreen from "./App/screens/DonateScreen/ModalScreen";
+import ModalScreen from "./App/screens/AuctionScreen/ModalScreen";
 import EventsNavigator from "./App/screens/EventsScreen/components/EventsNav";
 import WhoWeAre from "./App/screens/WhoWeAreScreen/WhoWeAreScreen";
 import { colors } from "./App/theme";

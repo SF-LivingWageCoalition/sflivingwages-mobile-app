@@ -12,7 +12,7 @@ import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 import { DonateSection } from "../../types";
 
-const DonateMoney: React.FC = () => {
+const DonateScreen: React.FC = () => {
   const [activeSections, setActiveSections] = useState<number[]>([]);
 
   const handleOpenURL = (url: string): void => {
@@ -146,4 +146,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DonateMoney;
+export default DonateScreen;

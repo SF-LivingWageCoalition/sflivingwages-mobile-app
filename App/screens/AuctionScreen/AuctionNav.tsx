@@ -4,10 +4,11 @@ import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 import { AuctionNavState, AuctionTabParamList, ProductItem } from "../../types";
 import { CustomTabBar } from "./components/CustomTabBar";
-import Arts from "./components/donateSalesComponents/Arts";
-import Books from "./components/donateSalesComponents/Books";
-import Cds from "./components/donateSalesComponents/Cds";
-import Dvds from "./components/donateSalesComponents/Dvds";
+import Arts from "./components/auctionSalesComponents/Arts";
+import Books from "./components/auctionSalesComponents/Books";
+import Cds from "./components/auctionSalesComponents/Cds";
+import Dvds from "./components/auctionSalesComponents/Dvds";
+import LPs from "./components/auctionSalesComponents/LPs";
 
 const Tab = createMaterialTopTabNavigator<AuctionTabParamList>();
 
@@ -19,6 +20,7 @@ const AuctionNav: React.FC = () => {
     photos: [],
     cds: [],
     dvds: [],
+    lps: [],
     modalVisible: false,
     bid: "",
     isLoading: true,
@@ -84,12 +86,28 @@ const AuctionNav: React.FC = () => {
       );
   };
 
+  // Fetch LPs data
+  const fetchLPs = async (): Promise<void> => {
+    fetch(
+      "https://www.livingwage-sf.org/wp-json/wc/store/v1/products?category=1133"
+    )
+      .then((resLPs) => resLPs.json())
+      .then((dataLPs: ProductItem[]) =>
+        setState((prevState) => ({
+          ...prevState,
+          lps: dataLPs,
+          isLoading: false,
+        }))
+      );
+  };
+
   // Fetch data when component mounts
   useEffect(() => {
     fetchArt();
     fetchBook();
     fetchCds();
     fetchDvds();
+    fetchLPs();
   }, []);
 
   return (
@@ -134,6 +152,13 @@ const AuctionNav: React.FC = () => {
         children={() => <Dvds dvds={state.dvds} isLoading={state.isLoading} />}
         options={{
           tabBarLabel: "DVD",
+        }}
+      />
+      <Tab.Screen
+        name="LPs"
+        children={() => <LPs lps={state.lps} isLoading={state.isLoading} />}
+        options={{
+          tabBarLabel: "LP",
         }}
       />
     </Tab.Navigator>

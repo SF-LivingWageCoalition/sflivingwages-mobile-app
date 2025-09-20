@@ -117,6 +117,11 @@ export type DvdsProps = {
   isLoading: boolean;
 };
 
+export type LPsProps = {
+  lps: Array<ProductItem>;
+  isLoading: boolean;
+};
+
 export type MyNavigationButtonProps = {
   author?: string;
   description?: string;
@@ -180,6 +185,7 @@ export type AuctionNavState = {
   photos: PhotoItem[];
   cds: ProductItem[];
   dvds: ProductItem[];
+  lps: ProductItem[];
   modalVisible: boolean;
   bid: string;
   isLoading: boolean;
@@ -190,6 +196,7 @@ export type AuctionTabParamList = {
   Books: undefined;
   Cds: undefined;
   Dvds: undefined;
+  LPs: undefined;
 };
 
 export type DonateSection = { title: string; content: React.ReactNode };
