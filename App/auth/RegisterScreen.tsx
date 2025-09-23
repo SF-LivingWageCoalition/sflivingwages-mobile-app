@@ -17,12 +17,126 @@ const Register: React.FC = () => {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
+  const consumerKey = "ck_6d1c6dbe7375c9c6bbd4ec4ae76435657b02ea0f"; // WooCommerce Consumer Key (read/write)
+  const consumerSecret = "cs_f3e3af1864b234c83e62e375bdb61f5d8b2c3834"; // WooCommerce Consumer Secret (read/write)
+
+  const base64Credentials = btoa(`${consumerKey}:${consumerSecret}`);
+
+  // const base64Credentials = Buffer.from(
+  //   `${consumerKey}:${consumerSecret}`
+  // ).toString("base64");
+
+  // const base64Credentials = `${consumerKey}:${consumerSecret}`;
+
+  // console.log("Base64 Credentials:", base64Credentials);
+
   const onSubmit = () => {
     // Do registration logic here
-    // console.log("Registering user with email:", userEmail);
     console.log(
-      `Registering user with email: '${userEmail}' and password: '${userPassword}'`
+      `Trying to register user with email: '${userEmail}' and password: '${userPassword}'`
     );
+    // Basic validation
+    const newErrors: { [key: string]: string } = {};
+    if (!userEmail) {
+      newErrors.userEmail = "Email is required";
+    }
+    if (!userPassword) {
+      newErrors.userPassword = "Password is required";
+    }
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      // No errors, proceed with registration
+      // registerUser(userEmail, userPassword);
+      registerCustomer(userEmail, userPassword);
+    }
+  };
+
+  // Register a new WP user via the Simple JWT Login plugin
+  const registerUser = async (email: string, password: string) => {
+    try {
+      const response = await fetch(
+        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/users&email=${email}&password=${password}`,
+        {
+          method: "POST",
+          headers: { "cache-control": "no-cache" },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Registration response data:", data);
+        // Handle successful registration (e.g., navigate to login, show success message)
+      } else {
+        const data = await response.json();
+        console.error("Registration failed with status:", response.status);
+        console.error("Error code:", data.data.errorCode);
+        console.error("Error message:", data.data.message);
+        // Handle registration failure (e.g., show error message)
+      }
+    } catch (error) {
+      console.error("Error during registration:", error);
+      // Handle network or other errors
+    }
+  };
+
+  // Register a new WooCommerce customer via the WooCommerce REST API
+  const registerCustomer = async (email: string, password: string) => {
+    try {
+      const response = await fetch(
+        `https://www.livingwage-sf.org/wp-json/wc/v3/customers`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Basic " + base64Credentials, // Replace with your actual keys
+            "cache-control": "no-cache",
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+            first_name: "Test",
+            last_name: "Testerson",
+            username: email,
+            billing: {
+              first_name: "Test",
+              last_name: "Testerson",
+              address_1: "123 Main St",
+              city: "Anytown",
+              state: "CA",
+              postcode: "12345",
+              country: "US",
+              email: email,
+              phone: "555-555-5555",
+            },
+            shipping: {
+              first_name: "Test",
+              last_name: "Testerson",
+              address_1: "123 Main St",
+              city: "Anytown",
+              state: "CA",
+              postcode: "12345",
+              country: "US",
+            },
+          }),
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Customer registration response data:", data);
+        // Handle successful customer creation
+      } else {
+        const data = await response.json();
+        console.error(
+          "Customer registration failed with status:",
+          response.status
+        );
+        console.error("Error message:", data.message);
+        // Handle customer creation failure
+      }
+    } catch (error) {
+      console.error("Error during customer registration:", error);
+      // Handle network or other errors
+    }
   };
 
   return (
