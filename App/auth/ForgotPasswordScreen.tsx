@@ -36,7 +36,7 @@ const ForgotPassword: React.FC = () => {
     console.log(`Called forgotPassword with email: '${email}'`);
     try {
       const response = await fetch(
-        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/user/reset_password&email=${email}`,
+        `https://www.livingwage-sf.org.xyz/?rest_route=/simple-jwt-login/v1/user/reset_password&email=${email}`,
         {
           method: "POST",
           headers: { "cache-control": "no-cache" },

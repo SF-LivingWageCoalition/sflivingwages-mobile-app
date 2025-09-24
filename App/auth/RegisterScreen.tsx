@@ -47,8 +47,8 @@ const Register: React.FC = () => {
 
     if (Object.keys(newErrors).length === 0) {
       // No errors, proceed with registration
-      // registerUser(userEmail, userPassword);
-      registerCustomer(userEmail, userPassword);
+      registerUser(userEmail, userPassword); // via Simple JWT Login plugin
+      // registerCustomer(userEmail, userPassword); // via WooCommerce REST API
     }
   };
 
@@ -56,7 +56,7 @@ const Register: React.FC = () => {
   const registerUser = async (email: string, password: string) => {
     try {
       const response = await fetch(
-        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/users&email=${email}&password=${password}`,
+        `https://www.livingwage-sf.org/?rest_route=/simple-jwt-login/v1/users&email=${email}&password=${password}`,
         {
           method: "POST",
           headers: { "cache-control": "no-cache" },

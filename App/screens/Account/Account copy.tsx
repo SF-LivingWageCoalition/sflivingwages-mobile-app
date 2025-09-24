@@ -28,7 +28,7 @@ const Account: React.FC = () => {
   const fetchToken = async (): Promise<void> => {
     try {
       const response = await fetch(
-        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth&email=${emailAddress}&password=${password}`,
+        `https://www.livingwage-sf.org/?rest_route=/simple-jwt-login/v1/auth&email=${emailAddress}&password=${password}`,
         {
           method: "POST",
           headers: { "cache-control": "no-cache" },
@@ -49,7 +49,7 @@ const Account: React.FC = () => {
   const validateToken = async (jwtToken: string): Promise<void> => {
     try {
       const response = await fetch(
-        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth/validate&JWT=${jwtToken}`,
+        `https://www.livingwage-sf.org/?rest_route=/simple-jwt-login/v1/auth/validate&JWT=${jwtToken}`,
         {
           method: "POST",
           // headers: {
@@ -79,7 +79,7 @@ const Account: React.FC = () => {
     // // Get the JWT Token (Authenticate)
     // try {
     //   const response = await fetch(
-    //     `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth&email=${emailAddress}&password=${password}`,
+    //     `https://www.livingwage-sf.org/?rest_route=/simple-jwt-login/v1/auth&email=${emailAddress}&password=${password}`,
     //     {
     //       method: "POST",
     //       headers: { "cache-control": "no-cache" },
@@ -95,7 +95,7 @@ const Account: React.FC = () => {
     //     // Fetch protected data using the token (Validate)
     //     try {
     //       const protectedResponse = await fetch(
-    //         "https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth/validate&JWT=" +
+    //         "https://www.livingwage-sf.org/?rest_route=/simple-jwt-login/v1/auth/validate&JWT=" +
     //           data.data.jwt,
     //         {
     //           method: "POST",

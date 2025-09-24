@@ -58,7 +58,7 @@ const Login: React.FC = () => {
   const fetchToken = async (email: string, password: string): Promise<void> => {
     try {
       const response = await fetch(
-        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth&email=${email}&password=${password}`,
+        `https://www.livingwage-sf.org/?rest_route=/simple-jwt-login/v1/auth&email=${email}&password=${password}`,
         {
           method: "POST",
           headers: { "cache-control": "no-cache" },
@@ -81,7 +81,7 @@ const Login: React.FC = () => {
   const validateToken = async (jwtToken: string): Promise<void> => {
     try {
       const response = await fetch(
-        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth/validate&JWT=${jwtToken}`,
+        `https://www.livingwage-sf.org/?rest_route=/simple-jwt-login/v1/auth/validate&JWT=${jwtToken}`,
         {
           method: "POST",
           // headers: {

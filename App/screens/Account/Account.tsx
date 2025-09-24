@@ -10,21 +10,9 @@ import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 import { translate } from "../../translation";
 import { AccountScreenProps } from "../../types";
-// import AuthNavigator from "../../auth/AuthNav";
 
 const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
-  // const [emailAddress, setEmailAddress] = useState<string>(
-  //   "scott@scottmotion.com"
-  // );
-  // const [password, setPassword] = useState<string>("wordpress80!");
-
-  // const [authenticationData, setAuthenticationData] = useState<any>(null);
-  // const [validationData, setValidationData] = useState<any>(null);
-  // const [token, setToken] = useState<any>(null);
-
-  // const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const onLogin = () => {
     // Navigate to Login Screen
