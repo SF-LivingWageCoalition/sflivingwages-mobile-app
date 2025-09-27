@@ -1,24 +1,25 @@
 // App/auth/api/authApi.ts
 
-// Testing Site: https://www.wpmockup.xyz
-// login: admin
-// password: wordpress80!
-//
-// Live Site: https://www.livingwage-sf.org
-
-// Simple JWT Login site: https://simplejwtlogin.com/
-// Simple JWT Login plugin: https://wordpress.org/plugins/simple-jwt-login/
-// Simple JWT Login SDK GitHub: https://github.com/simple-jwt-login/js-sdk
-// Simple JWT Login SDK NPM: https://www.npmjs.com/package/simple-jwt-login
-
-// WooCommerce site: https://woocommerce.com/
-// WooCommerce plugin: https://wordpress.org/plugins/woocommerce/
-// WooCommerce REST API: https://developer.woocommerce.com/docs/apis/rest-api/
-// WooCommerce REST API Docs: https://woocommerce.github.io/woocommerce-rest-api-docs/
+/**
+ * Testing Site: https://www.wpmockup.xyz
+ * login: admin
+ * password: wordpress80!
+ *
+ * Live Site: https://www.livingwage-sf.org
+ *
+ * Simple JWT Login plugin: https://wordpress.org/plugins/simple-jwt-login/
+ * Simple JWT Login site: https://simplejwtlogin.com/
+ *
+ * WooCommerce plugin: https://wordpress.org/plugins/woocommerce/
+ * WooCommerce site: https://woocommerce.com/
+ * WooCommerce REST API: https://developer.woocommerce.com/docs/apis/rest-api/
+ * WooCommerce REST API Docs: https://woocommerce.github.io/woocommerce-rest-api-docs/
+ *
+ */
 
 // Base URLs for the API
 const BASE_URL = "https://www.livingwage-sf.org"; // Base URL for the API
-const BASE_URL_TEST = "https://www.wpmockup.xyz"; // Base URL for the API
+const BASE_URL_TEST = "https://www.wpmockup.xyz"; // Test:WPMockup.xyz - Base URL for the API
 
 // API Routes
 const JWT_ROUTE = "/?rest_route=/simple-jwt-login/v1"; // Route for Simple JWT Login plugin
@@ -32,16 +33,31 @@ const JWT_TYP = "JWT"; // Type of token
 // WooCommerce REST API credentials
 const consumerKey = "ck_6d1c6dbe7375c9c6bbd4ec4ae76435657b02ea0f"; // SFLWC WooCommerce Consumer Key (read/write)
 const consumerSecret = "cs_f3e3af1864b234c83e62e375bdb61f5d8b2c3834"; // SFLWC WooCommerce Consumer Secret (read/write)
-const base64Credentials = btoa(`${consumerKey}:${consumerSecret}`);
+const base64Credentials = btoa(`${consumerKey}:${consumerSecret}`); // SFLWC - Base64 encoded credentials
 
+// WooCommerce REST API credentials for Test:WPMockup.xyz
 const consumerKeyTest = "ck_3bab6ef08070db9a9644d0fbe68d9d092d892980"; // Test:WPMockup.xyz - WooCommerce Consumer Key (read/write)
 const consumerSecretTest = "cs_9c65d16a588d4892f62f2b858e02eb6cc9839b74"; // Test:WPMockup.xyz - WooCommerce Consumer Secret (read/write)
-const base64CredentialsTest = btoa(`${consumerKeyTest}:${consumerSecretTest}`);
+const base64CredentialsTest = btoa(`${consumerKeyTest}:${consumerSecretTest}`); // Test:WPMockup.xyz - Base64 encoded credentials
 
 // Define the structure of the token data returned by the API
 type TokenData = {
   data?: {
     jwt?: string;
+  };
+  success?: boolean;
+};
+
+// Define the structure of the validation data returned by the API
+type ValidationData = {
+  data?: {
+    user_id?: number; // User ID
+    email?: string; // User email
+    display_name?: string; // User display name
+    roles?: string[]; // User roles
+    capabilities?: { [key: string]: boolean }; // User capabilities
+    exp?: number; // Expiration time (timestamp)
+    iat?: number; // Issued at time (timestamp)
   };
   success?: boolean;
 };
@@ -76,7 +92,9 @@ export const fetchToken = async (
 };
 
 // Validate JWT Token (Validate)
-export const validateToken = async (jwtToken: string): Promise<void> => {
+export const validateToken = async (
+  jwtToken: string
+): Promise<ValidationData | undefined> => {
   try {
     const response = await fetch(
       `${BASE_URL_TEST}${JWT_ROUTE}/auth/validate&JWT=${jwtToken}`,
