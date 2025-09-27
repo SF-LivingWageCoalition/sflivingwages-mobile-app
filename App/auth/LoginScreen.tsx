@@ -58,18 +58,20 @@ const Login: React.FC = () => {
   const fetchToken = async (email: string, password: string): Promise<void> => {
     try {
       const response = await fetch(
-        `https://www.livingwage-sf.org/?rest_route=/simple-jwt-login/v1/auth&email=${email}&password=${password}`,
+        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth&email=${email}&password=${password}`,
         {
           method: "POST",
           headers: { "cache-control": "no-cache" },
         }
       );
+      console.log("Response received");
+      console.log("Response status:", response.status);
       if (response.ok) {
         const data = await response.json();
         console.log("Token fetch response data:", data);
         // Handle successful token fetch (e.g., store token, navigate to another screen)
-        setAuthenticationData(data); // TODO: Remove later?
-        setToken(data.data.jwt);
+        // setAuthenticationData(data); // TODO: Remove later?
+        // setToken(data.data.jwt);
         await validateToken(data.data.jwt);
       }
     } catch (error) {
@@ -79,9 +81,10 @@ const Login: React.FC = () => {
 
   // Validate JWT Token (Validate)
   const validateToken = async (jwtToken: string): Promise<void> => {
+    console.log("Validating token...");
     try {
       const response = await fetch(
-        `https://www.livingwage-sf.org/?rest_route=/simple-jwt-login/v1/auth/validate&JWT=${jwtToken}`,
+        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth/validate&JWT=${jwtToken}`,
         {
           method: "POST",
           // headers: {
@@ -92,13 +95,20 @@ const Login: React.FC = () => {
           // },
         }
       );
+      console.log("Response received");
+      console.log("Response status:", response.status);
       if (response.ok) {
+        console.log("Token is valid");
         const data = await response.json();
         console.log("Token validation response data:", data);
         // Handle successful token validation (e.g., navigate to another screen)
         setTokenIsValid(true);
         setValidationData(data); // TODO: Remove later? Set token/user data in Redux store?
         setIsLoggedIn(true); // TODO: Move to login function
+      } else {
+        console.log("Token is invalid");
+        setTokenIsValid(false);
+        setIsLoggedIn(false);
       }
     } catch (error) {
       console.error("Error validating token:", error);
