@@ -269,7 +269,12 @@ const en = {
         id: 9,
         name: "Rodger Scott",
         title: "Member"
-      }
+      },
+      {        
+        id: 10,
+        name: "Julia Toscano",
+        title: "Campaign Co-director",
+      },
     ]
     },
   donateScreen: {

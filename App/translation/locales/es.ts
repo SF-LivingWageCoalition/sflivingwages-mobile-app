@@ -278,6 +278,11 @@ const es: Translations = {
         name: "Rodger Scott",
         title: "Miembro",
       },
+      {        
+        id: 10,
+        name: "Julia Toscano",
+        title: "Codirectora de Campaña",
+      },
     ],
   },
     donateScreen: {
