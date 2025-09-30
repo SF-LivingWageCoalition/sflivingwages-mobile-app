@@ -116,14 +116,22 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
         {/* Account Header */}
         <View>
           <Text style={styles.title}>{translate("accountScreen.title")}</Text>
-          {isLoggedIn ? (
+          {/* User info */}
+          {isLoggedIn && user ? (
             <View>
               <Text style={styles.subtitle}>
                 {translate("accountScreen.isLoggedIn")}
               </Text>
-              <Text style={styles.subtitle}>
-                Welcome, {user ? user.display_name : "Guest"}!
-              </Text>
+              <Text style={styles.subtitle}>Welcome, {user.display_name}!</Text>
+              <Text>ID: {user.ID}</Text>
+              <Text>Display Name: {user.display_name}</Text>
+              <Text>Activation Key: {user.user_activation_key}</Text>
+              <Text>Email: {user.user_email}</Text>
+              <Text>Login: {user.user_login}</Text>
+              <Text>Nice Name: {user.user_nicename}</Text>
+              <Text>Registered: {user.user_registered}</Text>
+              <Text>Status: {user.user_status}</Text>
+              <Text>URL: {user.user_url}</Text>
             </View>
           ) : (
             <Text style={styles.subtitle}>
