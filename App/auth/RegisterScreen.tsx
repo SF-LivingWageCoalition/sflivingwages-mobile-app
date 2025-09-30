@@ -22,14 +22,6 @@ const Register: React.FC = () => {
 
   const base64Credentials = btoa(`${consumerKey}:${consumerSecret}`);
 
-  // const base64Credentials = Buffer.from(
-  //   `${consumerKey}:${consumerSecret}`
-  // ).toString("base64");
-
-  // const base64Credentials = `${consumerKey}:${consumerSecret}`;
-
-  // console.log("Base64 Credentials:", base64Credentials);
-
   const onSubmit = () => {
     // Do registration logic here
     console.log(
@@ -56,7 +48,7 @@ const Register: React.FC = () => {
   const registerUser = async (email: string, password: string) => {
     try {
       const response = await fetch(
-        `https://www.livingwage-sf.org/?rest_route=/simple-jwt-login/v1/users&email=${email}&password=${password}`,
+        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/users&email=${email}&password=${password}`,
         {
           method: "POST",
           headers: { "cache-control": "no-cache" },
@@ -83,7 +75,7 @@ const Register: React.FC = () => {
   const registerCustomer = async (email: string, password: string) => {
     try {
       const response = await fetch(
-        `https://www.livingwage-sf.org/wp-json/wc/v3/customers`,
+        `https://www.wpmockup.xyz/wp-json/wc/v3/customers`,
         {
           method: "POST",
           headers: {
@@ -159,8 +151,6 @@ const Register: React.FC = () => {
               onChangeText={(userEmailInput) => setUserEmail(userEmailInput)}
               value={userEmail}
             />
-            {/* TEST error display*/}
-            {/* <Text style={styles.inputError}>Some error message here</Text> */}
             {errors.userEmail && (
               <Text style={styles.inputError}>{errors.userEmail}</Text>
             )}
