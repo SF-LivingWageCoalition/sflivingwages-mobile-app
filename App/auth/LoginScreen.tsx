@@ -80,6 +80,7 @@ const Login: React.FC = () => {
   };
 
   // Validate JWT Token (Validate)
+  // Note this error resolution (even when autologin is disabled): https://wordpress.org/support/topic/unable-to-find-user-property-in-jwt/
   const validateToken = async (jwtToken: string): Promise<void> => {
     console.log("Validating token...");
     try {
@@ -88,7 +89,7 @@ const Login: React.FC = () => {
         {
           method: "POST",
           // headers: {
-          //   // Authorization: `Bearer ${data.data.jwt}`,
+          //   // Authorization: `Bearer ${jwtToken}`,
           //   alg: "HS256",
           //   typ: "JWT",
           //   "cache-control": "no-cache",
@@ -106,7 +107,10 @@ const Login: React.FC = () => {
         setValidationData(data); // TODO: Remove later? Set token/user data in Redux store?
         setIsLoggedIn(true); // TODO: Move to login function
       } else {
-        console.log("Token is invalid");
+        console.log("Token validation failed with status:", response.status);
+        const data = await response.json();
+        console.error("Error code:", data.data.errorCode);
+        console.error("Error message:", data.data.message);
         setTokenIsValid(false);
         setIsLoggedIn(false);
       }
