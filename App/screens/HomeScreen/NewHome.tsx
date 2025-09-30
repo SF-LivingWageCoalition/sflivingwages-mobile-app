@@ -15,7 +15,7 @@ import Swiper from "react-native-swiper/src";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { WebView } from "react-native-webview";
 import { colors } from "../../theme";
-import { fontSize, fontWeight, fontFamily } from "../../theme/fontStyles";
+import { fontSize, textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { CarouselImageProps, NewHomeScreenProps } from "../../types";
 
@@ -388,9 +388,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   imageTitle: {
-    fontSize: fontSize.lg,
-    fontWeight: fontWeight.bold,
-    fontFamily: fontFamily.display,
+    ...textStyles.h3,
     color: colors.light.textOnPrimary,
     marginLeft: 23,
     marginTop: 25,
@@ -409,9 +407,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   imageContent: {
-    fontSize: fontSize.lg,
-    fontWeight: fontWeight.normal,
-    fontFamily: fontFamily.sans,
+    ...textStyles.bodyLarge,
     color: colors.light.textOnPrimary,
     marginLeft: 23,
     marginTop: 26,
@@ -439,11 +435,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
   },
   buttonText: {
-    fontSize: fontSize.md,
-    fontFamily: fontFamily.sansBold,
+    ...textStyles.button,
     color: colors.light.textOnPrimary,
     textAlign: "center",
-    fontWeight: fontWeight.bold,
   },
   buttonMargin: {
     marginRight: 27,
@@ -464,23 +458,19 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   textCampaignsImg: {
-    fontSize: fontSize.xl,
-    fontFamily: fontFamily.display,
+    ...textStyles.h2,
     backgroundColor: colors.light.elevation,
     color: colors.light.textOnPrimary,
-    fontWeight: fontWeight.bold,
     textTransform: "uppercase",
     textAlign: "center",
     padding: 6,
   },
   textEvent: {
-    fontSize: fontSize.xxl,
-    fontFamily: fontFamily.display,
+    ...textStyles.h1,
     paddingVertical: 40,
     color: colors.light.textOnPrimary,
     textAlign: "center",
     textAlignVertical: "center",
-    fontWeight: fontWeight.bold,
   },
   swiperLower: {
     height: bodyPageWidth / 2 + 20,
@@ -510,10 +500,9 @@ const styles = StyleSheet.create({
     height: 30,
   },
   actionText: {
+    ...textStyles.bodyLarge,
     textDecorationLine: "underline",
     alignSelf: "center",
-    fontSize: fontSize.md,
-    fontFamily: fontFamily.sans,
     color: colors.light.secondary,
   },
   socialMediaArea: {
@@ -536,18 +525,14 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   follow: {
+    ...textStyles.h2,
     textAlign: "center",
-    fontSize: fontSize.xl,
-    fontFamily: fontFamily.display,
-    fontWeight: fontWeight.semibold,
     marginTop: 30,
     marginBottom: 10,
   },
   titles: {
-    fontSize: fontSize.xl,
-    fontFamily: fontFamily.display,
+    ...textStyles.h2,
     lineHeight: 35,
-    fontWeight: fontWeight.bold,
   },
 });
 

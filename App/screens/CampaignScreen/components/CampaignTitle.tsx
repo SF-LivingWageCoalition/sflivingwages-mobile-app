@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import { colors } from "../../../theme";
-import { fontSize, fontFamily } from "../../../theme/fontStyles";
+import { textStyles } from "../../../theme/fontStyles";
 import { CampaignTitleProps } from "../../../types";
 
 const CampaignTitle: React.FC<CampaignTitleProps> = (props) => {
@@ -59,8 +59,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   backButtonText: {
-    fontSize: fontSize.md,
-    fontFamily: fontFamily.sansBold,
+    ...textStyles.button,
     height: 30,
     color: colors.light.primaryDark,
     paddingTop: 6,
@@ -68,8 +67,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   titleText: {
-    fontSize: fontSize.xl,
-    fontFamily: fontFamily.display,
+    ...textStyles.h2,
     width: 300,
     height: 100,
     color: colors.light.primaryDark,

@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Card, Divider, Text } from "react-native-elements";
 import { colors } from "../../../theme";
-import { fontSize, fontFamily } from "../../../theme/fontStyles";
+import { textStyles } from "../../../theme/fontStyles";
 import { ArticleProps } from "../../../types";
 
 const Article: React.FC<ArticleProps> = ({ article }) => {
@@ -49,11 +49,10 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
 
 const styles = StyleSheet.create({
   noteStyle: {
+    ...textStyles.caption,
     margin: 5,
     fontStyle: "italic",
-    fontFamily: fontFamily.sans,
     color: colors.light.textSecondary,
-    fontSize: fontSize.xxs,
   },
   featuredTitleStyle: {
     marginHorizontal: 5,
@@ -62,8 +61,8 @@ const styles = StyleSheet.create({
     textShadowRadius: 3,
   },
   textDescriptionStyle: {
+    ...textStyles.body,
     marginBottom: 10,
-    fontFamily: fontFamily.sans,
   },
   dividerStyle: {
     backgroundColor: colors.light.divider,

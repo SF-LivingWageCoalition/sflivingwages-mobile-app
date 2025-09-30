@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
 import { colors } from "../../theme";
-import { fontSize, fontWeight, fontFamily } from "../../theme/fontStyles";
+import { textStyles } from "../../theme/fontStyles";
 import { DonateSection } from "../../types";
 
 const DonateScreen: React.FC = () => {
@@ -113,15 +113,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   headerTitle: {
-    fontSize: fontSize.lg,
-    fontFamily: fontFamily.display,
+    ...textStyles.h3,
     color: colors.light.secondary,
-    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
   bodyText: {
-    fontSize: fontSize.sm,
-    fontFamily: fontFamily.sans,
+    ...textStyles.body,
     color: colors.light.textPrimary,
     paddingHorizontal: 12,
   },
@@ -142,9 +139,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   donationButtonText: {
+    ...textStyles.button,
     color: colors.light.textOnPrimary,
-    fontFamily: fontFamily.sansBold,
-    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
 });

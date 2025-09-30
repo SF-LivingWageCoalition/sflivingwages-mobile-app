@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { fontSize, fontFamily } from "../../theme/fontStyles";
+import { textStyles } from "../../theme/fontStyles";
 
 interface SubBulletItemProps {
   text: string;
@@ -32,15 +32,13 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   subBulletPoint: {
-    fontSize: fontSize.xs,
-    fontFamily: fontFamily.sans,
+    ...textStyles.bodySmall,
     marginRight: 5,
     lineHeight: 20,
   },
   subBulletText: {
+    ...textStyles.bodySmall,
     flex: 1,
-    fontSize: fontSize.xs,
-    fontFamily: fontFamily.sans,
     lineHeight: 20,
   },
 });

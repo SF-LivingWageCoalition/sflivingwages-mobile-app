@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { fontSize, fontFamily } from "../../theme/fontStyles";
+import { textStyles } from "../../theme/fontStyles";
 
 interface BulletItemProps {
   text: string;
@@ -31,15 +31,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   bulletPoint: {
-    fontSize: fontSize.sm,
-    fontFamily: fontFamily.sans,
+    ...textStyles.body,
     marginRight: 5,
     lineHeight: 24,
   },
   bulletText: {
+    ...textStyles.body,
     flex: 1,
-    fontSize: fontSize.sm,
-    fontFamily: fontFamily.sans,
     lineHeight: 24,
   },
 });
