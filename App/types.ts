@@ -333,3 +333,7 @@ export type AuthStackParamList = {
 export type AccountScreenProps = {
   navigation: NavigationProp<ParamListBase>;
 };
+
+export type LoginScreenProps = {
+  navigation: NavigationProp<ParamListBase>;
+};

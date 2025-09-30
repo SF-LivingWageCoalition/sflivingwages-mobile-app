@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/features/userSlice/userSlice";
 import {
   ScrollView,
   StyleSheet,
@@ -10,17 +12,20 @@ import {
 import { colors } from "../theme";
 import { fontSize, fontWeight } from "../theme/fontStyles";
 import { translate } from "../translation";
+import { LoginScreenProps } from "../types";
 
-const Login: React.FC = () => {
+const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
+  const dispatch = useDispatch();
+
   const [userEmail, setUserEmail] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const [authenticationData, setAuthenticationData] = useState<any>(null);
-  const [token, setToken] = useState<any>(null);
+  // const [authenticationData, setAuthenticationData] = useState<any>(null);
+  // const [token, setToken] = useState<any>(null);
   const [tokenIsValid, setTokenIsValid] = useState<boolean>(false);
-  const [validationData, setValidationData] = useState<any>(null);
+  // const [validationData, setValidationData] = useState<any>(null);
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
@@ -103,15 +108,17 @@ const Login: React.FC = () => {
         const data = await response.json();
         console.log("Token validation response data:", data);
         // Handle successful token validation (e.g., navigate to another screen)
-        setTokenIsValid(true);
-        setValidationData(data); // TODO: Remove later? Set token/user data in Redux store?
+        // setTokenIsValid(true);
+        // setValidationData(data); // TODO: Remove later? Set token/user data in Redux store?
+        dispatch(setUser(data.data)); // Set user data in Redux store
+        navigation.goBack();
         setIsLoggedIn(true); // TODO: Move to login function
       } else {
         console.log("Token validation failed with status:", response.status);
         const data = await response.json();
         console.error("Error code:", data.data.errorCode);
         console.error("Error message:", data.data.message);
-        setTokenIsValid(false);
+        // setTokenIsValid(false);
         setIsLoggedIn(false);
       }
     } catch (error) {

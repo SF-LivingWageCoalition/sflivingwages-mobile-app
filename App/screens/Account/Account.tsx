@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../../redux/features/userSlice/userSlice";
 import {
   ScrollView,
   StyleSheet,
@@ -10,15 +12,30 @@ import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 import { translate } from "../../translation";
 import { AccountScreenProps } from "../../types";
+import { RootState } from "../../redux/store/store";
 
 const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
+  const dispatch = useDispatch();
+
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const user = useSelector((state: RootState) => state.userData.user);
+  // const roles = useSelector((state: RootState) => state.userData.roles);
+
+  useEffect(() => {
+    // Check if user data exists in Redux store to determine login status
+    if (user && user.ID) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [user]);
 
   const onLogin = () => {
     // Navigate to Login Screen
     navigation.navigate("AuthNavigator", { screen: "Login" });
     // setIsLoggedIn(true);
   };
+
   const onRegister = () => {
     // Navigate to Register Screen
     navigation.navigate("AuthNavigator", { screen: "Register" });
@@ -30,7 +47,8 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
   };
 
   const onLogout = () => {
-    setIsLoggedIn(false);
+    dispatch(clearUser());
+    // setIsLoggedIn(false);
   };
 
   // Login Button
@@ -99,16 +117,20 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
         <View>
           <Text style={styles.title}>{translate("accountScreen.title")}</Text>
           {isLoggedIn ? (
-            <Text style={styles.subtitle}>
-              {translate("accountScreen.isLoggedIn")}
-            </Text>
+            <View>
+              <Text style={styles.subtitle}>
+                {translate("accountScreen.isLoggedIn")}
+              </Text>
+              <Text style={styles.subtitle}>
+                Welcome, {user ? user.display_name : "Guest"}!
+              </Text>
+            </View>
           ) : (
             <Text style={styles.subtitle}>
               {translate("accountScreen.isLoggedOut")}
             </Text>
           )}
         </View>
-
         {/* Auth Buttons */}
         {isLoggedIn ? <LogoutButton /> : <AuthButtons />}
       </View>
