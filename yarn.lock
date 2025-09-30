@@ -1146,17 +1146,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@expo-google-fonts/nunito@npm:^0.4.2":
+  version: 0.4.2
+  resolution: "@expo-google-fonts/nunito@npm:0.4.2"
+  checksum: 10c0/b22712e9892d47561b0d96bfb625fea24eeda3f34531bee88e781827892740e063dcde1ddf4615b097ba0b436e765f5101fbc4788430574369b6e5f4c8860eb3
+  languageName: node
+  linkType: hard
+
 "@expo-google-fonts/roboto@npm:^0.4.0":
   version: 0.4.1
   resolution: "@expo-google-fonts/roboto@npm:0.4.1"
   checksum: 10c0/860c3a14e75c4459dcfecd5205898ed61f4425faa8d7a90184ae4e83ed959e119a02fb41fa717391fa79eed67d05a9a06e51daa65f2e75d6f646ce973f6d7b1a
-  languageName: node
-  linkType: hard
-
-"@expo-google-fonts/tomorrow@npm:^0.4.0":
-  version: 0.4.1
-  resolution: "@expo-google-fonts/tomorrow@npm:0.4.1"
-  checksum: 10c0/e59ae2b259b677933c863cc9f5a5df1255e3f9d2027d2f919a7e4921bc73556b80f7c4a2ffd721aa5ca47d06ca6ac37bb21c276f9a774d28e63e236de8b04d16
   languageName: node
   linkType: hard
 
@@ -9625,8 +9625,8 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.25.2"
     "@babel/plugin-transform-export-namespace-from": "npm:^7.25.9"
+    "@expo-google-fonts/nunito": "npm:^0.4.2"
     "@expo-google-fonts/roboto": "npm:^0.4.0"
-    "@expo-google-fonts/tomorrow": "npm:^0.4.0"
     "@material-ui/core": "npm:^4.11.4"
     "@material-ui/icons": "npm:^4.11.2"
     "@react-native-async-storage/async-storage": "npm:^2.2.0"

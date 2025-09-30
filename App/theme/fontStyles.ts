@@ -14,19 +14,21 @@ export type FontSize = keyof typeof fontSize;
 // Each weight is a separate font file in React Native
 export const fontFamily = {
   // Roboto (body/UI text)
-  roboto: "Roboto_400Regular",           // Regular weight
-  robotoMedium: "Roboto_500Medium",      // Medium weight (if needed)
-  robotoBold: "Roboto_700Bold",          // Bold weight
+  roboto: "Roboto_400Regular",              // Regular weight
+  robotoMedium: "Roboto_500Medium",         // Medium weight
+  robotoBold: "Roboto_700Bold",             // Bold weight
   
-  // Tomorrow (display/headings)
-  tomorrow: "Tomorrow_400Regular",       // Regular weight
-  tomorrowBold: "Tomorrow_700Bold",      // Bold weight
+  // Nunito (display/headings - rounded, matches brand "Living Wage" style)
+  nunito: "Nunito_400Regular",              // Regular weight
+  nunitoSemiBold: "Nunito_600SemiBold",     // SemiBold weight
+  nunitoBold: "Nunito_700Bold",             // Bold weight
   
   // Semantic aliases for common use cases
-  body: "Roboto_400Regular",             // Default body text
-  bodyBold: "Roboto_700Bold",            // Bold body text
-  heading: "Tomorrow_700Bold",           // Default headings
-  headingRegular: "Tomorrow_400Regular", // Regular headings
+  body: "Roboto_400Regular",                // Default body text
+  bodyBold: "Roboto_700Bold",               // Bold body text
+  heading: "Nunito_700Bold",                // Default headings (bold)
+  headingRegular: "Nunito_400Regular",      // Regular headings
+  headingSemiBold: "Nunito_600SemiBold",    // SemiBold headings
 } as const;
 
 export type FontFamily = keyof typeof fontFamily;
@@ -44,17 +46,17 @@ export type FontWeight = keyof typeof fontWeight;
 // Reusable text style presets combining font family and size
 // Note: fontWeight is optional since each font file already has its weight baked in
 export const textStyles = {
-  // Headings using Tomorrow (display font)
+  // Headings using Nunito (display font - rounded, matches brand style)
   h1: {
-    fontFamily: fontFamily.heading,      // Tomorrow Bold
+    fontFamily: fontFamily.heading,      // Nunito Bold
     fontSize: fontSize.xxl,
   },
   h2: {
-    fontFamily: fontFamily.heading,      // Tomorrow Bold
+    fontFamily: fontFamily.heading,      // Nunito Bold
     fontSize: fontSize.xl,
   },
   h3: {
-    fontFamily: fontFamily.heading,      // Tomorrow Bold
+    fontFamily: fontFamily.heading,      // Nunito Bold
     fontSize: fontSize.lg,
   },
   // Body text using Roboto
