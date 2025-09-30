@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../redux/features/userSlice/userSlice";
 import {
+  Alert,
   ScrollView,
   StyleSheet,
   Text,
@@ -47,8 +48,20 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
   };
 
   const onLogout = () => {
-    dispatch(clearUser());
-    // setIsLoggedIn(false);
+    // dispatch(clearUser());
+    Alert.alert(
+      "Logout",
+      "Are you sure?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        { text: "OK", onPress: () => dispatch(clearUser()) },
+      ],
+      { cancelable: true }
+    );
   };
 
   // Login Button
