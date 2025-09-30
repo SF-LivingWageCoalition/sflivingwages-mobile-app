@@ -13,7 +13,7 @@ import Collapsible from "react-native-collapsible";
 import BulletItem from "../../components/lists/BulletItem";
 import SubBulletItem from "../../components/lists/SubBulletItem";
 import { colors } from "../../theme";
-import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { fontSize, fontWeight, fontFamily } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 
 const IC_ARR_DOWN: ImageSourcePropType = require("../../assets/icons/ic_arr_down.png");
@@ -378,6 +378,7 @@ const styles = StyleSheet.create({
   backArrow: {
     color: colors.light.textOnPrimary,
     fontSize: fontSize.md,
+    fontFamily: fontFamily.sansBold,
     fontWeight: fontWeight.medium,
   },
   card: {
@@ -401,6 +402,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: fontSize.md,
+    fontFamily: fontFamily.display,
     fontWeight: fontWeight.medium,
     textAlign: "center",
     marginBottom: 20,
@@ -417,6 +419,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: fontSize.md,
+    fontFamily: fontFamily.sansBold,
     fontWeight: fontWeight.medium,
     color: colors.light.secondary,
   },
@@ -431,16 +434,19 @@ const styles = StyleSheet.create({
   },
   bulletPoint: {
     fontSize: fontSize.sm,
+    fontFamily: fontFamily.sans,
     marginRight: 5,
     lineHeight: 24,
   },
   bulletText: {
     flex: 1,
     fontSize: fontSize.sm,
+    fontFamily: fontFamily.sans,
     lineHeight: 24,
   },
   sectionText: {
     fontSize: fontSize.sm,
+    fontFamily: fontFamily.sans,
     lineHeight: 24,
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -452,6 +458,7 @@ const styles = StyleSheet.create({
   },
   subBulletPoint: {
     fontSize: fontSize.xs,
+    fontFamily: fontFamily.sans,
     marginRight: 5,
     color: colors.light.textSecondary,
     lineHeight: 20,
@@ -459,6 +466,7 @@ const styles = StyleSheet.create({
   subBulletText: {
     flex: 1,
     fontSize: fontSize.xs,
+    fontFamily: fontFamily.sans,
     color: colors.light.textPrimary,
     lineHeight: 20,
   },

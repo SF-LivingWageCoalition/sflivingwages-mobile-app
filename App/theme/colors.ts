@@ -3,11 +3,8 @@
  */
 
 const palette = {
-  // Red shades (primary brand color)
-  red50: "#fef2f2",
+  // Red shades (primary brand color) - 7 colors used
   red100: "#fee2e2",
-  red200: "#fecaca",
-  red300: "#fca5a5",
   red400: "#f87171",
   red500: "#ef4444",
   red600: "#d31623", // Main brand red
@@ -15,10 +12,8 @@ const palette = {
   red800: "#b91c1c",
   red900: "#991b1b",
 
-  // Blue shades (secondary/accent color)
-  blue50: "#eff6ff",
+  // Blue shades (secondary/accent color) - 7 colors used
   blue100: "#dbeafe",
-  blue200: "#bfdbfe",
   blue300: "#93c5fd",
   blue400: "#60a5fa",
   blue500: "#3b82f6",
@@ -27,7 +22,7 @@ const palette = {
   blue800: "#1e40af",
   blue900: "#1e3a8a",
 
-  // Gray shades (neutral colors)
+  // Gray shades (neutral colors) - 10 colors used
   gray50: "#f9fafb",
   gray100: "#f5f5f5", // Light background
   gray200: "#e5e7eb",
@@ -39,16 +34,11 @@ const palette = {
   gray800: "#333333", // Dark text
   gray900: "#111827",
 
-  // Yellow shades (warning/caution)
-  yellow50: "#fffbeb",
+  // Yellow shades (warning/caution) - 5 colors used
   yellow100: "#fef3c7",
-  yellow200: "#fde68a",
-  yellow300: "#fcd34d",
   yellow400: "#fbbf24",
   yellow500: "#f59e0b",
-  yellow600: "#d97706",
   yellow700: "#b45309",
-  yellow800: "#92400e",
   yellow900: "#78350f",
 
   // Pure colors

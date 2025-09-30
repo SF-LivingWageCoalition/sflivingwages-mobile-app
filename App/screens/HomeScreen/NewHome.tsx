@@ -15,7 +15,7 @@ import Swiper from "react-native-swiper/src";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { WebView } from "react-native-webview";
 import { colors } from "../../theme";
-import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { fontSize, fontWeight, fontFamily } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { CarouselImageProps, NewHomeScreenProps } from "../../types";
 
@@ -390,6 +390,7 @@ const styles = StyleSheet.create({
   imageTitle: {
     fontSize: fontSize.lg,
     fontWeight: fontWeight.bold,
+    fontFamily: fontFamily.display,
     color: colors.light.textOnPrimary,
     marginLeft: 23,
     marginTop: 25,
@@ -410,6 +411,7 @@ const styles = StyleSheet.create({
   imageContent: {
     fontSize: fontSize.lg,
     fontWeight: fontWeight.normal,
+    fontFamily: fontFamily.sans,
     color: colors.light.textOnPrimary,
     marginLeft: 23,
     marginTop: 26,
@@ -438,6 +440,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: fontSize.md,
+    fontFamily: fontFamily.sansBold,
     color: colors.light.textOnPrimary,
     textAlign: "center",
     fontWeight: fontWeight.bold,
@@ -462,6 +465,7 @@ const styles = StyleSheet.create({
   },
   textCampaignsImg: {
     fontSize: fontSize.xl,
+    fontFamily: fontFamily.display,
     backgroundColor: colors.light.elevation,
     color: colors.light.textOnPrimary,
     fontWeight: fontWeight.bold,
@@ -471,6 +475,7 @@ const styles = StyleSheet.create({
   },
   textEvent: {
     fontSize: fontSize.xxl,
+    fontFamily: fontFamily.display,
     paddingVertical: 40,
     color: colors.light.textOnPrimary,
     textAlign: "center",
@@ -508,6 +513,7 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     alignSelf: "center",
     fontSize: fontSize.md,
+    fontFamily: fontFamily.sans,
     color: colors.light.secondary,
   },
   socialMediaArea: {
@@ -532,12 +538,14 @@ const styles = StyleSheet.create({
   follow: {
     textAlign: "center",
     fontSize: fontSize.xl,
+    fontFamily: fontFamily.display,
     fontWeight: fontWeight.semibold,
     marginTop: 30,
     marginBottom: 10,
   },
   titles: {
     fontSize: fontSize.xl,
+    fontFamily: fontFamily.display,
     lineHeight: 35,
     fontWeight: fontWeight.bold,
   },

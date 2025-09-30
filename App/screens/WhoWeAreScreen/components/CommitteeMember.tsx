@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { fontSize, fontWeight } from "../../../theme/fontStyles";
+import { fontSize, fontWeight, fontFamily } from "../../../theme/fontStyles";
 import { CommitteMemberProps } from "../../../types";
 
 const CommitteeMember: React.FC<CommitteMemberProps> = ({ member }) => {
@@ -19,10 +19,12 @@ const styles = StyleSheet.create({
   },
   memberNameText: {
     fontSize: fontSize.md,
+    fontFamily: fontFamily.sansBold,
     fontWeight: fontWeight.medium,
   },
   memberTitleText: {
     fontSize: fontSize.sm,
+    fontFamily: fontFamily.sans,
   },
 });
 

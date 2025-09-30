@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 import { colors } from "../../theme";
-import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { fontSize, fontWeight, fontFamily } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { AssistanceTabParamList } from "../../types";
 
@@ -103,12 +103,14 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: fontSize.lg,
+    fontFamily: fontFamily.display,
     fontWeight: fontWeight.bold,
     textAlign: "center",
     marginBottom: 10,
   },
   subtitle: {
     fontSize: fontSize.sm,
+    fontFamily: fontFamily.sans,
     textAlign: "center",
     marginBottom: 30,
     color: colors.light.textSecondary,
@@ -130,6 +132,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: fontSize.md,
+    fontFamily: fontFamily.sansBold,
     color: colors.light.textOnPrimary,
     textAlign: "center",
     fontWeight: fontWeight.bold,

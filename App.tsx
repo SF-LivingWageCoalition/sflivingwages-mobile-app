@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import React from "react";
+import React, { useEffect } from "react";
 import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
@@ -11,13 +11,52 @@ import ModalScreen from "./App/screens/AuctionScreen/ModalScreen";
 import EventsNavigator from "./App/screens/EventsScreen/components/EventsNav";
 import WhoWeAre from "./App/screens/WhoWeAreScreen/WhoWeAreScreen";
 import { colors } from "./App/theme";
-import { fontWeight } from "./App/theme/fontStyles";
+import { fontWeight, fontFamily } from "./App/theme/fontStyles";
 import { translate } from "./App/translation/i18n";
 import { RootStackParamList } from "./App/types";
+import * as SplashScreen from "expo-splash-screen";
+import { useFonts } from "expo-font";
+import { Roboto_400Regular, Roboto_700Bold } from "@expo-google-fonts/roboto";
+import {
+  Tomorrow_400Regular,
+  Tomorrow_700Bold,
+} from "@expo-google-fonts/tomorrow";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
+// Keep splash screen visible while loading
+SplashScreen.preventAutoHideAsync();
+
 const App: React.FC = () => {
+  const [fontsLoaded, fontError] = useFonts({
+    Roboto_400Regular,
+    Roboto_700Bold,
+    Tomorrow_400Regular,
+    Tomorrow_700Bold,
+  });
+
+  useEffect(() => {
+    async function prepare() {
+      if (fontsLoaded || fontError) {
+        // Hide splash screen once fonts are loaded
+        await SplashScreen.hideAsync();
+        
+        // Debug: Log font loading status
+        if (fontError) {
+          console.error('❌ Font loading error:', fontError);
+        } else {
+          console.log('✅ Fonts loaded successfully!');
+          console.log('Available fonts: Roboto_400Regular, Roboto_700Bold, Tomorrow_400Regular, Tomorrow_700Bold');
+        }
+      }
+    }
+    prepare();
+  }, [fontsLoaded, fontError]);
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
+
   return (
     <SafeAreaProvider>
       <Provider store={store}>
@@ -27,7 +66,10 @@ const App: React.FC = () => {
               screenOptions={{
                 headerStyle: { backgroundColor: colors.light.primary },
                 headerTintColor: colors.light.textOnPrimary,
-                headerTitleStyle: { fontWeight: fontWeight.bold },
+                headerTitleStyle: {
+                  fontWeight: fontWeight.bold,
+                  fontFamily: fontFamily.display,
+                },
                 headerTitleAlign: "center",
               }}
             >

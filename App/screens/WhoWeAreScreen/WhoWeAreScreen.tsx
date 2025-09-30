@@ -2,7 +2,7 @@ import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import sflwcLogo from "../../assets/icons/sflwc_logo_finaltemp.png";
 import { colors } from "../../theme";
-import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { fontSize, fontWeight, fontFamily } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { CommitteeMemberData } from "../../types";
 import CommitteeMember from "./components/CommitteeMember";
@@ -63,10 +63,12 @@ const styles = StyleSheet.create({
   },
   bodyText: {
     fontSize: fontSize.md,
+    fontFamily: fontFamily.sans,
     marginBottom: 18,
   },
   membersHeadingText: {
     fontSize: fontSize.xl,
+    fontFamily: fontFamily.display,
     fontWeight: fontWeight.bold,
     marginBottom: 18,
     textTransform: "uppercase",
