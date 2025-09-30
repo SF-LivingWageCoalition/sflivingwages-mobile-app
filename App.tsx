@@ -11,12 +11,16 @@ import ModalScreen from "./App/screens/AuctionScreen/ModalScreen";
 import EventsNavigator from "./App/screens/EventsScreen/components/EventsNav";
 import WhoWeAre from "./App/screens/WhoWeAreScreen/WhoWeAreScreen";
 import { colors } from "./App/theme";
-import { fontWeight, fontFamily } from "./App/theme/fontStyles";
+import { fontFamily } from "./App/theme/fontStyles";
 import { translate } from "./App/translation/i18n";
 import { RootStackParamList } from "./App/types";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
-import { Roboto_400Regular, Roboto_700Bold } from "@expo-google-fonts/roboto";
+import { 
+  Roboto_400Regular, 
+  Roboto_500Medium,
+  Roboto_700Bold 
+} from "@expo-google-fonts/roboto";
 import {
   Tomorrow_400Regular,
   Tomorrow_700Bold,
@@ -30,6 +34,7 @@ SplashScreen.preventAutoHideAsync();
 const App: React.FC = () => {
   const [fontsLoaded, fontError] = useFonts({
     Roboto_400Regular,
+    Roboto_500Medium,
     Roboto_700Bold,
     Tomorrow_400Regular,
     Tomorrow_700Bold,
@@ -46,7 +51,7 @@ const App: React.FC = () => {
           console.error('❌ Font loading error:', fontError);
         } else {
           console.log('✅ Fonts loaded successfully!');
-          console.log('Available fonts: Roboto_400Regular, Roboto_700Bold, Tomorrow_400Regular, Tomorrow_700Bold');
+          console.log('Available fonts: Roboto (Regular, Medium, Bold), Tomorrow (Regular, Bold)');
         }
       }
     }
@@ -67,8 +72,7 @@ const App: React.FC = () => {
                 headerStyle: { backgroundColor: colors.light.primary },
                 headerTintColor: colors.light.textOnPrimary,
                 headerTitleStyle: {
-                  fontWeight: fontWeight.bold,
-                  fontFamily: fontFamily.display,
+                  fontFamily: fontFamily.heading,
                 },
                 headerTitleAlign: "center",
               }}

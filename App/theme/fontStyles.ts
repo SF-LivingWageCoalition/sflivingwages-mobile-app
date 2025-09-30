@@ -10,82 +10,82 @@ export const fontSize = {
 
 export type FontSize = keyof typeof fontSize;
 
+// Font family tokens mapped to loaded font names
+// Each weight is a separate font file in React Native
+export const fontFamily = {
+  // Roboto (body/UI text)
+  roboto: "Roboto_400Regular",           // Regular weight
+  robotoMedium: "Roboto_500Medium",      // Medium weight (if needed)
+  robotoBold: "Roboto_700Bold",          // Bold weight
+  
+  // Tomorrow (display/headings)
+  tomorrow: "Tomorrow_400Regular",       // Regular weight
+  tomorrowBold: "Tomorrow_700Bold",      // Bold weight
+  
+  // Semantic aliases for common use cases
+  body: "Roboto_400Regular",             // Default body text
+  bodyBold: "Roboto_700Bold",            // Bold body text
+  heading: "Tomorrow_700Bold",           // Default headings
+  headingRegular: "Tomorrow_400Regular", // Regular headings
+} as const;
+
+export type FontFamily = keyof typeof fontFamily;
+
+// Optional: Keep fontWeight for rare cases where you need numeric values
+// (e.g., when working with third-party components that expect it)
 export const fontWeight = {
-  light: "300",
   normal: "400",
   medium: "500",
-  semibold: "600",
   bold: "700",
 } as const;
 
 export type FontWeight = keyof typeof fontWeight;
 
-// Font family tokens mapped to loaded font names
-export const fontFamily = {
-  // Body text
-  sans: "Roboto_400Regular",
-  sansBold: "Roboto_700Bold",
-  // Display / headings
-  display: "Tomorrow_700Bold",
-  displayRegular: "Tomorrow_400Regular",
-} as const;
-
-export type FontFamily = keyof typeof fontFamily;
-
-// Reusable text style presets combining font family, size, and weight
+// Reusable text style presets combining font family and size
+// Note: fontWeight is optional since each font file already has its weight baked in
 export const textStyles = {
   // Headings using Tomorrow (display font)
   h1: {
-    fontFamily: fontFamily.display,
+    fontFamily: fontFamily.heading,      // Tomorrow Bold
     fontSize: fontSize.xxl,
-    fontWeight: fontWeight.bold,
   },
   h2: {
-    fontFamily: fontFamily.display,
+    fontFamily: fontFamily.heading,      // Tomorrow Bold
     fontSize: fontSize.xl,
-    fontWeight: fontWeight.bold,
   },
   h3: {
-    fontFamily: fontFamily.display,
+    fontFamily: fontFamily.heading,      // Tomorrow Bold
     fontSize: fontSize.lg,
-    fontWeight: fontWeight.semibold,
   },
   // Body text using Roboto
   body: {
-    fontFamily: fontFamily.sans,
+    fontFamily: fontFamily.body,         // Roboto Regular
     fontSize: fontSize.sm,
-    fontWeight: fontWeight.normal,
   },
   bodyLarge: {
-    fontFamily: fontFamily.sans,
+    fontFamily: fontFamily.body,         // Roboto Regular
     fontSize: fontSize.md,
-    fontWeight: fontWeight.normal,
   },
   bodySmall: {
-    fontFamily: fontFamily.sans,
+    fontFamily: fontFamily.body,         // Roboto Regular
     fontSize: fontSize.xs,
-    fontWeight: fontWeight.normal,
   },
-  // Button text
+  // Button text (uses bold Roboto)
   button: {
-    fontFamily: fontFamily.sansBold,
+    fontFamily: fontFamily.bodyBold,     // Roboto Bold
     fontSize: fontSize.md,
-    fontWeight: fontWeight.bold,
   },
   buttonSmall: {
-    fontFamily: fontFamily.sansBold,
+    fontFamily: fontFamily.bodyBold,     // Roboto Bold
     fontSize: fontSize.sm,
-    fontWeight: fontWeight.bold,
   },
   // Labels and captions
   label: {
-    fontFamily: fontFamily.sans,
+    fontFamily: fontFamily.robotoMedium, // Roboto Medium
     fontSize: fontSize.sm,
-    fontWeight: fontWeight.medium,
   },
   caption: {
-    fontFamily: fontFamily.sans,
+    fontFamily: fontFamily.body,         // Roboto Regular
     fontSize: fontSize.xs,
-    fontWeight: fontWeight.normal,
   },
 } as const;

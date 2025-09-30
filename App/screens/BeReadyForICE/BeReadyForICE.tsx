@@ -12,7 +12,7 @@ import {
 import Collapsible from "react-native-collapsible";
 import BulletItem from "../../components/lists/BulletItem";
 import { colors } from "../../theme";
-import { fontSize, textStyles } from "../../theme/fontStyles";
+import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 
 const IC_ARR_DOWN: ImageSourcePropType = require("../../assets/icons/ic_arr_down.png");
