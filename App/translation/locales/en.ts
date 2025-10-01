@@ -237,43 +237,43 @@ const en = {
       },
       {
         id: 3,
+        name: "Julia Toscano",
+        title: "Campaign Co-director",
+      },
+      {
+        id: 4,
         name: "Anne Jayne",
         title: "Recording Secretary",
       },
       {
-        id: 4,
+        id: 5,
         name: "Peter Miller",
         title: "Treasurer",
       },
       {
-        id: 5,
+        id: 6,
         name: "Alice Rogoff",
         title: "Member",
       },
       {
-        id: 6,
+        id: 7,
         name: "David Williams",
         title: "Member",
       },
       {
-        id: 7,
+        id: 8,
         name: "Nancy Esteva",
         title: "Member",
       },
       {
-        id: 8,
+        id: 9,
         name: "Peter Miller",
         title: "Member",
       },
       {
-        id: 9,
+        id: 10,
         name: "Rodger Scott",
         title: "Member"
-      },
-      {        
-        id: 10,
-        name: "Julia Toscano",
-        title: "Campaign Co-director",
       },
     ]
     },
