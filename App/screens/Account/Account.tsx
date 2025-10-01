@@ -121,6 +121,26 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
     );
   };
 
+  const UserInfo: React.FC = () => {
+    return (
+      <View>
+        <Text style={styles.subtitle}>
+          {translate("accountScreen.isLoggedIn")}
+        </Text>
+        <Text style={styles.subtitle}>Welcome, {user.display_name}!</Text>
+        <Text>ID: {user.ID}</Text>
+        <Text>Display Name: {user.display_name}</Text>
+        <Text>Activation Key: {user.user_activation_key}</Text>
+        <Text>Email: {user.user_email}</Text>
+        <Text>Login: {user.user_login}</Text>
+        <Text>Nice Name: {user.user_nicename}</Text>
+        <Text>Registered: {user.user_registered}</Text>
+        <Text>Status: {user.user_status}</Text>
+        <Text>URL: {user.user_url}</Text>
+      </View>
+    );
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -129,21 +149,7 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
           <Text style={styles.title}>{translate("accountScreen.title")}</Text>
           {/* User info */}
           {isLoggedIn ? (
-            <View>
-              <Text style={styles.subtitle}>
-                {translate("accountScreen.isLoggedIn")}
-              </Text>
-              <Text style={styles.subtitle}>Welcome, {user.display_name}!</Text>
-              <Text>ID: {user.ID}</Text>
-              <Text>Display Name: {user.display_name}</Text>
-              <Text>Activation Key: {user.user_activation_key}</Text>
-              <Text>Email: {user.user_email}</Text>
-              <Text>Login: {user.user_login}</Text>
-              <Text>Nice Name: {user.user_nicename}</Text>
-              <Text>Registered: {user.user_registered}</Text>
-              <Text>Status: {user.user_status}</Text>
-              <Text>URL: {user.user_url}</Text>
-            </View>
+            <UserInfo />
           ) : (
             <Text style={styles.subtitle}>
               {translate("accountScreen.isLoggedOut")}
