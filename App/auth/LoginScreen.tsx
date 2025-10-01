@@ -17,6 +17,8 @@ import { LoginScreenProps } from "../types";
 const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
   const dispatch = useDispatch();
 
+  const jwtAuthKey = "SomeAuthKey!";
+
   const [userEmail, setUserEmail] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
 
@@ -24,10 +26,8 @@ const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
 
   // const [authenticationData, setAuthenticationData] = useState<any>(null);
   // const [token, setToken] = useState<any>(null);
-  const [tokenIsValid, setTokenIsValid] = useState<boolean>(false);
+  // const [tokenIsValid, setTokenIsValid] = useState<boolean>(false);
   // const [validationData, setValidationData] = useState<any>(null);
-
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   const onSubmit = () => {
     // Do login logic here
@@ -53,17 +53,13 @@ const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
   // Login a WP user via the Simple JWT Login plugin
   const loginUser = async (email: string, password: string) => {
     await fetchToken(email, password); // TODO: .then? try/catch?
-    // If token is valid, set isLoggedIn to true
-    if (tokenIsValid) {
-      setIsLoggedIn(true);
-    }
   };
 
   // Fetch JWT Token (Authenticate)
   const fetchToken = async (email: string, password: string): Promise<void> => {
     try {
       const response = await fetch(
-        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth&email=${email}&password=${password}`,
+        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth&email=${email}&password=${password}&AUTH_KEY=${jwtAuthKey}`,
         {
           method: "POST",
           headers: { "cache-control": "no-cache" },
@@ -90,15 +86,15 @@ const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
     console.log("Validating token...");
     try {
       const response = await fetch(
-        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth/validate&JWT=${jwtToken}`,
+        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth/validate`,
         {
           method: "POST",
-          // headers: {
-          //   // Authorization: `Bearer ${jwtToken}`,
-          //   alg: "HS256",
-          //   typ: "JWT",
-          //   "cache-control": "no-cache",
-          // },
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            //   alg: "HS256",
+            //   typ: "JWT",
+            "cache-control": "no-cache",
+          },
         }
       );
       console.log("Response received");
@@ -112,14 +108,12 @@ const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
         // setValidationData(data); // TODO: Remove later? Set token/user data in Redux store?
         dispatch(setUser(data.data)); // Set user data in Redux store
         navigation.goBack();
-        setIsLoggedIn(true); // TODO: Move to login function
       } else {
         console.log("Token validation failed with status:", response.status);
         const data = await response.json();
         console.error("Error code:", data.data.errorCode);
         console.error("Error message:", data.data.message);
         // setTokenIsValid(false);
-        setIsLoggedIn(false);
       }
     } catch (error) {
       console.error("Error validating token:", error);
@@ -179,7 +173,6 @@ const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
         </View>
         {/* End Login Form */}
       </View>
-      {isLoggedIn && <Text>Login Successful</Text>}
     </ScrollView>
   );
 };

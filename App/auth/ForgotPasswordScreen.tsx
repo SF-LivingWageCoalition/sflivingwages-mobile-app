@@ -12,6 +12,8 @@ import { fontSize, fontWeight } from "../theme/fontStyles";
 import { translate } from "../translation";
 
 const ForgotPassword: React.FC = () => {
+  const jwtAuthKey = "SomeAuthKey!";
+
   const [userEmail, setUserEmail] = useState<string>("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
@@ -36,7 +38,7 @@ const ForgotPassword: React.FC = () => {
     console.log(`Called forgotPassword with email: '${email}'`);
     try {
       const response = await fetch(
-        `https://www.livingwage-sf.org.xyz/?rest_route=/simple-jwt-login/v1/user/reset_password&email=${email}`,
+        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/user/reset_password&email=${email}&AUTH_KEY=${jwtAuthKey}`,
         {
           method: "POST",
           headers: { "cache-control": "no-cache" },

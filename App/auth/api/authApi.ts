@@ -35,6 +35,8 @@ const JWT_DE_KEY = "SomeDecryptionKey!"; // Key used for JWT decryption
 const JWT_DE_ALG = "HS256"; // Algorithm used for JWT decryption
 const JWT_TYP = "JWT"; // Type of token
 
+const JWT_AUTH_KEY = "SomeAuthKey!"; // Auth key for Simple JWT Login plugin
+
 // WooCommerce REST API credentials
 const consumerKey = "ck_6d1c6dbe7375c9c6bbd4ec4ae76435657b02ea0f"; // SFLWC WooCommerce Consumer Key (read/write)
 const consumerSecret = "cs_f3e3af1864b234c83e62e375bdb61f5d8b2c3834"; // SFLWC WooCommerce Consumer Secret (read/write)
@@ -82,13 +84,12 @@ export const fetchToken = async (
         headers: { "cache-control": "no-cache" },
       }
     );
+    console.log("Response received");
+    console.log("Response status:", response.status);
     if (response.ok) {
       const data = await response.json();
       console.log("Token fetch response data:", data);
       // Handle successful token fetch (e.g., store token, navigate to another screen)
-      // setAuthenticationData(data); // TODO: Remove later?
-      // setToken(data.data.jwt);
-      // const token = data.data.jwt;
       return data; // Return token data
     }
   } catch (error) {
@@ -97,6 +98,7 @@ export const fetchToken = async (
 };
 
 // Validate JWT Token (Validate)
+// Note this error resolution (even when autologin is disabled): https://wordpress.org/support/topic/unable-to-find-user-property-in-jwt/
 export const validateToken = async (
   jwtToken: string
 ): Promise<ValidationData | undefined> => {
@@ -105,15 +107,18 @@ export const validateToken = async (
       `${BASE_URL_TEST}${JWT_ROUTE}/auth/validate&JWT=${jwtToken}`,
       {
         method: "POST",
-        // headers: {
-        //   // Authorization: `Bearer ${data.data.jwt}`,
-        //   alg: "HS256",
-        //   typ: "JWT",
-        //   "cache-control": "no-cache",
-        // },
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+          //   alg: "HS256",
+          //   typ: "JWT",
+          "cache-control": "no-cache",
+        },
       }
     );
+    console.log("Response received");
+    console.log("Response status:", response.status);
     if (response.ok) {
+      console.log("Token is valid");
       const data = await response.json();
       console.log("Token validation response data:", data);
       // Handle successful token validation (e.g., navigate to another screen)

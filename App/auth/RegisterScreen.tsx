@@ -19,8 +19,9 @@ const Register: React.FC = () => {
 
   const consumerKey = "ck_6d1c6dbe7375c9c6bbd4ec4ae76435657b02ea0f"; // WooCommerce Consumer Key (read/write)
   const consumerSecret = "cs_f3e3af1864b234c83e62e375bdb61f5d8b2c3834"; // WooCommerce Consumer Secret (read/write)
-
   const base64Credentials = btoa(`${consumerKey}:${consumerSecret}`);
+
+  const jwtAuthKey = "SomeAuthKey!";
 
   const onSubmit = () => {
     // Do registration logic here
@@ -48,7 +49,7 @@ const Register: React.FC = () => {
   const registerUser = async (email: string, password: string) => {
     try {
       const response = await fetch(
-        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/users&email=${email}&password=${password}`,
+        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/users&email=${email}&password=${password}&AUTH_KEY=${jwtAuthKey}`,
         {
           method: "POST",
           headers: { "cache-control": "no-cache" },
