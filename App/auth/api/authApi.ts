@@ -78,7 +78,7 @@ export const fetchToken = async (
 ): Promise<TokenData | undefined> => {
   try {
     const response = await fetch(
-      `${BASE_URL_TEST}${JWT_ROUTE}/auth&email=${email}&password=${password}`,
+      `${BASE_URL_TEST}${JWT_ROUTE}/auth&email=${email}&password=${password}&AUTH_KEY=${JWT_AUTH_KEY}`,
       {
         method: "POST",
         headers: { "cache-control": "no-cache" },
