@@ -1,5 +1,10 @@
 // App/auth/api/authApi.ts
 
+// import { useDispatch } from "react-redux";
+import { clearUser } from "../../redux/features/userSlice/userSlice";
+
+// const dispatch = useDispatch();
+
 /**
  * Testing Site: https://www.wpmockup.xyz
  * login: admin
@@ -120,4 +125,12 @@ export const validateToken = async (
   } catch (error) {
     console.error("Error validating token:", error);
   }
+};
+
+// Logout function to clear authentication data
+export const logout = (dispatch: Function): void => {
+  // Clear any stored authentication data (e.g., tokens, user info)
+  dispatch(clearUser()); // Clear user data from Redux store
+  // Additional cleanup actions can be performed here
+  console.log("User logged out");
 };

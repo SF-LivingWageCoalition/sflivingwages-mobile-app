@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearUser } from "../../redux/features/userSlice/userSlice";
+import { logout } from "../../auth/api/authApi";
 import {
   Alert,
   ScrollView,
@@ -34,7 +34,6 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
   const onLogin = () => {
     // Navigate to Login Screen
     navigation.navigate("AuthNavigator", { screen: "Login" });
-    // setIsLoggedIn(true);
   };
 
   const onRegister = () => {
@@ -48,7 +47,6 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
   };
 
   const onLogout = () => {
-    // dispatch(clearUser());
     Alert.alert(
       "Logout",
       "Are you sure?",
@@ -58,7 +56,7 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel",
         },
-        { text: "OK", onPress: () => dispatch(clearUser()) },
+        { text: "OK", onPress: () => logout(dispatch) },
       ],
       { cancelable: true }
     );
@@ -130,7 +128,7 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
         <View>
           <Text style={styles.title}>{translate("accountScreen.title")}</Text>
           {/* User info */}
-          {isLoggedIn && user ? (
+          {isLoggedIn ? (
             <View>
               <Text style={styles.subtitle}>
                 {translate("accountScreen.isLoggedIn")}
