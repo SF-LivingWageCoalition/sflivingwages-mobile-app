@@ -70,14 +70,14 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
       id: 1,
       title: translate("donateScreen.title"),
       src: require("../../assets/images/campaign2_background.jpg"),
-      destination: "Donate",
+      destination: "DONATE",
     },
     {
       id: 2,
       title: translate("eventsScreen.title"),
       src: require("../../assets/images/events-slide.jpg"),
       destination: "EventsNavigator",
-      destinationScreen: "Events",
+      destinationScreen: "EVENTS",
     },
   ];
 
@@ -207,7 +207,6 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
           </View>
 
           {/* Media section */}
-          {/* OLD COMMENT: this is comment because an error occur need to fix : ERROR with WebView */}
           <View style={styles.containerBody}>
             <Text style={styles.titles}>Media</Text>
             <Card style={styles.cardStyle}>
@@ -466,7 +465,7 @@ const styles = StyleSheet.create({
     padding: 6,
   },
   textEvent: {
-    ...textStyles.h1,
+    ...textStyles.h2,
     paddingVertical: 40,
     color: colors.light.textOnPrimary,
     textAlign: "center",
