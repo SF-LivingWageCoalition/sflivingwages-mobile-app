@@ -243,38 +243,43 @@ const es: Translations = {
         name: "David Frias",
         title: "Codirector de Campaña",
       },
-      {
+      {        
         id: 3,
+        name: "Julia Toscano",
+        title: "Codirectora de Campaña",
+      },
+      {
+        id: 4,
         name: "Anne Jayne",
         title: "Secretario de Actas",
       },
       {
-        id: 4,
+        id: 5,
         name: "Peter Miller",
         title: "Tesorero",
       },
       {
-        id: 5,
+        id: 6,
         name: "Alice Rogoff",
         title: "Miembro",
       },
       {
-        id: 6,
+        id: 7,
         name: "David Williams",
         title: "Miembro",
       },
       {
-        id: 7,
+        id: 8,
         name: "Nancy Esteva",
         title: "Miembro",
       },
       {
-        id: 8,
+        id: 9,
         name: "Peter Miller",
         title: "Miembro",
       },
       {
-        id: 9,
+        id: 10,
         name: "Rodger Scott",
         title: "Miembro",
       },
