@@ -50,23 +50,48 @@ const base64CredentialsTest = btoa(`${consumerKeyTest}:${consumerSecretTest}`); 
 // Define the structure of the token data returned by the API
 type TokenData = {
   data?: {
-    jwt?: string;
+    jwt: string;
   };
-  success?: boolean;
+  success: boolean;
+  error?: string;
 };
 
 // Define the structure of the validation data returned by the API
 type ValidationData = {
   data?: {
-    user_id?: number; // User ID
-    email?: string; // User email
-    display_name?: string; // User display name
-    roles?: string[]; // User roles
-    capabilities?: { [key: string]: boolean }; // User capabilities
-    exp?: number; // Expiration time (timestamp)
-    iat?: number; // Issued at time (timestamp)
+    user: {
+      ID: string; // User ID
+      display_name: string; // User display name
+      user_activation_key: string; // User activation key
+      user_email: string; // User email
+      user_login: string; // User login name
+      user_nicename: string; // User nice name
+      user_registered: string; // User registration date
+      user_status: string; // User status
+      user_url: string; // User URL
+    };
+    roles: string[]; // User roles
+    jwt: [
+      {
+        token: string; // JWT token
+        header: {
+          alg: string; // Algorithm used
+          typ: string; // Type of token
+        };
+        payload: {
+          email?: string; // User email
+          exp?: number; // Expiration timestamp
+          iat?: number; // Issued at timestamp
+          id?: string; // User ID
+          iss?: string; // Issuer
+          site?: string; // Site URL
+          username?: string; // User name
+        };
+      }
+    ];
   };
-  success?: boolean;
+  success: boolean;
+  error?: string;
 };
 
 // API functions for authentication (fetching and validating JWT tokens)
@@ -84,7 +109,7 @@ export const fetchToken = async (
         headers: { "cache-control": "no-cache" },
       }
     );
-    console.log("Response received");
+    console.log("Response received from authAPI");
     console.log("Response status:", response.status);
     if (response.ok) {
       const data = await response.json();
@@ -103,28 +128,22 @@ export const validateToken = async (
   jwtToken: string
 ): Promise<ValidationData | undefined> => {
   try {
-    const response = await fetch(
-      `${BASE_URL_TEST}${JWT_ROUTE}/auth/validate&JWT=${jwtToken}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${jwtToken}`,
-          //   alg: "HS256",
-          //   typ: "JWT",
-          "cache-control": "no-cache",
-        },
-      }
-    );
-    console.log("Response received");
+    const response = await fetch(`${BASE_URL_TEST}${JWT_ROUTE}/auth/validate`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+        //   alg: "HS256",
+        //   typ: "JWT",
+        "cache-control": "no-cache",
+      },
+    });
+    console.log("Response received from authAPI");
     console.log("Response status:", response.status);
     if (response.ok) {
       console.log("Token is valid");
       const data = await response.json();
       console.log("Token validation response data:", data);
       // Handle successful token validation (e.g., navigate to another screen)
-      //   setTokenIsValid(true);
-      //   setValidationData(data); // TODO: Remove later? Set token/user data in Redux store?
-      //   setIsLoggedIn(true); // TODO: Move to login function
       return data; // Return validation data
     }
   } catch (error) {
