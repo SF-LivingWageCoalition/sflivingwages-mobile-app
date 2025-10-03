@@ -12,6 +12,7 @@ import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { AssistanceTabParamList } from "../../types/types";
+import appIcon from "../../../assets/icon.png";
 
 interface AssistanceHomeProps {
   navigation: NativeStackNavigationProp<AssistanceTabParamList>;
@@ -25,7 +26,7 @@ const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
           <View style={styles.logoContainer}>
             <Image
               style={styles.logo}
-              source={require("../../../assets/icon.png")}
+              source={appIcon}
             />
           </View>
           <Text style={styles.title}>

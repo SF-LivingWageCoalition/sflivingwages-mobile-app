@@ -14,6 +14,7 @@ import BulletItem from "../../components/lists/BulletItem";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
+import appIcon from "../../../assets/icon.png";
 
 const BeReadyForICE: React.FC = () => {
   const navigation = useNavigation();
@@ -48,7 +49,7 @@ const BeReadyForICE: React.FC = () => {
           <View style={styles.logoContainer}>
             <Image
               style={styles.logo}
-              source={require("../../../assets/icon.png")}
+              source={appIcon}
             />
           </View>
           <Text style={styles.title}>

@@ -21,6 +21,7 @@ import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { EmailOptions, RecaptchaRef } from "../../types/types";
+import appIcon from "../../../assets/icon.png";
 import { assistanceSchema } from "./assistanceSchema";
 
 const sendEmail = async (
@@ -185,7 +186,7 @@ const ReportViolation: React.FC = () => {
           <View style={styles.logoContainer}>
             <Image
               style={styles.logo}
-              source={require("../../../assets/icon.png")}
+              source={appIcon}
             />
           </View>
           <Text style={styles.intro}>{translate("assistScreen.title")}</Text>

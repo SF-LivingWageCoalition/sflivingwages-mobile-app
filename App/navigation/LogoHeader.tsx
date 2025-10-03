@@ -11,6 +11,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { LogoHeaderProps } from "../types/types";
+import sflwcLogo from "../assets/icons/sflwc_logo_finaltemp.png";
 
 const LogoHeader: React.FC<LogoHeaderProps> = ({ navigation }) => {
   // If navigation is not provided as a prop, use the useNavigation hook
@@ -19,7 +20,7 @@ const LogoHeader: React.FC<LogoHeaderProps> = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={() => nav.navigate("Home")}>
       <Image
-        source={require("../assets/icons/sflwc_logo_finaltemp.png")}
+        source={sflwcLogo}
         style={styles.logoHeaderImageStyle}
       />
     </TouchableWithoutFeedback>

@@ -15,6 +15,7 @@ import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import appIcon from "../../../assets/icon.png";
 
 const WageRights: React.FC = () => {
   const navigation = useNavigation();
@@ -48,7 +49,7 @@ const WageRights: React.FC = () => {
           <View style={styles.logoContainer}>
             <Image
               style={styles.logo}
-              source={require("../../../assets/icon.png")}
+              source={appIcon}
             />
           </View>
           <Text style={styles.title}>
