@@ -17,7 +17,18 @@ import { WebView } from "react-native-webview";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
-import { CarouselImageProps, NewHomeScreenProps } from "../../types";
+import { CarouselImageProps, NewHomeScreenProps } from "../../types/types";
+
+// Import images
+import campaign2Background from "../../assets/images/campaign2_background.jpg";
+import campaign3Background from "../../assets/images/campaign3_background.jpg";
+import encuentroImg from "../../assets/images/Encuentro_2017_021.jpg";
+import eventsSlide from "../../assets/images/events-slide.jpg";
+import fairtradeImg from "../../assets/images/fairtrade.jpg";
+import goldenGateBridge from "../../assets/images/golden-gate-bridge.png";
+import immigrantImg from "../../assets/images/immigrant.jpg";
+import publicSectorImg from "../../assets/images/public-sector.png";
+import welfareImg from "../../assets/images/welfare.jpg";
 
 const bodyPageWidth = Dimensions.get("window").width;
 
@@ -69,13 +80,13 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
     {
       id: 1,
       title: translate("donateScreen.title"),
-      src: require("../../assets/images/campaign2_background.jpg"),
+      src: campaign2Background,
       destination: "DONATE",
     },
     {
       id: 2,
       title: translate("eventsScreen.title"),
-      src: require("../../assets/images/events-slide.jpg"),
+      src: eventsSlide,
       destination: "EventsNavigator",
       destinationScreen: "EVENTS",
     },
@@ -85,39 +96,39 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
   const campaignImages = [
     {
       id: 1,
-      src: require("../../assets/images/welfare.jpg"),
+      src: welfareImg,
       title: "Transform Welfare",
       destination:
         "https://www.livingwage-sf.org/transform-welfare-to-work-programs/",
     },
     {
       id: 2,
-      src: require("../../assets/images/public-sector.png"),
+      src: publicSectorImg,
       title: "Protect Public Sector and Union Jobs",
       destination: "https://www.livingwage-sf.org/protect-public-sector-jobs/",
     },
     {
       id: 3,
-      src: require("../../assets/images/Encuentro_2017_021.jpg"),
+      src: encuentroImg,
       title: "End Mass Incarceration and Prison Labor",
       destination: "https://www.livingwage-sf.org/mass-incarceration/",
     },
     {
       id: 4,
-      src: require("../../assets/images/immigrant.jpg"),
+      src: immigrantImg,
       title: "Immigration Reform",
       destination: "https://www.livingwage-sf.org/immigration-reform/",
     },
     {
       id: 5,
-      src: require("../../assets/images/fairtrade.jpg"),
+      src: fairtradeImg,
       title: "Fair Trade",
       destination:
         "https://www.livingwage-sf.org/transform-welfare-to-work-programs/",
     },
     {
       id: 6,
-      src: require("../../assets/images/campaign3_background.jpg"),
+      src: campaign3Background,
       title: "Raise Wages",
       destination: "https://www.livingwage-sf.org/raising-wages/",
     },
@@ -129,7 +140,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
         {/* Top background section: Who we Are */}
         <View style={styles.topBackground}>
           <ImageBackground
-            source={require("../../assets/images/golden-gate-bridge.png")}
+            source={goldenGateBridge}
             style={styles.background}
           >
             <View style={styles.header}>

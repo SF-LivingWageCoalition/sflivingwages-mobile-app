@@ -11,7 +11,7 @@ import {
 import RNPickerSelect from "react-native-picker-select";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
-import { WageData } from "../../types";
+import { WageData } from "../../types/types";
 import wageDataRaw from "./livingwage.json";
 
 const wageData = wageDataRaw as WageData;

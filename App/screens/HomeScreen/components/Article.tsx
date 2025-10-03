@@ -9,7 +9,7 @@ import {
 import { Card, Divider, Text } from "react-native-elements";
 import { colors } from "../../../theme";
 import { textStyles } from "../../../theme/fontStyles";
-import { ArticleProps } from "../../../types";
+import { ArticleProps } from "../../../types/types";
 
 const Article: React.FC<ArticleProps> = ({ article }) => {
   const { title, description, publishedAt, source, urlToImage, url } = article;

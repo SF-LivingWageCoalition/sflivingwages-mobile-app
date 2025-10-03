@@ -6,7 +6,7 @@ import {
 import React from "react";
 import { Button } from "react-native";
 import { colors } from "../../../../theme";
-import { DetailParams, MyNavigationButtonProps } from "../../../../types";
+import { DetailParams, MyNavigationButtonProps } from "../../../../types/types";
 
 const MyNavigationButton: React.FC<MyNavigationButtonProps> = ({
   author,

@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { colors } from "../../../../theme";
 import { fontSize, fontWeight } from "../../../../theme/fontStyles";
-import { AuctionCardProps, PreviewScreenParams } from "../../../../types";
+import { AuctionCardProps, PreviewScreenParams } from "../../../../types/types";
 
 // Card Render
 const AuctionCard: React.FC<AuctionCardProps> = ({

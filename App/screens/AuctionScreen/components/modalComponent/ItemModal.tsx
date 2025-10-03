@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { ItemModalProps } from "../../../../types";
+import { ItemModalProps } from "../../../../types/types";
 import { colors } from "../../../../theme";
 import { fontSize, fontWeight } from "../../../../theme/fontStyles";
 

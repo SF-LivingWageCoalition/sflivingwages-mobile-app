@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import KeyboardSpacer from "react-native-keyboard-spacer";
 import { fontSize } from "../../../theme/fontStyles";
-import { CardData, ViewProps } from "../../../types";
+import { CardData, ViewProps } from "../../../types/types";
 import PaymentFormView from "./PaymentFormView";
 
 const AddSubscriptionView: React.FC<ViewProps> = ({

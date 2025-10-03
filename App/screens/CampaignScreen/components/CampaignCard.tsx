@@ -4,7 +4,7 @@ import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { colors } from "../../../theme";
 import { fontSize } from "../../../theme/fontStyles";
-import { CampaignCardProps } from "../../../types";
+import { CampaignCardProps } from "../../../types/types";
 
 const CampaignCard: React.FC<CampaignCardProps> = (props) => {
   const navigation = useNavigation<StackNavigationProp<any>>();

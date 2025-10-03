@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { colors } from "../../../theme";
 import { textStyles } from "../../../theme/fontStyles";
-import { CampaignTitleProps } from "../../../types";
+import { CampaignTitleProps } from "../../../types/types";
 
 const CampaignTitle: React.FC<CampaignTitleProps> = (props) => {
   const { title, url, navigation } = props;

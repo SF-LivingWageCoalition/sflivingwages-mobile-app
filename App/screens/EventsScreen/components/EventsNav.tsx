@@ -3,7 +3,7 @@ import React from "react";
 import { colors } from "../../../theme";
 import { fontWeight } from "../../../theme/fontStyles";
 import { translate } from "../../../translation/i18n";
-import { EventStackParamList } from "../../../types";
+import { EventStackParamList } from "../../../types/types";
 import EventDetails from "../EventDetails";
 import Events from "../EventsScreen";
 

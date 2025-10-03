@@ -10,7 +10,7 @@ import {
 import Accordion from "react-native-collapsible/Accordion";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
-import { DonateSection } from "../../types";
+import { DonateSection } from "../../types/types";
 
 const DonateScreen: React.FC = () => {
   const [activeSections, setActiveSections] = useState<number[]>([]);

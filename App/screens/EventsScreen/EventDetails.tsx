@@ -2,7 +2,7 @@ import { decode } from "html-entities";
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
-import { EventDetailsProps } from "../../types";
+import { EventDetailsProps } from "../../types/types";
 
 const EventDetails: React.FC<EventDetailsProps> = ({ route }) => {
   const { event } = route.params;

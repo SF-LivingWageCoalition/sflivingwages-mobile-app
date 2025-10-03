@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { textStyles } from "../../../theme/fontStyles";
-import { CommitteMemberProps } from "../../../types";
+import { CommitteMemberProps } from "../../../types/types";
 
 const CommitteeMember: React.FC<CommitteMemberProps> = ({ member }) => {
   return (

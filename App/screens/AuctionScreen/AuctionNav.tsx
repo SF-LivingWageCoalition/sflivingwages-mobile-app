@@ -2,7 +2,11 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import React, { useEffect, useState } from "react";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
-import { AuctionNavState, AuctionTabParamList, ProductItem } from "../../types";
+import {
+  AuctionNavState,
+  AuctionTabParamList,
+  ProductItem,
+} from "../../types/types";
 import { CustomTabBar } from "./components/CustomTabBar";
 import Arts from "./components/auctionSalesComponents/Arts";
 import Books from "./components/auctionSalesComponents/Books";

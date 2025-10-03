@@ -1,7 +1,7 @@
 import React from "react";
 import { ActivityIndicator, FlatList } from "react-native";
 import { colors } from "../../../../theme";
-import { LPsProps } from "../../../../types";
+import { LPsProps } from "../../../../types/types";
 import Card from "../cards/Card";
 
 const LPs: React.FC<LPsProps> = ({ lps, isLoading }) => {

@@ -10,7 +10,7 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
 } from "react-native";
-import { LogoHeaderProps } from "../types";
+import { LogoHeaderProps } from "../types/types";
 
 const LogoHeader: React.FC<LogoHeaderProps> = ({ navigation }) => {
   // If navigation is not provided as a prop, use the useNavigation hook

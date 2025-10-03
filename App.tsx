@@ -25,7 +25,7 @@ import WhoWeAre from "./App/screens/WhoWeAreScreen/WhoWeAreScreen";
 import { colors } from "./App/theme";
 import { fontFamily } from "./App/theme/fontStyles";
 import { translate } from "./App/translation/i18n";
-import { RootStackParamList } from "./App/types";
+import { RootStackParamList } from "./App/types/types";
 
 const Stack = createStackNavigator<RootStackParamList>();
 

@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { colors } from "../../../../theme";
 import { fontSize, fontWeight } from "../../../../theme/fontStyles";
-import { CardProps, PreviewScreenParams } from "../../../../types";
+import { CardProps, PreviewScreenParams } from "../../../../types/types";
 import ItemModal from "../modalComponent/ItemModal";
 
 const Card: React.FC<CardProps> = ({

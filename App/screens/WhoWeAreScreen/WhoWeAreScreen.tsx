@@ -4,7 +4,7 @@ import sflwcLogo from "../../assets/icons/sflwc_logo_finaltemp.png";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
-import { CommitteeMemberData } from "../../types";
+import { CommitteeMemberData } from "../../types/types";
 import CommitteeMember from "./components/CommitteeMember";
 
 /**

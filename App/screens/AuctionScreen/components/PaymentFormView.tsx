@@ -4,7 +4,7 @@ import { Button, StyleSheet, Text, View } from "react-native";
 import { CreditCardInput } from "react-native-credit-card-input";
 import { colors } from "../../../theme";
 import { fontSize, fontWeight } from "../../../theme/fontStyles";
-import { CardData, ViewProps } from "../../../types";
+import { CardData, ViewProps } from "../../../types/types";
 
 /**
  * Renders the payment form and handles the credit card data

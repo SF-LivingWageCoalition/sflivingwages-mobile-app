@@ -11,7 +11,7 @@ import {
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
-import { AssistanceTabParamList } from "../../types";
+import { AssistanceTabParamList } from "../../types/types";
 
 interface AssistanceHomeProps {
   navigation: NativeStackNavigationProp<AssistanceTabParamList>;

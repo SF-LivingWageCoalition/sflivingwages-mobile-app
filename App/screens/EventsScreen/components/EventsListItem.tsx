@@ -10,7 +10,7 @@ import {
 import { Paragraph, Title } from "react-native-paper";
 import { colors } from "../../../theme";
 import { textStyles } from "../../../theme/fontStyles";
-import { EventsListItemProps } from "../../../types";
+import { EventsListItemProps } from "../../../types/types";
 
 const { width } = Dimensions.get("window");
 

@@ -24,7 +24,7 @@ import {
   PhotosProps,
   PreviewScreenParams,
   TimeLeft,
-} from "../../../../types";
+} from "../../../../types/types";
 
 const Photos: React.FC<PhotosProps> = ({ photos }) => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();

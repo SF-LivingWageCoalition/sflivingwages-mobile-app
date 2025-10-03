@@ -20,7 +20,7 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
-import { EmailOptions, RecaptchaRef } from "../../types";
+import { EmailOptions, RecaptchaRef } from "../../types/types";
 import { assistanceSchema } from "./assistanceSchema";
 
 const sendEmail = async (
