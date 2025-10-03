@@ -1,17 +1,15 @@
 import {
   colors,
-  type ThemeColorsLight,
-  type ThemeColorsDark,
   type ColorPalette,
+  type ThemeColorsDark,
+  type ThemeColorsLight,
 } from "./colors";
 import {
-  fontSize,
-  fontWeight,
   fontFamily,
+  fontSize,
   textStyles,
-  type FontSize,
-  type FontWeight,
   type FontFamily,
+  type FontSize,
 } from "./fontStyles";
 
 // Theme interface
@@ -33,11 +31,11 @@ export const darkTheme: Theme = {
 
 // Export colors for direct access
 export { colors };
-export type { ThemeColorsLight, ThemeColorsDark, ColorPalette };
+export type { ColorPalette, ThemeColorsDark, ThemeColorsLight };
 
 // Export font styles for direct access
-export { fontSize, fontWeight, fontFamily, textStyles };
-export type { FontSize, FontWeight, FontFamily };
+export { fontFamily, fontSize, textStyles };
+export type { FontFamily, FontSize };
 
 // Default theme (you can change this based on your app's default)
 export const defaultTheme = lightTheme;
@@ -46,7 +44,6 @@ export const defaultTheme = lightTheme;
 export default {
   colors,
   fontSize,
-  fontWeight,
   fontFamily,
   textStyles,
   lightTheme,

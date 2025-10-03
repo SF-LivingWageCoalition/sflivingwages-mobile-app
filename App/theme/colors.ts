@@ -3,7 +3,7 @@
  */
 
 const palette = {
-  // Red shades (primary brand color) - 7 colors used
+  // Red shades (primary brand color)
   red100: "#fee2e2",
   red400: "#f87171",
   red500: "#ef4444",
@@ -12,7 +12,7 @@ const palette = {
   red800: "#b91c1c",
   red900: "#991b1b",
 
-  // Blue shades (secondary/accent color) - 7 colors used
+  // Blue shades (secondary/accent color)
   blue100: "#dbeafe",
   blue300: "#93c5fd",
   blue400: "#60a5fa",
@@ -22,7 +22,7 @@ const palette = {
   blue800: "#1e40af",
   blue900: "#1e3a8a",
 
-  // Gray shades (neutral colors) - 10 colors used
+  // Gray shades (neutral colors)
   gray50: "#f9fafb",
   gray100: "#f5f5f5", // Light background
   gray200: "#e5e7eb",
@@ -34,7 +34,7 @@ const palette = {
   gray800: "#333333", // Dark text
   gray900: "#111827",
 
-  // Yellow shades (warning/caution) - 5 colors used
+  // Yellow shades (warning/caution)
   yellow100: "#fef3c7",
   yellow400: "#fbbf24",
   yellow500: "#f59e0b",
@@ -111,18 +111,8 @@ const lightTheme = {
   onInfo: palette.white,
   onInfoContainer: palette.blue700,
 
-  // Interactive states
-  ripple: `${palette.gray500}20`, // 20% opacity
-  hover: `${palette.gray500}08`, // 8% opacity
-  focus: `${palette.red600}12`, // 12% opacity
-  pressed: `${palette.gray500}12`, // 12% opacity
-  selected: `${palette.red600}08`, // 8% opacity
-  disabled: palette.gray300,
-  disabledContainer: palette.gray100,
-
   // Shadow colors
   shadow: `${palette.black}15`, // 15% opacity
-  shadowLight: `${palette.black}08`, // 8% opacity
   elevation: `${palette.black}12`, // 12% opacity
 } as const;
 
@@ -192,7 +182,6 @@ const darkTheme = {
 
   // Shadow colors
   shadow: `${palette.black}40`, // 40% opacity
-  shadowLight: `${palette.black}20`, // 20% opacity
   elevation: `${palette.black}30`, // 30% opacity
 } as const;
 

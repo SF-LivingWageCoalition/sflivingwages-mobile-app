@@ -50,12 +50,9 @@ const App: React.FC = () => {
 
         // Debug: Log font loading status
         if (fontError) {
-          console.error("❌ Font loading error:", fontError);
+          console.error("Font loading error:", fontError);
         } else {
-          console.log("✅ Fonts loaded successfully!");
-          console.log(
-            "Available fonts: Roboto (Regular, Medium, Bold), Nunito (Regular, SemiBold, Bold)"
-          );
+          console.log("Fonts loaded successfully!");
         }
       }
     }

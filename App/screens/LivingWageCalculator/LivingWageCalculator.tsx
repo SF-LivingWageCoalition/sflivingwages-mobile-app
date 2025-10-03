@@ -1,8 +1,7 @@
+import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
-  Image,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,7 +9,6 @@ import {
   View,
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import IC_ARR_DOWN from "../../assets/icons/ic_arr_down.png";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 import { WageData } from "../../types";
@@ -96,13 +94,15 @@ const LivingWageCalculator: React.FC = () => {
                 ]}
                 placeholder={{}}
                 style={pickerSelectStyles}
-                Icon={
-                  Platform.OS === "ios"
-                    ? () => (
-                        <Image source={IC_ARR_DOWN} style={styles.arrowIcon} />
-                      )
-                    : undefined
-                }
+                Icon={() => {
+                  return (
+                    <FontAwesome5
+                      name="chevron-down"
+                      size={16}
+                      color={colors.light.textSecondary}
+                    />
+                  );
+                }}
               />
             </View>
           </View>
@@ -123,13 +123,15 @@ const LivingWageCalculator: React.FC = () => {
                 ]}
                 placeholder={{}}
                 style={pickerSelectStyles}
-                Icon={
-                  Platform.OS === "ios"
-                    ? () => (
-                        <Image source={IC_ARR_DOWN} style={styles.arrowIcon} />
-                      )
-                    : undefined
-                }
+                Icon={() => {
+                  return (
+                    <FontAwesome5
+                      name="chevron-down"
+                      size={16}
+                      color={colors.light.textSecondary}
+                    />
+                  );
+                }}
               />
             </View>
           </View>
@@ -291,13 +293,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light.background,
     overflow: "hidden",
   },
-  arrowIcon: {
-    width: 20,
-    height: 20,
-    position: "absolute",
-    right: 12,
-    top: 15,
-  },
   infoText: {
     fontWeight: fontWeight.semibold,
   },
@@ -317,6 +312,10 @@ const pickerSelectStyles = StyleSheet.create({
   placeholder: {
     color: colors.light.textDisabled,
     fontSize: fontSize.sm,
+  },
+  iconContainer: {
+    top: 17,
+    right: 15,
   },
 });
 

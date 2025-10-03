@@ -1,4 +1,4 @@
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import React, { useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { CreditCardInput } from "react-native-credit-card-input";
@@ -36,7 +36,7 @@ const PaymentFormView: React.FC<ViewProps> = ({
         {error && (
           <View style={styles.alertWrapper}>
             <View style={styles.alertIconWrapper}>
-              <FontAwesome
+              <FontAwesome5
                 name="exclamation-circle"
                 size={20}
                 style={{ color: colors.light.error }}

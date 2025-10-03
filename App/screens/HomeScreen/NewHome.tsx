@@ -5,9 +5,9 @@ import {
   Linking,
   ScrollView,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
-  Text,
 } from "react-native";
 import { Divider } from "react-native-elements";
 import { Card } from "react-native-paper";
@@ -15,7 +15,7 @@ import Swiper from "react-native-swiper/src";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { WebView } from "react-native-webview";
 import { colors } from "../../theme";
-import { fontSize, textStyles } from "../../theme/fontStyles";
+import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { CarouselImageProps, NewHomeScreenProps } from "../../types";
 
@@ -68,7 +68,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
   const mainSliderImages = [
     {
       id: 1,
-      title:  translate("donateScreen.title"),
+      title: translate("donateScreen.title"),
       src: require("../../assets/images/campaign2_background.jpg"),
       destination: "Donate",
     },
@@ -172,9 +172,9 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                     image={image}
                     key={image.id}
                     onPress={() => {
-                        navigation.navigate(image.destination, {
-                            screen: image.destinationScreen,
-                          });
+                      navigation.navigate(image.destination, {
+                        screen: image.destinationScreen,
+                      });
                     }}
                   />
                 ))}
@@ -316,18 +316,6 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() =>
-                  Linking.openURL("https://twitter.com/sflivingwage?lang=en/")
-                }
-                style={styles.buttonMargin}
-              >
-                <FontAwesome
-                  name="twitter"
-                  size={46}
-                  color={colors.light.secondary}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() =>
                   Linking.openURL(
                     "https://www.instagram.com/sflivingwage/?hl=en"
                   )
@@ -336,6 +324,18 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
               >
                 <FontAwesome
                   name="instagram"
+                  size={46}
+                  color={colors.light.primary}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  Linking.openURL("https://twitter.com/sflivingwage?lang=en/")
+                }
+                style={styles.buttonMargin}
+              >
+                <FontAwesome
+                  name="twitter"
                   size={46}
                   color={colors.light.secondary}
                 />
