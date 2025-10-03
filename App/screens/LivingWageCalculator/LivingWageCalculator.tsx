@@ -74,7 +74,11 @@ const LivingWageCalculator: React.FC = () => {
           style={styles.circleBackButton}
           onPress={() => navigation.goBack()}
         >
-          <Text style={styles.backArrow}>{"<"}</Text>
+          <FontAwesome5
+            name="chevron-left"
+            size={20}
+            color={colors.light.chevronLight}
+          />
         </TouchableOpacity>
         <View style={styles.card}>
           <Text style={styles.title}>LIVING WAGE CALCULATOR</Text>
@@ -252,11 +256,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-  },
-  backArrow: {
-    color: colors.light.textOnPrimary,
-    fontSize: fontSize.md,
-    fontWeight: fontWeight.medium,
   },
   card: {
     backgroundColor: colors.light.surface,

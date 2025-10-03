@@ -111,6 +111,9 @@ const lightTheme = {
   onInfo: palette.white,
   onInfoContainer: palette.blue700,
 
+  chevronLight: palette.white,
+  chevronDark: palette.black,
+
   // Shadow colors
   shadow: `${palette.black}15`, // 15% opacity
   elevation: `${palette.black}12`, // 12% opacity

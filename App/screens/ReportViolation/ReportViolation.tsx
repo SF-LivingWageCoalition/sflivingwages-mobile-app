@@ -16,6 +16,7 @@ import {
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import Recaptcha from "react-native-recaptcha-that-works";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
@@ -174,7 +175,11 @@ const ReportViolation: React.FC = () => {
           style={styles.circleBackButton}
           onPress={() => navigation.goBack()}
         >
-          <Text style={styles.backArrow}>{"<"}</Text>
+          <FontAwesome5
+            name="chevron-left"
+            size={20}
+            color={colors.light.chevronLight}
+          />
         </TouchableOpacity>
         <View style={styles.card}>
           <View style={styles.logoContainer}>
@@ -338,11 +343,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-  },
-  backArrow: {
-    color: colors.light.textOnPrimary,
-    fontSize: fontSize.lg,
-    fontWeight: fontWeight.bold,
   },
   intro: {
     marginLeft: 20,
