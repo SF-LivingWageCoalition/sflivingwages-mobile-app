@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   Image,
-  ImageSourcePropType,
   ScrollView,
   StyleSheet,
   Text,
@@ -16,9 +15,6 @@ import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-
-const IC_ARR_DOWN: ImageSourcePropType = require("../../assets/icons/ic_arr_down.png");
-const IC_ARR_UP: ImageSourcePropType = require("../../assets/icons/ic_arr_up.png");
 
 const WageRights: React.FC = () => {
   const navigation = useNavigation();
