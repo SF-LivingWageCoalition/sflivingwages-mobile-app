@@ -17,8 +17,8 @@ const Register: React.FC = () => {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const consumerKey = "ck_6d1c6dbe7375c9c6bbd4ec4ae76435657b02ea0f"; // WooCommerce Consumer Key (read/write)
-  const consumerSecret = "cs_f3e3af1864b234c83e62e375bdb61f5d8b2c3834"; // WooCommerce Consumer Secret (read/write)
+  const consumerKey = "ck_3bab6ef08070db9a9644d0fbe68d9d092d892980"; // Test:WPMockup.xyz - WooCommerce Consumer Key (read/write)
+  const consumerSecret = "cs_9c65d16a588d4892f62f2b858e02eb6cc9839b74"; // Test:WPMockup.xyz - WooCommerce Consumer Secret (read/write)
   const base64Credentials = btoa(`${consumerKey}:${consumerSecret}`);
 
   const jwtAuthKey = "SomeAuthKey!";
