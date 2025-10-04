@@ -25,16 +25,8 @@ const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  // const [authenticationData, setAuthenticationData] = useState<any>(null);
-  // const [token, setToken] = useState<any>(null);
-  // const [tokenIsValid, setTokenIsValid] = useState<boolean>(false);
-  // const [validationData, setValidationData] = useState<any>(null);
-
   const onSubmit = () => {
     // Do login logic here
-    console.log(
-      `Trying to login user with email: '${userEmail}' and password: '${userPassword}'`
-    );
     // Basic validation
     const newErrors: { [key: string]: string } = {};
     if (!userEmail) {
@@ -47,6 +39,9 @@ const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
 
     if (Object.keys(newErrors).length === 0) {
       // No errors, proceed with login
+      console.log(
+        `Trying to login user with email: '${userEmail}' and password: '${userPassword}'`
+      );
       loginUser(userEmail, userPassword);
     }
   };
@@ -56,29 +51,9 @@ const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
     const tokenData = await fetchToken(email, password); // TODO: .then? try/catch?
     if (tokenData && tokenData.data) {
       const validationData = await validateToken(tokenData.data.jwt);
-      if (validationData && validationData.success) {
+      if (validationData && validationData.success && validationData.data) {
         console.log("Login successful");
-        if (validationData.data) {
-          dispatch(setUser(validationData.data)); // Set user data in Redux store
-        }
-        // } else {
-        //   // Provide a default DataState object if validation.data is undefined
-        //   dispatch(
-        //     setUser({
-        //       user: {
-        //         ID: "0",
-        //         user_login: "",
-        //         user_nicename: "",
-        //         user_email: "",
-        //         user_url: "",
-        //         user_registered: "",
-        //         user_activation_key: "",
-        //         user_status: "",
-        //         display_name: "",
-        //       },
-        //     })
-        //   );
-        // }
+        dispatch(setUser(validationData.data)); // Set user data in Redux store
         navigation.goBack();
       } else {
         console.log("Login failed");

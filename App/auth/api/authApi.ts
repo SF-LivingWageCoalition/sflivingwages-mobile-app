@@ -22,6 +22,11 @@ import { clearUser } from "../../redux/features/userSlice/userSlice";
  *
  */
 
+/**
+ * Configuration Constants
+ * These constants are used for API requests and authentication.
+ */
+
 // Base URLs for the API
 const BASE_URL = "https://www.livingwage-sf.org"; // Base URL for the API
 const BASE_URL_TEST = "https://www.wpmockup.xyz"; // Test:WPMockup.xyz - Base URL for the API
@@ -46,6 +51,11 @@ const base64Credentials = btoa(`${consumerKey}:${consumerSecret}`); // SFLWC - B
 const consumerKeyTest = "ck_3bab6ef08070db9a9644d0fbe68d9d092d892980"; // Test:WPMockup.xyz - WooCommerce Consumer Key (read/write)
 const consumerSecretTest = "cs_9c65d16a588d4892f62f2b858e02eb6cc9839b74"; // Test:WPMockup.xyz - WooCommerce Consumer Secret (read/write)
 const base64CredentialsTest = btoa(`${consumerKeyTest}:${consumerSecretTest}`); // Test:WPMockup.xyz - Base64 encoded credentials
+
+/**
+ * Type Definitions
+ * These types define the structure of data returned by the API.
+ */
 
 // Define the structure of the token data returned by the API
 type TokenData = {
@@ -94,7 +104,9 @@ type ValidationData = {
   error?: string;
 };
 
-// API functions for authentication (fetching and validating JWT tokens)
+/**
+ * API functions for authentication (fetching and validating JWT tokens)
+ */
 
 // Fetch JWT Token (Authenticate)
 export const fetchToken = async (
@@ -102,6 +114,7 @@ export const fetchToken = async (
   password: string
 ): Promise<TokenData | undefined> => {
   try {
+    console.log("fetchToken called from authAPI");
     const response = await fetch(
       `${BASE_URL_TEST}${JWT_ROUTE}/auth&email=${email}&password=${password}&AUTH_KEY=${JWT_AUTH_KEY}`,
       {
@@ -110,12 +123,18 @@ export const fetchToken = async (
       }
     );
     console.log("Response received from authAPI");
-    console.log("Response status:", response.status);
+    // console.log("Response status:", response.status);
     if (response.ok) {
       const data = await response.json();
+      console.log("Token fetch succeeded with status:", response.status);
       console.log("Token fetch response data:", data);
       // Handle successful token fetch (e.g., store token, navigate to another screen)
       return data; // Return token data
+    } else {
+      const data = await response.json();
+      console.log("Token fetch failed with status:", response.status);
+      console.error("Error code:", data.data.errorCode);
+      console.error("Error message:", data.data.message);
     }
   } catch (error) {
     console.error("Error fetching token:", error);
@@ -128,6 +147,7 @@ export const validateToken = async (
   jwtToken: string
 ): Promise<ValidationData | undefined> => {
   try {
+    console.log("validateToken called from authAPI");
     const response = await fetch(`${BASE_URL_TEST}${JWT_ROUTE}/auth/validate`, {
       method: "POST",
       headers: {
@@ -138,13 +158,19 @@ export const validateToken = async (
       },
     });
     console.log("Response received from authAPI");
-    console.log("Response status:", response.status);
+    // console.log("Response status:", response.status);
     if (response.ok) {
-      console.log("Token is valid");
       const data = await response.json();
+      console.log("Token validation succeeded with status:", response.status);
+      console.log("Token is valid");
       console.log("Token validation response data:", data);
       // Handle successful token validation (e.g., navigate to another screen)
       return data; // Return validation data
+    } else {
+      const data = await response.json();
+      console.log("Token validation failed with status:", response.status);
+      console.error("Error code:", data.data.errorCode);
+      console.error("Error message:", data.data.message);
     }
   } catch (error) {
     console.error("Error validating token:", error);
