@@ -1,17 +1,22 @@
 {
   "expo": {
     "name": "sflivingwages",
-    "slug": "sflw",
-    "privacy": "public",
-    "platforms": ["ios", "android"],
+    "slug": "sflivingwages",
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "version": "11.0.4",
     "orientation": "portrait",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "icon": "./assets/icon.png",
-      "bundleIdentifier": "com.sfLiving.sflivingwages",
-      "buildNumber": "2.0.1"
+      "bundleIdentifier": "com.sfLiving.sflivingwagecoalition",
+      "buildNumber": "2.0.1",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -20,15 +25,13 @@
       },
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
-        "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION"
       ],
-      "package": "com.sfLiving.sflivingwagesappbeta",
+      "package": "com.sfLiving.sflivingwagecoalition",
       "versionCode": 17,
       "config": {
         "googleMaps": {
-          "apiKey": "process.env.GOOGLE_MAPS_API_KEY"
+          "apiKey": "AIzaSyBcSOCMtEqgq_trGUDsHXvtPhKMoFd_coA"
         }
       }
     },
@@ -43,9 +46,11 @@
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/90d63262-40d7-4c1f-907d-8fa839d6e0ff"
+      "url": "https://u.expo.dev/f954fbe3-2740-4a48-8bda-2600b68a699e"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "plugins": [
       "expo-localization",
       [
@@ -54,15 +59,19 @@
           "requestLocationPermission": true,
           "locationPermission": "Allow $(PRODUCT_NAME) to use your location"
         }
-      ]
+      ],
+      "expo-asset",
+      "expo-font",
+      "expo-web-browser"
     ],
     "extra": {
       "eas": {
-        "projectId": "90d63262-40d7-4c1f-907d-8fa839d6e0ff"
+        "projectId": "f954fbe3-2740-4a48-8bda-2600b68a699e"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
-    }
+    },
+    "owner": "phone-app"
   }
 }
