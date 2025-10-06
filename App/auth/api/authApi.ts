@@ -128,10 +128,32 @@ export const fetchToken = async (
       const data = await response.json();
       console.log("Token fetch succeeded with status:", response.status);
       console.log("Token fetch response data:", data);
+      /**
+       * Token fetch response data:
+       * {
+       *  "data":
+       *    {
+       *      "jwt": "eyJ0e...",
+       *    },
+       *  "success": true
+       * }
+       */
       // Handle successful token fetch (e.g., store token, navigate to another screen)
       return data; // Return token data
     } else {
       const data = await response.json();
+      console.log("Response data from failed token fetch:", data);
+      /**
+       * Token fetch response data (using wrong password):
+       * {
+       *  "data":
+       *   {
+       *    "errorCode": 48,
+       *    "message": "Wrong user credentials"
+       *  },
+       * "success": false
+       * }
+       */
       console.log("Token fetch failed with status:", response.status);
       console.error("Error code:", data.data.errorCode);
       console.error("Error message:", data.data.message);
@@ -164,6 +186,29 @@ export const validateToken = async (
       console.log("Token validation succeeded with status:", response.status);
       console.log("Token is valid");
       console.log("Token validation response data:", data);
+      /**
+       * Token validation response data:
+       * {
+       *  "data":
+       *    {
+       *      "jwt": [[Object]],
+       *      "roles": ["customer"],
+       *      "user":
+       *        {
+       *          "ID": "31",
+       *          "display_name": "tosspot@scottmotion.com",
+       *          "user_activation_key": "",
+       *          "user_email": "tosspot@scottmotion.com",
+       *          "user_login": "tosspot@scottmotion.com",
+       *          "user_nicename": "tosspotscottmotion-com",
+       *          "user_registered": "2025-10-06 01:46:52",
+       *          "user_status": "0",
+       *          "user_url": ""
+       *        }
+       *    },
+       *  "success": true
+       * }
+       */
       // Handle successful token validation (e.g., navigate to another screen)
       return data; // Return validation data
     } else {

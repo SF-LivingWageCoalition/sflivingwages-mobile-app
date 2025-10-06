@@ -47,7 +47,32 @@ const ForgotPassword: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         console.log("Forgot password response data:", data);
+        /**
+         * Forgot password response data:
+         * {
+         *  "message": "Reset password email has been sent.",
+         *  "success": true
+         * }
+         */
         // Handle successful password reset (e.g., show a confirmation message)
+      } else {
+        const data = await response.json();
+        console.log("Forgot password response data:", data);
+        /**
+         * Forgot password response data (using wrong password):
+         * {
+         *  "data":
+         *    {
+         *      "errorCode": 64,
+         *      "message": "Wrong user."
+         *    },
+         *  "success": false
+         * }
+         */
+        console.log("Forgot password failed with status:", response.status);
+        console.error("Error code:", data.data.errorCode);
+        console.error("Error message:", data.data.message);
+        // Handle failed password reset (e.g., show an error message)
       }
     } catch (error) {
       console.error("Error sending password reset email:", error);

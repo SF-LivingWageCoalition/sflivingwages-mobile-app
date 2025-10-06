@@ -58,9 +58,41 @@ const Register: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         console.log("Registration response data:", data);
+        /**
+         * Registration response data:
+         * {
+         *  "id": "31",
+         *  "message": "User was successfully created.",
+         *  "roles": ["customer"],
+         *  "success": true,
+         *  "user": {
+         *    "ID": "31",
+         *    "display_name": "tosspot@scottmotion.com",
+         *    "user_activation_key": "",
+         *    "user_email": "tosspot@scottmotion.com",
+         *    "user_level": 0,
+         *    "user_login": "tosspot@scottmotion.com",
+         *    "user_nicename": "tosspotscottmotion-com",
+         *    "user_registered": "2025-10-06 01:46:52",
+         *    "user_status": "0",
+         *    "user_url": ""
+         *  }
+         * }
+         */
         // Handle successful registration (e.g., navigate to login, show success message)
       } else {
         const data = await response.json();
+        console.log("Registration response data:", data);
+        /**
+         * Registration response data (using existing email):
+         * {
+         *  "data": {
+         *    "errorCode": 38,
+         *    "message": "User already exists."
+         *  },
+         *  "success": false
+         * }
+         */
         console.error("Registration failed with status:", response.status);
         console.error("Error code:", data.data.errorCode);
         console.error("Error message:", data.data.message);
