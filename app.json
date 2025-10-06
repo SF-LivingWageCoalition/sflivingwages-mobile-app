@@ -2,10 +2,6 @@
   "expo": {
     "name": "sflivingwages",
     "slug": "sflivingwages",
-    "platforms": [
-      "ios",
-      "android"
-    ],
     "version": "11.0.4",
     "orientation": "portrait",
     "newArchEnabled": true,
@@ -31,7 +27,7 @@
       "versionCode": 17,
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyBcSOCMtEqgq_trGUDsHXvtPhKMoFd_coA"
+          "apiKey": "process.env.GOOGLE_MAPS_API_KEY"
         }
       }
     },
@@ -48,9 +44,7 @@
       "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/f954fbe3-2740-4a48-8bda-2600b68a699e"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "plugins": [
       "expo-localization",
       [
