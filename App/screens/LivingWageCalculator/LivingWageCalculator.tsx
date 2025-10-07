@@ -169,7 +169,7 @@ style={styles.submitButton}
                 ${calculationResult.livingWage.toFixed(2)} /hour/adult
               </Text>
             </Text>
-            <Text style={[textStyles.body, { marginTop: 10 }]}>
+            <Text style={styles.monthlyTotalText}>
               Monthly total:{" "}
               <Text style={styles.infoText}>
                 ${formatNumber(calculationResult.totalMonthly)}
@@ -181,7 +181,7 @@ style={styles.submitButton}
                 ${formatNumber(calculationResult.totalAnnual)}
               </Text>
             </Text>
-            <View style={{ marginTop: 16 }}>
+            <View style={styles.breakdownContainer}>
               <Text style={styles.breakdownTitle}
               >
                 Breakdown:
@@ -294,14 +294,21 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   infoText: {
+    ...textStyles.body,
     fontFamily: fontFamily.bodyBold,
+  },
+  monthlyTotalText: {
+    ...textStyles.body,
+    marginTop: 10,
+  },
+  breakdownContainer: {
+    marginTop: 16,
   },
 });
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     height: 50,
-    width: "100%",
     paddingHorizontal: 12,
     borderWidth: 0,
     borderRadius: 8,

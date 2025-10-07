@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   linkText: {
+    ...textStyles.body,
     paddingTop: 6,
     paddingLeft: 20,
     height: 30,

@@ -1,6 +1,7 @@
 import * as WebBrowser from "expo-web-browser";
 import React, { JSX, useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
+import { textStyles } from "../../../../theme/fontStyles";
 import { WebBrowserResult } from "../../../../types/types";
 
 export default function WebView(): JSX.Element {
@@ -14,7 +15,7 @@ export default function WebView(): JSX.Element {
   return (
     <View style={styles.container}>
       <Button title="Open WebBrowser" onPress={_handlePressButtonAsync} />
-      <Text>{result && JSON.stringify(result)}</Text>
+      <Text style={textStyles.body}>{result && JSON.stringify(result)}</Text>
     </View>
   );
 }

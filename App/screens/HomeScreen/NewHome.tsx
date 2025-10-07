@@ -139,10 +139,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
       <View style={styles.container}>
         {/* Top background section: Who we Are */}
         <View style={styles.topBackground}>
-          <ImageBackground
-            source={goldenGateBridge}
-            style={styles.background}
-          >
+          <ImageBackground source={goldenGateBridge} style={styles.background}>
             <View style={styles.header}>
               <Text style={styles.imageTitle}>
                 {translate("whoWeAreHeader.title")}
@@ -195,9 +192,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
 
           {/* Campaigns section */}
           <View style={styles.containerBody}>
-            <Text style={{ ...styles.titles, marginTop: 12, marginBottom: 30 }}>
-              Campaigns
-            </Text>
+            <Text style={styles.campaignsTitle}>Campaigns</Text>
             <Swiper
               style={styles.swiperHigher}
               showsButtons
@@ -426,6 +421,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     alignContent: "center",
+  },
+  campaignsTitle: {
+    ...textStyles.h2,
+    lineHeight: 35,
+    marginTop: 12,
+    marginBottom: 30,
   },
   buttonView: {
     marginLeft: 23,

@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     color: colors.light.textSecondary,
   },
   featuredTitleStyle: {
+    ...textStyles.h3,
     marginHorizontal: 5,
     textShadowColor: colors.light.shadow,
     textShadowOffset: { width: 3, height: 3 },

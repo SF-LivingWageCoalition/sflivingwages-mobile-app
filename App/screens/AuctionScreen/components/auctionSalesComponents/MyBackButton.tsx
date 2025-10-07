@@ -6,7 +6,7 @@ import {
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { colors } from "../../../../theme";
-import { fontSize } from "../../../../theme/fontStyles";
+import { textStyles } from "../../../../theme/fontStyles";
 
 const MyBackButton = () => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: colors.light.primary,
-    fontSize: fontSize.md,
+    ...textStyles.bodyLarge,
   },
 });
 
