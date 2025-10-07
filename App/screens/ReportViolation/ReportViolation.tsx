@@ -17,11 +17,11 @@ import {
 import { CheckBox } from "react-native-elements";
 import Recaptcha from "react-native-recaptcha-that-works";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import appIcon from "../../../assets/icon.png";
 import { colors } from "../../theme";
 import { fontFamily, textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { EmailOptions, RecaptchaRef } from "../../types/types";
-import appIcon from "../../../assets/icon.png";
 import { assistanceSchema } from "./assistanceSchema";
 
 const sendEmail = async (
@@ -184,10 +184,7 @@ const ReportViolation: React.FC = () => {
         </TouchableOpacity>
         <View style={styles.card}>
           <View style={styles.logoContainer}>
-            <Image
-              style={styles.logo}
-              source={appIcon}
-            />
+            <Image style={styles.logo} source={appIcon} />
           </View>
           <Text style={styles.intro}>{translate("assistScreen.title")}</Text>
           <Text style={styles.instruction}>

@@ -8,11 +8,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import appIcon from "../../../assets/icon.png";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { AssistanceTabParamList } from "../../types/types";
-import appIcon from "../../../assets/icon.png";
 
 interface AssistanceHomeProps {
   navigation: NativeStackNavigationProp<AssistanceTabParamList>;
@@ -24,10 +24,7 @@ const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
       <View style={styles.container}>
         <View style={styles.card}>
           <View style={styles.logoContainer}>
-            <Image
-              style={styles.logo}
-              source={appIcon}
-            />
+            <Image style={styles.logo} source={appIcon} />
           </View>
           <Text style={styles.title}>
             {translate("assistHomeScreen.title")}

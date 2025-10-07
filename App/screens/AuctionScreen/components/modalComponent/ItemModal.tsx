@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { ItemModalProps } from "../../../../types/types";
 import { colors } from "../../../../theme";
 import { textStyles } from "../../../../theme/fontStyles";
+import { ItemModalProps } from "../../../../types/types";
 
 const ItemModal: React.FC<ItemModalProps> = ({ description, title }) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
