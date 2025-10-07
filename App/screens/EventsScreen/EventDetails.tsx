@@ -1,7 +1,7 @@
 import { decode } from "html-entities";
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { fontFamily, textStyles } from "../../theme/fontStyles";
 import { EventDetailsProps } from "../../types/types";
 
 const EventDetails: React.FC<EventDetailsProps> = ({ route }) => {
@@ -83,8 +83,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   eventTitle: {
-    fontSize: fontSize.xl,
-    fontWeight: fontWeight.bold,
+    ...textStyles.h2,
     textAlign: "center",
     marginBottom: 12,
   },
@@ -93,20 +92,20 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   dateText: {
-    fontSize: fontSize.md,
-    fontWeight: fontWeight.bold,
+    ...textStyles.bodyLarge,
+    fontFamily: fontFamily.bodyBold,
     marginBottom: 12,
   },
   venueWrapper: {},
   venueText: {
-    fontSize: fontSize.sm,
+    ...textStyles.body,
     textAlign: "center",
   },
   descriptionWrapper: {
     marginBottom: 12,
   },
   descriptionText: {
-    fontSize: fontSize.md,
+    ...textStyles.bodyLarge,
   },
 });
 

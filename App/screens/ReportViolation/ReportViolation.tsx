@@ -18,7 +18,7 @@ import { CheckBox } from "react-native-elements";
 import Recaptcha from "react-native-recaptcha-that-works";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { colors } from "../../theme";
-import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { fontFamily, textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { EmailOptions, RecaptchaRef } from "../../types/types";
 import appIcon from "../../../assets/icon.png";
@@ -254,6 +254,7 @@ const ReportViolation: React.FC = () => {
               <CheckBox
                 key={index}
                 title={assist}
+                textStyle={{ fontFamily: fontFamily.body }}
                 checkedColor={colors.light.primary} // or change to green
                 checked={isChecked[index]}
                 onPress={() => handledState(index, assist)}
@@ -346,14 +347,17 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
   intro: {
+    ...textStyles.h3,
     marginLeft: 20,
     marginTop: 10,
   },
   instruction: {
+    ...textStyles.body,
     marginLeft: 20,
     marginBottom: 20,
   },
   inputName: {
+    ...textStyles.label,
     marginLeft: 10,
   },
   card: {
@@ -378,8 +382,7 @@ const styles = StyleSheet.create({
   },
   requiredField: {
     color: colors.light.primary,
-    fontSize: fontSize.sm,
-    fontWeight: fontWeight.bold,
+    fontFamily: fontFamily.bodyBold,
   },
   submitButton: {
     backgroundColor: colors.light.surface,
@@ -403,8 +406,7 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   recaptchaMessage: {
-    fontSize: fontSize.xs,
-    fontWeight: fontWeight.semibold,
+    ...textStyles.caption,
     textAlign: "center",
     color: colors.light.primary,
   },
@@ -419,19 +421,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   submitButtonText: {
+    ...textStyles.button,
     color: colors.light.primary,
-    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
   inputContainer: {
     margin: 12,
   },
   submitionInfo: {
+    ...textStyles.caption,
     marginTop: 12,
     textAlign: "center",
-    // fontWeight: '900',
     fontStyle: "italic",
-    fontSize: fontSize.xxs,
     color: colors.light.primary,
   },
   recaptchaButton: {
@@ -444,8 +445,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   recaptchaText: {
+    ...textStyles.button,
     color: colors.light.textOnSecondary,
-    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
   headerComponentView: {
@@ -456,8 +457,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light.primary,
   },
   inputError: {
+    ...textStyles.caption,
     color: colors.light.error,
-    fontSize: fontSize.xxs,
     marginLeft: 10,
     marginTop: 2,
   },

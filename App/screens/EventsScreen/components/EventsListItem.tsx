@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Paragraph, Title } from "react-native-paper";
 import { colors } from "../../../theme";
-import { textStyles } from "../../../theme/fontStyles";
+import { fontFamily, textStyles } from "../../../theme/fontStyles";
 import { EventsListItemProps } from "../../../types/types";
 
 const { width } = Dimensions.get("window");
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   },
   monthText: {
     ...textStyles.body,
-    fontWeight: "700",
+    fontFamily: fontFamily.bodyBold,
     color: colors.light.textSecondary,
     textAlign: "center",
   },
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   timeText: {
     ...textStyles.bodySmall,
-    fontWeight: "700",
+    fontFamily: fontFamily.bodyBold,
   },
 });
 

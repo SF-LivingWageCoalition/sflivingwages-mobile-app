@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { ItemModalProps } from "../../../../types/types";
 import { colors } from "../../../../theme";
-import { fontSize, fontWeight } from "../../../../theme/fontStyles";
+import { textStyles } from "../../../../theme/fontStyles";
 
 const ItemModal: React.FC<ItemModalProps> = ({ description, title }) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -77,25 +77,23 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light.primary,
   },
   titleText: {
+    ...textStyles.h3,
     padding: 10,
-    fontSize: fontSize.lg,
     color: colors.light.textPrimary,
-    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
   textStyleOpen: {
+    ...textStyles.buttonSmall,
     color: colors.light.textPrimary,
-    fontWeight: fontWeight.bold,
   },
   textStyleClose: {
+    ...textStyles.button,
     color: colors.light.textOnPrimary,
-    fontWeight: fontWeight.bold,
     textAlign: "center",
-    fontSize: fontSize.lg,
   },
   modalText: {
+    ...textStyles.bodyLarge,
     marginBottom: 15,
-    fontSize: fontSize.md,
   },
 });
 

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { colors } from "../../theme";
-import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { fontFamily, textStyles } from "../../theme/fontStyles";
 import { WageData } from "../../types/types";
 import wageDataRaw from "./livingwage.json";
 
@@ -141,91 +141,63 @@ const LivingWageCalculator: React.FC = () => {
           </View>
 
           <TouchableOpacity
-            style={{
-              backgroundColor: colors.light.primary,
-              padding: 16,
-              borderRadius: 12,
-              alignItems: "center",
-              width: "100%",
-            }}
+style={styles.submitButton}
             onPress={handleSubmit}
           >
-            <Text
-              style={{
-                color: colors.light.textOnPrimary,
-                fontWeight: fontWeight.semibold,
-                fontSize: fontSize.md,
-              }}
+            <Text style={styles.submitButtonText}
             >
               Submit
             </Text>
           </TouchableOpacity>
         </View>
         {calculationResult && (
-          <View
-            style={{
-              backgroundColor: colors.light.background,
-              borderRadius: 12,
-              padding: 20,
-              marginTop: 32,
-              shadowColor: colors.light.shadow,
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.08,
-              shadowRadius: 8,
-              elevation: 2,
-            }}
+          <View style={styles.resultsCard}
           >
-            <Text
-              style={{
-                fontWeight: fontWeight.semibold,
-                fontSize: fontSize.md,
-                marginBottom: 12,
-              }}
+            <Text style={styles.resultsTitle}
             >
               Results
             </Text>
-            <Text>
+            <Text style={textStyles.body}>
               Poverty wage:{" "}
               <Text style={styles.infoText}>
                 ${calculationResult.povertyWage} /hour/adult
               </Text>
             </Text>
-            <Text>
+            <Text style={textStyles.body}>
               Living wage:{" "}
               <Text style={styles.infoText}>
                 ${calculationResult.livingWage.toFixed(2)} /hour/adult
               </Text>
             </Text>
-            <Text style={{ marginTop: 10 }}>
+            <Text style={[textStyles.body, { marginTop: 10 }]}>
               Monthly total:{" "}
               <Text style={styles.infoText}>
                 ${formatNumber(calculationResult.totalMonthly)}
               </Text>
             </Text>
-            <Text>
+            <Text style={textStyles.body}>
               Annual total:{" "}
               <Text style={styles.infoText}>
                 ${formatNumber(calculationResult.totalAnnual)}
               </Text>
             </Text>
             <View style={{ marginTop: 16 }}>
-              <Text
-                style={{ fontWeight: fontWeight.semibold, marginBottom: 4 }}
+              <Text style={styles.breakdownTitle}
               >
                 Breakdown:
               </Text>
-              <Text>Housing: ${formatNumber(calculationResult.housing)}</Text>
-              <Text>Food: ${formatNumber(calculationResult.food)}</Text>
-              <Text>
+              <Text style={textStyles.body}>Housing: ${formatNumber(calculationResult.housing)}</Text>
+              <Text style={textStyles.body}>Food: ${formatNumber(calculationResult.food)}</Text>
+              <Text style={textStyles.body}>
                 Childcare: ${formatNumber(calculationResult.childcare)}
               </Text>
-              <Text>Medical: ${formatNumber(calculationResult.medical)}</Text>
-              <Text>
+              <Text style={textStyles.body}>Medical: ${formatNumber(calculationResult.medical)}</Text>
+              <Text style={textStyles.body}>
                 Transportation: $
                 {formatNumber(calculationResult.transportation)}
               </Text>
-              <Text>Other: ${formatNumber(calculationResult.other)}</Text>
-              <Text>Taxes: ${formatNumber(calculationResult.taxes)}</Text>
+              <Text style={textStyles.body}>Other: ${formatNumber(calculationResult.other)}</Text>
+              <Text style={textStyles.body}>Taxes: ${formatNumber(calculationResult.taxes)}</Text>
             </View>
           </View>
         )}
@@ -257,6 +229,28 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
+  submitButton: {
+    backgroundColor: colors.light.primary,
+    padding: 16,
+    borderRadius: 12,
+    alignItems: "center",
+    width: "100%",
+  },
+  submitButtonText: {
+    color: colors.light.textOnPrimary,
+    ...textStyles.button,
+  },
+  resultsCard: {
+    backgroundColor: colors.light.background,
+    borderRadius: 12,
+    padding: 20,
+    marginTop: 32,
+    shadowColor: colors.light.shadow,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 2,
+  },
   card: {
     backgroundColor: colors.light.surface,
     borderRadius: 10,
@@ -277,13 +271,20 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   title: {
-    fontSize: fontSize.md,
-    fontWeight: fontWeight.semibold,
+    ...textStyles.h3,
     textAlign: "right",
   },
   numInHousehold: {
-    fontWeight: fontWeight.semibold,
+    ...textStyles.label,
     marginBottom: 8,
+  },
+  resultsTitle: {
+    ...textStyles.label,
+    marginBottom: 12,
+  },
+  breakdownTitle: {
+    ...textStyles.label,
+    marginBottom: 4,
   },
   inputContainer: {
     borderWidth: 1,
@@ -293,7 +294,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   infoText: {
-    fontWeight: fontWeight.semibold,
+    fontFamily: fontFamily.bodyBold,
   },
 });
 
@@ -306,11 +307,11 @@ const pickerSelectStyles = StyleSheet.create({
     borderRadius: 8,
     color: colors.light.textPrimary,
     backgroundColor: colors.light.background,
-    fontSize: fontSize.sm,
+    ...textStyles.body,
   },
   placeholder: {
     color: colors.light.textDisabled,
-    fontSize: fontSize.sm,
+    ...textStyles.body,
   },
   iconContainer: {
     top: 17,

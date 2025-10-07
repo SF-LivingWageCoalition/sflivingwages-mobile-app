@@ -13,10 +13,9 @@ import {
   View,
 } from "react-native";
 import { colors } from "../../../../theme";
-import { fontSize, fontWeight } from "../../../../theme/fontStyles";
+import { textStyles } from "../../../../theme/fontStyles";
 import { AuctionCardProps, PreviewScreenParams } from "../../../../types/types";
 
-// Card Render
 const AuctionCard: React.FC<AuctionCardProps> = ({
   name,
   description,
@@ -25,7 +24,6 @@ const AuctionCard: React.FC<AuctionCardProps> = ({
   image,
   previewImage,
 }) => {
-  // Get navigation
   const navigate = useNavigation<NavigationProp<ParamListBase>>();
 
   // Regular expression to remove HTML tags and entities
@@ -35,7 +33,6 @@ const AuctionCard: React.FC<AuctionCardProps> = ({
   const cleanDescription = description.replace(rgex, "");
   const cleanName = name.replace(rgex, "");
 
-  // Calculate the price
   const itemPrice = +price / 100;
 
   return (
@@ -51,11 +48,11 @@ const AuctionCard: React.FC<AuctionCardProps> = ({
         >
           <Image style={styles.imageStyle} source={{ uri: image }} />
         </TouchableOpacity>
-        <Text>tap picture to enlarge</Text>
+        <Text style={textStyles.caption}>tap picture to enlarge</Text>
         <View style={styles.horizontalLine} />
         <View>
-          <Text>{cleanDescription}</Text>
-          <Text>${itemPrice}</Text>
+          <Text style={textStyles.body}>{cleanDescription}</Text>
+          <Text style={textStyles.body}>${itemPrice}</Text>
         </View>
         {/* Product Individual page link */}
         <View style={styles.submitButtonContainer}>
@@ -78,9 +75,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cardTitle: {
+    ...textStyles.h3,
     textAlign: "center",
-    fontWeight: fontWeight.bold,
-    fontSize: fontSize.md,
     margin: 5,
   },
   cardImage: {
@@ -123,8 +119,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   submitButtonText: {
+    ...textStyles.button,
     color: colors.light.textOnPrimary,
-    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
 });

@@ -148,13 +148,6 @@ export type PhotosProps = {
   photos: PhotoItem[];
 };
 
-export type TimeLeft = {
-  days?: number;
-  hours?: number;
-  minutes?: number;
-  seconds?: number;
-};
-
 export type CardData = {
   valid: boolean;
   values?: {

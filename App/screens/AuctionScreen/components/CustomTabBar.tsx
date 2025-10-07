@@ -1,7 +1,7 @@
 import { MaterialTopTabBarProps } from "@react-navigation/material-top-tabs";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { colors } from "../../../theme";
-import { fontWeight } from "../../../theme/fontStyles";
+import { fontFamily, textStyles } from "../../../theme/fontStyles";
 
 export const CustomTabBar: React.FC<MaterialTopTabBarProps> = (props) => {
   return (
@@ -21,7 +21,9 @@ export const CustomTabBar: React.FC<MaterialTopTabBarProps> = (props) => {
                   color: isFocused
                     ? colors.light.primary
                     : colors.light.textPrimary,
-                  fontWeight: isFocused ? fontWeight.bold : fontWeight.normal,
+                  fontFamily: isFocused
+                    ? fontFamily.bodyBold
+                    : fontFamily.body,
                 },
               ]}
             >
@@ -36,6 +38,7 @@ export const CustomTabBar: React.FC<MaterialTopTabBarProps> = (props) => {
 
 const styles = StyleSheet.create({
   label: {
+    ...textStyles.label,
     margin: 10,
     textTransform: "uppercase",
   },

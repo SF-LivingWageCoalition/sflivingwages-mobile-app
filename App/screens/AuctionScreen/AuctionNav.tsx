@@ -1,7 +1,7 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import React, { useEffect, useState } from "react";
 import { colors } from "../../theme";
-import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { textStyles } from "../../theme/fontStyles";
 import {
   AuctionNavState,
   AuctionTabParamList,
@@ -17,7 +17,6 @@ import LPs from "./components/auctionSalesComponents/LPs";
 const Tab = createMaterialTopTabNavigator<AuctionTabParamList>();
 
 const AuctionNav: React.FC = () => {
-  // Initialize state with default values
   const [state, setState] = useState<AuctionNavState>({
     arts: [],
     books: [],
@@ -120,10 +119,7 @@ const AuctionNav: React.FC = () => {
       screenOptions={{
         tabBarActiveTintColor: colors.light.primary,
         tabBarInactiveTintColor: colors.light.textPrimary,
-        tabBarLabelStyle: {
-          fontSize: fontSize.md,
-          fontWeight: fontWeight.medium,
-        },
+        tabBarLabelStyle: textStyles.label,
       }}
       tabBar={(props) => <CustomTabBar {...props} />}
     >

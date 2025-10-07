@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { CreditCardInput } from "react-native-credit-card-input";
 import { colors } from "../../../theme";
-import { fontSize, fontWeight } from "../../../theme/fontStyles";
+import { textStyles } from "../../../theme/fontStyles";
 import { CardData, ViewProps } from "../../../types/types";
 
 /**
@@ -75,9 +75,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   alertText: {
+    ...textStyles.body,
     color: colors.light.error,
-    fontSize: fontSize.sm,
-    fontWeight: fontWeight.normal,
   },
   alertWrapper: {
     backgroundColor: colors.light.errorContainer,

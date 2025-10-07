@@ -12,7 +12,7 @@ import {
   View,
 } from "react-native";
 import { colors } from "../../../../theme";
-import { fontSize, fontWeight } from "../../../../theme/fontStyles";
+import { textStyles } from "../../../../theme/fontStyles";
 import { CardProps, PreviewScreenParams } from "../../../../types/types";
 import ItemModal from "../modalComponent/ItemModal";
 
@@ -24,7 +24,6 @@ const Card: React.FC<CardProps> = ({
   image,
   previewImage,
 }) => {
-  // Get navigation
   const navigate = useNavigation<NavigationProp<ParamListBase>>();
 
   // Regular expression to remove HTML tags and entities
@@ -34,7 +33,6 @@ const Card: React.FC<CardProps> = ({
   const cleanDescription = description.replace(rgex, "");
   const cleanName = name.replace(rgex, "");
 
-  // Calculate the price
   const itemPrice = +price / 100;
 
   return (
@@ -50,11 +48,11 @@ const Card: React.FC<CardProps> = ({
         >
           <Image style={styles.imageStyle} source={{ uri: image }} />
         </TouchableOpacity>
-        <Text>tap picture to enlarge</Text>
+        <Text style={textStyles.caption}>tap picture to enlarge</Text>
         <View style={styles.horizontalLine} />
         <View>
           <ItemModal title={name} description={cleanDescription} />
-          <Text>${itemPrice}</Text>
+          <Text style={textStyles.body}>${itemPrice}</Text>
         </View>
         {/* Product Individual page link */}
         <View style={styles.submitButtonContainer}>
@@ -77,9 +75,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cardTitle: {
+    ...textStyles.h3,
     textAlign: "center", // <-- the magic
-    fontWeight: fontWeight.bold,
-    fontSize: fontSize.md,
     margin: 5,
   },
   cardImage: {
@@ -122,8 +119,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   submitButtonText: {
+    ...textStyles.button,
     color: colors.light.textOnPrimary,
-    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
 });

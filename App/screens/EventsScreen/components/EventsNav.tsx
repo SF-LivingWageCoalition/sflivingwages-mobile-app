@@ -1,7 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import { colors } from "../../../theme";
-import { fontWeight } from "../../../theme/fontStyles";
+import { fontFamily } from "../../../theme/fontStyles";
 import { translate } from "../../../translation/i18n";
 import { EventStackParamList } from "../../../types/types";
 import EventDetails from "../EventDetails";
@@ -15,7 +15,7 @@ const MyStack: React.FC = () => {
       screenOptions={{
         headerStyle: { backgroundColor: colors.light.primary },
         headerTintColor: colors.light.textOnPrimary,
-        headerTitleStyle: { fontWeight: fontWeight.bold },
+        headerTitleStyle: { fontFamily: fontFamily.heading },
         headerTitleAlign: "center",
       }}
     >

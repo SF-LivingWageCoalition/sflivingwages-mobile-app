@@ -9,13 +9,13 @@ import {
   View,
 } from "react-native";
 import Collapsible from "react-native-collapsible";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import appIcon from "../../../assets/icon.png";
 import BulletItem from "../../components/lists/BulletItem";
 import SubBulletItem from "../../components/lists/SubBulletItem";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import appIcon from "../../../assets/icon.png";
 
 const WageRights: React.FC = () => {
   const navigation = useNavigation();
@@ -47,10 +47,7 @@ const WageRights: React.FC = () => {
         </TouchableOpacity>
         <View style={styles.card}>
           <View style={styles.logoContainer}>
-            <Image
-              style={styles.logo}
-              source={appIcon}
-            />
+            <Image style={styles.logo} source={appIcon} />
           </View>
           <Text style={styles.title}>
             {translate("wageRightsScreen.title")}
@@ -403,7 +400,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   title: {
-    ...textStyles.button,
+    ...textStyles.h3,
     textAlign: "center",
     marginBottom: 20,
   },

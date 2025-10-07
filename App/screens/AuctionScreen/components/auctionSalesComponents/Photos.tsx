@@ -3,7 +3,7 @@ import {
   ParamListBase,
   useNavigation,
 } from "@react-navigation/native";
-import React, { JSX, useState } from "react";
+import React, { useState } from "react";
 import {
   Alert,
   FlatList,
@@ -17,40 +17,17 @@ import {
   View,
 } from "react-native";
 import { colors } from "../../../../theme";
-import { fontSize, fontWeight } from "../../../../theme/fontStyles";
+import { textStyles } from "../../../../theme/fontStyles";
 import {
   DetailParams,
   PhotoItem,
   PhotosProps,
   PreviewScreenParams,
-  TimeLeft,
 } from "../../../../types/types";
 
 const Photos: React.FC<PhotosProps> = ({ photos }) => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
   const [closeDate, setCloseDate] = useState<string>("");
-
-  const calculateTimeLeft = (value?: string): TimeLeft => {
-    // Set bid end day here
-    let endDate = value || "";
-    //Date format: 2021-06-01T12:00:00.000Z
-    let difference = +new Date(endDate) - +new Date();
-
-    let timeLeft: TimeLeft = {};
-    if (difference > 0) {
-      timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
-      };
-    }
-    return timeLeft;
-  };
-
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
-
-  const timerComponents: JSX.Element[] = [];
 
   const formatDate = (value: string): void => {
     const date = new Date(value).getDate(); // Current Date
@@ -61,18 +38,6 @@ const Photos: React.FC<PhotosProps> = ({ photos }) => {
 
     setCloseDate(month + "/" + date + "/" + year + " " + hours + ":" + min);
   };
-
-  Object.keys(timeLeft).forEach((interval) => {
-    if (!timeLeft[interval as keyof TimeLeft]) {
-      return;
-    }
-
-    timerComponents.push(
-      <Text key={interval}>
-        {timeLeft[interval as keyof TimeLeft]} {interval}{" "}
-      </Text>
-    );
-  });
 
   const renderItem: ListRenderItem<PhotoItem> = ({ item }) => {
     return (
@@ -191,21 +156,22 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   submitButtonText: {
+    ...textStyles.button,
     color: colors.light.textOnPrimary,
-    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
   itemTitle: {
+    ...textStyles.h3,
     textAlign: "center",
-    fontSize: fontSize.md,
     marginBottom: 15,
-    fontWeight: fontWeight.bold,
   },
   textItalic: {
+    ...textStyles.caption,
     textAlign: "center",
     fontStyle: "italic",
   },
   marginTop: {
+    ...textStyles.body,
     marginTop: 10,
   },
 });
