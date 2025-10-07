@@ -47,10 +47,7 @@ const BeReadyForICE: React.FC = () => {
         </TouchableOpacity>
         <View style={styles.card}>
           <View style={styles.logoContainer}>
-            <Image
-              style={styles.logo}
-              source={appIcon}
-            />
+            <Image style={styles.logo} source={appIcon} />
           </View>
           <Text style={styles.title}>
             {translate("beReadyForICEScreen.title")}
@@ -374,6 +371,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     resizeMode: "contain",
+    borderRadius: "50%",
   },
   title: {
     ...textStyles.h3,

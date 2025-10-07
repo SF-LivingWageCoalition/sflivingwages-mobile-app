@@ -1,7 +1,8 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -9,6 +10,7 @@ import {
   View,
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
+import appIcon from "../../../assets/icon.png";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { WageData } from "../../types/types";
@@ -20,6 +22,8 @@ const LivingWageCalculator: React.FC = () => {
   const [adults, setAdults] = useState<number>(1);
   const [children, setChildren] = useState<number>(0);
   const [calculationResult, setCalculationResult] = useState<any | null>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const resultsCardRef = useRef<View>(null);
 
   function formatNumber(num: number) {
     return num.toLocaleString();
@@ -63,12 +67,23 @@ const LivingWageCalculator: React.FC = () => {
       totalMonthly,
       totalAnnual,
     });
+
+    // Scroll to results card after state update
+    setTimeout(() => {
+      resultsCardRef.current?.measureLayout(
+        scrollViewRef.current as any,
+        (x, y) => {
+          scrollViewRef.current?.scrollTo({ y: y - 20, animated: true });
+        },
+        () => {}
+      );
+    }, 100);
   };
 
   const navigation = useNavigation();
 
   return (
-    <ScrollView>
+    <ScrollView ref={scrollViewRef}>
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.circleBackButton}
@@ -81,7 +96,10 @@ const LivingWageCalculator: React.FC = () => {
           />
         </TouchableOpacity>
         <View style={styles.card}>
-          <Text style={styles.title}>LIVING WAGE CALCULATOR</Text>
+          <View style={styles.logoContainer}>
+            <Image style={styles.logo} source={appIcon} />
+          </View>
+          <Text style={styles.title}>Living Wage Calculator</Text>
         </View>
         <View style={styles.formContainer}>
           <View style={styles.dropDownContainer}>
@@ -145,7 +163,7 @@ const LivingWageCalculator: React.FC = () => {
           </TouchableOpacity>
         </View>
         {calculationResult && (
-          <View style={styles.resultsCard}>
+          <View ref={resultsCardRef} style={styles.resultsCard}>
             <Text style={styles.resultsTitle}>Results</Text>
             <Text style={textStyles.body}>
               Poverty wage:{" "}
@@ -226,6 +244,30 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
+  card: {
+    backgroundColor: colors.light.surface,
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: colors.light.shadow,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  logoContainer: {
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  logo: {
+    width: 100,
+    height: 100,
+    resizeMode: "cover",
+    borderRadius: "50%",
+  },
+  title: {
+    ...textStyles.h3,
+    textAlign: "center",
+  },
   submitButton: {
     backgroundColor: colors.light.primary,
     padding: 16,
@@ -247,29 +289,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowRadius: 8,
     elevation: 2,
-  },
-  card: {
-    backgroundColor: colors.light.surface,
-    borderRadius: 10,
-    padding: 20,
-    shadowColor: colors.light.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  logoContainer: {
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  logo: {
-    width: 100,
-    height: 100,
-    resizeMode: "cover",
-  },
-  title: {
-    ...textStyles.h3,
-    textAlign: "right",
   },
   numInHousehold: {
     ...textStyles.label,
