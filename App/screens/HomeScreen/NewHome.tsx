@@ -40,7 +40,7 @@ const CarouselImage: React.FC<CarouselImageProps> = ({ image, onPress }) => (
     <ImageBackground
       source={image.src}
       style={styles.imageBackground}
-      imageStyle={{ borderRadius: 10 }}
+      imageStyle={styles.imageBorder}
     >
       <View style={styles.containerBody}>
         <Text style={styles.textEvent}>{image.title}</Text>
@@ -61,7 +61,7 @@ const CarouselImageSmall: React.FC<CarouselImageProps> = ({
       <ImageBackground
         source={image.src}
         style={styles.imageBackgroundSmall}
-        imageStyle={{ borderRadius: 10 }}
+        imageStyle={styles.imageBorder}
       >
         <View style={styles.containerBody}>
           <Text style={styles.textCampaignsImg}>{image.title}</Text>
@@ -171,9 +171,9 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 showsButtons
                 autoplay={true}
                 autoplayTimeout={4}
-                dotColor={"white"}
+                dotColor={colors.light.onInfo}
                 activeDotColor={colors.light.secondary}
-                dotStyle={{ width: 8, height: 8 }}
+                dotStyle={styles.dotStyle}
               >
                 {mainSliderImages.map((image) => (
                   <CarouselImage
@@ -197,8 +197,8 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
               style={styles.swiperHigher}
               showsButtons
               autoplay={false}
-              activeDotColor={"#70b5ff"}
-              dotStyle={{ width: 8, height: 8 }}
+              activeDotColor={colors.light.secondary}
+              dotStyle={styles.dotStyle}
             >
               {campaignImages.map((image) => (
                 <CarouselImageSmall
@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
     height: 256,
     borderColor: colors.light.outline,
     borderWidth: 1,
-    backgroundColor: "white",
+    backgroundColor: colors.light.background,
   },
   background: {
     height: 256,
@@ -544,6 +544,13 @@ const styles = StyleSheet.create({
   titles: {
     ...textStyles.h2,
     lineHeight: 35,
+  },
+  imageBorder: {
+    borderRadius: 10,
+  },
+  dotStyle: {
+    width: 8,
+    height: 8,
   },
 });
 

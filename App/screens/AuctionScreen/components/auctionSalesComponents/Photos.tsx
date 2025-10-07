@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cardImage: {
-    backgroundColor: "white",
+    backgroundColor: colors.light.background,
     margin: 10,
     padding: 20,
     flex: 1,

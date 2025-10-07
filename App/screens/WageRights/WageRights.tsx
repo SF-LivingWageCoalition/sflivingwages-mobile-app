@@ -111,7 +111,7 @@ const WageRights: React.FC = () => {
               <BulletItem
                 text={translate("wageRightsScreen.minimumCompensation.point3")}
               />
-              <View style={{ marginLeft: 20 }}>
+              <View style={styles.bulletMargin}>
                 <SubBulletItem
                   text={translate(
                     "wageRightsScreen.minimumCompensation.subPoint1"
@@ -195,7 +195,7 @@ const WageRights: React.FC = () => {
               <BulletItem
                 text={translate("wageRightsScreen.healthCareSecurity.point2")}
               />
-              <View style={{ marginLeft: 20 }}>
+              <View style={styles.bulletMargin}>
                 <SubBulletItem
                   text={translate(
                     "wageRightsScreen.healthCareSecurity.subPoint1"
@@ -257,7 +257,7 @@ const WageRights: React.FC = () => {
                   "wageRightsScreen.healthCareAccountability.point1"
                 )}
               />
-              <View style={{ marginLeft: 20 }}>
+              <View style={styles.bulletMargin}>
                 <SubBulletItem
                   text={translate(
                     "wageRightsScreen.healthCareAccountability.subPoint1"
@@ -312,7 +312,7 @@ const WageRights: React.FC = () => {
                   "wageRightsScreen.protectionsForWorkers.point2"
                 )}
               />
-              <View style={{ marginLeft: 20 }}>
+              <View style={styles.bulletMargin}>
                 <SubBulletItem
                   text={translate(
                     "wageRightsScreen.protectionsForWorkers.subPoint1"
@@ -437,6 +437,9 @@ const styles = StyleSheet.create({
     ...textStyles.body,
     flex: 1,
     lineHeight: 24,
+  },
+  bulletMargin: {
+    marginLeft: 20,
   },
   sectionText: {
     ...textStyles.body,

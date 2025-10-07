@@ -83,8 +83,8 @@ const LivingWageCalculator: React.FC = () => {
         <View style={styles.card}>
           <Text style={styles.title}>LIVING WAGE CALCULATOR</Text>
         </View>
-        <View style={{ marginTop: 24, paddingHorizontal: 16 }}>
-          <View style={{ marginBottom: 24 }}>
+        <View style={styles.formContainer}>
+          <View style={styles.dropDownContainer}>
             <Text style={styles.numInHousehold}>
               Number of adults in your household
             </Text>
@@ -111,7 +111,7 @@ const LivingWageCalculator: React.FC = () => {
             </View>
           </View>
 
-          <View style={{ marginBottom: 32 }}>
+          <View style={styles.dropDownContainer2}>
             <Text style={styles.numInHousehold}>
               Number of children in your household
             </Text>
@@ -140,23 +140,13 @@ const LivingWageCalculator: React.FC = () => {
             </View>
           </View>
 
-          <TouchableOpacity
-style={styles.submitButton}
-            onPress={handleSubmit}
-          >
-            <Text style={styles.submitButtonText}
-            >
-              Submit
-            </Text>
+          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+            <Text style={styles.submitButtonText}>Submit</Text>
           </TouchableOpacity>
         </View>
         {calculationResult && (
-          <View style={styles.resultsCard}
-          >
-            <Text style={styles.resultsTitle}
-            >
-              Results
-            </Text>
+          <View style={styles.resultsCard}>
+            <Text style={styles.resultsTitle}>Results</Text>
             <Text style={textStyles.body}>
               Poverty wage:{" "}
               <Text style={styles.infoText}>
@@ -182,22 +172,29 @@ style={styles.submitButton}
               </Text>
             </Text>
             <View style={styles.breakdownContainer}>
-              <Text style={styles.breakdownTitle}
-              >
-                Breakdown:
+              <Text style={styles.breakdownTitle}>Breakdown:</Text>
+              <Text style={textStyles.body}>
+                Housing: ${formatNumber(calculationResult.housing)}
               </Text>
-              <Text style={textStyles.body}>Housing: ${formatNumber(calculationResult.housing)}</Text>
-              <Text style={textStyles.body}>Food: ${formatNumber(calculationResult.food)}</Text>
+              <Text style={textStyles.body}>
+                Food: ${formatNumber(calculationResult.food)}
+              </Text>
               <Text style={textStyles.body}>
                 Childcare: ${formatNumber(calculationResult.childcare)}
               </Text>
-              <Text style={textStyles.body}>Medical: ${formatNumber(calculationResult.medical)}</Text>
+              <Text style={textStyles.body}>
+                Medical: ${formatNumber(calculationResult.medical)}
+              </Text>
               <Text style={textStyles.body}>
                 Transportation: $
                 {formatNumber(calculationResult.transportation)}
               </Text>
-              <Text style={textStyles.body}>Other: ${formatNumber(calculationResult.other)}</Text>
-              <Text style={textStyles.body}>Taxes: ${formatNumber(calculationResult.taxes)}</Text>
+              <Text style={textStyles.body}>
+                Other: ${formatNumber(calculationResult.other)}
+              </Text>
+              <Text style={textStyles.body}>
+                Taxes: ${formatNumber(calculationResult.taxes)}
+              </Text>
             </View>
           </View>
         )}
@@ -292,6 +289,16 @@ const styles = StyleSheet.create({
     borderColor: colors.light.outline,
     backgroundColor: colors.light.background,
     overflow: "hidden",
+  },
+  formContainer: {
+    marginTop: 24,
+    paddingHorizontal: 16,
+  },
+  dropDownContainer: {
+    marginBottom: 24,
+  },
+  dropDownContainer2: {
+    marginBottom: 32,
   },
   infoText: {
     ...textStyles.body,
