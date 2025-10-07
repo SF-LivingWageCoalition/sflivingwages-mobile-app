@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import KeyboardSpacer from "react-native-keyboard-spacer";
-import { fontSize } from "../../../theme/fontStyles";
+import { textStyles } from "../../../theme/fontStyles";
 import { CardData, ViewProps } from "../../../types/types";
 import PaymentFormView from "./PaymentFormView";
 
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   infoText: {
-    fontSize: fontSize.xs,
+    ...textStyles.caption,
     textAlign: "center",
   },
   cardFormWrapper: {

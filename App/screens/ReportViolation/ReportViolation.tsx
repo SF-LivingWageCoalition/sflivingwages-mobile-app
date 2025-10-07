@@ -19,7 +19,7 @@ import Recaptcha from "react-native-recaptcha-that-works";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import appIcon from "../../../assets/icon.png";
 import { colors } from "../../theme";
-import { fontFamily, textStyles } from "../../theme/fontStyles";
+import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { EmailOptions, RecaptchaRef } from "../../types/types";
 import { assistanceSchema } from "./assistanceSchema";
@@ -251,7 +251,7 @@ const ReportViolation: React.FC = () => {
               <CheckBox
                 key={index}
                 title={assist}
-                textStyle={{ fontFamily: fontFamily.body }}
+                textStyle={textStyles.body}
                 checkedColor={colors.light.primary} // or change to green
                 checked={isChecked[index]}
                 onPress={() => handledState(index, assist)}
@@ -378,8 +378,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   requiredField: {
+    ...textStyles.bodyBold,
     color: colors.light.primary,
-    fontFamily: fontFamily.bodyBold,
   },
   submitButton: {
     backgroundColor: colors.light.surface,

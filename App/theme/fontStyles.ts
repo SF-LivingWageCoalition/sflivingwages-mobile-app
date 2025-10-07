@@ -60,12 +60,28 @@ export const textStyles = {
     fontFamily: fontFamily.body, // Roboto Regular
     fontSize: fontSize.sm,
   },
+  bodyBold: {
+    fontFamily: fontFamily.bodyBold, // Roboto Bold
+    fontSize: fontSize.sm,
+  },
   bodyLarge: {
     fontFamily: fontFamily.body, // Roboto Regular
     fontSize: fontSize.md,
   },
+  bodyLargeBold: {
+    fontFamily: fontFamily.bodyBold, // Roboto Bold
+    fontSize: fontSize.md,
+  },
+  bodyLargeMedium: {
+    fontFamily: fontFamily.robotoMedium, // Roboto Medium
+    fontSize: fontSize.md,
+  },
   bodySmall: {
     fontFamily: fontFamily.body, // Roboto Regular
+    fontSize: fontSize.xs,
+  },
+  bodySmallBold: {
+    fontFamily: fontFamily.bodyBold, // Roboto Bold
     fontSize: fontSize.xs,
   },
   // Button text (uses bold Roboto)
@@ -80,6 +96,10 @@ export const textStyles = {
   // Labels and captions
   label: {
     fontFamily: fontFamily.robotoMedium, // Roboto Medium
+    fontSize: fontSize.sm,
+  },
+  labelBold: {
+    fontFamily: fontFamily.bodyBold, // Roboto Bold
     fontSize: fontSize.sm,
   },
   caption: {

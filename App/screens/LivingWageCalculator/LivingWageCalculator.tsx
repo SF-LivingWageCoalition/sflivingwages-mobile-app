@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { colors } from "../../theme";
-import { fontFamily, textStyles } from "../../theme/fontStyles";
+import { textStyles } from "../../theme/fontStyles";
 import { WageData } from "../../types/types";
 import wageDataRaw from "./livingwage.json";
 
@@ -301,8 +301,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   infoText: {
-    ...textStyles.body,
-    fontFamily: fontFamily.bodyBold,
+    ...textStyles.bodyBold,
   },
   monthlyTotalText: {
     ...textStyles.body,
