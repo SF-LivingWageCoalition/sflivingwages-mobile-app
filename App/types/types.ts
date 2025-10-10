@@ -122,12 +122,6 @@ export type LPsProps = {
   isLoading: boolean;
 };
 
-export type MyNavigationButtonProps = {
-  author?: string;
-  description?: string;
-  title?: string;
-};
-
 export type DetailParams = {
   image: string;
   bio: string;
