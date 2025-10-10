@@ -212,24 +212,6 @@ export type ModalScreenProps = {
   navigation: NavigationProp<RootStackParamList>;
 };
 
-export type ArticleSource = {
-  id?: string;
-  name: string;
-};
-
-export type ArticleItem = {
-  title: string;
-  description?: string;
-  publishedAt?: string;
-  source: ArticleSource;
-  urlToImage?: string;
-  url: string;
-};
-
-export type ArticleProps = {
-  article: ArticleItem;
-};
-
 export type EventItem = {
   id: number;
   title: string;
