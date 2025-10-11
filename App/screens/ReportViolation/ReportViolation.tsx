@@ -16,10 +16,12 @@ import {
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import Recaptcha from "react-native-recaptcha-that-works";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import appIcon from "../../../assets/icon.png";
 import { colors } from "../../theme";
-import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
-import { EmailOptions, RecaptchaRef } from "../../types";
+import { EmailOptions, RecaptchaRef } from "../../types/types";
 import { assistanceSchema } from "./assistanceSchema";
 
 const sendEmail = async (
@@ -174,14 +176,15 @@ const ReportViolation: React.FC = () => {
           style={styles.circleBackButton}
           onPress={() => navigation.goBack()}
         >
-          <Text style={styles.backArrow}>{"<"}</Text>
+          <FontAwesome5
+            name="chevron-left"
+            size={20}
+            color={colors.light.chevronLight}
+          />
         </TouchableOpacity>
         <View style={styles.card}>
           <View style={styles.logoContainer}>
-            <Image
-              style={styles.logo}
-              source={require("../../../assets/icon.png")}
-            />
+            <Image style={styles.logo} source={appIcon} />
           </View>
           <Text style={styles.intro}>{translate("assistScreen.title")}</Text>
           <Text style={styles.instruction}>
@@ -248,6 +251,7 @@ const ReportViolation: React.FC = () => {
               <CheckBox
                 key={index}
                 title={assist}
+                textStyle={textStyles.body}
                 checkedColor={colors.light.primary} // or change to green
                 checked={isChecked[index]}
                 onPress={() => handledState(index, assist)}
@@ -339,20 +343,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
-  backArrow: {
-    color: colors.light.textOnPrimary,
-    fontSize: fontSize.lg,
-    fontWeight: fontWeight.bold,
-  },
   intro: {
+    ...textStyles.h3,
     marginLeft: 20,
     marginTop: 10,
   },
   instruction: {
+    ...textStyles.body,
     marginLeft: 20,
     marginBottom: 20,
   },
   inputName: {
+    ...textStyles.label,
     marginLeft: 10,
   },
   card: {
@@ -376,9 +378,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   requiredField: {
+    ...textStyles.bodyBold,
     color: colors.light.primary,
-    fontSize: fontSize.sm,
-    fontWeight: fontWeight.bold,
   },
   submitButton: {
     backgroundColor: colors.light.surface,
@@ -402,35 +403,33 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   recaptchaMessage: {
-    fontSize: fontSize.xs,
-    fontWeight: fontWeight.semibold,
+    ...textStyles.caption,
     textAlign: "center",
     color: colors.light.primary,
   },
   logo: {
-    width: 200,
-    height: 200,
-    borderRadius: 200 / 2,
+    width: 100,
+    height: 100,
+    borderRadius: 10,
   },
   logoContainer: {
-    marginTop: 10,
+    marginVertical: 10,
     justifyContent: "center",
     alignItems: "center",
   },
   submitButtonText: {
+    ...textStyles.button,
     color: colors.light.primary,
-    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
   inputContainer: {
     margin: 12,
   },
   submitionInfo: {
+    ...textStyles.caption,
     marginTop: 12,
     textAlign: "center",
-    // fontWeight: '900',
     fontStyle: "italic",
-    fontSize: fontSize.xxs,
     color: colors.light.primary,
   },
   recaptchaButton: {
@@ -443,8 +442,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   recaptchaText: {
+    ...textStyles.button,
     color: colors.light.textOnSecondary,
-    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
   headerComponentView: {
@@ -455,8 +454,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light.primary,
   },
   inputError: {
+    ...textStyles.caption,
     color: colors.light.error,
-    fontSize: fontSize.xxs,
     marginLeft: 10,
     marginTop: 2,
   },
