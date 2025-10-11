@@ -278,13 +278,13 @@ const en = {
     ],
   },
   donateScreen: {
-    title: "DONATE",
+    title: "Donate",
   },
   eventsScreen: {
-    title: "EVENTS",
+    title: "Events",
   },
   eventsDetails: {
-    title: "EVENT DETAILS",
+    title: "Event Details",
   },
 };
 

@@ -81,14 +81,14 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
       id: 1,
       title: translate("donateScreen.title"),
       src: campaign2Background,
-      destination: "DONATE",
+      destination: "Donate",
     },
     {
       id: 2,
       title: translate("eventsScreen.title"),
       src: eventsSlide,
       destination: "EventsNavigator",
-      destinationScreen: "EVENTS",
+      destinationScreen: "Events",
     },
   ];
 
@@ -480,6 +480,7 @@ const styles = StyleSheet.create({
     ...textStyles.h2,
     paddingVertical: 40,
     color: colors.light.textOnPrimary,
+    textTransform: "uppercase",
     textAlign: "center",
     textAlignVertical: "center",
   },

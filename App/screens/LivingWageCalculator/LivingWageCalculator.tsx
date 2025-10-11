@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     resizeMode: "cover",
-    borderRadius: "50%",
+    borderRadius: 10,
   },
   title: {
     ...textStyles.h3,
