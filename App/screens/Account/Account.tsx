@@ -20,7 +20,8 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const user = useSelector((state: RootState) => state.userData.user);
-  // const roles = useSelector((state: RootState) => state.userData.roles);
+  const roles = useSelector((state: RootState) => state.userData.roles);
+  const jwt = useSelector((state: RootState) => state.userData.jwt);
 
   useEffect(() => {
     // Check if user data exists in Redux store to determine login status
@@ -124,19 +125,34 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
   const UserInfo: React.FC = () => {
     return (
       <View>
-        <Text style={styles.subtitle}>
-          {translate("accountScreen.isLoggedIn")}
-        </Text>
-        <Text style={styles.subtitle}>Welcome, {user.display_name}!</Text>
-        <Text>ID: {user.ID}</Text>
-        <Text>Display Name: {user.display_name}</Text>
-        <Text>Activation Key: {user.user_activation_key}</Text>
-        <Text>Email: {user.user_email}</Text>
-        <Text>Login: {user.user_login}</Text>
-        <Text>Nice Name: {user.user_nicename}</Text>
-        <Text>Registered: {user.user_registered}</Text>
-        <Text>Status: {user.user_status}</Text>
-        <Text>URL: {user.user_url}</Text>
+        <View>
+          <Text style={styles.subtitle}>
+            {translate("accountScreen.isLoggedIn")}
+          </Text>
+          <Text style={styles.subtitle}>Welcome, {user.display_name}!</Text>
+        </View>
+        <View>
+          <Text style={styles.userSliceSubtitle}>userSlice user:</Text>
+          <Text>ID: {user.ID}</Text>
+          <Text>Display Name: {user.display_name}</Text>
+          <Text>Activation Key: {user.user_activation_key}</Text>
+          <Text>Email: {user.user_email}</Text>
+          <Text>Login: {user.user_login}</Text>
+          <Text>Nice Name: {user.user_nicename}</Text>
+          <Text>Registered: {user.user_registered}</Text>
+          <Text>Status: {user.user_status}</Text>
+          <Text>URL: {user.user_url}</Text>
+        </View>
+        <View>
+          <Text style={styles.userSliceSubtitle}>userSlice roles:</Text>
+          <Text>User Roles: {roles.join(", ")}</Text>
+        </View>
+        <View>
+          <Text style={styles.userSliceSubtitle}>userSlice jwt:</Text>
+          <Text>JWT Token: {jwt[0]?.token}</Text>
+          <Text>JWT Header: {JSON.stringify(jwt[0]?.header)}</Text>
+          <Text>JWT Payload: {JSON.stringify(jwt[0]?.payload)}</Text>
+        </View>
       </View>
     );
   };
@@ -181,6 +197,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: colors.light.textSecondary,
   },
+  userSliceSubtitle: {
+    fontSize: fontSize.sm,
+    marginVertical: 10,
+    fontWeight: fontWeight.bold,
+  },
+
   authButtonsContainer: {
     marginTop: 10,
     marginHorizontal: 22,

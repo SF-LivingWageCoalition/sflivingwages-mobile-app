@@ -11,7 +11,26 @@ interface DataState {
     user_activation_key: string;
     user_status: string;
     display_name: string;
-  }; //   roles: string[];
+  };
+  roles: string[];
+  jwt: [
+    {
+      token: string;
+      header: {
+        alg: string;
+        typ: string;
+      };
+      payload: {
+        email?: string;
+        exp?: number;
+        iat?: number;
+        id?: string;
+        iss?: string;
+        site?: string;
+        username?: string;
+      };
+    }
+  ];
 }
 
 const initialState: DataState = {
@@ -26,7 +45,17 @@ const initialState: DataState = {
     user_status: "",
     display_name: "",
   },
-  //   roles: [],
+  roles: [],
+  jwt: [
+    {
+      token: "",
+      header: {
+        alg: "",
+        typ: "",
+      },
+      payload: {},
+    },
+  ],
 };
 
 const userSlice = createSlice({
@@ -35,16 +64,8 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<DataState>) => {
       state.user = action.payload.user;
-      //   state.ID = action.payload.ID;
-      //   state.user_login = action.payload.user_login;
-      //   state.user_nicename = action.payload.user_nicename;
-      //   state.user_email = action.payload.user_email;
-      //   state.user_url = action.payload.user_url;
-      //   state.user_registered = action.payload.user_registered;
-      //   state.user_activation_key = action.payload.user_activation_key;
-      //   state.user_status = action.payload.user_status;
-      //   state.display_name = action.payload.display_name;
-      //   state.roles = action.payload.roles;
+      state.roles = action.payload.roles;
+      state.jwt = action.payload.jwt;
     },
     clearUser: (state) => {
       state.user = {
@@ -58,16 +79,17 @@ const userSlice = createSlice({
         user_status: "",
         display_name: "",
       };
-      //   state.ID = "";
-      //   state.user_login = "";
-      //   state.user_nicename = "";
-      //   state.user_email = "";
-      //   state.user_url = "";
-      //   state.user_registered = "";
-      //   state.user_activation_key = "";
-      //   state.user_status = "";
-      //   state.display_name = "";
-      //   state.roles = [];
+      state.roles = [];
+      state.jwt = [
+        {
+          token: "",
+          header: {
+            alg: "",
+            typ: "",
+          },
+          payload: {},
+        },
+      ];
     },
   },
 });
