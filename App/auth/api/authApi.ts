@@ -7,9 +7,6 @@ import { clearUser } from "../../redux/features/userSlice/userSlice";
 
 /**
  * Testing Site: https://www.wpmockup.xyz
- * login: admin
- * password: wordpress80!
- *
  * Live Site: https://www.livingwage-sf.org
  *
  * Simple JWT Login plugin: https://wordpress.org/plugins/simple-jwt-login/
@@ -28,29 +25,23 @@ import { clearUser } from "../../redux/features/userSlice/userSlice";
  */
 
 // Base URLs for the API
-const BASE_URL = "https://www.livingwage-sf.org"; // Base URL for the API
-const BASE_URL_TEST = "https://www.wpmockup.xyz"; // Test:WPMockup.xyz - Base URL for the API
+const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL; // Base URL for WordPress APIs
 
 // API Routes
-const JWT_ROUTE = "/?rest_route=/simple-jwt-login/v1"; // Route for Simple JWT Login plugin
-const WC_ROUTE = "/wp-json/wc/v3"; // Route for WooCommerce REST API
+const JWT_ROUTE = process.env.EXPO_PUBLIC_JWT_ROUTE; // Route for Simple JWT Login plugin
+const WC_ROUTE = process.env.EXPO_PUBLIC_WC_ROUTE; // Route for WooCommerce REST API
 
 // JWT Decrytion Key / Algorithm / Token Type
-const JWT_DE_KEY = "SomeDecryptionKey!"; // Key used for JWT decryption
-const JWT_DE_ALG = "HS256"; // Algorithm used for JWT decryption
-const JWT_TYP = "JWT"; // Type of token
+const JWT_DE_KEY = process.env.EXPO_PUBLIC_JWT_DE_KEY; // Key used for JWT decryption
+const JWT_DE_ALG = process.env.EXPO_PUBLIC_JWT_DE_ALG; // Algorithm used for JWT decryption
+const JWT_TYP = process.env.EXPO_PUBLIC_JWT_TYP; // Type of token
 
-const JWT_AUTH_KEY = "SomeAuthKey!"; // Auth key for Simple JWT Login plugin
+const JWT_AUTH_KEY = process.env.EXPO_PUBLIC_JWT_AUTH_KEY; // Auth key for Simple JWT Login plugin
 
 // WooCommerce REST API credentials
-const consumerKey = "ck_6d1c6dbe7375c9c6bbd4ec4ae76435657b02ea0f"; // SFLWC WooCommerce Consumer Key (read/write)
-const consumerSecret = "cs_f3e3af1864b234c83e62e375bdb61f5d8b2c3834"; // SFLWC WooCommerce Consumer Secret (read/write)
-const base64Credentials = btoa(`${consumerKey}:${consumerSecret}`); // SFLWC - Base64 encoded credentials
-
-// WooCommerce REST API credentials for Test:WPMockup.xyz
-const consumerKeyTest = "ck_3bab6ef08070db9a9644d0fbe68d9d092d892980"; // Test:WPMockup.xyz - WooCommerce Consumer Key (read/write)
-const consumerSecretTest = "cs_9c65d16a588d4892f62f2b858e02eb6cc9839b74"; // Test:WPMockup.xyz - WooCommerce Consumer Secret (read/write)
-const base64CredentialsTest = btoa(`${consumerKeyTest}:${consumerSecretTest}`); // Test:WPMockup.xyz - Base64 encoded credentials
+const consumerKey = process.env.EXPO_PUBLIC_CONSUMER_KEY; // WooCommerce Consumer Key (read/write)
+const consumerSecret = process.env.EXPO_PUBLIC_CONSUMER_SECRET; // WooCommerce Consumer Secret (read/write)
+const base64Credentials = btoa(`${consumerKey}:${consumerSecret}`); // Base64 encoded credentials
 
 /**
  * Type Definitions
@@ -116,7 +107,7 @@ export const fetchToken = async (
   try {
     console.log("fetchToken called from authAPI");
     const response = await fetch(
-      `${BASE_URL_TEST}${JWT_ROUTE}/auth&email=${email}&password=${password}&AUTH_KEY=${JWT_AUTH_KEY}`,
+      `${BASE_URL}${JWT_ROUTE}/auth&email=${email}&password=${password}&AUTH_KEY=${JWT_AUTH_KEY}`,
       {
         method: "POST",
         headers: { "cache-control": "no-cache" },
@@ -170,7 +161,7 @@ export const validateToken = async (
 ): Promise<ValidationData | undefined> => {
   try {
     console.log("validateToken called from authAPI");
-    const response = await fetch(`${BASE_URL_TEST}${JWT_ROUTE}/auth/validate`, {
+    const response = await fetch(`${BASE_URL}${JWT_ROUTE}/auth/validate`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${jwtToken}`,
