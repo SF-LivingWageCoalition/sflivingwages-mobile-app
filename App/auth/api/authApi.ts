@@ -95,6 +95,16 @@ type ValidationData = {
   error?: string;
 };
 
+// Define the structure of the password reset data returned by the API
+type PasswordResetData = {
+  message?: string; // Message from the API
+  success: boolean; // Success status
+  data?: {
+    errorCode?: number; // Error code if any
+    message?: string; // Error message if any
+  };
+};
+
 /**
  * API functions for authentication (fetching and validating JWT tokens)
  */
@@ -210,6 +220,58 @@ export const validateToken = async (
     }
   } catch (error) {
     console.error("Error validating token:", error);
+  }
+};
+
+// Send a password reset email via the Simple JWT Login plugin
+export const sendPasswordReset = async (
+  email: string
+): Promise<PasswordResetData | undefined> => {
+  console.log(`Called sendPasswordReset with email: '${email}'`);
+  try {
+    const response = await fetch(
+      `${BASE_URL}${JWT_ROUTE}/user/reset_password&email=${email}&AUTH_KEY=${JWT_AUTH_KEY}`,
+      {
+        method: "POST",
+        headers: { "cache-control": "no-cache" },
+      }
+    );
+    const data = await response.json();
+    if (response.ok) {
+      // const data = await response.json();
+      console.log("Forgot password response data:", data);
+      /**
+       * Forgot password response data:
+       * {
+       *  "message": "Reset password email has been sent.",
+       *  "success": true
+       * }
+       */
+      // Handle successful password reset (e.g., show a confirmation message)
+      // return data;
+    } else {
+      // const data = await response.json();
+      console.log("Forgot password response data:", data);
+      /**
+       * Forgot password response data (using wrong password):
+       * {
+       *  "data":
+       *    {
+       *      "errorCode": 64,
+       *      "message": "Wrong user."
+       *    },
+       *  "success": false
+       * }
+       */
+      console.log("Forgot password failed with status:", response.status);
+      console.error("Error code:", data.data.errorCode);
+      console.error("Error message:", data.data.message);
+      // Handle failed password reset (e.g., show an error message)
+      // return data;
+    }
+    return data;
+  } catch (error) {
+    console.error("Error sending password reset email:", error);
   }
 };
 

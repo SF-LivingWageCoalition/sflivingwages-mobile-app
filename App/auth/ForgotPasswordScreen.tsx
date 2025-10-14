@@ -10,16 +10,16 @@ import {
 import { colors } from "../theme";
 import { fontSize, fontWeight } from "../theme/fontStyles";
 import { translate } from "../translation";
+import { sendPasswordReset } from "./api/authApi";
 
 const ForgotPassword: React.FC = () => {
-  const jwtAuthKey = "SomeAuthKey!";
+  // const jwtAuthKey = "SomeStrongAuthKey!";
 
   const [userEmail, setUserEmail] = useState<string>("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     // Do forgot password logic here
-    console.log(`Trying to reset password for email: '${userEmail}'`);
     // Basic validation
     const newErrors: { [key: string]: string } = {};
     if (!userEmail) {
@@ -29,55 +29,61 @@ const ForgotPassword: React.FC = () => {
 
     if (Object.keys(newErrors).length === 0) {
       // No errors, proceed with forgot password
-      forgotPassword(userEmail);
+      console.log(`Trying to reset password for email: '${userEmail}'`);
+      // forgotPassword(userEmail);
+      const resetData = await sendPasswordReset(userEmail); // via Simple JWT Login plugin
+      console.log("Password reset data:", resetData);
+      console.log("Password reset data: success:", resetData?.success);
+      // You can handle the resetData further if needed
+      // E.g., show a confirmation message or handle errors based on the response
     }
   };
 
   // Send a password reset email via the Simple JWT Login plugin
-  const forgotPassword = async (email: string) => {
-    console.log(`Called forgotPassword with email: '${email}'`);
-    try {
-      const response = await fetch(
-        `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/user/reset_password&email=${email}&AUTH_KEY=${jwtAuthKey}`,
-        {
-          method: "POST",
-          headers: { "cache-control": "no-cache" },
-        }
-      );
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Forgot password response data:", data);
-        /**
-         * Forgot password response data:
-         * {
-         *  "message": "Reset password email has been sent.",
-         *  "success": true
-         * }
-         */
-        // Handle successful password reset (e.g., show a confirmation message)
-      } else {
-        const data = await response.json();
-        console.log("Forgot password response data:", data);
-        /**
-         * Forgot password response data (using wrong password):
-         * {
-         *  "data":
-         *    {
-         *      "errorCode": 64,
-         *      "message": "Wrong user."
-         *    },
-         *  "success": false
-         * }
-         */
-        console.log("Forgot password failed with status:", response.status);
-        console.error("Error code:", data.data.errorCode);
-        console.error("Error message:", data.data.message);
-        // Handle failed password reset (e.g., show an error message)
-      }
-    } catch (error) {
-      console.error("Error sending password reset email:", error);
-    }
-  };
+  // const forgotPassword = async (email: string) => {
+  //   console.log(`Called forgotPassword with email: '${email}'`);
+  //   try {
+  //     const response = await fetch(
+  //       `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/user/reset_password&email=${email}&AUTH_KEY=${jwtAuthKey}`,
+  //       {
+  //         method: "POST",
+  //         headers: { "cache-control": "no-cache" },
+  //       }
+  //     );
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       console.log("Forgot password response data:", data);
+  //       /**
+  //        * Forgot password response data:
+  //        * {
+  //        *  "message": "Reset password email has been sent.",
+  //        *  "success": true
+  //        * }
+  //        */
+  //       // Handle successful password reset (e.g., show a confirmation message)
+  //     } else {
+  //       const data = await response.json();
+  //       console.log("Forgot password response data:", data);
+  //       /**
+  //        * Forgot password response data (using wrong password):
+  //        * {
+  //        *  "data":
+  //        *    {
+  //        *      "errorCode": 64,
+  //        *      "message": "Wrong user."
+  //        *    },
+  //        *  "success": false
+  //        * }
+  //        */
+  //       console.log("Forgot password failed with status:", response.status);
+  //       console.error("Error code:", data.data.errorCode);
+  //       console.error("Error message:", data.data.message);
+  //       // Handle failed password reset (e.g., show an error message)
+  //     }
+  //   } catch (error) {
+  //     console.error("Error sending password reset email:", error);
+  //   }
+  // };
 
   return (
     <ScrollView>
