@@ -93,7 +93,7 @@ type ValidationData = {
   error?: string;
 };
 
-// Define the structure of the user data returned by the API
+// Define the structure of the newly registered user data returned by the API
 type UserRegistrationData = {
   success: boolean; // Success status
   id?: string; // User ID
@@ -115,6 +115,31 @@ type UserRegistrationData = {
   data?: {
     errorCode?: number; // Error code if any
     message?: string; // Error message if any
+  };
+};
+
+// Dedefine the structure of the newly created WooCommerce customer data returned by the API
+type CustomerRegistrationData = {
+  id?: number; // Customer ID
+  date_created?: string; // Date the customer was created
+  date_created_gmt?: string; // Date the customer was created (GMT)
+  date_modified?: string; // Date the customer was modified
+  date_modified_gmt?: string; // Date the customer was modified (GMT)
+  email?: string; // Customer email
+  first_name?: string; // Customer first name
+  last_name?: string; // Customer last name
+  role?: string; // Customer role
+  username?: string; // Customer username
+  billing?: object; // Billing information
+  shipping?: object; // Shipping information
+  is_paying_customer?: boolean; // Whether the customer is a paying customer
+  avatar_url?: string; // Avatar URL
+  meta_data?: object[]; // Meta data
+  _links?: object; // Links
+  code?: string; // Error code if any
+  message?: string; // Error message if any
+  data?: {
+    status?: number; // HTTP status code if any
   };
 };
 
@@ -344,6 +369,110 @@ export const registerUser = async (
     return data;
   } catch (error) {
     console.error("authApi: Error during registration:", error);
+    // Handle network or other errors
+  }
+};
+
+/**
+ * Register a new WooCommerce customer via the WooCommerce REST API
+ *
+ * @param email
+ * @param password
+ * @returns
+ *
+ * Example response on successful customer creation:
+ * {
+ *  "id": 123,
+ *  "date_created": "2024-10-06T01:46:52",
+ *  "date_created_gmt": "2024-10-06T01:46:52",
+ *  "date_modified": "2024-10-06T01:46:52",
+ *  "date_modified_gmt": "2024-10-06T01:46:52",
+ *  "email": ""
+ *  "first_name": "Test",
+ *  "last_name": "Testerson",
+ *  "role": "customer",
+ *  "username": ""
+ *  "billing": { ... },
+ *  "shipping": { ... },
+ *  "is_paying_customer": false,
+ *  "avatar_url": "https://secure.gravatar.com/avatar/...",
+ *  "meta_data": [],
+ *  "_links": { ... }
+ * }
+ *
+ * Example response on failed customer creation (using existing email):
+ * {
+ *  "code": "registration-error-email-exists",
+ *  "message": "An account is already registered with your email address. Please log in.",
+ *  "data": {
+ *   "status": 400
+ *   }
+ * }
+ */
+export const registerCustomer = async (
+  email: string,
+  password: string
+): Promise<CustomerRegistrationData | undefined> => {
+  console.log(
+    `authApi: registerCustomer() called with email '${email}' and password: '${password}'`
+  );
+  try {
+    const response = await fetch(`${BASE_URL}${WC_ROUTE}/customers`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Basic " + base64Credentials, // Replace with your actual keys
+        "cache-control": "no-cache",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        first_name: "Test",
+        last_name: "Testerson",
+        username: email,
+        billing: {
+          first_name: "Test",
+          last_name: "Testerson",
+          address_1: "123 Main St",
+          city: "Anytown",
+          state: "CA",
+          postcode: "12345",
+          country: "US",
+          email: email,
+          phone: "555-555-5555",
+        },
+        shipping: {
+          first_name: "Test",
+          last_name: "Testerson",
+          address_1: "123 Main St",
+          city: "Anytown",
+          state: "CA",
+          postcode: "12345",
+          country: "US",
+        },
+      }),
+    });
+    const data = await response.json();
+    if (response.ok) {
+      console.log(
+        "authApi: Customer registration succeeded with status:",
+        response.status
+      );
+      console.log("authApi: Customer registration response data:", data);
+      // Handle successful customer creation
+    } else {
+      console.log(
+        "authApi: Customer registration failed with status:",
+        response.status
+      );
+      console.log("authApi: Customer registration response data:", data);
+      console.error("authApi: Error code:", data.code);
+      console.error("authApi: Error message:", data.message);
+      // Handle customer creation failure
+    }
+    return data;
+  } catch (error) {
+    console.error("authApi: Error during customer registration:", error);
     // Handle network or other errors
   }
 };
