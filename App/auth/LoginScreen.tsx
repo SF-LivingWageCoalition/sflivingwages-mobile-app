@@ -18,8 +18,6 @@ import { fetchToken, validateToken } from "./api/authApi";
 const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
   const dispatch = useDispatch();
 
-  // const jwtAuthKey = "SomeAuthKey!";
-
   const [userEmail, setUserEmail] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
 
@@ -60,71 +58,6 @@ const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
       }
     }
   };
-
-  // Fetch JWT Token (Authenticate)
-  // const fetchToken = async (email: string, password: string): Promise<void> => {
-  //   try {
-  //     const response = await fetch(
-  //       `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth&email=${email}&password=${password}&AUTH_KEY=${jwtAuthKey}`,
-  //       {
-  //         method: "POST",
-  //         headers: { "cache-control": "no-cache" },
-  //       }
-  //     );
-  //     console.log("Response received");
-  //     console.log("Response status:", response.status);
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       console.log("Token fetch response data:", data);
-  //       // Handle successful token fetch (e.g., store token, navigate to another screen)
-  //       // setAuthenticationData(data); // TODO: Remove later?
-  //       // setToken(data.data.jwt);
-  //       await validateToken(data.data.jwt);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching token:", error);
-  //   }
-  // };
-
-  // Validate JWT Token (Validate)
-  // Note this error resolution (even when autologin is disabled): https://wordpress.org/support/topic/unable-to-find-user-property-in-jwt/
-  // const validateToken = async (jwtToken: string): Promise<void> => {
-  //   console.log("Validating token...");
-  //   try {
-  //     const response = await fetch(
-  //       `https://www.wpmockup.xyz/?rest_route=/simple-jwt-login/v1/auth/validate`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           Authorization: `Bearer ${jwtToken}`,
-  //           //   alg: "HS256",
-  //           //   typ: "JWT",
-  //           "cache-control": "no-cache",
-  //         },
-  //       }
-  //     );
-  //     console.log("Response received");
-  //     console.log("Response status:", response.status);
-  //     if (response.ok) {
-  //       console.log("Token is valid");
-  //       const data = await response.json();
-  //       console.log("Token validation response data:", data);
-  //       // Handle successful token validation (e.g., navigate to another screen)
-  //       // setTokenIsValid(true);
-  //       // setValidationData(data); // TODO: Remove later? Set token/user data in Redux store?
-  //       dispatch(setUser(data.data)); // Set user data in Redux store
-  //       navigation.goBack();
-  //     } else {
-  //       console.log("Token validation failed with status:", response.status);
-  //       const data = await response.json();
-  //       console.error("Error code:", data.data.errorCode);
-  //       console.error("Error message:", data.data.message);
-  //       // setTokenIsValid(false);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error validating token:", error);
-  //   }
-  // };
 
   return (
     <ScrollView>

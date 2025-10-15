@@ -3,8 +3,6 @@
 // import { useDispatch } from "react-redux";
 import { clearUser } from "../../redux/features/userSlice/userSlice";
 
-// const dispatch = useDispatch();
-
 /**
  * Testing Site: https://www.wpmockup.xyz
  * Live Site: https://www.livingwage-sf.org
@@ -109,7 +107,34 @@ type PasswordResetData = {
  * API functions for authentication (fetching and validating JWT tokens)
  */
 
-// Fetch JWT Token (Authenticate)
+/**
+ * Fetch a JWT token using email and password via the Simple JWT Login plugin.
+ *
+ * @param email - User's email address
+ * @param password - User's password
+ * @returns A promise that resolves to the token data or undefined
+ *
+ * Example responses:
+ * Successful token fetch response data:
+ * {
+ *  "data":
+ *    {
+ *      "jwt": "eyJ0e...",
+ *    },
+ *  "success": true
+ * }
+ *
+ * Failed token fetch response data (using wrong password):
+ * {
+ *  "data":
+ *   {
+ *    "errorCode": 48,
+ *    "message": "Wrong user credentials"
+ *  },
+ * "success": false
+ * }
+ *
+ */
 export const fetchToken = async (
   email: string,
   password: string
@@ -124,48 +149,64 @@ export const fetchToken = async (
       }
     );
     console.log("Response received from authAPI");
-    // console.log("Response status:", response.status);
+    const data = await response.json();
     if (response.ok) {
-      const data = await response.json();
       console.log("Token fetch succeeded with status:", response.status);
       console.log("Token fetch response data:", data);
-      /**
-       * Token fetch response data:
-       * {
-       *  "data":
-       *    {
-       *      "jwt": "eyJ0e...",
-       *    },
-       *  "success": true
-       * }
-       */
       // Handle successful token fetch (e.g., store token, navigate to another screen)
-      return data; // Return token data
     } else {
-      const data = await response.json();
       console.log("Response data from failed token fetch:", data);
-      /**
-       * Token fetch response data (using wrong password):
-       * {
-       *  "data":
-       *   {
-       *    "errorCode": 48,
-       *    "message": "Wrong user credentials"
-       *  },
-       * "success": false
-       * }
-       */
       console.log("Token fetch failed with status:", response.status);
       console.error("Error code:", data.data.errorCode);
       console.error("Error message:", data.data.message);
     }
+    return data;
   } catch (error) {
     console.error("Error fetching token:", error);
   }
 };
 
-// Validate JWT Token (Validate)
-// Note this error resolution (even when autologin is disabled): https://wordpress.org/support/topic/unable-to-find-user-property-in-jwt/
+/**
+ * Validate a JWT token via the Simple JWT Login plugin.
+ *
+ * Note this error resolution (even when autologin is disabled):
+ * https://wordpress.org/support/topic/unable-to-find-user-property-in-jwt/
+ *
+ * @param jwtToken - The JWT token to validate
+ * @returns A promise that resolves to the validation data or undefined
+ *
+ * Example response on successful validation:
+ * {
+ *  "data":
+ *    {
+ *      "jwt": [[Object]],
+ *      "roles": ["customer"],
+ *      "user":
+ *        {
+ *          "ID": "31",
+ *          "display_name": "tosspot@scottmotion.com",
+ *          "user_activation_key": "",
+ *          "user_email": "tosspot@scottmotion.com",
+ *          "user_login": "tosspot@scottmotion.com",
+ *          "user_nicename": "tosspotscottmotion-com",
+ *          "user_registered": "2025-10-06 01:46:52",
+ *          "user_status": "0",
+ *          "user_url": ""
+ *        }
+ *    },
+ *  "success": true
+ * }
+ *
+ * Example response on failed validation:
+ * {
+ *  "data":
+ *   {
+ *    "errorCode": 14,
+ *    "message": "Expired token"
+ *  },
+ *  "success": false
+ * }
+ */
 export const validateToken = async (
   jwtToken: string
 ): Promise<ValidationData | undefined> => {
@@ -181,49 +222,45 @@ export const validateToken = async (
       },
     });
     console.log("Response received from authAPI");
-    // console.log("Response status:", response.status);
+    const data = await response.json();
     if (response.ok) {
-      const data = await response.json();
       console.log("Token validation succeeded with status:", response.status);
       console.log("Token is valid");
       console.log("Token validation response data:", data);
-      /**
-       * Token validation response data:
-       * {
-       *  "data":
-       *    {
-       *      "jwt": [[Object]],
-       *      "roles": ["customer"],
-       *      "user":
-       *        {
-       *          "ID": "31",
-       *          "display_name": "tosspot@scottmotion.com",
-       *          "user_activation_key": "",
-       *          "user_email": "tosspot@scottmotion.com",
-       *          "user_login": "tosspot@scottmotion.com",
-       *          "user_nicename": "tosspotscottmotion-com",
-       *          "user_registered": "2025-10-06 01:46:52",
-       *          "user_status": "0",
-       *          "user_url": ""
-       *        }
-       *    },
-       *  "success": true
-       * }
-       */
       // Handle successful token validation (e.g., navigate to another screen)
-      return data; // Return validation data
     } else {
-      const data = await response.json();
       console.log("Token validation failed with status:", response.status);
       console.error("Error code:", data.data.errorCode);
       console.error("Error message:", data.data.message);
     }
+    return data;
   } catch (error) {
     console.error("Error validating token:", error);
   }
 };
 
-// Send a password reset email via the Simple JWT Login plugin
+/**
+ * Send a password reset email to the specified email address.
+ *
+ * @param email
+ * @returns
+ *
+ * Example response on successful password reset request:
+ * {
+ *  "message": "Reset password email has been sent.",
+ *  "success": true
+ * }
+ *
+ * Example response on failed password reset request (using wrong password):
+ * {
+ *  "data":
+ *  {
+ *      "errorCode": 64,
+ *      "message": "Wrong user."
+ *   },
+ *  "success": false
+ * }
+ */
 export const sendPasswordReset = async (
   email: string
 ): Promise<PasswordResetData | undefined> => {
@@ -238,36 +275,14 @@ export const sendPasswordReset = async (
     );
     const data = await response.json();
     if (response.ok) {
-      // const data = await response.json();
       console.log("Forgot password response data:", data);
-      /**
-       * Forgot password response data:
-       * {
-       *  "message": "Reset password email has been sent.",
-       *  "success": true
-       * }
-       */
       // Handle successful password reset (e.g., show a confirmation message)
-      // return data;
     } else {
-      // const data = await response.json();
       console.log("Forgot password response data:", data);
-      /**
-       * Forgot password response data (using wrong password):
-       * {
-       *  "data":
-       *    {
-       *      "errorCode": 64,
-       *      "message": "Wrong user."
-       *    },
-       *  "success": false
-       * }
-       */
       console.log("Forgot password failed with status:", response.status);
       console.error("Error code:", data.data.errorCode);
       console.error("Error message:", data.data.message);
       // Handle failed password reset (e.g., show an error message)
-      // return data;
     }
     return data;
   } catch (error) {
