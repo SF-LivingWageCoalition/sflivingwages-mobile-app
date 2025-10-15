@@ -204,6 +204,13 @@ export const fetchToken = async (
         AUTH_KEY: JWT_AUTH_KEY,
       }),
     });
+    // let data: TokenData | undefined;
+    // try {
+    //   data = await response.json();
+    // } catch (jsonError) {
+    //   console.error("authApi: Failed to parse JSON response:", jsonError);
+    //   return undefined;
+    // }
     const data = await response.json();
     if (response.ok) {
       console.log(
@@ -280,6 +287,13 @@ export const validateToken = async (
         "cache-control": "no-cache",
       },
     });
+    // let data: ValidationData | undefined;
+    // try {
+    //   data = await response.json();
+    // } catch (jsonError) {
+    //   console.error("authApi: Failed to parse JSON response:", jsonError);
+    //   return undefined;
+    // }
     const data = await response.json();
     if (response.ok) {
       console.log(
@@ -293,8 +307,11 @@ export const validateToken = async (
         "authApi: Token validation failed with status:",
         response.status
       );
-      console.error("authApi: Error code:", data.data.errorCode);
-      console.error("authApi: Error message:", data.data.message);
+      console.log("authApi: Token validation response data:", data);
+      if (data) {
+        console.error("authApi: Error code:", data.data.errorCode);
+        console.error("authApi: Error message:", data.data.message);
+      }
     }
     return data;
   } catch (error) {
@@ -360,13 +377,14 @@ export const registerUser = async (
       }),
     });
 
-    let data: any;
-    try {
-      data = await response.json();
-    } catch (jsonError) {
-      console.error("authApi: Failed to parse JSON response:", jsonError);
-      return undefined;
-    }
+    // let data: UserRegistrationData | undefined;
+    // try {
+    //   data = await response.json();
+    // } catch (jsonError) {
+    //   console.error("authApi: Failed to parse JSON response:", jsonError);
+    //   return undefined;
+    // }
+    const data = await response.json();
     if (response.ok) {
       console.log(
         "authApi: Registration succeeded with status:",
@@ -472,13 +490,14 @@ export const registerCustomer = async (
       }),
     });
 
-    let data: any;
-    try {
-      data = await response.json();
-    } catch (jsonError) {
-      console.error("authApi: Failed to parse JSON response:", jsonError);
-      return undefined;
-    }
+    // let data: CustomerRegistrationData | undefined;
+    // try {
+    //   data = await response.json();
+    // } catch (jsonError) {
+    //   console.error("authApi: Failed to parse JSON response:", jsonError);
+    //   return undefined;
+    // }
+    const data = await response.json();
     if (response.ok) {
       console.log(
         "authApi: Customer registration succeeded with status:",
@@ -540,6 +559,13 @@ export const sendPasswordReset = async (
         headers: { "cache-control": "no-cache" },
       }
     );
+    // let data: PasswordResetData | undefined;
+    // try {
+    //   data = await response.json();
+    // } catch (jsonError) {
+    //   console.error("authApi: Failed to parse JSON response:", jsonError);
+    //   return undefined;
+    // }
     const data = await response.json();
     if (response.ok) {
       console.log(
