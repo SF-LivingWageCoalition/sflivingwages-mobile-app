@@ -1,6 +1,5 @@
 // App/auth/api/authApi.ts
 
-// import { useDispatch } from "react-redux";
 import { clearUser } from "../../redux/features/userSlice/userSlice";
 
 /**
@@ -193,13 +192,18 @@ export const fetchToken = async (
     console.log(
       `authApi: fetchToken() called with email '${email}' and password: '${password}'`
     );
-    const response = await fetch(
-      `${BASE_URL}${JWT_ROUTE}/auth&email=${email}&password=${password}&AUTH_KEY=${JWT_AUTH_KEY}`,
-      {
-        method: "POST",
-        headers: { "cache-control": "no-cache" },
-      }
-    );
+    const response = await fetch(`${BASE_URL}${JWT_ROUTE}/auth`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "cache-control": "no-cache",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        AUTH_KEY: JWT_AUTH_KEY,
+      }),
+    });
     const data = await response.json();
     if (response.ok) {
       console.log(
@@ -217,6 +221,7 @@ export const fetchToken = async (
     return data;
   } catch (error) {
     console.error("authApi: Error fetching token:", error);
+    return undefined;
   }
 };
 
@@ -294,6 +299,7 @@ export const validateToken = async (
     return data;
   } catch (error) {
     console.error("authApi: Error validating token:", error);
+    return undefined;
   }
 };
 
@@ -341,14 +347,26 @@ export const registerUser = async (
     console.log(
       `authApi: registerUser() called with email '${email}' and password: '${password}'`
     );
-    const response = await fetch(
-      `${BASE_URL}${JWT_ROUTE}/users&email=${email}&password=${password}&AUTH_KEY=${JWT_AUTH_KEY}`,
-      {
-        method: "POST",
-        headers: { "cache-control": "no-cache" },
-      }
-    );
-    const data = await response.json();
+    const response = await fetch(`${BASE_URL}${JWT_ROUTE}/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "cache-control": "no-cache",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        AUTH_KEY: JWT_AUTH_KEY,
+      }),
+    });
+
+    let data: any;
+    try {
+      data = await response.json();
+    } catch (jsonError) {
+      console.error("authApi: Failed to parse JSON response:", jsonError);
+      return undefined;
+    }
     if (response.ok) {
       console.log(
         "authApi: Registration succeeded with status:",
@@ -370,6 +388,7 @@ export const registerUser = async (
   } catch (error) {
     console.error("authApi: Error during registration:", error);
     // Handle network or other errors
+    return undefined;
   }
 };
 
@@ -421,7 +440,7 @@ export const registerCustomer = async (
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Basic " + base64Credentials, // Replace with your actual keys
+        Authorization: "Basic " + base64Credentials,
         "cache-control": "no-cache",
       },
       body: JSON.stringify({
@@ -452,7 +471,14 @@ export const registerCustomer = async (
         },
       }),
     });
-    const data = await response.json();
+
+    let data: any;
+    try {
+      data = await response.json();
+    } catch (jsonError) {
+      console.error("authApi: Failed to parse JSON response:", jsonError);
+      return undefined;
+    }
     if (response.ok) {
       console.log(
         "authApi: Customer registration succeeded with status:",
@@ -466,14 +492,17 @@ export const registerCustomer = async (
         response.status
       );
       console.log("authApi: Customer registration response data:", data);
-      console.error("authApi: Error code:", data.code);
-      console.error("authApi: Error message:", data.message);
+      if (data) {
+        console.error("authApi: Error code:", data.code);
+        console.error("authApi: Error message:", data.message);
+      }
       // Handle customer creation failure
     }
     return data;
   } catch (error) {
     console.error("authApi: Error during customer registration:", error);
     // Handle network or other errors
+    return undefined;
   }
 };
 
