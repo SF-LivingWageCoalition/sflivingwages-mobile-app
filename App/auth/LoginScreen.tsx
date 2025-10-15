@@ -47,10 +47,20 @@ const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
   // Login a WP user via the Simple JWT Login plugin
   const loginUser = async (email: string, password: string) => {
     const tokenData = await fetchToken(email, password);
-    if (tokenData && tokenData.data && tokenData.success) {
+    if (
+      tokenData &&
+      tokenData.data &&
+      tokenData.success &&
+      tokenData.data.jwt
+    ) {
       // Token fetch success. Validate the received token
       const validationData = await validateToken(tokenData.data.jwt);
-      if (validationData && validationData.success && validationData.data) {
+      if (
+        validationData &&
+        validationData.success &&
+        validationData.data &&
+        validationData.data.user
+      ) {
         // Token validation success. Set user data in Redux store
         console.log("LoginScreen: Login successful");
         dispatch(setUser(validationData.data)); // Set user data in Redux store

@@ -123,38 +123,42 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
   };
 
   const UserInfo: React.FC = () => {
-    return (
-      <View>
+    if (user && roles && jwt) {
+      return (
         <View>
-          <Text style={styles.subtitle}>
-            {translate("accountScreen.isLoggedIn")}
-          </Text>
-          <Text style={styles.subtitle}>Welcome, {user.display_name}!</Text>
+          <View>
+            <Text style={styles.subtitle}>
+              {translate("accountScreen.isLoggedIn")}
+            </Text>
+            <Text style={styles.subtitle}>Welcome, {user.display_name}!</Text>
+          </View>
+          <View>
+            <Text style={styles.userSliceSubtitle}>userSlice user:</Text>
+            <Text>ID: {user.ID}</Text>
+            <Text>Display Name: {user.display_name}</Text>
+            <Text>Activation Key: {user.user_activation_key}</Text>
+            <Text>Email: {user.user_email}</Text>
+            <Text>Login: {user.user_login}</Text>
+            <Text>Nice Name: {user.user_nicename}</Text>
+            <Text>Registered: {user.user_registered}</Text>
+            <Text>Status: {user.user_status}</Text>
+            <Text>URL: {user.user_url}</Text>
+          </View>
+          <View>
+            <Text style={styles.userSliceSubtitle}>userSlice roles:</Text>
+            <Text>User Roles: {roles.join(", ")}</Text>
+          </View>
+          <View>
+            <Text style={styles.userSliceSubtitle}>userSlice jwt:</Text>
+            <Text>JWT Token: {jwt[0]?.token}</Text>
+            <Text>JWT Header: {JSON.stringify(jwt[0]?.header)}</Text>
+            <Text>JWT Payload: {JSON.stringify(jwt[0]?.payload)}</Text>
+          </View>
         </View>
-        <View>
-          <Text style={styles.userSliceSubtitle}>userSlice user:</Text>
-          <Text>ID: {user.ID}</Text>
-          <Text>Display Name: {user.display_name}</Text>
-          <Text>Activation Key: {user.user_activation_key}</Text>
-          <Text>Email: {user.user_email}</Text>
-          <Text>Login: {user.user_login}</Text>
-          <Text>Nice Name: {user.user_nicename}</Text>
-          <Text>Registered: {user.user_registered}</Text>
-          <Text>Status: {user.user_status}</Text>
-          <Text>URL: {user.user_url}</Text>
-        </View>
-        <View>
-          <Text style={styles.userSliceSubtitle}>userSlice roles:</Text>
-          <Text>User Roles: {roles.join(", ")}</Text>
-        </View>
-        <View>
-          <Text style={styles.userSliceSubtitle}>userSlice jwt:</Text>
-          <Text>JWT Token: {jwt[0]?.token}</Text>
-          <Text>JWT Header: {JSON.stringify(jwt[0]?.header)}</Text>
-          <Text>JWT Payload: {JSON.stringify(jwt[0]?.payload)}</Text>
-        </View>
-      </View>
-    );
+      );
+    } else {
+      return null;
+    }
   };
 
   return (

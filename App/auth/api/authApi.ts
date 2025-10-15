@@ -48,16 +48,19 @@ const base64Credentials = btoa(`${consumerKey}:${consumerSecret}`); // Base64 en
 // Define the structure of the token data returned by the API
 type TokenData = {
   data?: {
-    jwt: string;
+    jwt?: string;
+    // error information if any
+    errorCode?: number;
+    message?: string;
   };
   success: boolean;
-  error?: string;
+  // error?: string;
 };
 
 // Define the structure of the validation data returned by the API
 type ValidationData = {
   data?: {
-    user: {
+    user?: {
       ID: string; // User ID
       display_name: string; // User display name
       user_activation_key: string; // User activation key
@@ -68,8 +71,8 @@ type ValidationData = {
       user_status: string; // User status
       user_url: string; // User URL
     };
-    roles: string[]; // User roles
-    jwt: [
+    roles?: string[]; // User roles
+    jwt?: [
       {
         token: string; // JWT token
         header: {
@@ -87,9 +90,12 @@ type ValidationData = {
         };
       }
     ];
+    // error information if any
+    errorCode?: number;
+    message?: string;
   };
   success: boolean;
-  error?: string;
+  // error?: string;
 };
 
 // Define the structure of the newly registered user data returned by the API
@@ -111,14 +117,16 @@ type UserRegistrationData = {
   };
   roles?: string[]; // User roles
   jwt?: string; // JWT token
+  // error information if any
   data?: {
-    errorCode?: number; // Error code if any
-    message?: string; // Error message if any
+    errorCode: number; // Error code if any
+    message: string; // Error message if any
   };
 };
 
 // Dedefine the structure of the newly created WooCommerce customer data returned by the API
 type CustomerRegistrationData = {
+  // Customer information
   id?: number; // Customer ID
   date_created?: string; // Date the customer was created
   date_created_gmt?: string; // Date the customer was created (GMT)
@@ -135,20 +143,21 @@ type CustomerRegistrationData = {
   avatar_url?: string; // Avatar URL
   meta_data?: object[]; // Meta data
   _links?: object; // Links
+  // Error information if any
   code?: string; // Error code if any
   message?: string; // Error message if any
   data?: {
-    status?: number; // HTTP status code if any
+    status: number; // HTTP status code if any
   };
 };
 
 // Define the structure of the password reset data returned by the API
 type PasswordResetData = {
-  message?: string; // Message from the API
   success: boolean; // Success status
+  message?: string; // Message from the API
   data?: {
-    errorCode?: number; // Error code if any
-    message?: string; // Error message if any
+    errorCode: number; // Error code if any
+    message: string; // Error message if any
   };
 };
 
@@ -220,7 +229,10 @@ export const fetchToken = async (
       console.log("authApi: Token fetch response data:", data);
       // Handle successful token fetch (e.g., store token, navigate to another screen)
     } else {
-      console.log("authApi: Token fetch failed with status:", response.status);
+      console.error(
+        "authApi: Token fetch failed with status:",
+        response.status
+      );
       console.log("authApi: Response data from failed token fetch:", data);
       console.error("authApi: Error code:", data.data.errorCode);
       console.error("authApi: Error message:", data.data.message);
@@ -281,7 +293,7 @@ export const validateToken = async (
     const response = await fetch(`${BASE_URL}${JWT_ROUTE}/auth/validate`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${jwtToken}`,
+        Authorization: `Bearer`,
         //   alg: "HS256",
         //   typ: "JWT",
         "cache-control": "no-cache",
@@ -398,8 +410,10 @@ export const registerUser = async (
         response.status
       );
       console.log("authApi: Registration response data:", data);
-      console.error("authApi: Error code:", data.data.errorCode);
-      console.error("authApi: Error message:", data.data.message);
+      if (data.data) {
+        console.error("authApi: Error code:", data.data.errorCode);
+        console.error("authApi: Error message:", data.data.message);
+      }
       // Handle registration failure (e.g., show error message)
     }
     return data;
@@ -512,8 +526,10 @@ export const registerCustomer = async (
       );
       console.log("authApi: Customer registration response data:", data);
       if (data) {
+        console.error("authApi: Error status:", data.data.status);
         console.error("authApi: Error code:", data.code);
         console.error("authApi: Error message:", data.message);
+        // console.error("authApi: Customer registration response data:", data);
       }
       // Handle customer creation failure
     }
@@ -580,8 +596,10 @@ export const sendPasswordReset = async (
         response.status
       );
       console.log("authApi: Forgot password response data:", data);
-      console.error("authApi: Error code:", data.data.errorCode);
-      console.error("authApi: Error message:", data.data.message);
+      if (data.data) {
+        console.error("authApi: Error code:", data.data.errorCode);
+        console.error("authApi: Error message:", data.data.message);
+      }
       // Handle failed password reset (e.g., show an error message)
     }
     return data;

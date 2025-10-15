@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface DataState {
-  user: {
+  user?: {
     ID: string;
     user_login: string;
     user_nicename: string;
@@ -12,8 +12,8 @@ interface DataState {
     user_status: string;
     display_name: string;
   };
-  roles: string[];
-  jwt: [
+  roles?: string[];
+  jwt?: [
     {
       token: string;
       header: {
