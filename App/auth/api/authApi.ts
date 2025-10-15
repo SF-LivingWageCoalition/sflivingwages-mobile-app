@@ -148,6 +148,7 @@ type CustomerRegistrationData = {
   message?: string; // Error message if any
   data?: {
     status: number; // HTTP status code if any
+    details?: object; // Additional error details if any
   };
 };
 
@@ -213,31 +214,33 @@ export const fetchToken = async (
         AUTH_KEY: JWT_AUTH_KEY,
       }),
     });
-    // let data: TokenData | undefined;
+    // let tokenData: TokenData | undefined;
     // try {
-    //   data = await response.json();
+    //   tokenData = await response.json();
     // } catch (jsonError) {
     //   console.error("authApi: Failed to parse JSON response:", jsonError);
     //   return undefined;
     // }
-    const data = await response.json();
+    const tokenData = await response.json();
     if (response.ok) {
       console.log(
         "authApi: Token fetch succeeded with status:",
         response.status
       );
-      console.log("authApi: Token fetch response data:", data);
+      console.log("authApi: Token fetch response data:", tokenData);
       // Handle successful token fetch (e.g., store token, navigate to another screen)
     } else {
       console.error(
         "authApi: Token fetch failed with status:",
         response.status
       );
-      console.log("authApi: Response data from failed token fetch:", data);
-      console.error("authApi: Error code:", data.data.errorCode);
-      console.error("authApi: Error message:", data.data.message);
+      console.log("authApi: Response data from failed token fetch:", tokenData);
+      if (tokenData && tokenData.data) {
+        console.error("authApi: Error code:", tokenData.data.errorCode);
+        console.error("authApi: Error message:", tokenData.data.message);
+      }
     }
-    return data;
+    return tokenData;
   } catch (error) {
     console.error("authApi: Error fetching token:", error);
     return undefined;
@@ -293,39 +296,39 @@ export const validateToken = async (
     const response = await fetch(`${BASE_URL}${JWT_ROUTE}/auth/validate`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer`,
+        Authorization: `Bearer ${jwtToken}`,
         //   alg: "HS256",
         //   typ: "JWT",
         "cache-control": "no-cache",
       },
     });
-    // let data: ValidationData | undefined;
+    // let validationData: ValidationData | undefined;
     // try {
-    //   data = await response.json();
+    //   validationData = await response.json();
     // } catch (jsonError) {
     //   console.error("authApi: Failed to parse JSON response:", jsonError);
     //   return undefined;
     // }
-    const data = await response.json();
+    const validationData = await response.json();
     if (response.ok) {
       console.log(
         "authApi: Token validation succeeded with status:",
         response.status
       );
-      console.log("authApi: Token validation response data:", data);
+      console.log("authApi: Token validation response data:", validationData);
       // Handle successful token validation (e.g., navigate to another screen)
     } else {
       console.log(
         "authApi: Token validation failed with status:",
         response.status
       );
-      console.log("authApi: Token validation response data:", data);
-      if (data) {
-        console.error("authApi: Error code:", data.data.errorCode);
-        console.error("authApi: Error message:", data.data.message);
+      console.log("authApi: Token validation response data:", validationData);
+      if (validationData) {
+        console.error("authApi: Error code:", validationData.data.errorCode);
+        console.error("authApi: Error message:", validationData.data.message);
       }
     }
-    return data;
+    return validationData;
   } catch (error) {
     console.error("authApi: Error validating token:", error);
     return undefined;
@@ -389,34 +392,34 @@ export const registerUser = async (
       }),
     });
 
-    // let data: UserRegistrationData | undefined;
+    // let registrationData: UserRegistrationData | undefined;
     // try {
-    //   data = await response.json();
+    //   registrationData = await response.json();
     // } catch (jsonError) {
     //   console.error("authApi: Failed to parse JSON response:", jsonError);
     //   return undefined;
     // }
-    const data = await response.json();
+    const registrationData = await response.json();
     if (response.ok) {
       console.log(
         "authApi: Registration succeeded with status:",
         response.status
       );
-      console.log("authApi: Registration response data:", data);
+      console.log("authApi: Registration response data:", registrationData);
       // Handle successful registration (e.g., navigate to login, show success message)
     } else {
       console.error(
         "authApi: Registration failed with status:",
         response.status
       );
-      console.log("authApi: Registration response data:", data);
-      if (data.data) {
-        console.error("authApi: Error code:", data.data.errorCode);
-        console.error("authApi: Error message:", data.data.message);
+      console.log("authApi: Registration response data:", registrationData);
+      if (registrationData.data) {
+        console.error("authApi: Error code:", registrationData.data.errorCode);
+        console.error("authApi: Error message:", registrationData.data.message);
       }
       // Handle registration failure (e.g., show error message)
     }
-    return data;
+    return registrationData;
   } catch (error) {
     console.error("authApi: Error during registration:", error);
     // Handle network or other errors
@@ -504,36 +507,42 @@ export const registerCustomer = async (
       }),
     });
 
-    // let data: CustomerRegistrationData | undefined;
+    // let registrationData: CustomerRegistrationData | undefined;
     // try {
-    //   data = await response.json();
+    //   registrationData = await response.json();
     // } catch (jsonError) {
     //   console.error("authApi: Failed to parse JSON response:", jsonError);
     //   return undefined;
     // }
-    const data = await response.json();
+    const registrationData = await response.json();
     if (response.ok) {
       console.log(
         "authApi: Customer registration succeeded with status:",
         response.status
       );
-      console.log("authApi: Customer registration response data:", data);
+      console.log(
+        "authApi: Customer registration response data:",
+        registrationData
+      );
       // Handle successful customer creation
     } else {
       console.log(
         "authApi: Customer registration failed with status:",
         response.status
       );
-      console.log("authApi: Customer registration response data:", data);
-      if (data) {
-        console.error("authApi: Error status:", data.data.status);
-        console.error("authApi: Error code:", data.code);
-        console.error("authApi: Error message:", data.message);
+      console.log(
+        "authApi: Customer registration response data:",
+        registrationData
+      );
+      if (registrationData) {
+        console.error("authApi: Error status:", registrationData.data.status);
+        console.error("authApi: Error code:", registrationData.code);
+        console.error("authApi: Error message:", registrationData.message);
         // console.error("authApi: Customer registration response data:", data);
       }
       // Handle customer creation failure
     }
-    return data;
+    return registrationData;
   } catch (error) {
     console.error("authApi: Error during customer registration:", error);
     // Handle network or other errors
@@ -575,34 +584,37 @@ export const sendPasswordReset = async (
         headers: { "cache-control": "no-cache" },
       }
     );
-    // let data: PasswordResetData | undefined;
+    // let passwordResetData: PasswordResetData | undefined;
     // try {
-    //   data = await response.json();
+    //   passwordResetData = await response.json();
     // } catch (jsonError) {
     //   console.error("authApi: Failed to parse JSON response:", jsonError);
     //   return undefined;
     // }
-    const data = await response.json();
+    const passwordResetData = await response.json();
     if (response.ok) {
       console.log(
         "authApi: Forgot password succeeded with status:",
         response.status
       );
-      console.log("authApi: Forgot password response data:", data);
+      console.log("authApi: Forgot password response data:", passwordResetData);
       // Handle successful password reset (e.g., show a confirmation message)
     } else {
       console.log(
         "authApi: Forgot password failed with status:",
         response.status
       );
-      console.log("authApi: Forgot password response data:", data);
-      if (data.data) {
-        console.error("authApi: Error code:", data.data.errorCode);
-        console.error("authApi: Error message:", data.data.message);
+      console.log("authApi: Forgot password response data:", passwordResetData);
+      if (passwordResetData.data) {
+        console.error("authApi: Error code:", passwordResetData.data.errorCode);
+        console.error(
+          "authApi: Error message:",
+          passwordResetData.data.message
+        );
       }
       // Handle failed password reset (e.g., show an error message)
     }
-    return data;
+    return passwordResetData;
   } catch (error) {
     console.error("authApi: Error sending password reset email:", error);
   }
