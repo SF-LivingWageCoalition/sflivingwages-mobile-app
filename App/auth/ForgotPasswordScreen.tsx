@@ -27,11 +27,18 @@ const ForgotPassword: React.FC = () => {
 
     if (Object.keys(newErrors).length === 0) {
       // No errors, proceed with forgot password
-      console.log(`Trying to reset password for email: '${userEmail}'`);
+      console.log(
+        `ForgotPasswordScreen: Trying to reset password for email: '${userEmail}'`
+      );
       // forgotPassword(userEmail);
       const resetData = await sendPasswordReset(userEmail); // via Simple JWT Login plugin
-      console.log("Password reset data:", resetData);
-      console.log("Password reset data: success:", resetData?.success);
+      if (resetData && resetData.success) {
+        console.log("ForgotPasswordScreen: Password reset successful");
+        console.log("ForgotPasswordScreen: Password reset data:", resetData);
+      } else {
+        console.log("ForgotPasswordScreen: Password reset failed");
+        console.log("ForgotPasswordScreen: Password reset data:", resetData);
+      }
       // You can handle the resetData further if needed
       // E.g., show a confirmation message or handle errors based on the response
     }

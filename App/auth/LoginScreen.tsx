@@ -38,7 +38,7 @@ const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
     if (Object.keys(newErrors).length === 0) {
       // No errors, proceed with login
       console.log(
-        `Trying to login user with email: '${userEmail}' and password: '${userPassword}'`
+        `LoginScreen: Trying to login user with email: '${userEmail}' and password: '${userPassword}'`
       );
       loginUser(userEmail, userPassword);
     }
@@ -46,16 +46,24 @@ const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
 
   // Login a WP user via the Simple JWT Login plugin
   const loginUser = async (email: string, password: string) => {
-    const tokenData = await fetchToken(email, password); // TODO: .then? try/catch?
-    if (tokenData && tokenData.data) {
+    const tokenData = await fetchToken(email, password);
+    if (tokenData && tokenData.data && tokenData.success) {
+      // Token fetch success. Validate the received token
       const validationData = await validateToken(tokenData.data.jwt);
       if (validationData && validationData.success && validationData.data) {
-        console.log("Login successful");
+        // Token validation success. Set user data in Redux store
+        console.log("LoginScreen: Login successful");
         dispatch(setUser(validationData.data)); // Set user data in Redux store
         navigation.goBack();
       } else {
-        console.log("Login failed");
+        // Token validation failed.
+        console.log("LoginScreen: Login failed");
+        console.log("LoginScreen: Validation data:", validationData);
       }
+    } else {
+      // Token fetch failed.
+      console.log("LoginScreen: Login failed");
+      console.log("LoginScreen: Token data:", tokenData);
     }
   };
 

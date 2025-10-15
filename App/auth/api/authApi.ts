@@ -140,7 +140,9 @@ export const fetchToken = async (
   password: string
 ): Promise<TokenData | undefined> => {
   try {
-    console.log("fetchToken called from authAPI");
+    console.log(
+      `authApi: fetchToken() called with email '${email}' and password: '${password}'`
+    );
     const response = await fetch(
       `${BASE_URL}${JWT_ROUTE}/auth&email=${email}&password=${password}&AUTH_KEY=${JWT_AUTH_KEY}`,
       {
@@ -148,21 +150,23 @@ export const fetchToken = async (
         headers: { "cache-control": "no-cache" },
       }
     );
-    console.log("Response received from authAPI");
     const data = await response.json();
     if (response.ok) {
-      console.log("Token fetch succeeded with status:", response.status);
-      console.log("Token fetch response data:", data);
+      console.log(
+        "authApi: Token fetch succeeded with status:",
+        response.status
+      );
+      console.log("authApi: Token fetch response data:", data);
       // Handle successful token fetch (e.g., store token, navigate to another screen)
     } else {
-      console.log("Response data from failed token fetch:", data);
-      console.log("Token fetch failed with status:", response.status);
-      console.error("Error code:", data.data.errorCode);
-      console.error("Error message:", data.data.message);
+      console.log("authApi: Token fetch failed with status:", response.status);
+      console.log("authApi: Response data from failed token fetch:", data);
+      console.error("authApi: Error code:", data.data.errorCode);
+      console.error("authApi: Error message:", data.data.message);
     }
     return data;
   } catch (error) {
-    console.error("Error fetching token:", error);
+    console.error("authApi: Error fetching token:", error);
   }
 };
 
@@ -211,7 +215,7 @@ export const validateToken = async (
   jwtToken: string
 ): Promise<ValidationData | undefined> => {
   try {
-    console.log("validateToken called from authAPI");
+    console.log("authApi: validateToken() called");
     const response = await fetch(`${BASE_URL}${JWT_ROUTE}/auth/validate`, {
       method: "POST",
       headers: {
@@ -221,21 +225,25 @@ export const validateToken = async (
         "cache-control": "no-cache",
       },
     });
-    console.log("Response received from authAPI");
     const data = await response.json();
     if (response.ok) {
-      console.log("Token validation succeeded with status:", response.status);
-      console.log("Token is valid");
-      console.log("Token validation response data:", data);
+      console.log(
+        "authApi: Token validation succeeded with status:",
+        response.status
+      );
+      console.log("authApi: Token validation response data:", data);
       // Handle successful token validation (e.g., navigate to another screen)
     } else {
-      console.log("Token validation failed with status:", response.status);
-      console.error("Error code:", data.data.errorCode);
-      console.error("Error message:", data.data.message);
+      console.log(
+        "authApi: Token validation failed with status:",
+        response.status
+      );
+      console.error("authApi: Error code:", data.data.errorCode);
+      console.error("authApi: Error message:", data.data.message);
     }
     return data;
   } catch (error) {
-    console.error("Error validating token:", error);
+    console.error("authApi: Error validating token:", error);
   }
 };
 
@@ -264,8 +272,8 @@ export const validateToken = async (
 export const sendPasswordReset = async (
   email: string
 ): Promise<PasswordResetData | undefined> => {
-  console.log(`Called sendPasswordReset with email: '${email}'`);
   try {
+    console.log(`authApi: sendPasswordReset() called with email: '${email}'`);
     const response = await fetch(
       `${BASE_URL}${JWT_ROUTE}/user/reset_password&email=${email}&AUTH_KEY=${JWT_AUTH_KEY}`,
       {
@@ -275,18 +283,25 @@ export const sendPasswordReset = async (
     );
     const data = await response.json();
     if (response.ok) {
-      console.log("Forgot password response data:", data);
+      console.log(
+        "authApi: Forgot password succeeded with status:",
+        response.status
+      );
+      console.log("authApi: Forgot password response data:", data);
       // Handle successful password reset (e.g., show a confirmation message)
     } else {
-      console.log("Forgot password response data:", data);
-      console.log("Forgot password failed with status:", response.status);
-      console.error("Error code:", data.data.errorCode);
-      console.error("Error message:", data.data.message);
+      console.log(
+        "authApi: Forgot password failed with status:",
+        response.status
+      );
+      console.log("authApi: Forgot password response data:", data);
+      console.error("authApi: Error code:", data.data.errorCode);
+      console.error("authApi: Error message:", data.data.message);
       // Handle failed password reset (e.g., show an error message)
     }
     return data;
   } catch (error) {
-    console.error("Error sending password reset email:", error);
+    console.error("authApi: Error sending password reset email:", error);
   }
 };
 
@@ -295,5 +310,5 @@ export const logout = (dispatch: Function): void => {
   // Clear any stored authentication data (e.g., tokens, user info)
   dispatch(clearUser()); // Clear user data from Redux store
   // Additional cleanup actions can be performed here
-  console.log("User logged out");
+  console.log("authApi: User logged out");
 };
