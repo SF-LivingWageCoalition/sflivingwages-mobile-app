@@ -93,6 +93,31 @@ type ValidationData = {
   error?: string;
 };
 
+// Define the structure of the user data returned by the API
+type UserRegistrationData = {
+  success: boolean; // Success status
+  id?: string; // User ID
+  message?: string; // Message from the API
+  user?: {
+    ID: string; // User ID
+    user_login: string; // User login name
+    user_nicename: string; // User nice name
+    user_email: string; // User email
+    user_url: string; // User URL
+    user_registered: string; // User registration date
+    user_activation_key: string; // User activation key
+    user_status: string; // User status
+    display_name: string; // User display name
+    user_level: number; // User level
+  };
+  roles?: string[]; // User roles
+  jwt?: string; // JWT token
+  data?: {
+    errorCode?: number; // Error code if any
+    message?: string; // Error message if any
+  };
+};
+
 // Define the structure of the password reset data returned by the API
 type PasswordResetData = {
   message?: string; // Message from the API
@@ -244,6 +269,82 @@ export const validateToken = async (
     return data;
   } catch (error) {
     console.error("authApi: Error validating token:", error);
+  }
+};
+
+/**
+ * Register a new user with the given email and password via the Simple JWT Login plugin.
+ *
+ * @param email
+ * @param password
+ *
+ * Example response when registration is successful:
+ * {
+ *  "success": true,
+ *  "id": "31",
+ *  "message": "User was successfully created.",
+ *  "user": {
+ *    "ID": 1,
+ *    "user_login": "myuser",
+ *    "user_nicename": "My User",
+ *    "user_email": "myuser@simplejwtlogin.com",
+ *    "user_url": "https://simplejwtlogin.com",
+ *    "user_registered": "2021-01-01 23:31:50",
+ *    "user_activation_key": "test",
+ *    "user_status": "0",
+ *    "display_name": "myuser",
+ *    "user_level": 10
+ *  }
+ * "roles": ["subscriber"],
+ * "jwt": "eyJhbGci..."
+ * }
+ *
+ * Example response when registration fails (using existing email):
+ * {
+ *  "success": false,
+ *  "data": {
+ *    "errorCode": 38,
+ *    "message": "User already exists."
+ *  }
+ * }
+ */
+export const registerUser = async (
+  email: string,
+  password: string
+): Promise<UserRegistrationData | undefined> => {
+  try {
+    console.log(
+      `authApi: registerUser() called with email '${email}' and password: '${password}'`
+    );
+    const response = await fetch(
+      `${BASE_URL}${JWT_ROUTE}/users&email=${email}&password=${password}&AUTH_KEY=${JWT_AUTH_KEY}`,
+      {
+        method: "POST",
+        headers: { "cache-control": "no-cache" },
+      }
+    );
+    const data = await response.json();
+    if (response.ok) {
+      console.log(
+        "authApi: Registration succeeded with status:",
+        response.status
+      );
+      console.log("authApi: Registration response data:", data);
+      // Handle successful registration (e.g., navigate to login, show success message)
+    } else {
+      console.error(
+        "authApi: Registration failed with status:",
+        response.status
+      );
+      console.log("authApi: Registration response data:", data);
+      console.error("authApi: Error code:", data.data.errorCode);
+      console.error("authApi: Error message:", data.data.message);
+      // Handle registration failure (e.g., show error message)
+    }
+    return data;
+  } catch (error) {
+    console.error("authApi: Error during registration:", error);
+    // Handle network or other errors
   }
 };
 
