@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Alert,
   ScrollView,
   StyleSheet,
   Text,
@@ -11,8 +12,11 @@ import { colors } from "../theme";
 import { fontSize, fontWeight } from "../theme/fontStyles";
 import { translate } from "../translation";
 import { sendPasswordReset } from "./api/authApi";
+import { ForgotPasswordScreenProps } from "../types";
 
-const ForgotPassword: React.FC = () => {
+const ForgotPassword: React.FC<ForgotPasswordScreenProps> = ({
+  navigation,
+}) => {
   const [userEmail, setUserEmail] = useState<string>("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
@@ -35,6 +39,12 @@ const ForgotPassword: React.FC = () => {
       if (resetData && resetData.success) {
         console.log("ForgotPasswordScreen: Password reset successful");
         console.log("ForgotPasswordScreen: Password reset data:", resetData);
+        Alert.alert(
+          "Password reset email sent.",
+          "Please check your email to complete your password reset.",
+          [{ text: "OK", onPress: () => navigation.goBack() }],
+          { cancelable: true, onDismiss: () => navigation.goBack() }
+        );
       } else {
         console.log("ForgotPasswordScreen: Password reset failed");
         console.log("ForgotPasswordScreen: Password reset data:", resetData);

@@ -337,3 +337,11 @@ export type AccountScreenProps = {
 export type LoginScreenProps = {
   navigation: NavigationProp<ParamListBase>;
 };
+
+export type RegisterScreenProps = {
+  navigation: NavigationProp<ParamListBase>;
+};
+
+export type ForgotPasswordScreenProps = {
+  navigation: NavigationProp<ParamListBase>;
+};

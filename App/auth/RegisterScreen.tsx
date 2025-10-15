@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Alert,
   ScrollView,
   StyleSheet,
   Text,
@@ -11,14 +12,15 @@ import { colors } from "../theme";
 import { fontSize, fontWeight } from "../theme/fontStyles";
 import { translate } from "../translation";
 import { registerUser, registerCustomer } from "./api/authApi";
+import { RegisterScreenProps } from "../types";
 
-const Register: React.FC = () => {
+const Register: React.FC<RegisterScreenProps> = ({ navigation }) => {
   const [userEmail, setUserEmail] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     // Do registration logic here
     console.log(
       `Trying to register user with email: '${userEmail}' and password: '${userPassword}'`
@@ -36,7 +38,20 @@ const Register: React.FC = () => {
     if (Object.keys(newErrors).length === 0) {
       // No errors, proceed with registration
       // registerUser(userEmail, userPassword); // via Simple JWT Login plugin
-      registerCustomer(userEmail, userPassword); // via WooCommerce REST API
+      const registrationData = await registerCustomer(userEmail, userPassword); // via WooCommerce REST API
+      if (registrationData && registrationData.id) {
+        console.log("Registration successful");
+        console.log("Registration data:", registrationData);
+        Alert.alert(
+          "Registration successful",
+          "You may now log in.",
+          [{ text: "OK", onPress: () => navigation.goBack() }],
+          { cancelable: true, onDismiss: () => navigation.goBack() }
+        );
+      } else {
+        console.log("Registration failed");
+        console.log("Registration data:", registrationData);
+      }
     }
   };
 
