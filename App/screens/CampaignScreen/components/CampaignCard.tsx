@@ -1,31 +1,28 @@
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { NavigationProp, ParamListBase, useNavigation } from "@react-navigation/native";
 import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Linking, ScrollView, StyleSheet, Text, View } from "react-native";
 import { colors } from "../../../theme";
 import { fontSize } from "../../../theme/fontStyles";
-import { CampaignCardProps } from "../../../types";
+import { CampaignItem } from "../../../types";
 
-const CampaignCard: React.FC<CampaignCardProps> = (props) => {
-  const navigation = useNavigation<StackNavigationProp<any>>();
-
-  // Use props.navigate if provided, otherwise use the navigation hook
-  const navigateToScreen = (screen: string, params?: any) => {
-    if (props.navigate) {
-      props.navigate(screen, params);
-    } else if (navigation) {
-      navigation.navigate(screen, params);
-    }
-  };
+//create a campaign card that uses campaign item as its properties
+const CampaignCard: React.FC<CampaignItem> = ({
+  id,
+  src,
+  title,
+  destination,
+}) => {
+  const navigate = useNavigation<NavigationProp<ParamListBase>>();
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.container}>
         <Text
           style={styles.homeNavText}
-          onPress={() => navigateToScreen("CampaignDetailpage")}
+          onPress={() => Linking.openURL(destination)}
         >
-          Raise Wage
+          //display item title
+          {title} 
         </Text>
       </View>
     </ScrollView>
@@ -39,7 +36,7 @@ const styles = StyleSheet.create({
   homeNavText: {
     fontSize: fontSize.md,
     color: colors.light.primaryDark,
-    textAlign: "center",
+    textAlign: "left",
     padding: 10,
   },
 });

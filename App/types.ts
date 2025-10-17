@@ -237,6 +237,13 @@ export type ArticleProps = {
   article: ArticleItem;
 };
 
+export type CampaignItem = {
+  id: number;
+  src: string;
+  title: string;
+  destination: string;
+};
+
 export type EventItem = {
   id: number;
   title: string;

@@ -294,6 +294,9 @@ const es: Translations = {
   eventsDetails: {
     title: "Detalles del Evento",
   },
+  campaignScreen: {
+    title: "Campañas",
+  },
 };
 
 export default es;

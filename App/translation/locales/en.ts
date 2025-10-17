@@ -286,6 +286,9 @@ const en = {
   eventsDetails: {
     title: "Event Details",
   },
+  campaignScreen: {
+    title: "Campaigns",
+  },
 };
 
 export default en;

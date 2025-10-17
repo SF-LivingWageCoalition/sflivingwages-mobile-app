@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Button,
   Dimensions,
   ImageBackground,
   Linking,
@@ -18,6 +19,7 @@ import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { CarouselImageProps, NewHomeScreenProps } from "../../types";
+import campaignData from "../../assets/campaignsData";
 
 const bodyPageWidth = Dimensions.get("window").width;
 
@@ -79,48 +81,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
       destination: "EventsNavigator",
       destinationScreen: "Events",
     },
-  ];
 
-  // Images for the campaigns section
-  const campaignImages = [
-    {
-      id: 1,
-      src: require("../../assets/images/welfare.jpg"),
-      title: "Transform Welfare",
-      destination:
-        "https://www.livingwage-sf.org/transform-welfare-to-work-programs/",
-    },
-    {
-      id: 2,
-      src: require("../../assets/images/public-sector.png"),
-      title: "Protect Public Sector and Union Jobs",
-      destination: "https://www.livingwage-sf.org/protect-public-sector-jobs/",
-    },
-    {
-      id: 3,
-      src: require("../../assets/images/Encuentro_2017_021.jpg"),
-      title: "End Mass Incarceration and Prison Labor",
-      destination: "https://www.livingwage-sf.org/mass-incarceration/",
-    },
-    {
-      id: 4,
-      src: require("../../assets/images/immigrant.jpg"),
-      title: "Immigration Reform",
-      destination: "https://www.livingwage-sf.org/immigration-reform/",
-    },
-    {
-      id: 5,
-      src: require("../../assets/images/fairtrade.jpg"),
-      title: "Fair Trade",
-      destination:
-        "https://www.livingwage-sf.org/transform-welfare-to-work-programs/",
-    },
-    {
-      id: 6,
-      src: require("../../assets/images/campaign3_background.jpg"),
-      title: "Raise Wages",
-      destination: "https://www.livingwage-sf.org/raising-wages/",
-    },
   ];
 
   return (
@@ -181,7 +142,6 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
               </Swiper>
             </View>
           </View>
-
           {/* Campaigns section */}
           <View style={styles.containerBody}>
             <Text style={{ ...styles.titles, marginTop: 12, marginBottom: 30 }}>
@@ -194,12 +154,12 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
               activeDotColor={"#70b5ff"}
               dotStyle={{ width: 8, height: 8 }}
             >
-              {campaignImages.map((image) => (
+              {campaignData.map((image) => (
                 <CarouselImageSmall
                   key={image.id}
                   image={image}
                   onPress={() => {
-                    Linking.openURL(image.destination);
+                    navigation.navigate("CampaignScreen")
                   }}
                 />
               ))}
