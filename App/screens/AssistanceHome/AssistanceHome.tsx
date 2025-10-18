@@ -8,10 +8,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import appIcon from "../../../assets/icon.png";
 import { colors } from "../../theme";
-import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
-import { AssistanceTabParamList } from "../../types";
+import { AssistanceTabParamList } from "../../types/types";
 
 interface AssistanceHomeProps {
   navigation: NativeStackNavigationProp<AssistanceTabParamList>;
@@ -23,10 +24,7 @@ const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
       <View style={styles.container}>
         <View style={styles.card}>
           <View style={styles.logoContainer}>
-            <Image
-              style={styles.logo}
-              source={require("../../../assets/icon.png")}
-            />
+            <Image style={styles.logo} source={appIcon} />
           </View>
           <Text style={styles.title}>
             {translate("assistHomeScreen.title")}
@@ -100,15 +98,15 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     resizeMode: "contain",
+    borderRadius: 10,
   },
   title: {
-    fontSize: fontSize.lg,
-    fontWeight: fontWeight.bold,
+    ...textStyles.h3,
     textAlign: "center",
     marginBottom: 10,
   },
   subtitle: {
-    fontSize: fontSize.sm,
+    ...textStyles.body,
     textAlign: "center",
     marginBottom: 30,
     color: colors.light.textSecondary,
@@ -129,10 +127,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
   },
   buttonText: {
-    fontSize: fontSize.md,
+    ...textStyles.button,
     color: colors.light.textOnPrimary,
     textAlign: "center",
-    fontWeight: fontWeight.bold,
   },
 });
 

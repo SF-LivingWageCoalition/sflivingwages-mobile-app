@@ -2,13 +2,11 @@ import { NavigationProp, ParamListBase, useNavigation } from "@react-navigation/
 import React from "react";
 import { Linking, ScrollView, StyleSheet, Text, View } from "react-native";
 import { colors } from "../../../theme";
-import { fontSize } from "../../../theme/fontStyles";
-import { CampaignItem } from "../../../types";
+import { textStyles } from "../../../theme/fontStyles";
+import { CampaignItem } from "../../../types/types";
 
 //create a campaign card that uses campaign item as its properties
 const CampaignCard: React.FC<CampaignItem> = ({
-  id,
-  src,
   title,
   destination,
 }) => {
@@ -34,7 +32,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   homeNavText: {
-    fontSize: fontSize.md,
+    ...textStyles.h3,
     color: colors.light.primaryDark,
     textAlign: "left",
     padding: 10,

@@ -1,10 +1,10 @@
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import React, { useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { CreditCardInput } from "react-native-credit-card-input";
 import { colors } from "../../../theme";
-import { fontSize, fontWeight } from "../../../theme/fontStyles";
-import { CardData, ViewProps } from "../../../types";
+import { textStyles } from "../../../theme/fontStyles";
+import { CardData, ViewProps } from "../../../types/types";
 
 /**
  * Renders the payment form and handles the credit card data
@@ -36,7 +36,7 @@ const PaymentFormView: React.FC<ViewProps> = ({
         {error && (
           <View style={styles.alertWrapper}>
             <View style={styles.alertIconWrapper}>
-              <FontAwesome
+              <FontAwesome5
                 name="exclamation-circle"
                 size={20}
                 style={{ color: colors.light.error }}
@@ -75,9 +75,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   alertText: {
+    ...textStyles.body,
     color: colors.light.error,
-    fontSize: fontSize.sm,
-    fontWeight: fontWeight.normal,
   },
   alertWrapper: {
     backgroundColor: colors.light.errorContainer,

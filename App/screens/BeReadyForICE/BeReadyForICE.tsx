@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   Image,
-  ImageSourcePropType,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,13 +9,12 @@ import {
   View,
 } from "react-native";
 import Collapsible from "react-native-collapsible";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import BulletItem from "../../components/lists/BulletItem";
 import { colors } from "../../theme";
-import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
-
-const IC_ARR_DOWN: ImageSourcePropType = require("../../assets/icons/ic_arr_down.png");
-const IC_ARR_UP: ImageSourcePropType = require("../../assets/icons/ic_arr_up.png");
+import appIcon from "../../../assets/icon.png";
 
 const BeReadyForICE: React.FC = () => {
   const navigation = useNavigation();
@@ -41,14 +39,15 @@ const BeReadyForICE: React.FC = () => {
           style={styles.circleBackButton}
           onPress={() => navigation.goBack()}
         >
-          <Text style={styles.backArrow}>{"<"}</Text>
+          <FontAwesome5
+            name="chevron-left"
+            size={20}
+            color={colors.light.chevronLight}
+          />
         </TouchableOpacity>
         <View style={styles.card}>
           <View style={styles.logoContainer}>
-            <Image
-              style={styles.logo}
-              source={require("../../../assets/icon.png")}
-            />
+            <Image style={styles.logo} source={appIcon} />
           </View>
           <Text style={styles.title}>
             {translate("beReadyForICEScreen.title")}
@@ -63,10 +62,10 @@ const BeReadyForICE: React.FC = () => {
             <Text style={styles.headerTitle}>
               {translate("beReadyForICEScreen.makeAPlan.title")}
             </Text>
-            <Image
-              source={contentVisible[0] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={styles.arrow}
-              resizeMode="contain"
+            <FontAwesome5
+              name={contentVisible[0] ? "chevron-up" : "chevron-down"}
+              size={20}
+              color={colors.light.chevronDark}
             />
           </TouchableOpacity>
           <Collapsible collapsed={!contentVisible[0]}>
@@ -107,10 +106,10 @@ const BeReadyForICE: React.FC = () => {
             <Text style={styles.headerTitle}>
               {translate("beReadyForICEScreen.whoToCall.title")}
             </Text>
-            <Image
-              source={contentVisible[1] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={styles.arrow}
-              resizeMode="contain"
+            <FontAwesome5
+              name={contentVisible[1] ? "chevron-up" : "chevron-down"}
+              size={20}
+              color={colors.light.chevronDark}
             />
           </TouchableOpacity>
           <Collapsible collapsed={!contentVisible[1]}>
@@ -163,10 +162,10 @@ const BeReadyForICE: React.FC = () => {
             <Text style={styles.headerTitle}>
               {translate("beReadyForICEScreen.ifICEArrives.title")}
             </Text>
-            <Image
-              source={contentVisible[2] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={styles.arrow}
-              resizeMode="contain"
+            <FontAwesome5
+              name={contentVisible[2] ? "chevron-up" : "chevron-down"}
+              size={20}
+              color={colors.light.chevronDark}
             />
           </TouchableOpacity>
           <Collapsible collapsed={!contentVisible[2]}>
@@ -201,10 +200,10 @@ const BeReadyForICE: React.FC = () => {
             <Text style={styles.headerTitle}>
               {translate("beReadyForICEScreen.readyToRecord.title")}
             </Text>
-            <Image
-              source={contentVisible[3] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={styles.arrow}
-              resizeMode="contain"
+            <FontAwesome5
+              name={contentVisible[3] ? "chevron-up" : "chevron-down"}
+              size={20}
+              color={colors.light.chevronDark}
             />
           </TouchableOpacity>
           <Collapsible collapsed={!contentVisible[3]}>
@@ -230,10 +229,10 @@ const BeReadyForICE: React.FC = () => {
             <Text style={styles.headerTitle}>
               {translate("beReadyForICEScreen.ifDetained.title")}
             </Text>
-            <Image
-              source={contentVisible[4] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={styles.arrow}
-              resizeMode="contain"
+            <FontAwesome5
+              name={contentVisible[4] ? "chevron-up" : "chevron-down"}
+              size={20}
+              color={colors.light.chevronDark}
             />
           </TouchableOpacity>
           <Collapsible collapsed={!contentVisible[4]}>
@@ -271,10 +270,10 @@ const BeReadyForICE: React.FC = () => {
             <Text style={styles.headerTitle}>
               {translate("beReadyForICEScreen.resources.title")}
             </Text>
-            <Image
-              source={contentVisible[5] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={styles.arrow}
-              resizeMode="contain"
+            <FontAwesome5
+              name={contentVisible[5] ? "chevron-up" : "chevron-down"}
+              size={20}
+              color={colors.light.chevronDark}
             />
           </TouchableOpacity>
           <Collapsible collapsed={!contentVisible[5]}>
@@ -303,10 +302,10 @@ const BeReadyForICE: React.FC = () => {
             <Text style={styles.headerTitle}>
               {translate("beReadyForICEScreen.emergencyFile.title")}
             </Text>
-            <Image
-              source={contentVisible[6] ? IC_ARR_UP : IC_ARR_DOWN}
-              style={styles.arrow}
-              resizeMode="contain"
+            <FontAwesome5
+              name={contentVisible[6] ? "chevron-up" : "chevron-down"}
+              size={20}
+              color={colors.light.chevronDark}
             />
           </TouchableOpacity>
           <Collapsible collapsed={!contentVisible[6]}>
@@ -354,11 +353,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
-  backArrow: {
-    color: colors.light.textOnPrimary,
-    fontSize: fontSize.lg,
-    fontWeight: fontWeight.bold,
-  },
   card: {
     backgroundColor: colors.light.background,
     borderRadius: 10,
@@ -377,10 +371,10 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     resizeMode: "contain",
+    borderRadius: 10,
   },
   title: {
-    fontSize: fontSize.lg,
-    fontWeight: fontWeight.bold,
+    ...textStyles.h3,
     textAlign: "center",
     marginBottom: 20,
   },
@@ -393,11 +387,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
   },
   headerTitle: {
-    fontSize: fontSize.md,
-    fontWeight: fontWeight.bold,
+    ...textStyles.button,
     color: colors.light.secondary,
+    flex: 1,
   },
   bulletList: {
     marginLeft: 10,
@@ -409,17 +404,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   bulletPoint: {
-    fontSize: fontSize.sm,
+    ...textStyles.body,
     marginRight: 5,
     lineHeight: 24,
   },
   bulletText: {
+    ...textStyles.body,
     flex: 1,
-    fontSize: fontSize.sm,
     lineHeight: 24,
   },
   sectionText: {
-    fontSize: fontSize.sm,
+    ...textStyles.body,
     lineHeight: 24,
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -430,21 +425,16 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   subBulletPoint: {
-    fontSize: fontSize.xs,
+    ...textStyles.bodySmall,
     marginRight: 5,
     color: colors.light.textSecondary,
     lineHeight: 20,
   },
   subBulletText: {
+    ...textStyles.bodySmall,
     flex: 1,
-    fontSize: fontSize.xs,
     color: colors.light.textPrimary,
     lineHeight: 20,
-  },
-  arrow: {
-    width: 24,
-    height: 24,
-    marginLeft: 8,
   },
 });
 
