@@ -21,7 +21,7 @@ const CampaignCard: React.FC<CampaignItem> = ({
           style={styles.homeNavText}
           onPress={() => Linking.openURL(destination)}
         >
-          //display item title
+          {/* display item title */}
           {title} 
         </Text>
       </View>
