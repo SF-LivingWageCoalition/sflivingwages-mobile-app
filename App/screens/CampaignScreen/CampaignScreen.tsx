@@ -24,8 +24,7 @@ const CampaignScreen: React.FC = () => {
                 renderItem={({item}) => <CampaignCard 
                   src={item.src}
                   title={item.title}
-                  destination={item.destination}
-                />
+                  destination={item.destination} id={item.id}                />
               }
               />
     </View>
