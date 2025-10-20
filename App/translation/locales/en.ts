@@ -286,6 +286,27 @@ const en = {
   eventsDetails: {
     title: "Event Details",
   },
+  accountScreen: {
+    title: "Account",
+    emailAddress: "Email Address",
+    password: "Password",
+    login: "Login",
+    register: "Register",
+    forgotPassword: "Forgot Password",
+    logout: "Logout",
+    isLoggedIn: "Welcome, you are logged in!",
+    isLoggedOut: "You are not logged in.",
+    submit: "Submit",
+  },
+  loginScreen: {
+    title: "Login",
+  },
+  registerScreen: {
+    title: "Register",
+  },
+  forgotPasswordScreen: {
+    title: "Forgot Password",
+  },
 };
 
 export default en;

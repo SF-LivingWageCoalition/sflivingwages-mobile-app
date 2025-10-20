@@ -5,6 +5,7 @@ export type RootStackParamList = {
   Preview: { image: string };
   EventsNavigator: undefined;
   WhoWeAre: undefined;
+  AuthNavigator: undefined;
 };
 
 export type BottomTabParamList = {
@@ -12,6 +13,7 @@ export type BottomTabParamList = {
   Auction: undefined;
   Donate: undefined;
   Assist: undefined;
+  Account: undefined;
 };
 
 export type AssistanceTabParamList = {
@@ -290,3 +292,25 @@ export interface WageData {
   adult1: Household;
   adult2: Household;
 }
+
+export type AuthStackParamList = {
+  Login: any;
+  Register: any;
+  ForgotPassword: any;
+};
+
+export type AccountScreenProps = {
+  navigation: NavigationProp<ParamListBase>;
+};
+
+export type LoginScreenProps = {
+  navigation: NavigationProp<ParamListBase>;
+};
+
+export type RegisterScreenProps = {
+  navigation: NavigationProp<ParamListBase>;
+};
+
+export type ForgotPasswordScreenProps = {
+  navigation: NavigationProp<ParamListBase>;
+};

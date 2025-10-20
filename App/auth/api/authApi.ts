@@ -1,0 +1,629 @@
+// App/auth/api/authApi.ts
+
+import { clearUser } from "../../redux/features/userSlice/userSlice";
+
+/**
+ * Testing Site: https://www.wpmockup.xyz
+ * Live Site: https://www.livingwage-sf.org
+ *
+ * Simple JWT Login plugin: https://wordpress.org/plugins/simple-jwt-login/
+ * Simple JWT Login site: https://simplejwtlogin.com/
+ *
+ * WooCommerce plugin: https://wordpress.org/plugins/woocommerce/
+ * WooCommerce site: https://woocommerce.com/
+ * WooCommerce REST API: https://developer.woocommerce.com/docs/apis/rest-api/
+ * WooCommerce REST API Docs: https://woocommerce.github.io/woocommerce-rest-api-docs/
+ *
+ */
+
+/**
+ * Configuration Constants
+ * These constants are used for API requests and authentication.
+ */
+
+// Base URLs for the API
+const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL; // Base URL for WordPress APIs
+
+// API Routes
+const JWT_ROUTE = process.env.EXPO_PUBLIC_JWT_ROUTE; // Route for Simple JWT Login plugin
+const WC_ROUTE = process.env.EXPO_PUBLIC_WC_ROUTE; // Route for WooCommerce REST API
+
+// JWT Decrytion Key / Algorithm / Token Type
+const JWT_DE_KEY = process.env.EXPO_PUBLIC_JWT_DE_KEY; // Key used for JWT decryption
+const JWT_DE_ALG = process.env.EXPO_PUBLIC_JWT_DE_ALG; // Algorithm used for JWT decryption
+const JWT_TYP = process.env.EXPO_PUBLIC_JWT_TYP; // Type of token
+
+const JWT_AUTH_KEY = process.env.EXPO_PUBLIC_JWT_AUTH_KEY; // Auth key for Simple JWT Login plugin
+
+// WooCommerce REST API credentials
+const consumerKey = process.env.EXPO_PUBLIC_CONSUMER_KEY; // WooCommerce Consumer Key (read/write)
+const consumerSecret = process.env.EXPO_PUBLIC_CONSUMER_SECRET; // WooCommerce Consumer Secret (read/write)
+const base64Credentials = btoa(`${consumerKey}:${consumerSecret}`); // Base64 encoded credentials
+
+/**
+ * Type Definitions
+ * These types define the structure of data returned by the API.
+ */
+
+// Define the structure of the token data returned by the API
+type TokenData = {
+  data?: {
+    jwt?: string;
+    // error information if any
+    errorCode?: number;
+    message?: string;
+  };
+  success: boolean;
+  // error?: string;
+};
+
+// Define the structure of the validation data returned by the API
+type ValidationData = {
+  data?: {
+    user?: {
+      ID: string; // User ID
+      display_name: string; // User display name
+      user_activation_key: string; // User activation key
+      user_email: string; // User email
+      user_login: string; // User login name
+      user_nicename: string; // User nice name
+      user_registered: string; // User registration date
+      user_status: string; // User status
+      user_url: string; // User URL
+    };
+    roles?: string[]; // User roles
+    jwt?: [
+      {
+        token: string; // JWT token
+        header: {
+          alg: string; // Algorithm used
+          typ: string; // Type of token
+        };
+        payload: {
+          email?: string; // User email
+          exp?: number; // Expiration timestamp
+          iat?: number; // Issued at timestamp
+          id?: string; // User ID
+          iss?: string; // Issuer
+          site?: string; // Site URL
+          username?: string; // User name
+        };
+      }
+    ];
+    // error information if any
+    errorCode?: number;
+    message?: string;
+  };
+  success: boolean;
+  // error?: string;
+};
+
+// Define the structure of the newly registered user data returned by the API
+type UserRegistrationData = {
+  success: boolean; // Success status
+  id?: string; // User ID
+  message?: string; // Message from the API
+  user?: {
+    ID: string; // User ID
+    user_login: string; // User login name
+    user_nicename: string; // User nice name
+    user_email: string; // User email
+    user_url: string; // User URL
+    user_registered: string; // User registration date
+    user_activation_key: string; // User activation key
+    user_status: string; // User status
+    display_name: string; // User display name
+    user_level: number; // User level
+  };
+  roles?: string[]; // User roles
+  jwt?: string; // JWT token
+  // error information if any
+  data?: {
+    errorCode: number; // Error code if any
+    message: string; // Error message if any
+  };
+};
+
+// Dedefine the structure of the newly created WooCommerce customer data returned by the API
+type CustomerRegistrationData = {
+  // Customer information
+  id?: number; // Customer ID
+  date_created?: string; // Date the customer was created
+  date_created_gmt?: string; // Date the customer was created (GMT)
+  date_modified?: string; // Date the customer was modified
+  date_modified_gmt?: string; // Date the customer was modified (GMT)
+  email?: string; // Customer email
+  first_name?: string; // Customer first name
+  last_name?: string; // Customer last name
+  role?: string; // Customer role
+  username?: string; // Customer username
+  billing?: object; // Billing information
+  shipping?: object; // Shipping information
+  is_paying_customer?: boolean; // Whether the customer is a paying customer
+  avatar_url?: string; // Avatar URL
+  meta_data?: object[]; // Meta data
+  _links?: object; // Links
+  // Error information if any
+  code?: string; // Error code if any
+  message?: string; // Error message if any
+  data?: {
+    status: number; // HTTP status code if any
+    details?: object; // Additional error details if any
+  };
+};
+
+// Define the structure of the password reset data returned by the API
+type PasswordResetData = {
+  success: boolean; // Success status
+  message?: string; // Message from the API
+  data?: {
+    errorCode: number; // Error code if any
+    message: string; // Error message if any
+  };
+};
+
+/**
+ * API functions for authentication (fetching and validating JWT tokens)
+ */
+
+/**
+ * Fetch a JWT token using email and password via the Simple JWT Login plugin.
+ *
+ * @param email - User's email address
+ * @param password - User's password
+ * @returns A promise that resolves to the token data or undefined
+ *
+ * Example responses:
+ * Successful token fetch response data:
+ * {
+ *  "data":
+ *    {
+ *      "jwt": "eyJ0e...",
+ *    },
+ *  "success": true
+ * }
+ *
+ * Failed token fetch response data (using wrong password):
+ * {
+ *  "data":
+ *   {
+ *    "errorCode": 48,
+ *    "message": "Wrong user credentials"
+ *  },
+ * "success": false
+ * }
+ *
+ */
+export const fetchToken = async (
+  email: string,
+  password: string
+): Promise<TokenData | undefined> => {
+  try {
+    console.log(
+      `authApi: fetchToken() called with email '${email}' and password: '${password}'`
+    );
+    const response = await fetch(`${BASE_URL}${JWT_ROUTE}/auth`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "cache-control": "no-cache",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        AUTH_KEY: JWT_AUTH_KEY,
+      }),
+    });
+    // let tokenData: TokenData | undefined;
+    // try {
+    //   tokenData = await response.json();
+    // } catch (jsonError) {
+    //   console.error("authApi: Failed to parse JSON response:", jsonError);
+    //   return undefined;
+    // }
+    const tokenData = await response.json();
+    if (response.ok) {
+      console.log(
+        "authApi: Token fetch succeeded with status:",
+        response.status
+      );
+      console.log("authApi: Token fetch response data:", tokenData);
+      // Handle successful token fetch (e.g., store token, navigate to another screen)
+    } else {
+      console.error(
+        "authApi: Token fetch failed with status:",
+        response.status
+      );
+      console.log("authApi: Response data from failed token fetch:", tokenData);
+      if (tokenData && tokenData.data) {
+        console.error("authApi: Error code:", tokenData.data.errorCode);
+        console.error("authApi: Error message:", tokenData.data.message);
+      }
+    }
+    return tokenData;
+  } catch (error) {
+    console.error("authApi: Error fetching token:", error);
+    return undefined;
+  }
+};
+
+/**
+ * Validate a JWT token via the Simple JWT Login plugin.
+ *
+ * Note this error resolution (even when autologin is disabled):
+ * https://wordpress.org/support/topic/unable-to-find-user-property-in-jwt/
+ *
+ * @param jwtToken - The JWT token to validate
+ * @returns A promise that resolves to the validation data or undefined
+ *
+ * Example response on successful validation:
+ * {
+ *  "data":
+ *    {
+ *      "jwt": [[Object]],
+ *      "roles": ["customer"],
+ *      "user":
+ *        {
+ *          "ID": "31",
+ *          "display_name": "tosspot@scottmotion.com",
+ *          "user_activation_key": "",
+ *          "user_email": "tosspot@scottmotion.com",
+ *          "user_login": "tosspot@scottmotion.com",
+ *          "user_nicename": "tosspotscottmotion-com",
+ *          "user_registered": "2025-10-06 01:46:52",
+ *          "user_status": "0",
+ *          "user_url": ""
+ *        }
+ *    },
+ *  "success": true
+ * }
+ *
+ * Example response on failed validation:
+ * {
+ *  "data":
+ *   {
+ *    "errorCode": 14,
+ *    "message": "Expired token"
+ *  },
+ *  "success": false
+ * }
+ */
+export const validateToken = async (
+  jwtToken: string
+): Promise<ValidationData | undefined> => {
+  try {
+    console.log("authApi: validateToken() called");
+    const response = await fetch(`${BASE_URL}${JWT_ROUTE}/auth/validate`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+        //   alg: "HS256",
+        //   typ: "JWT",
+        "cache-control": "no-cache",
+      },
+    });
+    // let validationData: ValidationData | undefined;
+    // try {
+    //   validationData = await response.json();
+    // } catch (jsonError) {
+    //   console.error("authApi: Failed to parse JSON response:", jsonError);
+    //   return undefined;
+    // }
+    const validationData = await response.json();
+    if (response.ok) {
+      console.log(
+        "authApi: Token validation succeeded with status:",
+        response.status
+      );
+      console.log("authApi: Token validation response data:", validationData);
+      // Handle successful token validation (e.g., navigate to another screen)
+    } else {
+      console.log(
+        "authApi: Token validation failed with status:",
+        response.status
+      );
+      console.log("authApi: Token validation response data:", validationData);
+      if (validationData) {
+        console.error("authApi: Error code:", validationData.data.errorCode);
+        console.error("authApi: Error message:", validationData.data.message);
+      }
+    }
+    return validationData;
+  } catch (error) {
+    console.error("authApi: Error validating token:", error);
+    return undefined;
+  }
+};
+
+/**
+ * Register a new user with the given email and password via the Simple JWT Login plugin.
+ *
+ * @param email
+ * @param password
+ *
+ * Example response when registration is successful:
+ * {
+ *  "success": true,
+ *  "id": "31",
+ *  "message": "User was successfully created.",
+ *  "user": {
+ *    "ID": 1,
+ *    "user_login": "myuser",
+ *    "user_nicename": "My User",
+ *    "user_email": "myuser@simplejwtlogin.com",
+ *    "user_url": "https://simplejwtlogin.com",
+ *    "user_registered": "2021-01-01 23:31:50",
+ *    "user_activation_key": "test",
+ *    "user_status": "0",
+ *    "display_name": "myuser",
+ *    "user_level": 10
+ *  }
+ * "roles": ["subscriber"],
+ * "jwt": "eyJhbGci..."
+ * }
+ *
+ * Example response when registration fails (using existing email):
+ * {
+ *  "success": false,
+ *  "data": {
+ *    "errorCode": 38,
+ *    "message": "User already exists."
+ *  }
+ * }
+ */
+export const registerUser = async (
+  email: string,
+  password: string
+): Promise<UserRegistrationData | undefined> => {
+  try {
+    console.log(
+      `authApi: registerUser() called with email '${email}' and password: '${password}'`
+    );
+    const response = await fetch(`${BASE_URL}${JWT_ROUTE}/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "cache-control": "no-cache",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        AUTH_KEY: JWT_AUTH_KEY,
+      }),
+    });
+
+    // let registrationData: UserRegistrationData | undefined;
+    // try {
+    //   registrationData = await response.json();
+    // } catch (jsonError) {
+    //   console.error("authApi: Failed to parse JSON response:", jsonError);
+    //   return undefined;
+    // }
+    const registrationData = await response.json();
+    if (response.ok) {
+      console.log(
+        "authApi: Registration succeeded with status:",
+        response.status
+      );
+      console.log("authApi: Registration response data:", registrationData);
+      // Handle successful registration (e.g., navigate to login, show success message)
+    } else {
+      console.error(
+        "authApi: Registration failed with status:",
+        response.status
+      );
+      console.log("authApi: Registration response data:", registrationData);
+      if (registrationData.data) {
+        console.error("authApi: Error code:", registrationData.data.errorCode);
+        console.error("authApi: Error message:", registrationData.data.message);
+      }
+      // Handle registration failure (e.g., show error message)
+    }
+    return registrationData;
+  } catch (error) {
+    console.error("authApi: Error during registration:", error);
+    // Handle network or other errors
+    return undefined;
+  }
+};
+
+/**
+ * Register a new WooCommerce customer via the WooCommerce REST API
+ *
+ * @param email
+ * @param password
+ * @returns
+ *
+ * Example response on successful customer creation:
+ * {
+ *  "id": 123,
+ *  "date_created": "2024-10-06T01:46:52",
+ *  "date_created_gmt": "2024-10-06T01:46:52",
+ *  "date_modified": "2024-10-06T01:46:52",
+ *  "date_modified_gmt": "2024-10-06T01:46:52",
+ *  "email": ""
+ *  "first_name": "Test",
+ *  "last_name": "Testerson",
+ *  "role": "customer",
+ *  "username": ""
+ *  "billing": { ... },
+ *  "shipping": { ... },
+ *  "is_paying_customer": false,
+ *  "avatar_url": "https://secure.gravatar.com/avatar/...",
+ *  "meta_data": [],
+ *  "_links": { ... }
+ * }
+ *
+ * Example response on failed customer creation (using existing email):
+ * {
+ *  "code": "registration-error-email-exists",
+ *  "message": "An account is already registered with your email address. Please log in.",
+ *  "data": {
+ *   "status": 400
+ *   }
+ * }
+ */
+export const registerCustomer = async (
+  email: string,
+  password: string
+): Promise<CustomerRegistrationData | undefined> => {
+  console.log(
+    `authApi: registerCustomer() called with email '${email}' and password: '${password}'`
+  );
+  try {
+    const response = await fetch(`${BASE_URL}${WC_ROUTE}/customers`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Basic " + base64Credentials,
+        "cache-control": "no-cache",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        first_name: "Test",
+        last_name: "Testerson",
+        username: email,
+        billing: {
+          first_name: "Test",
+          last_name: "Testerson",
+          address_1: "123 Main St",
+          city: "Anytown",
+          state: "CA",
+          postcode: "12345",
+          country: "US",
+          email: email,
+          phone: "555-555-5555",
+        },
+        shipping: {
+          first_name: "Test",
+          last_name: "Testerson",
+          address_1: "123 Main St",
+          city: "Anytown",
+          state: "CA",
+          postcode: "12345",
+          country: "US",
+        },
+      }),
+    });
+
+    // let registrationData: CustomerRegistrationData | undefined;
+    // try {
+    //   registrationData = await response.json();
+    // } catch (jsonError) {
+    //   console.error("authApi: Failed to parse JSON response:", jsonError);
+    //   return undefined;
+    // }
+    const registrationData = await response.json();
+    if (response.ok) {
+      console.log(
+        "authApi: Customer registration succeeded with status:",
+        response.status
+      );
+      console.log(
+        "authApi: Customer registration response data:",
+        registrationData
+      );
+      // Handle successful customer creation
+    } else {
+      console.log(
+        "authApi: Customer registration failed with status:",
+        response.status
+      );
+      console.log(
+        "authApi: Customer registration response data:",
+        registrationData
+      );
+      if (registrationData) {
+        console.error("authApi: Error status:", registrationData.data.status);
+        console.error("authApi: Error code:", registrationData.code);
+        console.error("authApi: Error message:", registrationData.message);
+        // console.error("authApi: Customer registration response data:", data);
+      }
+      // Handle customer creation failure
+    }
+    return registrationData;
+  } catch (error) {
+    console.error("authApi: Error during customer registration:", error);
+    // Handle network or other errors
+    return undefined;
+  }
+};
+
+/**
+ * Send a password reset email to the specified email address.
+ *
+ * @param email
+ * @returns
+ *
+ * Example response on successful password reset request:
+ * {
+ *  "message": "Reset password email has been sent.",
+ *  "success": true
+ * }
+ *
+ * Example response on failed password reset request (using wrong password):
+ * {
+ *  "data":
+ *  {
+ *      "errorCode": 64,
+ *      "message": "Wrong user."
+ *   },
+ *  "success": false
+ * }
+ */
+export const sendPasswordReset = async (
+  email: string
+): Promise<PasswordResetData | undefined> => {
+  try {
+    console.log(`authApi: sendPasswordReset() called with email: '${email}'`);
+    const response = await fetch(
+      `${BASE_URL}${JWT_ROUTE}/user/reset_password&email=${email}&AUTH_KEY=${JWT_AUTH_KEY}`,
+      {
+        method: "POST",
+        headers: { "cache-control": "no-cache" },
+      }
+    );
+    // let passwordResetData: PasswordResetData | undefined;
+    // try {
+    //   passwordResetData = await response.json();
+    // } catch (jsonError) {
+    //   console.error("authApi: Failed to parse JSON response:", jsonError);
+    //   return undefined;
+    // }
+    const passwordResetData = await response.json();
+    if (response.ok) {
+      console.log(
+        "authApi: Forgot password succeeded with status:",
+        response.status
+      );
+      console.log("authApi: Forgot password response data:", passwordResetData);
+      // Handle successful password reset (e.g., show a confirmation message)
+    } else {
+      console.log(
+        "authApi: Forgot password failed with status:",
+        response.status
+      );
+      console.log("authApi: Forgot password response data:", passwordResetData);
+      if (passwordResetData.data) {
+        console.error("authApi: Error code:", passwordResetData.data.errorCode);
+        console.error(
+          "authApi: Error message:",
+          passwordResetData.data.message
+        );
+      }
+      // Handle failed password reset (e.g., show an error message)
+    }
+    return passwordResetData;
+  } catch (error) {
+    console.error("authApi: Error sending password reset email:", error);
+  }
+};
+
+// Logout function to clear authentication data
+export const logout = (dispatch: Function): void => {
+  // Clear any stored authentication data (e.g., tokens, user info)
+  dispatch(clearUser()); // Clear user data from Redux store
+  // Additional cleanup actions can be performed here
+  console.log("authApi: User logged out");
+};
