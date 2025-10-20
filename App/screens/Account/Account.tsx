@@ -12,7 +12,7 @@ import {
 import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 import { translate } from "../../translation";
-import { AccountScreenProps } from "../../types";
+import { AccountScreenProps } from "../../types/types";
 import { RootState } from "../../redux/store/store";
 
 const Account: React.FC<AccountScreenProps> = ({ navigation }) => {

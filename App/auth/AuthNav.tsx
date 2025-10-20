@@ -3,7 +3,7 @@ import React from "react";
 import { colors } from "../theme";
 import { fontWeight } from "../theme/fontStyles";
 import { translate } from "../translation/i18n";
-import { AuthStackParamList } from "../types";
+import { AuthStackParamList } from "../types/types";
 import Login from "./LoginScreen";
 import Register from "./RegisterScreen";
 import ForgotPassword from "./ForgotPasswordScreen";

@@ -12,7 +12,7 @@ import {
 import { colors } from "../theme";
 import { fontSize, fontWeight } from "../theme/fontStyles";
 import { translate } from "../translation";
-import { LoginScreenProps } from "../types";
+import { LoginScreenProps } from "../types/types";
 import { fetchToken, validateToken } from "./api/authApi";
 
 const Login: React.FC<LoginScreenProps> = ({ navigation }) => {

@@ -12,7 +12,7 @@ import { colors } from "../theme";
 import { fontSize, fontWeight } from "../theme/fontStyles";
 import { translate } from "../translation";
 import { registerUser, registerCustomer } from "./api/authApi";
-import { RegisterScreenProps } from "../types";
+import { RegisterScreenProps } from "../types/types";
 
 const Register: React.FC<RegisterScreenProps> = ({ navigation }) => {
   const [userEmail, setUserEmail] = useState<string>("");

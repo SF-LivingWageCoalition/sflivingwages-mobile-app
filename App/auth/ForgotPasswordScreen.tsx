@@ -12,7 +12,7 @@ import { colors } from "../theme";
 import { fontSize, fontWeight } from "../theme/fontStyles";
 import { translate } from "../translation";
 import { sendPasswordReset } from "./api/authApi";
-import { ForgotPasswordScreenProps } from "../types";
+import { ForgotPasswordScreenProps } from "../types/types";
 
 const ForgotPassword: React.FC<ForgotPasswordScreenProps> = ({
   navigation,
