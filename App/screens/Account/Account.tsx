@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import { colors } from "../../theme";
-import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
 import { AccountScreenProps } from "../../types/types";
 import { RootState } from "../../redux/store/store";
@@ -190,23 +190,20 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light.surfaceVariant,
   },
   title: {
-    fontSize: fontSize.lg,
-    fontWeight: fontWeight.bold,
+    ...textStyles.h3,
     textAlign: "center",
     marginBottom: 10,
   },
   subtitle: {
-    fontSize: fontSize.sm,
+    ...textStyles.body,
     textAlign: "center",
     marginBottom: 10,
     color: colors.light.textSecondary,
   },
   userSliceSubtitle: {
-    fontSize: fontSize.sm,
+    ...textStyles.bodyBold,
     marginVertical: 10,
-    fontWeight: fontWeight.bold,
   },
-
   authButtonsContainer: {
     marginTop: 10,
     marginHorizontal: 22,
@@ -224,10 +221,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
   },
   buttonText: {
-    fontSize: fontSize.md,
+    ...textStyles.button,
     color: colors.light.textOnPrimary,
     textAlign: "center",
-    fontWeight: fontWeight.bold,
   },
   textButtonContainer: {
     flexDirection: "row",
@@ -245,8 +241,7 @@ const styles = StyleSheet.create({
     // shadowOffset: { width: 1, height: 1 },
   },
   textButtonText: {
-    fontSize: fontSize.xs,
-    fontWeight: fontWeight.medium,
+    ...textStyles.buttonSmall,
     color: colors.light.secondary,
   },
 });

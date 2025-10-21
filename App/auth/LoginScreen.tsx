@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import { colors } from "../theme";
-import { fontSize, fontWeight } from "../theme/fontStyles";
+import { textStyles } from "../theme/fontStyles";
 import { translate } from "../translation";
 import { LoginScreenProps } from "../types/types";
 import { fetchToken, validateToken } from "./api/authApi";
@@ -80,7 +80,6 @@ const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
   return (
     <ScrollView>
       <View>
-        <Text>Login Screen</Text>
         {/* Login Form */}
         <View style={styles.formContainer}>
           <View style={styles.inputContainer}>
@@ -120,6 +119,7 @@ const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
               <Text style={styles.inputError}>{errors.userPassword}</Text>
             )}
           </View>
+
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={onSubmit}>
               <Text style={styles.buttonText}>
@@ -147,13 +147,13 @@ const styles = StyleSheet.create({
     // margin: 12,
   },
   inputName: {
+    ...textStyles.label,
     // marginHorizontal: 10,
     // marginLeft: 10,
   },
   requiredField: {
+    ...textStyles.bodyBold,
     color: colors.light.primary,
-    fontSize: fontSize.sm,
-    fontWeight: fontWeight.bold,
   },
   textInput: {
     // height: 30,
@@ -162,8 +162,8 @@ const styles = StyleSheet.create({
     // margin: 10,
   },
   inputError: {
+    ...textStyles.caption,
     color: colors.light.error,
-    fontSize: fontSize.xxs,
     marginTop: 10,
     // marginLeft: 10,
     // marginTop: 2,
@@ -184,10 +184,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
   },
   buttonText: {
-    fontSize: fontSize.md,
+    ...textStyles.button,
     color: colors.light.textOnPrimary,
     textAlign: "center",
-    fontWeight: fontWeight.bold,
   },
 });
 
