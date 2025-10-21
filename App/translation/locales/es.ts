@@ -243,7 +243,7 @@ const es: Translations = {
         name: "David Frias",
         title: "Codirector de Campaña",
       },
-      {        
+      {
         id: 3,
         name: "Julia Toscano",
         title: "Codirectora de Campaña",
@@ -296,15 +296,8 @@ const es: Translations = {
   },
   accountScreen: {
     title: "Cuenta",
-    emailAddress: "Correo Electrónico",
-    password: "Contraseña",
-    login: "Iniciar Sesión",
-    register: "Registrarse",
-    forgotPassword: "Olvidé Mi Contraseña",
-    logout: "Cerrar Sesión",
     isLoggedIn: "Bienvenido, ¡has iniciado sesión!",
     isLoggedOut: "No has iniciado sesión.",
-    submit: "Enviar",
   },
   loginScreen: {
     title: "Iniciar Sesión",
@@ -314,6 +307,32 @@ const es: Translations = {
   },
   forgotPasswordScreen: {
     title: "Olvidé Mi Contraseña",
+  },
+  inputs: {
+    emailAddress: "Correo Electrónico",
+    password: "Contraseña",
+  },
+  buttons: {
+    submit: "Enviar",
+    clear: "Limpiar",
+    login: "Iniciar Sesión",
+    register: "Registrarse",
+    forgotPassword: "Olvidé Mi Contraseña",
+    logout: "Cerrar Sesión",
+  },
+  validation: {
+    emailRequired: "Se requiere correo electrónico",
+    passwordRequired: "Se requiere contraseña",
+  },
+  errors: {
+    networkError: "Error de red. Por favor, inténtalo de nuevo más tarde.",
+    serverError: "Error del servidor. Por favor, inténtalo de nuevo más tarde.",
+    unexpectedError:
+      "Ocurrió un error desconocido. Por favor, inténtalo de nuevo.",
+    loginFailed:
+      "Error de inicio de sesión. Por favor, verifica tus credenciales.",
+    passwordResetFailed:
+      "Error al restablecer la contraseña. Por favor, inténtalo de nuevo más tarde.",
   },
 };
 

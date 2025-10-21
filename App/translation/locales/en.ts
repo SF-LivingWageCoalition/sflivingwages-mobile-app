@@ -288,15 +288,8 @@ const en = {
   },
   accountScreen: {
     title: "Account",
-    emailAddress: "Email Address",
-    password: "Password",
-    login: "Login",
-    register: "Register",
-    forgotPassword: "Forgot Password",
-    logout: "Logout",
     isLoggedIn: "Welcome, you are logged in!",
     isLoggedOut: "You are not logged in.",
-    submit: "Submit",
   },
   loginScreen: {
     title: "Login",
@@ -306,6 +299,29 @@ const en = {
   },
   forgotPasswordScreen: {
     title: "Forgot Password",
+  },
+  inputs: {
+    emailAddress: "Email Address",
+    password: "Password",
+  },
+  buttons: {
+    submit: "Submit",
+    clear: "Clear",
+    login: "Login",
+    register: "Register",
+    forgotPassword: "Forgot Password",
+    logout: "Logout",
+  },
+  validation: {
+    emailRequired: "Email is required",
+    passwordRequired: "Password is required",
+  },
+  errors: {
+    networkError: "Network error. Please try again later.",
+    serverError: "Server error. Please try again later.",
+    unexpectedError: "An unknown error occurred. Please try again.",
+    loginFailed: "Login failed. Please check your credentials.",
+    passwordResetFailed: "Password reset failed. Please try again later.",
   },
 };
 

@@ -67,9 +67,7 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
   const LoginButton: React.FC = () => {
     return (
       <TouchableOpacity style={styles.button} onPress={onLogin}>
-        <Text style={styles.buttonText}>
-          {translate("accountScreen.login")}
-        </Text>
+        <Text style={styles.buttonText}>{translate("buttons.login")}</Text>
       </TouchableOpacity>
     );
   };
@@ -79,7 +77,7 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
     return (
       <TouchableOpacity style={styles.textButton} onPress={onForgotPassword}>
         <Text style={styles.textButtonText}>
-          {translate("accountScreen.forgotPassword")}
+          {translate("buttons.forgotPassword")}
         </Text>
       </TouchableOpacity>
     );
@@ -90,7 +88,7 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
     return (
       <TouchableOpacity style={styles.textButton} onPress={onRegister}>
         <Text style={styles.textButtonText}>
-          {translate("accountScreen.register")}
+          {translate("buttons.register")}
         </Text>
       </TouchableOpacity>
     );
@@ -101,9 +99,7 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
     return (
       <View style={styles.authButtonsContainer}>
         <TouchableOpacity style={styles.button} onPress={onLogout}>
-          <Text style={styles.buttonText}>
-            {translate("accountScreen.logout")}
-          </Text>
+          <Text style={styles.buttonText}>{translate("buttons.logout")}</Text>
         </TouchableOpacity>
       </View>
     );

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  ActivityIndicator,
   Alert,
   ScrollView,
   StyleSheet,
@@ -19,49 +20,72 @@ const ForgotPassword: React.FC<ForgotPasswordScreenProps> = ({
 }) => {
   const [userEmail, setUserEmail] = useState<string>("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [generalError, setGeneralError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit = async () => {
     // Do forgot password logic here
-    // Basic validation
+    // Basic input validation
     const newErrors: { [key: string]: string } = {};
     if (!userEmail) {
-      newErrors.userEmail = "Email is required";
+      newErrors.userEmail =
+        translate("validation.emailRequired") || "Email is required";
     }
     setErrors(newErrors);
+    setGeneralError(null);
 
     if (Object.keys(newErrors).length === 0) {
       // No errors, proceed with forgot password
       console.log(
         `ForgotPasswordScreen: Trying to reset password for email: '${userEmail}'`
       );
-      // forgotPassword(userEmail);
-      const resetData = await sendPasswordReset(userEmail); // via Simple JWT Login plugin
-      if (resetData && resetData.success) {
-        console.log("ForgotPasswordScreen: Password reset successful");
-        console.log("ForgotPasswordScreen: Password reset data:", resetData);
-        Alert.alert(
-          "Password reset email sent.",
-          "Please check your email to complete your password reset.",
-          [{ text: "OK", onPress: () => navigation.goBack() }],
-          { cancelable: true, onDismiss: () => navigation.goBack() }
+      // Call the sendPasswordReset function and await structured result
+      setLoading(true);
+      try {
+        const result = await sendPasswordReset(userEmail); // via Simple JWT Login plugin
+        if (result && result.success) {
+          // Successful password reset request: navigate back
+          console.log("ForgotPasswordScreen: Password reset successful");
+          console.log("ForgotPasswordScreen: Password reset data:", result);
+          Alert.alert(
+            "Password reset email sent.",
+            "Please check your email to complete your password reset.",
+            [{ text: "OK", onPress: () => navigation.goBack() }],
+            { cancelable: true, onDismiss: () => navigation.goBack() }
+          );
+        } else {
+          // Password reset failed: show an error message to the user
+          console.log("ForgotPasswordScreen: Password reset failed");
+          console.log("ForgotPasswordScreen: Password reset data:", result);
+          const errorMessage =
+            translate("errors.passwordResetFailed") ||
+            "Failed to send password reset email. Please try again.";
+          setGeneralError(errorMessage);
+        }
+      } catch (error) {
+        console.error(
+          "ForgotPasswordScreen: Error occurred during password reset:",
+          error
         );
-      } else {
-        console.log("ForgotPasswordScreen: Password reset failed");
-        console.log("ForgotPasswordScreen: Password reset data:", resetData);
+        setGeneralError(
+          translate("errors.passwordResetFailed") ||
+            "An error occurred while trying to reset the password."
+        );
+      } finally {
+        setLoading(false);
       }
-      // You can handle the resetData further if needed
-      // E.g., show a confirmation message or handle errors based on the response
     }
   };
 
   return (
     <ScrollView>
       <View style={styles.container}>
-        {/* Forgot Password Form */}
+        {/* Begin Forgot Password Form */}
         <View style={styles.formContainer}>
+          {/* Email Input */}
           <View style={styles.inputContainer}>
             <Text style={styles.inputName}>
-              {translate("accountScreen.emailAddress")}
+              {translate("inputs.emailAddress")}
               <Text style={styles.requiredField}>*</Text>
             </Text>
             <TextInput
@@ -71,22 +95,49 @@ const ForgotPassword: React.FC<ForgotPasswordScreenProps> = ({
               autoCapitalize="none"
               onChangeText={(userEmailInput) => setUserEmail(userEmailInput)}
               value={userEmail}
+              editable={!loading}
             />
             {errors.userEmail && (
               <Text style={styles.inputError}>{errors.userEmail}</Text>
             )}
           </View>
 
+          {/* Submit Button */}
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={onSubmit}>
-              <Text style={styles.buttonText}>
-                {translate("accountScreen.submit")}
-              </Text>
+            <TouchableOpacity
+              style={[styles.button, loading ? styles.buttonDisabled : null]}
+              onPress={onSubmit}
+              disabled={loading}
+            >
+              {loading ? (
+                <ActivityIndicator
+                  size="small"
+                  color={colors.light.textOnPrimary}
+                />
+              ) : (
+                <Text style={styles.buttonText}>
+                  {translate("buttons.submit")}
+                </Text>
+              )}
             </TouchableOpacity>
           </View>
+
+          {/* General Error Message */}
+          {generalError ? (
+            <View>
+              <Text style={styles.generalError}>{generalError}</Text>
+            </View>
+          ) : null}
         </View>
         {/* End Forgot Password Form */}
       </View>
+
+      {/* Loading overlay */}
+      {loading ? (
+        <View style={styles.loadingOverlay} pointerEvents="auto">
+          <ActivityIndicator size="large" color={colors.light.primary} />
+        </View>
+      ) : null}
     </ScrollView>
   );
 };
@@ -125,6 +176,14 @@ const styles = StyleSheet.create({
     // marginLeft: 10,
     // marginTop: 2,
   },
+  generalError: {
+    ...textStyles.caption,
+    color: colors.light.error,
+    textAlign: "center",
+    marginTop: 10,
+    // marginLeft: 10,
+    // marginTop: 2,
+  },
   buttonContainer: {
     marginTop: 20,
     gap: 20,
@@ -140,10 +199,23 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOffset: { width: 1, height: 1 },
   },
+  buttonDisabled: {
+    opacity: 0.7,
+  },
   buttonText: {
     ...textStyles.button,
     color: colors.light.textOnPrimary,
     textAlign: "center",
+  },
+  loadingOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.6)",
   },
 });
 

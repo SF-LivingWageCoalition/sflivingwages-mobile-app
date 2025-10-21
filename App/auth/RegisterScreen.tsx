@@ -7,11 +7,12 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from "react-native";
 import { colors } from "../theme";
 import { textStyles } from "../theme/fontStyles";
 import { translate } from "../translation";
-import { registerUser, registerCustomer } from "./api/authApi";
+import { registerCustomer } from "./api/authApi";
 import { RegisterScreenProps } from "../types/types";
 
 const Register: React.FC<RegisterScreenProps> = ({ navigation }) => {
@@ -19,38 +20,66 @@ const Register: React.FC<RegisterScreenProps> = ({ navigation }) => {
   const [userPassword, setUserPassword] = useState<string>("");
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [generalError, setGeneralError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit = async () => {
     // Do registration logic here
-    console.log(
-      `Trying to register user with email: '${userEmail}' and password: '${userPassword}'`
-    );
-    // Basic validation
+    // Basic input validation
     const newErrors: { [key: string]: string } = {};
     if (!userEmail) {
-      newErrors.userEmail = "Email is required";
+      newErrors.userEmail =
+        translate("validation.emailRequired") || "Email is required";
     }
     if (!userPassword) {
-      newErrors.userPassword = "Password is required";
+      newErrors.userPassword =
+        translate("validation.passwordRequired") || "Password is required";
     }
     setErrors(newErrors);
+    setGeneralError(null);
 
     if (Object.keys(newErrors).length === 0) {
       // No errors, proceed with registration
-      // registerUser(userEmail, userPassword); // via Simple JWT Login plugin
-      const registrationData = await registerCustomer(userEmail, userPassword); // via WooCommerce REST API
-      if (registrationData && registrationData.id) {
-        console.log("Registration successful");
-        console.log("Registration data:", registrationData);
-        Alert.alert(
-          "Registration successful",
-          "You may now log in.",
-          [{ text: "OK", onPress: () => navigation.goBack() }],
-          { cancelable: true, onDismiss: () => navigation.goBack() }
+      console.log(
+        `RegisterScreen: Trying to register user with email: '${userEmail}' and password: '${userPassword}'`
+      );
+      // Call the registerCustomer function and await structured result
+      setLoading(true);
+      try {
+        const registrationData = await registerCustomer(
+          userEmail,
+          userPassword
+        ); // via WooCommerce REST API
+        if (registrationData && registrationData.id) {
+          // Successful registration: navigate back
+          console.log("RegisterScreen: Registration successful");
+          console.log("RegisterScreen: Registration data:", registrationData);
+          Alert.alert(
+            "Registration successful",
+            "You may now log in.",
+            [{ text: "OK", onPress: () => navigation.goBack() }],
+            { cancelable: true, onDismiss: () => navigation.goBack() }
+          );
+        } else {
+          // Registration failed: show an error message to the user
+          console.log("RegisterScreen: Registration failed");
+          console.log("RegisterScreen: Registration data:", registrationData);
+          const errorMessage =
+            (registrationData && registrationData.message) ||
+            "Registration failed. Please try again.";
+          setGeneralError(errorMessage);
+        }
+      } catch (error) {
+        console.error(
+          "RegisterScreen: Unexpected error during registration:",
+          error
         );
-      } else {
-        console.log("Registration failed");
-        console.log("Registration data:", registrationData);
+        setGeneralError(
+          translate("errors.unexpectedError") ||
+            "An unexpected error occurred. Please try again."
+        );
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -58,11 +87,12 @@ const Register: React.FC<RegisterScreenProps> = ({ navigation }) => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        {/* Registration Form */}
+        {/* Begin Registration Form */}
         <View style={styles.formContainer}>
+          {/* Email Input */}
           <View style={styles.inputContainer}>
             <Text style={styles.inputName}>
-              {translate("accountScreen.emailAddress")}
+              {translate("inputs.emailAddress")}
               <Text style={styles.requiredField}>*</Text>
             </Text>
             <TextInput
@@ -72,15 +102,17 @@ const Register: React.FC<RegisterScreenProps> = ({ navigation }) => {
               autoCapitalize="none"
               onChangeText={(userEmailInput) => setUserEmail(userEmailInput)}
               value={userEmail}
+              editable={!loading}
             />
             {errors.userEmail && (
               <Text style={styles.inputError}>{errors.userEmail}</Text>
             )}
           </View>
 
+          {/* Password Input */}
           <View style={styles.inputContainer}>
             <Text style={styles.inputName}>
-              {translate("accountScreen.password")}
+              {translate("inputs.password")}
               <Text style={styles.requiredField}>*</Text>
             </Text>
             <TextInput
@@ -92,22 +124,49 @@ const Register: React.FC<RegisterScreenProps> = ({ navigation }) => {
                 setUserPassword(userPasswordInput)
               }
               value={userPassword}
+              editable={!loading}
             />
             {errors.userPassword && (
               <Text style={styles.inputError}>{errors.userPassword}</Text>
             )}
           </View>
 
+          {/* Submit Button (with spinner) */}
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={onSubmit}>
-              <Text style={styles.buttonText}>
-                {translate("accountScreen.submit")}
-              </Text>
+            <TouchableOpacity
+              style={[styles.button, loading ? styles.buttonDisabled : null]}
+              onPress={onSubmit}
+              disabled={loading}
+            >
+              {loading ? (
+                <ActivityIndicator
+                  size="small"
+                  color={colors.light.textOnPrimary}
+                />
+              ) : (
+                <Text style={styles.buttonText}>
+                  {translate("buttons.submit")}
+                </Text>
+              )}
             </TouchableOpacity>
           </View>
+
+          {/* Errors */}
+          {generalError ? (
+            <View>
+              <Text style={styles.generalError}>{generalError}</Text>
+            </View>
+          ) : null}
         </View>
         {/* End Registration Form */}
       </View>
+
+      {/* Loading overlay */}
+      {loading ? (
+        <View style={styles.loadingOverlay} pointerEvents="auto">
+          <ActivityIndicator size="large" color={colors.light.primary} />
+        </View>
+      ) : null}
     </ScrollView>
   );
 };
@@ -146,6 +205,14 @@ const styles = StyleSheet.create({
     // marginLeft: 10,
     // marginTop: 2,
   },
+  generalError: {
+    ...textStyles.caption,
+    color: colors.light.error,
+    textAlign: "center",
+    marginTop: 10,
+    // marginLeft: 10,
+    // marginTop: 2,
+  },
   buttonContainer: {
     marginTop: 20,
     gap: 20,
@@ -161,10 +228,23 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOffset: { width: 1, height: 1 },
   },
+  buttonDisabled: {
+    opacity: 0.7,
+  },
   buttonText: {
     ...textStyles.button,
     color: colors.light.textOnPrimary,
     textAlign: "center",
+  },
+  loadingOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.6)",
   },
 });
 

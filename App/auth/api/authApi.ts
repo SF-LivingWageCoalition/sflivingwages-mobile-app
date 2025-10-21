@@ -1,6 +1,6 @@
 // App/auth/api/authApi.ts
 
-import { clearUser } from "../../redux/features/userSlice/userSlice";
+import { clearUser, setUser } from "../../redux/features/userSlice/userSlice";
 
 /**
  * Testing Site: https://www.wpmockup.xyz
@@ -96,6 +96,13 @@ type ValidationData = {
   };
   success: boolean;
   // error?: string;
+};
+
+// Structured result returned by loginUser
+type LoginResult = {
+  success: boolean;
+  data?: ValidationData["data"];
+  errorMessage?: string;
 };
 
 // Define the structure of the newly registered user data returned by the API
@@ -336,7 +343,115 @@ export const validateToken = async (
 };
 
 /**
+ * Login a WP user via the Simple JWT Login plugin
+ *
+ * Attempt to login a user using email/password. On success this will dispatch setUser.
+ * Returns a structured result so callers can react (navigate, show errors).
+ * @param email - User's email address
+ * @param password - User's password
+ * @param dispatch - Redux dispatch function to set user data on successful login
+ * @returns A promise that resolves to a structured LoginResult
+ * Example successful login flow:
+ * 1. fetchToken() returns a valid JWT token
+ * 2. validateToken() confirms the token is valid and returns user data
+ * 3. setUser() is dispatched with the user data
+ *
+ * Example response when login is successful:
+ * {
+ *  "success": true,
+ *  "data": {
+ *   "user": {
+ *     "ID": "31",
+ *     "display_name": "tosspot@scottmotion.com",
+ *     "user_activation_key": "",
+ *     "user_email": "tosspot@scottmotion.com",
+ *     "user_login": "tosspot@scottmotion.com",
+ *     "user_nicename": "tosspotscottmotion-com",
+ *     "user_registered": "2025-10-06 01:46:52",
+ *     "user_status": "0",
+ *     "user_url": ""
+ *   },
+ *   "roles": ["customer"],
+ *   "jwt": [Object]
+ *  }
+ * }
+ *
+ * Example response on failed validation:
+ * {
+ *  "data":
+ *   {
+ *    "errorCode": 14,
+ *    "message": "Expired token"
+ *  },
+ *  "success": false
+ * }
+ */
+export const loginUser = async (
+  email: string,
+  password: string,
+  dispatch: Function
+): Promise<LoginResult> => {
+  try {
+    console.log("authApi: loginUser() called");
+    const tokenData = await fetchToken(email, password);
+    if (
+      tokenData &&
+      tokenData.data &&
+      tokenData.success &&
+      tokenData.data.jwt
+    ) {
+      // Token fetch success. Validate the received token
+      try {
+        console.log("authApi: validateToken() called within loginUser()");
+        const validationData = await validateToken(
+          tokenData.data.jwt as string
+        );
+        if (
+          validationData &&
+          validationData.success &&
+          validationData.data &&
+          validationData.data.user
+        ) {
+          // Token validation success. Set user data in Redux store
+          console.log("authApi: Login successful");
+          dispatch(setUser(validationData.data)); // Set user data in Redux store
+          return { success: true, data: validationData.data };
+        } else {
+          // Token validation failed.
+          console.log("authApi: Login failed during validation");
+          console.log("authApi: Validation data:", validationData);
+          const message =
+            validationData && validationData.data && validationData.data.message
+              ? validationData.data.message
+              : "Token validation failed.";
+          return { success: false, errorMessage: message };
+        }
+      } catch (error: any) {
+        console.error("authApi: Error in validateToken():", error);
+        return {
+          success: false,
+          errorMessage: error?.message || String(error),
+        };
+      }
+    } else {
+      // Token fetch failed.
+      console.log("authApi: Login failed during token fetch");
+      console.log("authApi: Token data:", tokenData);
+      const message =
+        tokenData && tokenData.data && tokenData.data.message
+          ? tokenData.data.message
+          : "Invalid credentials or unable to fetch token.";
+      return { success: false, errorMessage: message };
+    }
+  } catch (error: any) {
+    console.error("authApi: Error in loginUser():", error);
+    return { success: false, errorMessage: error?.message || String(error) };
+  }
+};
+
+/**
  * Register a new user with the given email and password via the Simple JWT Login plugin.
+ * Website uses WooCommerce for new customers, but this function is provided for completeness.
  *
  * @param email
  * @param password
@@ -429,6 +544,7 @@ export const registerUser = async (
 
 /**
  * Register a new WooCommerce customer via the WooCommerce REST API
+ * Website also uses WooCommerce for customer management
  *
  * @param email
  * @param password
