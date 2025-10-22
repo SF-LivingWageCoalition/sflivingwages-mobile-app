@@ -1,7 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch } from "../../redux/store/store";
-import { logout } from "../../auth/api/authApi";
+import React from "react";
 import {
   Alert,
   ScrollView,
@@ -10,28 +7,28 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { AccountScreenProps } from "../../types/types";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch } from "../../redux/store/store";
+import { logout } from "../../auth/api/authApi";
+import {
+  selectIsLoggedIn,
+  selectUser,
+  selectRoles,
+  selectJwt,
+} from "../../redux/features/userSlice/userSlice";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
-import { AccountScreenProps } from "../../types/types";
-import { RootState } from "../../redux/store/store";
 
 const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const user = useSelector((state: RootState) => state.userData.user);
-  const roles = useSelector((state: RootState) => state.userData.roles);
-  const jwt = useSelector((state: RootState) => state.userData.jwt);
+  const user = useSelector(selectUser);
+  const roles = useSelector(selectRoles);
+  const jwt = useSelector(selectJwt);
 
-  useEffect(() => {
-    // Check if user data exists in Redux store to determine login status
-    if (user && user.ID) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [user]);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const onLogin = () => {
     // Navigate to Login Screen
