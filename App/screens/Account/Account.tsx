@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch } from "../../redux/store/store";
 import { logout } from "../../auth/api/authApi";
 import {
   Alert,
@@ -16,7 +17,7 @@ import { AccountScreenProps } from "../../types/types";
 import { RootState } from "../../redux/store/store";
 
 const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const user = useSelector((state: RootState) => state.userData.user);

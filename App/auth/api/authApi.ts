@@ -1,6 +1,7 @@
 // App/auth/api/authApi.ts
 
 import { clearUser, setUser } from "../../redux/features/userSlice/userSlice";
+import type { AppDispatch } from "../../redux/store/store";
 
 /**
  * Testing Site: https://www.wpmockup.xyz
@@ -25,14 +26,15 @@ import { clearUser, setUser } from "../../redux/features/userSlice/userSlice";
 const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL; // Base URL for WordPress APIs
 
 // API Routes
-const JWT_ROUTE = process.env.EXPO_PUBLIC_JWT_ROUTE; // Route for Simple JWT Login plugin
+const JWT_ROUTE = process.env.EXPO_PUBLIC_JWT_ROUTE; // Route for Simple JWT Login plugin API
 const WC_ROUTE = process.env.EXPO_PUBLIC_WC_ROUTE; // Route for WooCommerce REST API
 
-// JWT Decrytion Key / Algorithm / Token Type
+// JWT Decryption Key / Algorithm / Token Type
 const JWT_DE_KEY = process.env.EXPO_PUBLIC_JWT_DE_KEY; // Key used for JWT decryption
 const JWT_DE_ALG = process.env.EXPO_PUBLIC_JWT_DE_ALG; // Algorithm used for JWT decryption
 const JWT_TYP = process.env.EXPO_PUBLIC_JWT_TYP; // Type of token
 
+// Auth key for Simple JWT Login plugin
 const JWT_AUTH_KEY = process.env.EXPO_PUBLIC_JWT_AUTH_KEY; // Auth key for Simple JWT Login plugin
 
 // WooCommerce REST API credentials
@@ -330,7 +332,7 @@ export const validateToken = async (
         response.status
       );
       console.log("authApi: Token validation response data:", validationData);
-      if (validationData) {
+      if (validationData && validationData.data) {
         console.error("authApi: Error code:", validationData.data.errorCode);
         console.error("authApi: Error message:", validationData.data.message);
       }
@@ -389,7 +391,7 @@ export const validateToken = async (
 export const loginUser = async (
   email: string,
   password: string,
-  dispatch: Function
+  dispatch: AppDispatch
 ): Promise<LoginResult> => {
   try {
     console.log("authApi: loginUser() called");
@@ -528,7 +530,7 @@ export const registerUser = async (
         response.status
       );
       console.log("authApi: Registration response data:", registrationData);
-      if (registrationData.data) {
+      if (registrationData && registrationData.data) {
         console.error("authApi: Error code:", registrationData.data.errorCode);
         console.error("authApi: Error message:", registrationData.data.message);
       }
@@ -650,7 +652,7 @@ export const registerCustomer = async (
         "authApi: Customer registration response data:",
         registrationData
       );
-      if (registrationData) {
+      if (registrationData && registrationData.data) {
         console.error("authApi: Error status:", registrationData.data.status);
         console.error("authApi: Error code:", registrationData.code);
         console.error("authApi: Error message:", registrationData.message);
@@ -721,7 +723,7 @@ export const sendPasswordReset = async (
         response.status
       );
       console.log("authApi: Forgot password response data:", passwordResetData);
-      if (passwordResetData.data) {
+      if (passwordResetData && passwordResetData.data) {
         console.error("authApi: Error code:", passwordResetData.data.errorCode);
         console.error(
           "authApi: Error message:",
@@ -737,7 +739,7 @@ export const sendPasswordReset = async (
 };
 
 // Logout function to clear authentication data
-export const logout = (dispatch: Function): void => {
+export const logout = (dispatch: AppDispatch): void => {
   // Clear any stored authentication data (e.g., tokens, user info)
   dispatch(clearUser()); // Clear user data from Redux store
   // Additional cleanup actions can be performed here

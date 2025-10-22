@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setUser } from "../redux/features/userSlice/userSlice";
+import type { AppDispatch } from "../redux/store/store";
 import {
   ScrollView,
   StyleSheet,
@@ -18,7 +18,7 @@ import { LoginScreenProps } from "../types/types";
 import { loginUser } from "./api/authApi";
 
 const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [userEmail, setUserEmail] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
