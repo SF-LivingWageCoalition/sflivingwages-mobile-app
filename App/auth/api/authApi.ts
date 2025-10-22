@@ -40,7 +40,10 @@ const JWT_AUTH_KEY = process.env.EXPO_PUBLIC_JWT_AUTH_KEY; // Auth key for Simpl
 // WooCommerce REST API credentials
 const consumerKey = process.env.EXPO_PUBLIC_CONSUMER_KEY; // WooCommerce Consumer Key (read/write)
 const consumerSecret = process.env.EXPO_PUBLIC_CONSUMER_SECRET; // WooCommerce Consumer Secret (read/write)
-const base64Credentials = btoa(`${consumerKey}:${consumerSecret}`); // Base64 encoded credentials
+const base64Credentials =
+  typeof Buffer !== "undefined"
+    ? Buffer.from(`${consumerKey}:${consumerSecret}`).toString("base64")
+    : btoa(`${consumerKey}:${consumerSecret}`); // Base64 encoded credentials
 
 /**
  * Type Definitions
@@ -182,6 +185,9 @@ type PasswordResetData = {
  * @param password - User's password
  * @returns A promise that resolves to the token data or undefined
  *
+ * Usage:
+ *    fetchToken("<email>", "<password>");
+ *
  * Example responses:
  * Successful token fetch response data:
  * {
@@ -232,6 +238,7 @@ export const fetchToken = async (
     // }
     const tokenData = await response.json();
     if (response.ok) {
+      // Token fetch succeeded
       console.log(
         "authApi: Token fetch succeeded with status:",
         response.status
@@ -239,18 +246,21 @@ export const fetchToken = async (
       console.log("authApi: Token fetch response data:", tokenData);
       // Handle successful token fetch (e.g., store token, navigate to another screen)
     } else {
+      // Token fetch failed
       console.error(
         "authApi: Token fetch failed with status:",
         response.status
       );
       console.log("authApi: Response data from failed token fetch:", tokenData);
       if (tokenData && tokenData.data) {
+        // Log error details
         console.error("authApi: Error code:", tokenData.data.errorCode);
         console.error("authApi: Error message:", tokenData.data.message);
       }
     }
     return tokenData;
   } catch (error) {
+    // General error during token fetch process
     console.error("authApi: Error fetching token:", error);
     return undefined;
   }
@@ -264,6 +274,9 @@ export const fetchToken = async (
  *
  * @param jwtToken - The JWT token to validate
  * @returns A promise that resolves to the validation data or undefined
+ *
+ * Usage:
+ *    validateToken("<jwt_token>");
  *
  * Example response on successful validation:
  * {
@@ -305,11 +318,13 @@ export const validateToken = async (
     const response = await fetch(`${BASE_URL}${JWT_ROUTE}/auth/validate`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${jwtToken}`,
-        //   alg: "HS256",
-        //   typ: "JWT",
+        "Content-Type": "application/json",
         "cache-control": "no-cache",
+        Authorization: `Bearer ${jwtToken}`,
       },
+      body: JSON.stringify({
+        AUTH_KEY: JWT_AUTH_KEY,
+      }),
     });
     // let validationData: ValidationData | undefined;
     // try {
@@ -320,6 +335,7 @@ export const validateToken = async (
     // }
     const validationData = await response.json();
     if (response.ok) {
+      // Token validation succeeded
       console.log(
         "authApi: Token validation succeeded with status:",
         response.status
@@ -327,18 +343,21 @@ export const validateToken = async (
       console.log("authApi: Token validation response data:", validationData);
       // Handle successful token validation (e.g., navigate to another screen)
     } else {
+      // Token validation failed
       console.log(
         "authApi: Token validation failed with status:",
         response.status
       );
       console.log("authApi: Token validation response data:", validationData);
       if (validationData && validationData.data) {
+        // Log error details
         console.error("authApi: Error code:", validationData.data.errorCode);
         console.error("authApi: Error message:", validationData.data.message);
       }
     }
     return validationData;
   } catch (error) {
+    // General error during token validation process
     console.error("authApi: Error validating token:", error);
     return undefined;
   }
@@ -349,10 +368,15 @@ export const validateToken = async (
  *
  * Attempt to login a user using email/password. On success this will dispatch setUser.
  * Returns a structured result so callers can react (navigate, show errors).
+ *
  * @param email - User's email address
  * @param password - User's password
  * @param dispatch - Redux dispatch function to set user data on successful login
  * @returns A promise that resolves to a structured LoginResult
+ *
+ * Usage:
+ *    loginUser("<email>", "<password>", dispatch);
+ *
  * Example successful login flow:
  * 1. fetchToken() returns a valid JWT token
  * 2. validateToken() confirms the token is valid and returns user data
@@ -395,6 +419,7 @@ export const loginUser = async (
 ): Promise<LoginResult> => {
   try {
     console.log("authApi: loginUser() called");
+    // First, fetch the JWT token
     const tokenData = await fetchToken(email, password);
     if (
       tokenData &&
@@ -429,6 +454,7 @@ export const loginUser = async (
           return { success: false, errorMessage: message };
         }
       } catch (error: any) {
+        // Error during token validation
         console.error("authApi: Error in validateToken():", error);
         return {
           success: false,
@@ -446,6 +472,7 @@ export const loginUser = async (
       return { success: false, errorMessage: message };
     }
   } catch (error: any) {
+    // General error during login process
     console.error("authApi: Error in loginUser():", error);
     return { success: false, errorMessage: error?.message || String(error) };
   }
@@ -457,6 +484,10 @@ export const loginUser = async (
  *
  * @param email
  * @param password
+ * @returns A promise that resolves to the user registration data or undefined
+ *
+ * Usage:
+ *    registerUser("<email>", "<password>");
  *
  * Example response when registration is successful:
  * {
@@ -518,6 +549,7 @@ export const registerUser = async (
     // }
     const registrationData = await response.json();
     if (response.ok) {
+      // Registration was successful
       console.log(
         "authApi: Registration succeeded with status:",
         response.status
@@ -525,12 +557,14 @@ export const registerUser = async (
       console.log("authApi: Registration response data:", registrationData);
       // Handle successful registration (e.g., navigate to login, show success message)
     } else {
+      // Registration failed
       console.error(
         "authApi: Registration failed with status:",
         response.status
       );
       console.log("authApi: Registration response data:", registrationData);
       if (registrationData && registrationData.data) {
+        // Log error details
         console.error("authApi: Error code:", registrationData.data.errorCode);
         console.error("authApi: Error message:", registrationData.data.message);
       }
@@ -538,6 +572,7 @@ export const registerUser = async (
     }
     return registrationData;
   } catch (error) {
+    // General error during registration process
     console.error("authApi: Error during registration:", error);
     // Handle network or other errors
     return undefined;
@@ -550,7 +585,10 @@ export const registerUser = async (
  *
  * @param email
  * @param password
- * @returns
+ * @returns A promise that resolves to the customer registration data or undefined
+ *
+ * Usage:
+ *    registerCustomer("<email>", "<password>");
  *
  * Example response on successful customer creation:
  * {
@@ -634,6 +672,7 @@ export const registerCustomer = async (
     // }
     const registrationData = await response.json();
     if (response.ok) {
+      // Registration was successful
       console.log(
         "authApi: Customer registration succeeded with status:",
         response.status
@@ -644,6 +683,7 @@ export const registerCustomer = async (
       );
       // Handle successful customer creation
     } else {
+      // Registration failed
       console.log(
         "authApi: Customer registration failed with status:",
         response.status
@@ -653,6 +693,7 @@ export const registerCustomer = async (
         registrationData
       );
       if (registrationData && registrationData.data) {
+        // Log error details
         console.error("authApi: Error status:", registrationData.data.status);
         console.error("authApi: Error code:", registrationData.code);
         console.error("authApi: Error message:", registrationData.message);
@@ -662,6 +703,7 @@ export const registerCustomer = async (
     }
     return registrationData;
   } catch (error) {
+    // General error during registration process
     console.error("authApi: Error during customer registration:", error);
     // Handle network or other errors
     return undefined;
@@ -672,7 +714,10 @@ export const registerCustomer = async (
  * Send a password reset email to the specified email address.
  *
  * @param email
- * @returns
+ * @returns A promise that resolves to the password reset data or undefined
+ *
+ * Usage:
+ *    sendPasswordReset("<email>");
  *
  * Example response on successful password reset request:
  * {
@@ -711,6 +756,7 @@ export const sendPasswordReset = async (
     // }
     const passwordResetData = await response.json();
     if (response.ok) {
+      // Password reset succeeded
       console.log(
         "authApi: Forgot password succeeded with status:",
         response.status
@@ -718,12 +764,14 @@ export const sendPasswordReset = async (
       console.log("authApi: Forgot password response data:", passwordResetData);
       // Handle successful password reset (e.g., show a confirmation message)
     } else {
+      // Password reset failed
       console.log(
         "authApi: Forgot password failed with status:",
         response.status
       );
       console.log("authApi: Forgot password response data:", passwordResetData);
       if (passwordResetData && passwordResetData.data) {
+        // Log error details
         console.error("authApi: Error code:", passwordResetData.data.errorCode);
         console.error(
           "authApi: Error message:",
@@ -734,14 +782,21 @@ export const sendPasswordReset = async (
     }
     return passwordResetData;
   } catch (error) {
+    // General error during password reset process
     console.error("authApi: Error sending password reset email:", error);
   }
 };
 
-// Logout function to clear authentication data
+/**
+ * Logs out the current user by clearing authentication data from the Redux store.
+ *
+ * @param dispatch - Redux dispatch function to clear user data.
+ * @returns {void}
+ *
+ * Usage:
+ *    logout(dispatch);
+ */
 export const logout = (dispatch: AppDispatch): void => {
-  // Clear any stored authentication data (e.g., tokens, user info)
   dispatch(clearUser()); // Clear user data from Redux store
-  // Additional cleanup actions can be performed here
   console.log("authApi: User logged out");
 };
