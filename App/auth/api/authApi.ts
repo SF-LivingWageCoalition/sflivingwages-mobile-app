@@ -45,6 +45,33 @@ const base64Credentials =
     ? Buffer.from(`${consumerKey}:${consumerSecret}`).toString("base64")
     : btoa(`${consumerKey}:${consumerSecret}`); // Base64 encoded credentials
 
+// Fetch timeout (ms) - configurable via env var, fallback to 10s
+const FETCH_TIMEOUT_MS =
+  Number(process.env.EXPO_PUBLIC_FETCH_TIMEOUT_MS) || 10000;
+
+/**
+ * Helper that wraps fetch with an AbortController to enforce a timeout.
+ * Returns the same Response as fetch or throws when aborted/errored.
+ */
+const fetchWithTimeout = async (
+  input: RequestInfo,
+  init?: RequestInit,
+  timeoutMs: number = FETCH_TIMEOUT_MS
+): Promise<Response> => {
+  const controller = new AbortController();
+  const signal = controller.signal;
+  const id = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(input, {
+      ...(init || {}),
+      signal,
+    } as RequestInit);
+    return response;
+  } finally {
+    clearTimeout(id);
+  }
+};
+
 /**
  * Type Definitions
  * These types define the structure of data returned by the API.
@@ -217,7 +244,7 @@ export const fetchToken = async (
     console.log(
       `authApi: fetchToken() called with email '${email}' and password: '${password}'`
     );
-    const response = await fetch(`${BASE_URL}${JWT_ROUTE}/auth`, {
+    const response = await fetchWithTimeout(`${BASE_URL}${JWT_ROUTE}/auth`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -315,17 +342,20 @@ export const validateToken = async (
 ): Promise<ValidationData | undefined> => {
   try {
     console.log("authApi: validateToken() called");
-    const response = await fetch(`${BASE_URL}${JWT_ROUTE}/auth/validate`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "cache-control": "no-cache",
-        Authorization: `Bearer ${jwtToken}`,
-      },
-      body: JSON.stringify({
-        AUTH_KEY: JWT_AUTH_KEY,
-      }),
-    });
+    const response = await fetchWithTimeout(
+      `${BASE_URL}${JWT_ROUTE}/auth/validate`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "cache-control": "no-cache",
+          Authorization: `Bearer ${jwtToken}`,
+        },
+        body: JSON.stringify({
+          AUTH_KEY: JWT_AUTH_KEY,
+        }),
+      }
+    );
     // let validationData: ValidationData | undefined;
     // try {
     //   validationData = await response.json();
@@ -421,36 +451,26 @@ export const loginUser = async (
     console.log("authApi: loginUser() called");
     // First, fetch the JWT token
     const tokenData = await fetchToken(email, password);
-    if (
-      tokenData &&
-      tokenData.data &&
-      tokenData.success &&
-      tokenData.data.jwt
-    ) {
+    // Use optional chaining and local variables to simplify checks
+    const jwt = tokenData?.data?.jwt;
+    if (tokenData?.success && typeof jwt === "string" && jwt.length > 0) {
       // Token fetch success. Validate the received token
       try {
         console.log("authApi: validateToken() called within loginUser()");
-        const validationData = await validateToken(
-          tokenData.data.jwt as string
-        );
-        if (
-          validationData &&
-          validationData.success &&
-          validationData.data &&
-          validationData.data.user
-        ) {
+        const validationData = await validateToken(jwt);
+        const validatedData = validationData?.data;
+        const user = validatedData?.user;
+        if (validationData?.success && validatedData && user) {
           // Token validation success. Set user data in Redux store
           console.log("authApi: Login successful");
-          dispatch(setUser(validationData.data)); // Set user data in Redux store
-          return { success: true, data: validationData.data };
+          dispatch(setUser(validatedData)); // Set user data in Redux store
+          return { success: true, data: validatedData };
         } else {
           // Token validation failed.
           console.log("authApi: Login failed during validation");
           console.log("authApi: Validation data:", validationData);
           const message =
-            validationData && validationData.data && validationData.data.message
-              ? validationData.data.message
-              : "Token validation failed.";
+            validationData?.data?.message ?? "Token validation failed.";
           return { success: false, errorMessage: message };
         }
       } catch (error: any) {
@@ -466,9 +486,8 @@ export const loginUser = async (
       console.log("authApi: Login failed during token fetch");
       console.log("authApi: Token data:", tokenData);
       const message =
-        tokenData && tokenData.data && tokenData.data.message
-          ? tokenData.data.message
-          : "Invalid credentials or unable to fetch token.";
+        tokenData?.data?.message ??
+        "Invalid credentials or unable to fetch token.";
       return { success: false, errorMessage: message };
     }
   } catch (error: any) {
@@ -527,7 +546,7 @@ export const registerUser = async (
     console.log(
       `authApi: registerUser() called with email '${email}' and password: '${password}'`
     );
-    const response = await fetch(`${BASE_URL}${JWT_ROUTE}/users`, {
+    const response = await fetchWithTimeout(`${BASE_URL}${JWT_ROUTE}/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -627,41 +646,44 @@ export const registerCustomer = async (
     `authApi: registerCustomer() called with email '${email}' and password: '${password}'`
   );
   try {
-    const response = await fetch(`${BASE_URL}${WC_ROUTE}/customers`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Basic " + base64Credentials,
-        "cache-control": "no-cache",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-        first_name: "Test",
-        last_name: "Testerson",
-        username: email,
-        billing: {
-          first_name: "Test",
-          last_name: "Testerson",
-          address_1: "123 Main St",
-          city: "Anytown",
-          state: "CA",
-          postcode: "12345",
-          country: "US",
+    const response = await fetchWithTimeout(
+      `${BASE_URL}${WC_ROUTE}/customers`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Basic " + base64Credentials,
+          "cache-control": "no-cache",
+        },
+        body: JSON.stringify({
           email: email,
-          phone: "555-555-5555",
-        },
-        shipping: {
+          password: password,
           first_name: "Test",
           last_name: "Testerson",
-          address_1: "123 Main St",
-          city: "Anytown",
-          state: "CA",
-          postcode: "12345",
-          country: "US",
-        },
-      }),
-    });
+          username: email,
+          billing: {
+            first_name: "Test",
+            last_name: "Testerson",
+            address_1: "123 Main St",
+            city: "Anytown",
+            state: "CA",
+            postcode: "12345",
+            country: "US",
+            email: email,
+            phone: "555-555-5555",
+          },
+          shipping: {
+            first_name: "Test",
+            last_name: "Testerson",
+            address_1: "123 Main St",
+            city: "Anytown",
+            state: "CA",
+            postcode: "12345",
+            country: "US",
+          },
+        }),
+      }
+    );
 
     // let registrationData: CustomerRegistrationData | undefined;
     // try {
@@ -740,7 +762,7 @@ export const sendPasswordReset = async (
 ): Promise<PasswordResetData | undefined> => {
   try {
     console.log(`authApi: sendPasswordReset() called with email: '${email}'`);
-    const response = await fetch(
+    const response = await fetchWithTimeout(
       `${BASE_URL}${JWT_ROUTE}/user/reset_password&email=${email}&AUTH_KEY=${JWT_AUTH_KEY}`,
       {
         method: "POST",
