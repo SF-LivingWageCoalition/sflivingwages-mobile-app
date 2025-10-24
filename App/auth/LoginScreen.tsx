@@ -1,3 +1,4 @@
+// See `App/auth/README.md` for examples and error handling patterns.
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../redux/store/store";
@@ -15,7 +16,8 @@ import { colors } from "../theme";
 import { textStyles } from "../theme/fontStyles";
 import { translate } from "../translation";
 import { LoginScreenProps } from "../types/types";
-import { loginUser } from "./api/authApi";
+import { loginUser, unwrapOrThrow, ApiError } from "./api/authApi";
+import { mapApiErrorToMessage } from "./errorHelpers";
 
 const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -32,9 +34,16 @@ const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
+  /**
+   * Handles the login form submission.
+   * Validates user input and calls the login API.
+   * Displays error messages for invalid input.
+   * Navigates back on successful login.
+   */
   const onSubmit = async () => {
     // Do login logic here
-    // Basic input validation
+
+    // Basic input validation: check if email and password are provided
     const newErrors: { [key: string]: string } = {};
     if (!userEmail) {
       newErrors.userEmail =
@@ -47,37 +56,34 @@ const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
     setErrors(newErrors);
     setGeneralError(null);
 
+    /**
+     * Checks if there are any validation errors.
+     * If none, proceeds with login API call.
+     */
     if (Object.keys(newErrors).length === 0) {
-      // No errors, proceed with login
+      // No validation errors, proceed with login
       console.log(
         `LoginScreen: Trying to login user with email: '${userEmail}' and password: '${userPassword}'`
       );
       // Call the loginUser function and await structured result
       setLoading(true);
       try {
-        const result = await loginUser(userEmail, userPassword, dispatch);
-        if (result && result.success) {
-          // Successful login: navigate back
-          // setUser called in authApi.loginUser
-          console.log("LoginScreen: Login successful");
-          console.log("LoginScreen: Login data:", result);
-          navigation.goBack();
-        } else {
-          // Show an error message to the user
-          console.log("LoginScreen: Login failed");
-          console.log("LoginScreen: Login data:", result);
-          const message =
-            result?.errorMessage ||
-            translate("errors.loginFailed") ||
-            "Login failed. Please check your credentials.";
-          setGeneralError(message);
-        }
-      } catch (error) {
-        console.error("LoginScreen: Unexpected error during login:", error);
-        setGeneralError(
-          translate("errors.unexpectedError") ||
-            "An unexpected error occurred. Please try again."
+        // Use unwrapOrThrow to convert ApiResult -> data or throw
+        const validatedData = unwrapOrThrow(
+          await loginUser(userEmail, userPassword, dispatch)
         );
+        // Successful login: navigate back (setUser is called inside loginUser)
+        // console.log("LoginScreen: Login data:", validatedData);
+        console.log("LoginScreen: Login successful.");
+        console.log(
+          "LoginScreen: Received validatedData:\n",
+          JSON.stringify(validatedData, null, 2)
+        );
+        navigation.goBack();
+      } catch (error: unknown) {
+        console.error("LoginScreen: Unexpected error during login:", error);
+        const message = mapApiErrorToMessage(error, "errors.loginFailed");
+        setGeneralError(message);
       } finally {
         setLoading(false);
       }

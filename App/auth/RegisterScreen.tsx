@@ -1,3 +1,4 @@
+// See `App/auth/README.md` for examples and error handling patterns.
 import React, { useState } from "react";
 import {
   Alert,
@@ -12,7 +13,8 @@ import {
 import { colors } from "../theme";
 import { textStyles } from "../theme/fontStyles";
 import { translate } from "../translation";
-import { registerCustomer } from "./api/authApi";
+import { registerCustomer, unwrapOrThrow, ApiError } from "./api/authApi";
+import { mapApiErrorToMessage } from "./errorHelpers";
 import { RegisterScreenProps } from "../types/types";
 
 const Register: React.FC<RegisterScreenProps> = ({ navigation }) => {
@@ -23,9 +25,16 @@ const Register: React.FC<RegisterScreenProps> = ({ navigation }) => {
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
+  /**
+   * Handles the registration form submission.
+   * Validates user input and calls the registration API.
+   * Displays error messages for invalid input.
+   * Navigates back on successful registration.
+   */
   const onSubmit = async () => {
     // Do registration logic here
-    // Basic input validation
+
+    // Basic input validation: check if email and password are provided
     const newErrors: { [key: string]: string } = {};
     if (!userEmail) {
       newErrors.userEmail =
@@ -38,46 +47,39 @@ const Register: React.FC<RegisterScreenProps> = ({ navigation }) => {
     setErrors(newErrors);
     setGeneralError(null);
 
+    // If no validation errors, proceed with registration
     if (Object.keys(newErrors).length === 0) {
-      // No errors, proceed with registration
       console.log(
         `RegisterScreen: Trying to register user with email: '${userEmail}' and password: '${userPassword}'`
       );
-      // Call the registerCustomer function and await structured result
       setLoading(true);
       try {
-        const registrationData = await registerCustomer(
-          userEmail,
-          userPassword
-        ); // via WooCommerce REST API
-        if (registrationData && registrationData.id) {
-          // Successful registration: navigate back
-          console.log("RegisterScreen: Registration successful");
-          console.log("RegisterScreen: Registration data:", registrationData);
-          Alert.alert(
-            "Registration successful",
-            "You may now log in.",
-            [{ text: "OK", onPress: () => navigation.goBack() }],
-            { cancelable: true, onDismiss: () => navigation.goBack() }
-          );
-        } else {
-          // Registration failed: show an error message to the user
-          console.log("RegisterScreen: Registration failed");
-          console.log("RegisterScreen: Registration data:", registrationData);
-          const errorMessage =
-            (registrationData && registrationData.message) ||
-            "Registration failed. Please try again.";
-          setGeneralError(errorMessage);
-        }
-      } catch (error) {
+        // Use unwrapOrThrow to convert ApiResult -> data or throw
+        const registrationData = unwrapOrThrow(
+          await registerCustomer(userEmail, userPassword)
+        );
+        // Successful registration: navigate back
+        console.log("RegisterScreen: Registration successful");
+        console.log(
+          "RegisterScreen: Received registrationData:\n",
+          JSON.stringify(registrationData, null, 2)
+        );
+        Alert.alert(
+          "Registration successful",
+          "You may now log in.",
+          [{ text: "OK", onPress: () => navigation.goBack() }],
+          { cancelable: true, onDismiss: () => navigation.goBack() }
+        );
+      } catch (error: unknown) {
         console.error(
           "RegisterScreen: Unexpected error during registration:",
           error
         );
-        setGeneralError(
-          translate("errors.unexpectedError") ||
-            "An unexpected error occurred. Please try again."
+        const message = mapApiErrorToMessage(
+          error,
+          "errors.registrationFailed"
         );
+        setGeneralError(message);
       } finally {
         setLoading(false);
       }

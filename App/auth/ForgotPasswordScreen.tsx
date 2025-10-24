@@ -1,3 +1,4 @@
+// See `App/auth/README.md` for examples and error handling patterns.
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -12,7 +13,8 @@ import {
 import { colors } from "../theme";
 import { textStyles } from "../theme/fontStyles";
 import { translate } from "../translation";
-import { sendPasswordReset } from "./api/authApi";
+import { sendPasswordReset, unwrapOrThrow, ApiError } from "./api/authApi";
+import { mapApiErrorToMessage } from "./errorHelpers";
 import { ForgotPasswordScreenProps } from "../types/types";
 
 const ForgotPassword: React.FC<ForgotPasswordScreenProps> = ({
@@ -23,9 +25,16 @@ const ForgotPassword: React.FC<ForgotPasswordScreenProps> = ({
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
+  /**
+   * Handles the forgot password form submission.
+   * Validates user input and calls the forgot password API.
+   * Displays error messages for invalid input.
+   * Navigates back on successful password reset.
+   */
   const onSubmit = async () => {
     // Do forgot password logic here
-    // Basic input validation
+
+    // Basic input validation: check if email is provided
     const newErrors: { [key: string]: string } = {};
     if (!userEmail) {
       newErrors.userEmail =
@@ -34,6 +43,10 @@ const ForgotPassword: React.FC<ForgotPasswordScreenProps> = ({
     setErrors(newErrors);
     setGeneralError(null);
 
+    /**
+     * Checks if there are any validation errors.
+     * If none, proceeds with forgot password API call.
+     */
     if (Object.keys(newErrors).length === 0) {
       // No errors, proceed with forgot password
       console.log(
@@ -42,35 +55,26 @@ const ForgotPassword: React.FC<ForgotPasswordScreenProps> = ({
       // Call the sendPasswordReset function and await structured result
       setLoading(true);
       try {
-        const result = await sendPasswordReset(userEmail); // via Simple JWT Login plugin
-        if (result && result.success) {
-          // Successful password reset request: navigate back
-          console.log("ForgotPasswordScreen: Password reset successful");
-          console.log("ForgotPasswordScreen: Password reset data:", result);
-          Alert.alert(
-            "Password reset email sent.",
-            "Please check your email to complete your password reset.",
-            [{ text: "OK", onPress: () => navigation.goBack() }],
-            { cancelable: true, onDismiss: () => navigation.goBack() }
-          );
-        } else {
-          // Password reset failed: show an error message to the user
-          console.log("ForgotPasswordScreen: Password reset failed");
-          console.log("ForgotPasswordScreen: Password reset data:", result);
-          const errorMessage =
-            translate("errors.passwordResetFailed") ||
-            "Failed to send password reset email. Please try again.";
-          setGeneralError(errorMessage);
-        }
-      } catch (error) {
+        // Use unwrapOrThrow to convert ApiResult -> data or throw
+        unwrapOrThrow(await sendPasswordReset(userEmail));
+        // Success
+        console.log("ForgotPasswordScreen: Password reset successful");
+        Alert.alert(
+          "Password reset email sent.",
+          "Please check your email to complete your password reset.",
+          [{ text: "OK", onPress: () => navigation.goBack() }],
+          { cancelable: true, onDismiss: () => navigation.goBack() }
+        );
+      } catch (error: unknown) {
         console.error(
           "ForgotPasswordScreen: Error occurred during password reset:",
           error
         );
-        setGeneralError(
-          translate("errors.passwordResetFailed") ||
-            "An error occurred while trying to reset the password."
+        const message = mapApiErrorToMessage(
+          error,
+          "errors.passwordResetFailed"
         );
+        setGeneralError(message);
       } finally {
         setLoading(false);
       }

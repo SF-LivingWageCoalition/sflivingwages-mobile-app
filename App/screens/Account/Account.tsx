@@ -10,7 +10,7 @@ import {
 import { AccountScreenProps } from "../../types/types";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../../redux/store/store";
-import { logout } from "../../auth/api/authApi";
+import { logoutUser } from "../../auth/api/authApi";
 import {
   selectIsLoggedIn,
   selectUser,
@@ -55,7 +55,7 @@ const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel",
         },
-        { text: "OK", onPress: () => logout(dispatch) },
+        { text: "OK", onPress: () => logoutUser(dispatch) },
       ],
       { cancelable: true }
     );

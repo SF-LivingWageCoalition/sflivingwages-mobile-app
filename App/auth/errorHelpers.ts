@@ -1,0 +1,60 @@
+import { ApiError } from "./api/authApi";
+import { translate } from "../translation";
+
+/**
+ * Map an unknown error (possibly ApiError) to a user-facing translation string.
+ * - `defaultKey` is a translation key used for the caller's default message
+ *   (for example: 'errors.loginFailed' or 'errors.registrationFailed').
+ */
+export function mapApiErrorToMessage(
+  error: unknown,
+  defaultKey?: string
+): string {
+  const fallback =
+    translate((defaultKey ?? "errors.unexpectedError") as any) ||
+    "An unexpected error occurred.";
+  if (error instanceof ApiError) {
+    const status = error.status;
+    // Prefer server-provided message when safe
+    const serverMessage = error.message;
+    if (status === 400 || status === 401) {
+      // Client errors: use caller-specified default (login/validation) if provided
+      return (
+        translate((defaultKey ?? "errors.loginFailed") as any) ||
+        serverMessage ||
+        fallback
+      );
+    }
+    if (status === 409) {
+      // Conflict (common for registration email already exists)
+      return (
+        translate("errors.registrationFailed") || serverMessage || fallback
+      );
+    }
+    if (status && status >= 500) {
+      // Server errors
+      return translate("errors.unexpectedError") || serverMessage || fallback;
+    }
+    // Fallback to server message or caller default
+    return (
+      serverMessage ||
+      translate((defaultKey ?? "errors.unexpectedError") as any) ||
+      fallback
+    );
+  }
+
+  // Non-ApiError: use message if present, otherwise caller's default
+  const message = (error as any)?.message;
+  return (
+    message ||
+    translate((defaultKey ?? "errors.unexpectedError") as any) ||
+    fallback
+  );
+}
+
+export function mapApiErrorToTelemetry(error: unknown) {
+  if (error instanceof ApiError) {
+    return { status: error.status, data: error.data };
+  }
+  return { status: undefined, data: undefined };
+}

@@ -322,6 +322,7 @@ const en = {
     unexpectedError: "An unknown error occurred. Please try again.",
     loginFailed: "Login failed. Please check your credentials.",
     passwordResetFailed: "Password reset failed. Please try again later.",
+    registrationFailed: "Registration failed. Please try again.",
   },
 };
 

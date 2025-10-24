@@ -333,6 +333,7 @@ const es: Translations = {
       "Error de inicio de sesión. Por favor, verifica tus credenciales.",
     passwordResetFailed:
       "Error al restablecer la contraseña. Por favor, inténtalo de nuevo más tarde.",
+    registrationFailed: "Error de registro. Por favor, inténtalo de nuevo.",
   },
 };
 

@@ -1,21 +1,20 @@
-// App/auth/api/authApi.ts
+/*
+  Auth API — brief contract
+
+  - All helpers in this file return ApiResult<T>:
+      Success: { success: true; data: T; status?: number }
+      Failure: { success: false; errorMessage?: string; status?: number; data?: unknown }
+
+  - Prefer checking `result.success`. If you want exception-style flow use
+    `unwrapOrThrow(result)` which throws an exported `ApiError` (includes
+    `.status` and `.data`).
+
+  - This header is intentionally short. See `App/auth/README.md` for full
+    examples, telemetry guidance, and references (plugin/docs links).
+*/
 
 import { clearUser, setUser } from "../../redux/features/userSlice/userSlice";
 import type { AppDispatch } from "../../redux/store/store";
-
-/**
- * Testing Site: https://www.wpmockup.xyz
- * Live Site: https://www.livingwage-sf.org
- *
- * Simple JWT Login plugin: https://wordpress.org/plugins/simple-jwt-login/
- * Simple JWT Login site: https://simplejwtlogin.com/
- *
- * WooCommerce plugin: https://wordpress.org/plugins/woocommerce/
- * WooCommerce site: https://woocommerce.com/
- * WooCommerce REST API: https://developer.woocommerce.com/docs/apis/rest-api/
- * WooCommerce REST API Docs: https://woocommerce.github.io/woocommerce-rest-api-docs/
- *
- */
 
 /**
  * Configuration Constants
@@ -29,7 +28,7 @@ const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL; // Base URL for WordPress API
 const JWT_ROUTE = process.env.EXPO_PUBLIC_JWT_ROUTE; // Route for Simple JWT Login plugin API
 const WC_ROUTE = process.env.EXPO_PUBLIC_WC_ROUTE; // Route for WooCommerce REST API
 
-// JWT Decryption Key / Algorithm / Token Type
+// JWT configuration
 const JWT_DE_KEY = process.env.EXPO_PUBLIC_JWT_DE_KEY; // Key used for JWT decryption
 const JWT_DE_ALG = process.env.EXPO_PUBLIC_JWT_DE_ALG; // Algorithm used for JWT decryption
 const JWT_TYP = process.env.EXPO_PUBLIC_JWT_TYP; // Type of token
@@ -50,35 +49,12 @@ const FETCH_TIMEOUT_MS =
   Number(process.env.EXPO_PUBLIC_FETCH_TIMEOUT_MS) || 10000;
 
 /**
- * Helper that wraps fetch with an AbortController to enforce a timeout.
- * Returns the same Response as fetch or throws when aborted/errored.
- */
-const fetchWithTimeout = async (
-  input: RequestInfo,
-  init?: RequestInit,
-  timeoutMs: number = FETCH_TIMEOUT_MS
-): Promise<Response> => {
-  const controller = new AbortController();
-  const signal = controller.signal;
-  const id = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    const response = await fetch(input, {
-      ...(init || {}),
-      signal,
-    } as RequestInit);
-    return response;
-  } finally {
-    clearTimeout(id);
-  }
-};
-
-/**
  * Type Definitions
  * These types define the structure of data returned by the API.
  */
 
 // Define the structure of the token data returned by the API
-type TokenData = {
+export type TokenData = {
   data?: {
     jwt?: string;
     // error information if any
@@ -90,7 +66,7 @@ type TokenData = {
 };
 
 // Define the structure of the validation data returned by the API
-type ValidationData = {
+export type ValidationData = {
   data?: {
     user?: {
       ID: string; // User ID
@@ -130,15 +106,8 @@ type ValidationData = {
   // error?: string;
 };
 
-// Structured result returned by loginUser
-type LoginResult = {
-  success: boolean;
-  data?: ValidationData["data"];
-  errorMessage?: string;
-};
-
 // Define the structure of the newly registered user data returned by the API
-type UserRegistrationData = {
+export type UserRegistrationData = {
   success: boolean; // Success status
   id?: string; // User ID
   message?: string; // Message from the API
@@ -163,8 +132,8 @@ type UserRegistrationData = {
   };
 };
 
-// Dedefine the structure of the newly created WooCommerce customer data returned by the API
-type CustomerRegistrationData = {
+// Define the structure of the newly created WooCommerce customer data returned by the API
+export type CustomerRegistrationData = {
   // Customer information
   id?: number; // Customer ID
   date_created?: string; // Date the customer was created
@@ -192,7 +161,7 @@ type CustomerRegistrationData = {
 };
 
 // Define the structure of the password reset data returned by the API
-type PasswordResetData = {
+export type PasswordResetData = {
   success: boolean; // Success status
   message?: string; // Message from the API
   data?: {
@@ -201,45 +170,141 @@ type PasswordResetData = {
   };
 };
 
+// Generic API result wrapper used by other helpers to provide consistent shape
+export type ApiResult<T> =
+  | { success: true; data: T; status?: number }
+  | { success: false; errorMessage?: string; status?: number; data?: any };
+
+/**
+ * API Helper Functions
+ * These functions perform API requests related to authentication.
+ */
+
+/**
+ * Helper that wraps fetch with an AbortController to enforce a timeout.
+ * Returns the same Response as fetch or throws when aborted/errored.
+ * @param input - Request info (URL or Request object)
+ * @param init - Optional fetch init options
+ * @param timeoutMs - Timeout in milliseconds (default: FETCH_TIMEOUT_MS)
+ * @returns A promise that resolves to the fetch Response
+ * Usage:
+ *   fetchWithTimeout("<url>", { method: "GET" }, 5000);
+ */
+const fetchWithTimeout = async (
+  input: RequestInfo,
+  init?: RequestInit,
+  timeoutMs: number = FETCH_TIMEOUT_MS
+): Promise<Response> => {
+  const controller = new AbortController();
+  const signal = controller.signal;
+  const id = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(input, {
+      ...(init || {}),
+      signal,
+    } as RequestInit);
+    return response;
+  } catch (err: any) {
+    // If the controller aborted the request, surface a clear timeout error
+    if (err && (err.name === "AbortError" || err.code === "ERR_ABORTED")) {
+      throw new Error("Request timed out");
+    }
+    throw err;
+  } finally {
+    clearTimeout(id);
+  }
+};
+
+// Improved timeout behavior: surface a clearer error when aborted by the
+// controller (timeout). Callers catch this and convert to ApiResult failures.
+
+/**
+ * Utility: unwrap an ApiResult or throw an Error.
+ * Use this when callers prefer exception control flow instead of checking .success.
+ * @param result - The ApiResult to unwrap
+ * Usage:
+ *  const data = unwrapOrThrow(await someApiFunction());
+ */
+/**
+ * Rich ApiError that preserves HTTP status and raw data when available.
+ * Thrown by `unwrapOrThrow` to let callers inspect error.status or error.data.
+ */
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    public status?: number,
+    public data?: unknown,
+    public code?: string
+  ) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
+
+export const unwrapOrThrow = <T>(
+  result: ApiResult<T>,
+  fallbackMessage?: string
+): T => {
+  if (result.success) return result.data;
+  const msg = result.errorMessage ?? fallbackMessage ?? "API request failed";
+  throw new ApiError(msg, (result as any).status, (result as any).data);
+};
+
+/**
+ * Result type for `parseJsonSafe`:
+ * - When the response body is valid JSON the function returns the parsed value (T).
+ * - When parsing fails it returns an object with `__parseError: true` and the raw text (or null).
+ */
+export type ParseJsonSafeResult<T = any> =
+  | T
+  | { __parseError: true; text: string | null };
+
+const parseJsonSafe = async <T = any>(
+  response: Response
+): Promise<ParseJsonSafeResult<T>> => {
+  try {
+    return (await response.json()) as T;
+  } catch (jsonErr) {
+    try {
+      const text = await response.text();
+      return { __parseError: true, text };
+    } catch (textErr) {
+      return { __parseError: true, text: null };
+    }
+  }
+};
+
+/**
+ * Runtime validator that checks a deserialized `ValidationData['data']`
+ * has the minimal expected fields (user.ID and a jwt array).
+ */
+const isValidValidationData = (d: unknown): d is ValidationData["data"] => {
+  if (!d || typeof d !== "object") return false;
+  const x = d as any;
+  if (!x.user || !x.user.ID) return false;
+  if (!x.jwt || !Array.isArray(x.jwt) || x.jwt.length === 0) return false;
+  return true;
+};
+
 /**
  * API functions for authentication (fetching and validating JWT tokens)
  */
 
 /**
  * Fetch a JWT token using email and password via the Simple JWT Login plugin.
+ * Side-effects: none.
+ * Returns: ApiResult<TokenData> where on success `data.data.jwt` is the raw JWT string.
  *
  * @param email - User's email address
  * @param password - User's password
- * @returns A promise that resolves to the token data or undefined
- *
- * Usage:
- *    fetchToken("<email>", "<password>");
- *
- * Example responses:
- * Successful token fetch response data:
- * {
- *  "data":
- *    {
- *      "jwt": "eyJ0e...",
- *    },
- *  "success": true
- * }
- *
- * Failed token fetch response data (using wrong password):
- * {
- *  "data":
- *   {
- *    "errorCode": 48,
- *    "message": "Wrong user credentials"
- *  },
- * "success": false
- * }
- *
+ * @returns Promise<ApiResult<TokenData>>
+ * Usage: fetchToken("<email>", "<password>");
+ * See `App/auth/README.md` for example API responses.
  */
 export const fetchToken = async (
   email: string,
   password: string
-): Promise<TokenData | undefined> => {
+): Promise<ApiResult<TokenData>> => {
   try {
     console.log(
       `authApi: fetchToken() called with email '${email}' and password: '${password}'`
@@ -256,14 +321,8 @@ export const fetchToken = async (
         AUTH_KEY: JWT_AUTH_KEY,
       }),
     });
-    // let tokenData: TokenData | undefined;
-    // try {
-    //   tokenData = await response.json();
-    // } catch (jsonError) {
-    //   console.error("authApi: Failed to parse JSON response:", jsonError);
-    //   return undefined;
-    // }
-    const tokenData = await response.json();
+
+    const tokenData = await parseJsonSafe(response);
     if (response.ok) {
       // Token fetch succeeded
       console.log(
@@ -271,6 +330,7 @@ export const fetchToken = async (
         response.status
       );
       console.log("authApi: Token fetch response data:", tokenData);
+      return { success: true, data: tokenData, status: response.status };
       // Handle successful token fetch (e.g., store token, navigate to another screen)
     } else {
       // Token fetch failed
@@ -284,62 +344,40 @@ export const fetchToken = async (
         console.error("authApi: Error code:", tokenData.data.errorCode);
         console.error("authApi: Error message:", tokenData.data.message);
       }
+      console.error(
+        "authApi: Token fetch failed with status:",
+        response.status
+      );
+      console.log("authApi: Response data from failed token fetch:", tokenData);
+      const message = tokenData?.data?.message ?? "Failed to fetch token";
+      return {
+        success: false,
+        errorMessage: message,
+        status: response.status,
+        data: tokenData,
+      };
     }
-    return tokenData;
-  } catch (error) {
-    // General error during token fetch process
+  } catch (error: any) {
+    // General error during token fetch process - return a failed ApiResult
     console.error("authApi: Error fetching token:", error);
-    return undefined;
+    return { success: false, errorMessage: error?.message || String(error) };
   }
 };
 
 /**
  * Validate a JWT token via the Simple JWT Login plugin.
+ * Side-effects: none. Returns ApiResult<ValidationData> where on success
+ * `data.data` contains `user`, `roles`, and `jwt` (array of decoded JWT objects).
  *
- * Note this error resolution (even when autologin is disabled):
- * https://wordpress.org/support/topic/unable-to-find-user-property-in-jwt/
- *
+ * Note: see https://wordpress.org/support/topic/unable-to-find-user-property-in-jwt/ for a common error.
  * @param jwtToken - The JWT token to validate
- * @returns A promise that resolves to the validation data or undefined
- *
- * Usage:
- *    validateToken("<jwt_token>");
- *
- * Example response on successful validation:
- * {
- *  "data":
- *    {
- *      "jwt": [[Object]],
- *      "roles": ["customer"],
- *      "user":
- *        {
- *          "ID": "31",
- *          "display_name": "tosspot@scottmotion.com",
- *          "user_activation_key": "",
- *          "user_email": "tosspot@scottmotion.com",
- *          "user_login": "tosspot@scottmotion.com",
- *          "user_nicename": "tosspotscottmotion-com",
- *          "user_registered": "2025-10-06 01:46:52",
- *          "user_status": "0",
- *          "user_url": ""
- *        }
- *    },
- *  "success": true
- * }
- *
- * Example response on failed validation:
- * {
- *  "data":
- *   {
- *    "errorCode": 14,
- *    "message": "Expired token"
- *  },
- *  "success": false
- * }
+ * @returns Promise<ApiResult<ValidationData>>
+ * Usage: validateToken("<jwt_token>");
+ * See `App/auth/README.md` for example API responses.
  */
 export const validateToken = async (
   jwtToken: string
-): Promise<ValidationData | undefined> => {
+): Promise<ApiResult<ValidationData>> => {
   try {
     console.log("authApi: validateToken() called");
     const response = await fetchWithTimeout(
@@ -356,14 +394,8 @@ export const validateToken = async (
         }),
       }
     );
-    // let validationData: ValidationData | undefined;
-    // try {
-    //   validationData = await response.json();
-    // } catch (jsonError) {
-    //   console.error("authApi: Failed to parse JSON response:", jsonError);
-    //   return undefined;
-    // }
-    const validationData = await response.json();
+
+    const validationData = await parseJsonSafe(response);
     if (response.ok) {
       // Token validation succeeded
       console.log(
@@ -371,7 +403,7 @@ export const validateToken = async (
         response.status
       );
       console.log("authApi: Token validation response data:", validationData);
-      // Handle successful token validation (e.g., navigate to another screen)
+      return { success: true, data: validationData, status: response.status };
     } else {
       // Token validation failed
       console.log(
@@ -379,98 +411,80 @@ export const validateToken = async (
         response.status
       );
       console.log("authApi: Token validation response data:", validationData);
-      if (validationData && validationData.data) {
-        // Log error details
-        console.error("authApi: Error code:", validationData.data.errorCode);
-        console.error("authApi: Error message:", validationData.data.message);
-      }
+      const message =
+        validationData?.data?.message ?? "Token validation failed";
+      return {
+        success: false,
+        errorMessage: message,
+        status: response.status,
+        data: validationData,
+      };
     }
-    return validationData;
-  } catch (error) {
-    // General error during token validation process
+  } catch (error: any) {
+    // General error during token validation process - return failed ApiResult
     console.error("authApi: Error validating token:", error);
-    return undefined;
+    return { success: false, errorMessage: error?.message || String(error) };
   }
 };
 
 /**
- * Login a WP user via the Simple JWT Login plugin
- *
- * Attempt to login a user using email/password. On success this will dispatch setUser.
- * Returns a structured result so callers can react (navigate, show errors).
+ * Login a WP user via the Simple JWT Login plugin.
+ * Side-effect: on successful login `dispatch(setUser(validatedData))` is called to populate Redux user state.
+ * Returns: ApiResult<ValidationData['data']> where `data` is the validated payload.
  *
  * @param email - User's email address
  * @param password - User's password
  * @param dispatch - Redux dispatch function to set user data on successful login
- * @returns A promise that resolves to a structured LoginResult
- *
- * Usage:
- *    loginUser("<email>", "<password>", dispatch);
- *
- * Example successful login flow:
- * 1. fetchToken() returns a valid JWT token
- * 2. validateToken() confirms the token is valid and returns user data
- * 3. setUser() is dispatched with the user data
- *
- * Example response when login is successful:
- * {
- *  "success": true,
- *  "data": {
- *   "user": {
- *     "ID": "31",
- *     "display_name": "tosspot@scottmotion.com",
- *     "user_activation_key": "",
- *     "user_email": "tosspot@scottmotion.com",
- *     "user_login": "tosspot@scottmotion.com",
- *     "user_nicename": "tosspotscottmotion-com",
- *     "user_registered": "2025-10-06 01:46:52",
- *     "user_status": "0",
- *     "user_url": ""
- *   },
- *   "roles": ["customer"],
- *   "jwt": [Object]
- *  }
- * }
- *
- * Example response on failed validation:
- * {
- *  "data":
- *   {
- *    "errorCode": 14,
- *    "message": "Expired token"
- *  },
- *  "success": false
- * }
+ * @returns Promise<ApiResult<ValidationData['data']>>
+ * Usage: loginUser("<email>", "<password>", dispatch);
+ * See `App/auth/README.md` for example API responses and side-effects.
  */
 export const loginUser = async (
   email: string,
   password: string,
   dispatch: AppDispatch
-): Promise<LoginResult> => {
+): Promise<ApiResult<ValidationData["data"]>> => {
   try {
     console.log("authApi: loginUser() called");
     // First, fetch the JWT token
-    const tokenData = await fetchToken(email, password);
+    const tokenResult = await fetchToken(email, password);
     // Use optional chaining and local variables to simplify checks
-    const jwt = tokenData?.data?.jwt;
-    if (tokenData?.success && typeof jwt === "string" && jwt.length > 0) {
+    const jwt = (
+      tokenResult.success ? tokenResult.data?.data?.jwt : undefined
+    ) as string | undefined;
+    if (tokenResult.success && typeof jwt === "string" && jwt.length > 0) {
       // Token fetch success. Validate the received token
       try {
         console.log("authApi: validateToken() called within loginUser()");
-        const validationData = await validateToken(jwt);
-        const validatedData = validationData?.data;
-        const user = validatedData?.user;
-        if (validationData?.success && validatedData && user) {
+        const validationResult = await validateToken(jwt);
+        const validatedData = validationResult.success
+          ? validationResult.data?.data
+          : undefined;
+        if (validationResult.success && isValidValidationData(validatedData)) {
           // Token validation success. Set user data in Redux store
           console.log("authApi: Login successful");
-          dispatch(setUser(validatedData)); // Set user data in Redux store
+          // Normalize the payload to the DataState shape expected by the store.
+          const jwtArray = Array.isArray(validatedData!.jwt)
+            ? (validatedData!.jwt as any[])
+            : validatedData!.jwt
+            ? [validatedData!.jwt as any]
+            : [];
+          const payload = {
+            user: validatedData!.user,
+            roles: validatedData!.roles,
+            jwt: jwtArray,
+          } as any;
+          dispatch(setUser(payload)); // Set user data in Redux store
           return { success: true, data: validatedData };
         } else {
           // Token validation failed.
           console.log("authApi: Login failed during validation");
-          console.log("authApi: Validation data:", validationData);
-          const message =
-            validationData?.data?.message ?? "Token validation failed.";
+          console.log("authApi: Validation result:", validationResult);
+          const message = !validationResult.success
+            ? validationResult.errorMessage ??
+              validationResult.data?.data?.message ??
+              "Token validation failed."
+            : "Token validation failed.";
           return { success: false, errorMessage: message };
         }
       } catch (error: any) {
@@ -484,10 +498,13 @@ export const loginUser = async (
     } else {
       // Token fetch failed.
       console.log("authApi: Login failed during token fetch");
-      console.log("authApi: Token data:", tokenData);
-      const message =
-        tokenData?.data?.message ??
-        "Invalid credentials or unable to fetch token.";
+      console.log("authApi: Token result:", tokenResult);
+      const message = !tokenResult.success
+        ? tokenResult.errorMessage ??
+          tokenResult.data?.data?.message ??
+          "Invalid credentials or unable to fetch token."
+        : tokenResult.data?.data?.message ??
+          "Invalid credentials or unable to fetch token.";
       return { success: false, errorMessage: message };
     }
   } catch (error: any) {
@@ -498,50 +515,20 @@ export const loginUser = async (
 };
 
 /**
- * Register a new user with the given email and password via the Simple JWT Login plugin.
- * Website uses WooCommerce for new customers, but this function is provided for completeness.
+ * Register a new user via the Simple JWT Login plugin.
+ * Side-effects: none. Returns ApiResult<UserRegistrationData>.
+ * Note: the site primarily uses WooCommerce customers; this function is provided for completeness.
  *
  * @param email
  * @param password
- * @returns A promise that resolves to the user registration data or undefined
- *
- * Usage:
- *    registerUser("<email>", "<password>");
- *
- * Example response when registration is successful:
- * {
- *  "success": true,
- *  "id": "31",
- *  "message": "User was successfully created.",
- *  "user": {
- *    "ID": 1,
- *    "user_login": "myuser",
- *    "user_nicename": "My User",
- *    "user_email": "myuser@simplejwtlogin.com",
- *    "user_url": "https://simplejwtlogin.com",
- *    "user_registered": "2021-01-01 23:31:50",
- *    "user_activation_key": "test",
- *    "user_status": "0",
- *    "display_name": "myuser",
- *    "user_level": 10
- *  }
- * "roles": ["subscriber"],
- * "jwt": "eyJhbGci..."
- * }
- *
- * Example response when registration fails (using existing email):
- * {
- *  "success": false,
- *  "data": {
- *    "errorCode": 38,
- *    "message": "User already exists."
- *  }
- * }
+ * @returns Promise<ApiResult<UserRegistrationData>>
+ * Usage: registerUser("<email>", "<password>");
+ * See `App/auth/README.md` for example API responses.
  */
 export const registerUser = async (
   email: string,
   password: string
-): Promise<UserRegistrationData | undefined> => {
+): Promise<ApiResult<UserRegistrationData>> => {
   try {
     console.log(
       `authApi: registerUser() called with email '${email}' and password: '${password}'`
@@ -559,14 +546,7 @@ export const registerUser = async (
       }),
     });
 
-    // let registrationData: UserRegistrationData | undefined;
-    // try {
-    //   registrationData = await response.json();
-    // } catch (jsonError) {
-    //   console.error("authApi: Failed to parse JSON response:", jsonError);
-    //   return undefined;
-    // }
-    const registrationData = await response.json();
+    const registrationData = await parseJsonSafe(response);
     if (response.ok) {
       // Registration was successful
       console.log(
@@ -574,7 +554,7 @@ export const registerUser = async (
         response.status
       );
       console.log("authApi: Registration response data:", registrationData);
-      // Handle successful registration (e.g., navigate to login, show success message)
+      return { success: true, data: registrationData, status: response.status };
     } else {
       // Registration failed
       console.error(
@@ -587,61 +567,35 @@ export const registerUser = async (
         console.error("authApi: Error code:", registrationData.data.errorCode);
         console.error("authApi: Error message:", registrationData.data.message);
       }
-      // Handle registration failure (e.g., show error message)
+      const message = registrationData?.data?.message ?? "Registration failed";
+      return {
+        success: false,
+        errorMessage: message,
+        status: response.status,
+        data: registrationData,
+      };
     }
-    return registrationData;
-  } catch (error) {
-    // General error during registration process
+  } catch (error: any) {
+    // General error during registration process - return failed ApiResult
     console.error("authApi: Error during registration:", error);
-    // Handle network or other errors
-    return undefined;
+    return { success: false, errorMessage: error?.message || String(error) };
   }
 };
 
 /**
- * Register a new WooCommerce customer via the WooCommerce REST API
- * Website also uses WooCommerce for customer management
+ * Register a new WooCommerce customer via the WooCommerce REST API.
+ * Side-effects: none. Returns ApiResult<CustomerRegistrationData>.
  *
  * @param email
  * @param password
- * @returns A promise that resolves to the customer registration data or undefined
- *
- * Usage:
- *    registerCustomer("<email>", "<password>");
- *
- * Example response on successful customer creation:
- * {
- *  "id": 123,
- *  "date_created": "2024-10-06T01:46:52",
- *  "date_created_gmt": "2024-10-06T01:46:52",
- *  "date_modified": "2024-10-06T01:46:52",
- *  "date_modified_gmt": "2024-10-06T01:46:52",
- *  "email": ""
- *  "first_name": "Test",
- *  "last_name": "Testerson",
- *  "role": "customer",
- *  "username": ""
- *  "billing": { ... },
- *  "shipping": { ... },
- *  "is_paying_customer": false,
- *  "avatar_url": "https://secure.gravatar.com/avatar/...",
- *  "meta_data": [],
- *  "_links": { ... }
- * }
- *
- * Example response on failed customer creation (using existing email):
- * {
- *  "code": "registration-error-email-exists",
- *  "message": "An account is already registered with your email address. Please log in.",
- *  "data": {
- *   "status": 400
- *   }
- * }
+ * @returns Promise<ApiResult<CustomerRegistrationData>>
+ * Usage: registerCustomer("<email>", "<password>");
+ * See `App/auth/README.md` for example API responses.
  */
 export const registerCustomer = async (
   email: string,
   password: string
-): Promise<CustomerRegistrationData | undefined> => {
+): Promise<ApiResult<CustomerRegistrationData>> => {
   console.log(
     `authApi: registerCustomer() called with email '${email}' and password: '${password}'`
   );
@@ -685,14 +639,7 @@ export const registerCustomer = async (
       }
     );
 
-    // let registrationData: CustomerRegistrationData | undefined;
-    // try {
-    //   registrationData = await response.json();
-    // } catch (jsonError) {
-    //   console.error("authApi: Failed to parse JSON response:", jsonError);
-    //   return undefined;
-    // }
-    const registrationData = await response.json();
+    const registrationData = await parseJsonSafe(response);
     if (response.ok) {
       // Registration was successful
       console.log(
@@ -703,7 +650,7 @@ export const registerCustomer = async (
         "authApi: Customer registration response data:",
         registrationData
       );
-      // Handle successful customer creation
+      return { success: true, data: registrationData, status: response.status };
     } else {
       // Registration failed
       console.log(
@@ -719,47 +666,37 @@ export const registerCustomer = async (
         console.error("authApi: Error status:", registrationData.data.status);
         console.error("authApi: Error code:", registrationData.code);
         console.error("authApi: Error message:", registrationData.message);
-        // console.error("authApi: Customer registration response data:", data);
       }
-      // Handle customer creation failure
+      const message =
+        registrationData?.message ??
+        registrationData?.data?.status ??
+        "Customer registration failed";
+      return {
+        success: false,
+        errorMessage: message,
+        status: response.status,
+        data: registrationData,
+      };
     }
-    return registrationData;
-  } catch (error) {
-    // General error during registration process
+  } catch (error: any) {
+    // General error during registration process - return failed ApiResult
     console.error("authApi: Error during customer registration:", error);
-    // Handle network or other errors
-    return undefined;
+    return { success: false, errorMessage: error?.message || String(error) };
   }
 };
 
 /**
  * Send a password reset email to the specified email address.
+ * Side-effects: none. Returns ApiResult<PasswordResetData>.
  *
  * @param email
- * @returns A promise that resolves to the password reset data or undefined
- *
- * Usage:
- *    sendPasswordReset("<email>");
- *
- * Example response on successful password reset request:
- * {
- *  "message": "Reset password email has been sent.",
- *  "success": true
- * }
- *
- * Example response on failed password reset request (using wrong password):
- * {
- *  "data":
- *  {
- *      "errorCode": 64,
- *      "message": "Wrong user."
- *   },
- *  "success": false
- * }
+ * @returns Promise<ApiResult<PasswordResetData>>
+ * Usage: sendPasswordReset("<email>");
+ * See `App/auth/README.md` for example API responses.
  */
 export const sendPasswordReset = async (
   email: string
-): Promise<PasswordResetData | undefined> => {
+): Promise<ApiResult<PasswordResetData>> => {
   try {
     console.log(`authApi: sendPasswordReset() called with email: '${email}'`);
     const response = await fetchWithTimeout(
@@ -769,14 +706,8 @@ export const sendPasswordReset = async (
         headers: { "cache-control": "no-cache" },
       }
     );
-    // let passwordResetData: PasswordResetData | undefined;
-    // try {
-    //   passwordResetData = await response.json();
-    // } catch (jsonError) {
-    //   console.error("authApi: Failed to parse JSON response:", jsonError);
-    //   return undefined;
-    // }
-    const passwordResetData = await response.json();
+
+    const passwordResetData = await parseJsonSafe(response);
     if (response.ok) {
       // Password reset succeeded
       console.log(
@@ -784,7 +715,11 @@ export const sendPasswordReset = async (
         response.status
       );
       console.log("authApi: Forgot password response data:", passwordResetData);
-      // Handle successful password reset (e.g., show a confirmation message)
+      return {
+        success: true,
+        data: passwordResetData,
+        status: response.status,
+      };
     } else {
       // Password reset failed
       console.log(
@@ -792,20 +727,19 @@ export const sendPasswordReset = async (
         response.status
       );
       console.log("authApi: Forgot password response data:", passwordResetData);
-      if (passwordResetData && passwordResetData.data) {
-        // Log error details
-        console.error("authApi: Error code:", passwordResetData.data.errorCode);
-        console.error(
-          "authApi: Error message:",
-          passwordResetData.data.message
-        );
-      }
-      // Handle failed password reset (e.g., show an error message)
+      const message =
+        passwordResetData?.data?.message ?? "Password reset failed";
+      return {
+        success: false,
+        errorMessage: message,
+        status: response.status,
+        data: passwordResetData,
+      };
     }
-    return passwordResetData;
-  } catch (error) {
-    // General error during password reset process
+  } catch (error: any) {
+    // General error during password reset process - return failed ApiResult
     console.error("authApi: Error sending password reset email:", error);
+    return { success: false, errorMessage: error?.message || String(error) };
   }
 };
 
@@ -816,9 +750,9 @@ export const sendPasswordReset = async (
  * @returns {void}
  *
  * Usage:
- *    logout(dispatch);
+ *    logoutUser(dispatch);
  */
-export const logout = (dispatch: AppDispatch): void => {
+export const logoutUser = (dispatch: AppDispatch): void => {
   dispatch(clearUser()); // Clear user data from Redux store
   console.log("authApi: User logged out");
 };
