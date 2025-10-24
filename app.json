@@ -9,7 +9,7 @@
       "supportsTablet": true,
       "icon": "./assets/icon.png",
       "bundleIdentifier": "com.sfLiving.sflivingwagecoalition",
-      "buildNumber": "2.0.1",
+
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
