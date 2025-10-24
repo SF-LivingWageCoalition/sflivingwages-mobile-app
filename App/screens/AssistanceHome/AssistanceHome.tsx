@@ -7,12 +7,11 @@ import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { AssistanceTabParamList } from "../../types/types";
-import { RootStackParamList } from "../../types";
 import { useNavigation } from "@react-navigation/native";
 
 const AssistanceHome: React.FC = () => {
   const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    useNavigation<NativeStackNavigationProp<AssistanceTabParamList>>();
   return (
     <ScrollView>
       <View style={styles.container}>

@@ -6,10 +6,9 @@ import AssistanceHome from "../screens/AssistanceHome/AssistanceHome";
 import BeReadyForICE from "../screens/BeReadyForICE/BeReadyForICE";
 import AuctionNav from "../screens/AuctionScreen/AuctionNav";
 import DonateScreen from "../screens/DonateScreen/DonateScreen";
-import DonateMoney from "../screens/DonateScreen/DonateMoney";
 import NewHome from "../screens/HomeScreen/NewHome";
 import { colors } from "../theme";
-import { BottomTabParamList } from "../types";
+import { BottomTabParamList } from "../types/types";
 
 // Create a stack navigator for the Assistance section
 const AssistanceStack = createStackNavigator();
