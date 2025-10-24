@@ -220,13 +220,14 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 <WebView
                   style={styles.youTubeStyle}
                   source={{
-                    uri: "http://www.youtube.com/embed?max-results=1&showinfo=0&rel=0&listType=user_uploads&list=sflivingwage",
+                    uri: "https://www.youtube.com/embed?listType=user_uploads&list=sflivingwage&rel=0&modestbranding=1&playsinline=1",
                   }}
                   javaScriptEnabled={true}
                   domStorageEnabled={true}
                   mediaPlaybackRequiresUserAction={true}
                   scrollEnabled={false}
                   allowsInlineMediaPlayback={true}
+                  allowsFullscreenVideo={true}
                 />
               </TouchableOpacity>
               <Card.Actions>
@@ -248,13 +249,14 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
               <WebView
                 style={styles.youTubeStyle}
                 source={{
-                  uri: "https://www.youtube.com/embed?max-results=1&controls=0&showinfo=0&rel=0&listType=playlist&list=PLcuBfm3dxkszAbt58VCPehuEoi3VjzH2g",
+                  uri: "https://www.youtube.com/embed?listType=playlist&list=PLcuBfm3dxkszAbt58VCPehuEoi3VjzH2g&rel=0&modestbranding=1&playsinline=1",
                 }}
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
                 mediaPlaybackRequiresUserAction={true}
                 scrollEnabled={false}
                 allowsInlineMediaPlayback={true}
+                allowsFullscreenVideo={true}
               />
               <Card.Actions>
                 <View style={styles.cardView}>
@@ -275,13 +277,14 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
               <WebView
                 style={styles.youTubeStyle}
                 source={{
-                  uri: "https://www.youtube.com/embed?max-results=1&controls=0&showinfo=0&rel=0&listType=playlist&list=PLcuBfm3dxksz54i7-7QN1XaJbT23m6Pg3",
+                  uri: "https://www.youtube.com/embed?listType=playlist&list=PLcuBfm3dxksz54i7-7QN1XaJbT23m6Pg3&rel=0&modestbranding=1&playsinline=1",
                 }}
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
                 mediaPlaybackRequiresUserAction={true}
                 scrollEnabled={false}
                 allowsInlineMediaPlayback={true}
+                allowsFullscreenVideo={true}
               />
               <Card.Actions>
                 <View style={styles.cardView}>
