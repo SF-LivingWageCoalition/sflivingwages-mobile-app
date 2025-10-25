@@ -10,7 +10,7 @@ import {
 import { AccountScreenProps } from "../../types/types";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../../redux/store/store";
-import { logoutUser } from "../../auth/api/authApi";
+import { logoutUser } from "../../api/auth/authApi";
 import {
   selectIsLoggedIn,
   selectUser,

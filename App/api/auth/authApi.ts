@@ -9,7 +9,7 @@
     `unwrapOrThrow(result)` which throws an exported `ApiError` (includes
     `.status` and `.data`).
 
-  - This header is intentionally short. See `App/auth/README.md` for full
+  - This header is intentionally short. See `App/api/auth/README.md` for full
     examples, telemetry guidance, and references (plugin/docs links).
 */
 
@@ -299,7 +299,7 @@ const isValidValidationData = (d: unknown): d is ValidationData["data"] => {
  * @param password - User's password
  * @returns Promise<ApiResult<TokenData>>
  * Usage: fetchToken("<email>", "<password>");
- * See `App/auth/README.md` for example API responses.
+ * See `App/api/auth/README.md` for example API responses.
  */
 export const fetchToken = async (
   email: string,
@@ -373,7 +373,7 @@ export const fetchToken = async (
  * @param jwtToken - The JWT token to validate
  * @returns Promise<ApiResult<ValidationData>>
  * Usage: validateToken("<jwt_token>");
- * See `App/auth/README.md` for example API responses.
+ * See `App/api/auth/README.md` for example API responses.
  */
 export const validateToken = async (
   jwtToken: string
@@ -437,7 +437,7 @@ export const validateToken = async (
  * @param dispatch - Redux dispatch function to set user data on successful login
  * @returns Promise<ApiResult<ValidationData['data']>>
  * Usage: loginUser("<email>", "<password>", dispatch);
- * See `App/auth/README.md` for example API responses and side-effects.
+ * See `App/api/auth/README.md` for example API responses and side-effects.
  */
 export const loginUser = async (
   email: string,
@@ -523,7 +523,7 @@ export const loginUser = async (
  * @param password
  * @returns Promise<ApiResult<UserRegistrationData>>
  * Usage: registerUser("<email>", "<password>");
- * See `App/auth/README.md` for example API responses.
+ * See `App/api/auth/README.md` for example API responses.
  */
 export const registerUser = async (
   email: string,
@@ -590,7 +590,7 @@ export const registerUser = async (
  * @param password
  * @returns Promise<ApiResult<CustomerRegistrationData>>
  * Usage: registerCustomer("<email>", "<password>");
- * See `App/auth/README.md` for example API responses.
+ * See `App/api/auth/README.md` for example API responses.
  */
 export const registerCustomer = async (
   email: string,
@@ -692,7 +692,7 @@ export const registerCustomer = async (
  * @param email
  * @returns Promise<ApiResult<PasswordResetData>>
  * Usage: sendPasswordReset("<email>");
- * See `App/auth/README.md` for example API responses.
+ * See `App/api/auth/README.md` for example API responses.
  */
 export const sendPasswordReset = async (
   email: string

@@ -1,5 +1,5 @@
-import { ApiError } from "./api/authApi";
-import { translate } from "../translation";
+import { ApiError } from "../../api/auth/authApi";
+import { translate } from "../../translation";
 
 /**
  * Map an unknown error (possibly ApiError) to a user-facing translation string.
@@ -15,10 +15,8 @@ export function mapApiErrorToMessage(
     "An unexpected error occurred.";
   if (error instanceof ApiError) {
     const status = error.status;
-    // Prefer server-provided message when safe
     const serverMessage = error.message;
     if (status === 400 || status === 401) {
-      // Client errors: use caller-specified default (login/validation) if provided
       return (
         translate((defaultKey ?? "errors.loginFailed") as any) ||
         serverMessage ||
@@ -26,16 +24,13 @@ export function mapApiErrorToMessage(
       );
     }
     if (status === 409) {
-      // Conflict (common for registration email already exists)
       return (
         translate("errors.registrationFailed") || serverMessage || fallback
       );
     }
     if (status && status >= 500) {
-      // Server errors
       return translate("errors.unexpectedError") || serverMessage || fallback;
     }
-    // Fallback to server message or caller default
     return (
       serverMessage ||
       translate((defaultKey ?? "errors.unexpectedError") as any) ||
@@ -43,7 +38,6 @@ export function mapApiErrorToMessage(
     );
   }
 
-  // Non-ApiError: use message if present, otherwise caller's default
   const message = (error as any)?.message;
   return (
     message ||

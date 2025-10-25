@@ -24,7 +24,7 @@
 
 Maintainer: `@scottmotion` — Last updated: 2025-10-24
 
-This folder provides the authentication screens and API helpers used by the app to interact with the WordPress backend (JWT auth, token validation, user registration, WooCommerce customer creation, and password reset flows).
+This folder provides the authentication API helpers used by the app to interact with the WordPress backend (JWT auth, token validation, user registration, WooCommerce customer creation, and password reset flows). The authentication UI/screens live under `App/screens/Auth` — see that folder for the Login/Register/ForgotPassword screens and navigator.
 
 ---
 
@@ -60,7 +60,7 @@ try {
 - Optional throw-style helper: `unwrapOrThrow(result)` — returns `data` or throws `ApiError` (contains `status` and `data`).
 - Side-effects: `loginUser` dispatches `setUser(validatedData)` on success.
 
-Implementation details (see `App/auth/api/authApi.ts`): exported types include `TokenData`, `ValidationData`, `PasswordResetData`, `ApiResult<T>`, and `ApiError`.
+Implementation details (see `App/api/auth/authApi.ts`): exported types include `TokenData`, `ValidationData`, `PasswordResetData`, `ApiResult<T>`, and `ApiError`.
 
 ---
 
@@ -154,7 +154,7 @@ function normalizeJwt(maybeJwt: unknown): DecodedJwt[] {
 }
 ```
 
-Refer to `App/auth/api/authApi.ts` for the canonical implementation and exported runtime types.
+Refer to `App/api/auth/authApi.ts` for the canonical implementation and exported runtime types.
 
 ---
 
@@ -371,8 +371,8 @@ If you prefer to keep this file shorter, we can move the large example JSON blob
 - Simple JWT Login docs: https://simplejwtlogin.com/
 - WooCommerce REST API: https://developer.woocommerce.com/docs/apis/rest-api/
 
-Canonical code: `App/auth/api/authApi.ts` (types and normalization live there).
+Canonical API code: `App/api/auth/authApi.ts` (types and normalization live there). Authentication screens live in `App/screens/Auth`.
 
 ---
 
-Maintainer notes: keep this README as the canonical developer guide for `App/auth`. When in doubt, update the examples here along with any code changes.
+Maintainer notes: keep this README as the canonical developer guide for `App/api/auth`. When in doubt, update the examples here along with any code changes.

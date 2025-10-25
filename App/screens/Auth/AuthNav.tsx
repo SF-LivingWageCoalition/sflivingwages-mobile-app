@@ -1,18 +1,19 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import { colors } from "../theme";
-import { fontWeight } from "../theme/fontStyles";
-import { translate } from "../translation/i18n";
-import { AuthStackParamList } from "../types/types";
+import { colors } from "../../theme";
+import { fontWeight } from "../../theme/fontStyles";
+import { translate } from "../../translation/i18n";
+import type { AuthStackParamList } from "../../types/types";
 import Login from "./LoginScreen";
 import Register from "./RegisterScreen";
 import ForgotPassword from "./ForgotPasswordScreen";
 
 const Stack = createStackNavigator<AuthStackParamList>();
 
-const MyStack: React.FC = () => {
+const AuthNavigator: React.FC = () => {
   return (
     <Stack.Navigator
+      initialRouteName={translate("loginScreen.title")}
       screenOptions={{
         headerStyle: { backgroundColor: colors.light.primary },
         headerTintColor: colors.light.textOnPrimary,
@@ -37,10 +38,6 @@ const MyStack: React.FC = () => {
       />
     </Stack.Navigator>
   );
-};
-
-const AuthNavigator: React.FC = () => {
-  return <MyStack />;
 };
 
 export default AuthNavigator;

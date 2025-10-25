@@ -26,7 +26,7 @@ import { colors } from "./App/theme";
 import { fontFamily } from "./App/theme/fontStyles";
 import { translate } from "./App/translation/i18n";
 import { RootStackParamList } from "./App/types/types";
-import AuthNavigator from "./App/auth/AuthNav";
+import AuthNavigator from "./App/screens/Auth/AuthNav";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
