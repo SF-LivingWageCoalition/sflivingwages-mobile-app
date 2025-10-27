@@ -1,0 +1,37 @@
+{
+  "cli": {
+    "version": ">= 16.13.2",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "dev" // so OTA updates can target dev builds if needed
+    },
+    "preview": {
+      "distribution": "internal",
+      "channel": "preview" // internal testers build
+      // "android": { "buildType": "app-bundle" } // produce .aab for Play Console
+    },
+    "production": {
+      "autoIncrement": true, // bumps android.versionCode / ios.buildNumber
+      "channel": "main" // production OTA branch/channel
+      // "android": { "buildType": "app-bundle" }
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "track": "internal", // Play Console Internal testing track
+        "releaseStatus": "draft" // create draft then roll out from console
+      }
+    },
+    "preview": {
+      "android": {
+        "track": "internal",
+        "releaseStatus": "draft"
+      }
+    }
+  }
+}

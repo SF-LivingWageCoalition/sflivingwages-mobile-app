@@ -7,39 +7,8 @@ import BeReadyForICE from "../screens/BeReadyForICE/BeReadyForICE";
 import AuctionNav from "../screens/AuctionScreen/AuctionNav";
 import DonateScreen from "../screens/DonateScreen/DonateScreen";
 import NewHome from "../screens/HomeScreen/NewHome";
-import LivingWageCalculator from "../screens/LivingWageCalculator/LivingWageCalculator";
-import ReportViolation from "../screens/ReportViolation/ReportViolation";
-import WageRights from "../screens/WageRights/WageRights";
 import { colors } from "../theme";
 import { BottomTabParamList } from "../types/types";
-
-// Create a stack navigator for the Assistance section
-const AssistanceStack = createStackNavigator();
-
-const AssistanceStackScreen = () => {
-  return (
-    <AssistanceStack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <AssistanceStack.Screen
-        name="AssistanceHome"
-        component={AssistanceHome}
-      />
-      <AssistanceStack.Screen
-        name="ReportViolation"
-        component={ReportViolation}
-      />
-      <AssistanceStack.Screen name="WageRights" component={WageRights} />
-      <AssistanceStack.Screen name="BeReadyForICE" component={BeReadyForICE} />
-      <AssistanceStack.Screen
-        name="LivingWageCalculator"
-        component={LivingWageCalculator}
-      />
-    </AssistanceStack.Navigator>
-  );
-};
 
 /**
  * Bottom Tab Navigator
@@ -95,7 +64,7 @@ const BottomTabStack: React.FC = () => {
 
       <Tab.Screen
         name="Assist"
-        component={AssistanceStackScreen}
+        component={AssistanceHome}
         options={{
           headerShown: false,
           tabBarLabel: "Assist",

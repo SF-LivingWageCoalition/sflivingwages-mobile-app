@@ -13,12 +13,11 @@ import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { AssistanceTabParamList } from "../../types/types";
+import { useNavigation } from "@react-navigation/native";
 
-interface AssistanceHomeProps {
-  navigation: NativeStackNavigationProp<AssistanceTabParamList>;
-}
-
-const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
+const AssistanceHome: React.FC = () => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<AssistanceTabParamList>>();
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -36,7 +35,9 @@ const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate("ReportViolation")}
+              onPress={() =>
+                navigation.navigate("Assistance", { screen: "ReportViolation" })
+              }
             >
               <Text style={styles.buttonText}>
                 {translate("assistHomeScreen.getAssistance")}
@@ -45,7 +46,9 @@ const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
 
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate("WageRights")}
+              onPress={() =>
+                navigation.navigate("Assistance", { screen: "WageRights" })
+              }
             >
               <Text style={styles.buttonText}>
                 {translate("assistHomeScreen.wageRights")}
@@ -54,18 +57,33 @@ const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
 
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate("BeReadyForICE")}
+              onPress={() =>
+                navigation.navigate("Assistance", { screen: "BeReadyForICE" })
+              }
             >
               <Text style={styles.buttonText}>
                 {translate("assistHomeScreen.beReadyForICE")}
               </Text>
             </TouchableOpacity>
-
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate("LivingWageCalculator")}
+              onPress={() =>
+                navigation.navigate("Assistance", {
+                  screen: "LivingWageCalculator",
+                })
+              }
             >
               <Text style={styles.buttonText}>Living Wage Calculator</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() =>
+                navigation.navigate("Assistance", { screen: "ReportBusiness" })
+              }
+            >
+              <Text style={styles.buttonText}>
+                {translate("assistHomeScreen.reportBusiness")}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
