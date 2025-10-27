@@ -7,7 +7,7 @@ import BeReadyForICE from "../screens/BeReadyForICE/BeReadyForICE";
 import LivingWageCalculator from "../screens/LivingWageCalculator/LivingWageCalculator";
 import ReportBusiness from "../screens/ReportBusiness/ReportBusiness";
 import ReportBusinessMap from "../screens/ReportBusinessMap/ReportBusinessMap";
-import { AssistanceTabParamList } from "../types";
+import { AssistanceTabParamList } from "../types/types";
 import ListReportScreen from "../screens/ListReportScreen/ListReportScreen";
 import ReportDetailScreen from "../screens/ReportDetailScreen/ReportDetailScreen";
 

@@ -10,9 +10,6 @@ import NewHome from "../screens/HomeScreen/NewHome";
 import { colors } from "../theme";
 import { BottomTabParamList } from "../types/types";
 
-// Create a stack navigator for the Assistance section
-const AssistanceStack = createStackNavigator();
-
 /**
  * Bottom Tab Navigator
  * Provides navigation between the main screens of the app
