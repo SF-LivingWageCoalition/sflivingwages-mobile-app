@@ -1,4 +1,4 @@
-import { ApiError } from "../../api/auth/authApi";
+import { ApiError } from "./authApi";
 import { translate } from "../../translation";
 
 /**

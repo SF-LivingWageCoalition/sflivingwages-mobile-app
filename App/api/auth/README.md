@@ -1,34 +1,43 @@
 <!-- Table of contents updated to match current headings -->
 
+# Auth API — developer reference
+
+Maintainer: `@scottmotion` — Last updated: 2025-10-24
+
+This folder provides the authentication API helpers used by the app to interact with the WordPress backend (JWT auth, token validation, user registration, WooCommerce customer creation, and password reset flows). The authentication UI/screens live under `App/screens` (for example: `App/screens/LoginScreen`, `App/screens/RegisterScreen`, `App/screens/ForgotPasswordScreen`). The auth navigator is implemented at `App/navigation/AuthNav.tsx`.
+
 ## Table of contents
 
-- [Quick start (1 minute)](#quick-start-1-minute)
+- [Quick Links](#quick-links)
+- [Quick Start (1 minute)](#quick-start-1-minute)
 - [Contract (at-a-glance)](#contract-at-a-glance)
-- [Environment variables](#environment-variables)
-- [Quick debug checklist](#quick-debug-checklist)
+- [Environment Variables](#environment-variables)
+- [Quick Debug Checklist](#quick-debug-checklist)
 - [Try with curl (PowerShell-friendly)](#try-with-curl-powershell-friendly)
-- [JWT shapes & normalization (short)](#jwt-shapes--normalization-short)
-- [Detailed API responses (examples)](#detailed-api-responses-examples)
+- [JWT Shapes & Normalization (short)](#jwt-shapes--normalization-short)
+- [Detailed API Responses (examples)](#detailed-api-responses-examples)
   - [fetchToken — example responses](#fetchtoken---example-responses)
   - [validateToken — example responses](#validatetoken---example-responses)
   - [loginUser — example responses](#loginuser---example-responses)
   - [registerUser — example responses](#registeruser---example-responses)
   - [registerCustomer — example responses](#registercustomer---example-responses)
   - [sendPasswordReset — example responses](#sendpasswordreset---example-responses)
-  - [Non-JSON / parse errors (what `parseJsonSafe` returns)](#non-json---parse-errors-what-parsejsonsafe-returns)
-- [Telemetry guidance](#telemetry-guidance)
-- [How to contribute / keep this README current](#how-to-contribute--keep-this-readme-current)
+  - [Non-JSON / Parse Errors (what `parseJsonSafe` returns)](#non-json---parse-errors-what-parsejsonsafe-returns)
+- [Telemetry Guidance](#telemetry-guidance)
+- [How to Contribute / Keep this README Current](#how-to-contribute--keep-this-readme-current)
 - [References](#references)
 
-## Auth API — developer reference
+### Quick Links
 
-Maintainer: `@scottmotion` — Last updated: 2025-10-24
-
-This folder provides the authentication API helpers used by the app to interact with the WordPress backend (JWT auth, token validation, user registration, WooCommerce customer creation, and password reset flows). The authentication UI/screens live under `App/screens/Auth` — see that folder for the Login/Register/ForgotPassword screens and navigator.
+- Login screen: `App/screens/LoginScreen/LoginScreen.tsx`
+- Register screen: `App/screens/RegisterScreen/RegisterScreen.tsx`
+- Forgot password screen: `App/screens/ForgotPasswordScreen/ForgotPasswordScreen.tsx`
+- Auth navigator: `App/navigation/AuthNav.tsx`
+- Auth API: `App/api/auth/authApi.ts`
 
 ---
 
-## Quick start (1 minute)
+## Quick Start (1 minute)
 
 1. Copy the repo root `.env.example` to `.env` and populate the _EXPO_PUBLIC_ values locally (do NOT commit secrets).
 2. Call `fetchToken(email, password)` to obtain a raw JWT string.
@@ -40,7 +49,9 @@ Example (exception style)
 ```ts
 try {
   const tokenData = unwrapOrThrow(await fetchToken(email, password));
-  const validated = unwrapOrThrow(await validateToken(tokenData.jwt));
+  // fetchToken returns the token in tokenData.data?.jwt (shape: ApiResult<TokenData>)
+  const jwt = tokenData.data?.jwt ?? (tokenData as any).jwt;
+  const validated = unwrapOrThrow(await validateToken(jwt));
   // loginUser already dispatches setUser(validated)
 } catch (err) {
   if (err instanceof ApiError) {
@@ -64,7 +75,7 @@ Implementation details (see `App/api/auth/authApi.ts`): exported types include `
 
 ---
 
-## Environment variables
+## Environment Variables
 
 Store secrets locally and never commit them. Example entries (copy from `.env.example`):
 
@@ -73,7 +84,7 @@ EXPO_PUBLIC_BASE_URL=https://www.livingwage-sf.org
 EXPO_PUBLIC_JWT_ROUTE=/wp-json/simple-jwt-login/v1
 EXPO_PUBLIC_WC_ROUTE=/wp-json/wc/v3
 EXPO_PUBLIC_JWT_DE_KEY=<decryption_key_here>
-EXPO_PUBLIC_JWT_DE_ALG=<jwt_algorith>
+EXPO_PUBLIC_JWT_DE_ALG=<jwt_algorithm>
 EXPO_PUBLIC_JWT_TYP=<jwt_type>
 EXPO_PUBLIC_JWT_AUTH_KEY=<auth_key>
 EXPO_PUBLIC_CONSUMER_KEY=<wc_consumer_key>
@@ -85,7 +96,7 @@ Security note: sanitize PII before sending any payloads to telemetry.
 
 ---
 
-## Quick debug checklist
+## Quick Debug Checklist
 
 1. Check HTTP status (`result.status`): 4xx = client issue; 5xx = server issue.
 2. Inspect `Content-Type` and response body. If non-JSON, `parseJsonSafe` returns `{ __parseError: true, text }`.
@@ -135,7 +146,7 @@ curl.exe -i -X POST "$BASE${EXPO_PUBLIC_JWT_ROUTE}/user/reset_password&email=use
 
 ---
 
-## JWT shapes & normalization (short)
+## JWT Shapes & Normalization (short)
 
 - `fetchToken` returns a raw JWT string at `data.jwt`.
 - `validateToken` returns decoded JWT objects in `data.jwt` (an array of decoded JWTs).
@@ -158,7 +169,7 @@ Refer to `App/api/auth/authApi.ts` for the canonical implementation and exported
 
 ---
 
-## Detailed API responses (examples)
+## Detailed API Responses (examples)
 
 Keep these as a reference for debugging. Update when server shapes change.
 
@@ -312,7 +323,7 @@ Failure (wrong user):
 }
 ```
 
-### Non-JSON / parse errors (what `parseJsonSafe` returns)
+### Non-JSON / Parse Errors (what `parseJsonSafe` returns)
 
 If the server returns non-JSON content (HTML error page, plain text, etc.), `parseJsonSafe` will not throw — it returns an object indicating the parse failure. Example:
 
@@ -325,7 +336,7 @@ If the server returns non-JSON content (HTML error page, plain text, etc.), `par
 
 ---
 
-## Telemetry guidance
+## Telemetry Guidance
 
 - Capture `result.status` and structured `errorCode` only. Do NOT include emails or full user objects.
 
@@ -349,7 +360,7 @@ Common HTTP status → suggested translation keys (docs only)
 
 ---
 
-## How to contribute / keep this README current
+## How to Contribute / Keep this README Current
 
 - When API shapes or error codes change, update the "Detailed API responses" and add a short note indicating the source (mock vs live).
 - If you add translation keys, include them in `App/translation/locales/*.ts`.
@@ -371,7 +382,7 @@ If you prefer to keep this file shorter, we can move the large example JSON blob
 - Simple JWT Login docs: https://simplejwtlogin.com/
 - WooCommerce REST API: https://developer.woocommerce.com/docs/apis/rest-api/
 
-Canonical API code: `App/api/auth/authApi.ts` (types and normalization live there). Authentication screens live in `App/screens/Auth`.
+Canonical API code: `App/api/auth/authApi.ts` (types and normalization live there). Authentication screens live under `App/screens` (see `App/screens/LoginScreen/LoginScreen.tsx`, `App/screens/RegisterScreen/RegisterScreen.tsx`, and `App/screens/ForgotPasswordScreen/ForgotPasswordScreen.tsx`). The auth navigator is at `App/navigation/AuthNav.tsx`.
 
 ---
 

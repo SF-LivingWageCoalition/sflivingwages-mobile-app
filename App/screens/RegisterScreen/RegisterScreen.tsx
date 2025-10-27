@@ -1,7 +1,6 @@
 // See `App/api/auth/README.md` for examples and error handling patterns.
 import React, { useState } from "react";
 import {
-  ActivityIndicator,
   Alert,
   ScrollView,
   StyleSheet,
@@ -9,22 +8,19 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from "react-native";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
-import {
-  sendPasswordReset,
-  unwrapOrThrow,
-  ApiError,
-} from "../../api/auth/authApi";
-import { mapApiErrorToMessage } from "./errorHelpers";
-import { ForgotPasswordScreenProps } from "../../types/types";
+import { registerCustomer, unwrapOrThrow } from "../../api/auth/authApi";
+import { mapApiErrorToMessage } from "../../api/auth/errorHelpers";
+import { RegisterScreenProps } from "../../types/types";
 
-const ForgotPassword: React.FC<ForgotPasswordScreenProps> = ({
-  navigation,
-}) => {
+const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
   const [userEmail, setUserEmail] = useState<string>("");
+  const [userPassword, setUserPassword] = useState<string>("");
+
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -35,31 +31,41 @@ const ForgotPassword: React.FC<ForgotPasswordScreenProps> = ({
       newErrors.userEmail =
         translate("validation.emailRequired") || "Email is required";
     }
+    if (!userPassword) {
+      newErrors.userPassword =
+        translate("validation.passwordRequired") || "Password is required";
+    }
     setErrors(newErrors);
     setGeneralError(null);
 
     if (Object.keys(newErrors).length === 0) {
       console.log(
-        `ForgotPasswordScreen: Trying to reset password for email: '${userEmail}'`
+        `RegisterScreen: Trying to register user with email: '${userEmail}' and password: '${userPassword}'`
       );
       setLoading(true);
       try {
-        unwrapOrThrow(await sendPasswordReset(userEmail));
-        console.log("ForgotPasswordScreen: Password reset successful");
+        const registrationData = unwrapOrThrow(
+          await registerCustomer(userEmail, userPassword)
+        );
+        console.log("RegisterScreen: Registration successful");
+        console.log(
+          "RegisterScreen: Received registrationData:\n",
+          JSON.stringify(registrationData, null, 2)
+        );
         Alert.alert(
-          "Password reset email sent.",
-          "Please check your email to complete your password reset.",
+          "Registration successful",
+          "You may now log in.",
           [{ text: "OK", onPress: () => navigation.goBack() }],
           { cancelable: true, onDismiss: () => navigation.goBack() }
         );
       } catch (error: unknown) {
         console.error(
-          "ForgotPasswordScreen: Error occurred during password reset:",
+          "RegisterScreen: Unexpected error during registration:",
           error
         );
         const message = mapApiErrorToMessage(
           error,
-          "errors.passwordResetFailed"
+          "errors.registrationFailed"
         );
         setGeneralError(message);
       } finally {
@@ -88,6 +94,27 @@ const ForgotPassword: React.FC<ForgotPasswordScreenProps> = ({
             />
             {errors.userEmail && (
               <Text style={styles.inputError}>{errors.userEmail}</Text>
+            )}
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputName}>
+              {translate("inputs.password")}
+              <Text style={styles.requiredField}>*</Text>
+            </Text>
+            <TextInput
+              style={styles.textInput}
+              keyboardType="default"
+              autoCorrect={false}
+              autoCapitalize="none"
+              onChangeText={(userPasswordInput) =>
+                setUserPassword(userPasswordInput)
+              }
+              value={userPassword}
+              editable={!loading}
+            />
+            {errors.userPassword && (
+              <Text style={styles.inputError}>{errors.userPassword}</Text>
             )}
           </View>
 
@@ -175,4 +202,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ForgotPassword;
+export default RegisterScreen;

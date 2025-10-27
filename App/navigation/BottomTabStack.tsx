@@ -10,7 +10,7 @@ import NewHome from "../screens/HomeScreen/NewHome";
 import LivingWageCalculator from "../screens/LivingWageCalculator/LivingWageCalculator";
 import ReportViolation from "../screens/ReportViolation/ReportViolation";
 import WageRights from "../screens/WageRights/WageRights";
-import Account from "../screens/Account/Account";
+import AccountScreen from "../screens/AccountScreen/AccountScreen";
 import { colors } from "../theme";
 import { BottomTabParamList } from "../types/types";
 
@@ -108,7 +108,7 @@ const BottomTabStack: React.FC = () => {
 
       <Tab.Screen
         name="Account"
-        component={Account}
+        component={AccountScreen}
         options={{
           headerShown: false,
           tabBarLabel: "Account",

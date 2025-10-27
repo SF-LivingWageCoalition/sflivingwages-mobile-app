@@ -16,10 +16,10 @@ import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
 import { LoginScreenProps } from "../../types/types";
-import { loginUser, unwrapOrThrow, ApiError } from "../../api/auth/authApi";
-import { mapApiErrorToMessage } from "./errorHelpers";
+import { loginUser, unwrapOrThrow } from "../../api/auth/authApi";
+import { mapApiErrorToMessage } from "../../api/auth/errorHelpers";
 
-const Login: React.FC<LoginScreenProps> = ({ navigation }) => {
+const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [userEmail, setUserEmail] = useState<string>("");
@@ -243,4 +243,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default LoginScreen;

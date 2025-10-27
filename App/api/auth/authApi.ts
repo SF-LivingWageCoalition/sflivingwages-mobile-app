@@ -688,6 +688,7 @@ export const registerCustomer = async (
 /**
  * Send a password reset email to the specified email address.
  * Side-effects: none. Returns ApiResult<PasswordResetData>.
+ * Note: the Simple JWT Login plugin requires building the URL using &email=... instead of ?email=...
  *
  * @param email
  * @returns Promise<ApiResult<PasswordResetData>>

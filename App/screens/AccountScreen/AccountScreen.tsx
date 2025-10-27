@@ -21,7 +21,7 @@ import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
 
-const Account: React.FC<AccountScreenProps> = ({ navigation }) => {
+const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const user = useSelector(selectUser);
@@ -240,4 +240,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Account;
+export default AccountScreen;

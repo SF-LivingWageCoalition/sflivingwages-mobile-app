@@ -1,19 +1,19 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import { colors } from "../../theme";
-import { fontWeight } from "../../theme/fontStyles";
-import { translate } from "../../translation/i18n";
-import type { AuthStackParamList } from "../../types/types";
-import Login from "./LoginScreen";
-import Register from "./RegisterScreen";
-import ForgotPassword from "./ForgotPasswordScreen";
+import { colors } from "../theme";
+import { fontWeight } from "../theme/fontStyles";
+import { translate } from "../translation/i18n";
+import type { AuthStackParamList } from "../types/types";
+import LoginScreen from "../screens/LoginScreen/LoginScreen";
+import RegisterScreen from "../screens/RegisterScreen/RegisterScreen";
+import ForgotPasswordScreen from "../screens/ForgotPasswordScreen/ForgotPasswordScreen";
 
 const Stack = createStackNavigator<AuthStackParamList>();
 
 const AuthNavigator: React.FC = () => {
   return (
     <Stack.Navigator
-      initialRouteName={translate("loginScreen.title")}
+      initialRouteName="Login"
       screenOptions={{
         headerStyle: { backgroundColor: colors.light.primary },
         headerTintColor: colors.light.textOnPrimary,
@@ -24,17 +24,17 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen
         name="Login"
         options={{ title: translate("loginScreen.title") }}
-        component={Login}
+        component={LoginScreen}
       />
       <Stack.Screen
         name="Register"
         options={{ title: translate("registerScreen.title") }}
-        component={Register}
+        component={RegisterScreen}
       />
       <Stack.Screen
         name="ForgotPassword"
         options={{ title: translate("forgotPasswordScreen.title") }}
-        component={ForgotPassword}
+        component={ForgotPasswordScreen}
       />
     </Stack.Navigator>
   );
