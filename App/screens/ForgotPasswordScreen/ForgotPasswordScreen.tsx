@@ -16,51 +16,61 @@ import { translate } from "../../translation";
 import { sendPasswordReset, unwrapOrThrow } from "../../api/auth/authApi";
 import { mapApiErrorToMessage } from "../../api/auth/errorHelpers";
 import { ForgotPasswordScreenProps } from "../../types/types";
+import {
+  createForgotPasswordSchema,
+  type ForgotPasswordInput,
+} from "../../validation/authValidation";
+import { mapZodErrorToFormErrors } from "../../validation/mapZodError";
 
 const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
   navigation,
 }) => {
-  const [userEmail, setUserEmail] = useState<string>("");
+  const [form, setForm] = useState<ForgotPasswordInput>({ userEmail: "" });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit = async () => {
-    const newErrors: { [key: string]: string } = {};
-    if (!userEmail) {
-      newErrors.userEmail =
-        translate("validation.emailRequired") || "Email is required";
-    }
-    setErrors(newErrors);
+    // reset previous errors
+    setErrors({});
     setGeneralError(null);
 
-    if (Object.keys(newErrors).length === 0) {
-      console.log(
-        `ForgotPasswordScreen: Trying to reset password for email: '${userEmail}'`
+    const schema = createForgotPasswordSchema();
+    const parsed = schema.safeParse(form);
+
+    if (!parsed.success) {
+      const { fieldErrors, generalError: gen } = mapZodErrorToFormErrors(
+        parsed.error
       );
-      setLoading(true);
-      try {
-        unwrapOrThrow(await sendPasswordReset(userEmail));
-        console.log("ForgotPasswordScreen: Password reset successful");
-        Alert.alert(
-          "Password reset email sent.",
-          "Please check your email to complete your password reset.",
-          [{ text: "OK", onPress: () => navigation.goBack() }],
-          { cancelable: true, onDismiss: () => navigation.goBack() }
-        );
-      } catch (error: unknown) {
-        console.error(
-          "ForgotPasswordScreen: Error occurred during password reset:",
-          error
-        );
-        const message = mapApiErrorToMessage(
-          error,
-          "errors.passwordResetFailed"
-        );
-        setGeneralError(message);
-      } finally {
-        setLoading(false);
-      }
+      setErrors(fieldErrors);
+      if (gen) setGeneralError(gen);
+      return;
+    }
+
+    const { userEmail: email } = parsed.data;
+
+    console.log(
+      `ForgotPasswordScreen: Trying to reset password for email: '${email}'`
+    );
+    setLoading(true);
+    try {
+      unwrapOrThrow(await sendPasswordReset(email));
+      console.log("ForgotPasswordScreen: Password reset successful");
+      Alert.alert(
+        "Password reset email sent.",
+        "Please check your email to complete your password reset.",
+        [{ text: "OK", onPress: () => navigation.goBack() }],
+        { cancelable: true, onDismiss: () => navigation.goBack() }
+      );
+    } catch (error: unknown) {
+      console.error(
+        "ForgotPasswordScreen: Error occurred during password reset:",
+        error
+      );
+      const message = mapApiErrorToMessage(error, "errors.passwordResetFailed");
+      setGeneralError(message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,8 +88,10 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
               keyboardType="email-address"
               autoCorrect={false}
               autoCapitalize="none"
-              onChangeText={(userEmailInput) => setUserEmail(userEmailInput)}
-              value={userEmail}
+              onChangeText={(userEmailInput) =>
+                setForm((prev) => ({ ...prev, userEmail: userEmailInput }))
+              }
+              value={form.userEmail}
               editable={!loading}
             />
             {errors.userEmail && (
@@ -124,12 +136,25 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  formContainer: { gap: 20, marginHorizontal: 20 },
+  container: {
+    flex: 1,
+  },
+  formContainer: {
+    gap: 20,
+    marginHorizontal: 20,
+  },
   inputContainer: {},
-  inputName: { ...textStyles.label },
-  requiredField: { ...textStyles.bodyBold, color: colors.light.primary },
-  textInput: { borderBottomColor: colors.light.primary, borderBottomWidth: 1 },
+  inputName: {
+    ...textStyles.label,
+  },
+  requiredField: {
+    ...textStyles.bodyBold,
+    color: colors.light.primary,
+  },
+  textInput: {
+    borderBottomColor: colors.light.primary,
+    borderBottomWidth: 1,
+  },
   inputError: {
     ...textStyles.caption,
     color: colors.light.error,
@@ -141,7 +166,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 10,
   },
-  buttonContainer: { marginTop: 20, gap: 20 },
+  buttonContainer: {
+    marginTop: 20,
+    gap: 20,
+  },
   button: {
     backgroundColor: colors.light.primary,
     borderRadius: 30,
@@ -151,9 +179,14 @@ const styles = StyleSheet.create({
     shadowColor: colors.light.primary,
     shadowOpacity: 0.3,
     shadowRadius: 3,
-    shadowOffset: { width: 1, height: 1 },
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
   },
-  buttonDisabled: { opacity: 0.7 },
+  buttonDisabled: {
+    opacity: 0.7,
+  },
   buttonText: {
     ...textStyles.button,
     color: colors.light.textOnPrimary,

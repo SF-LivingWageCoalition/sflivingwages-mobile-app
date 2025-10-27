@@ -314,7 +314,9 @@ const en = {
   },
   validation: {
     emailRequired: "Email is required",
+    emailInvalid: "Invalid email address",
     passwordRequired: "Password is required",
+    passwordTooShort: "Password must be at least 8 characters",
   },
   errors: {
     networkError: "Network error. Please try again later.",

@@ -322,7 +322,9 @@ const es: Translations = {
   },
   validation: {
     emailRequired: "Se requiere correo electrónico",
+    emailInvalid: "Dirección de correo electrónico no válida",
     passwordRequired: "Se requiere contraseña",
+    passwordTooShort: "La contraseña debe tener al menos 8 caracteres",
   },
   errors: {
     networkError: "Error de red. Por favor, inténtalo de nuevo más tarde.",

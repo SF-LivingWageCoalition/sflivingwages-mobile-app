@@ -15,6 +15,11 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
+import {
+  createLoginSchema,
+  type LoginInput,
+} from "../../validation/authValidation";
+import { mapZodErrorToFormErrors } from "../../validation/mapZodError";
 import { LoginScreenProps } from "../../types/types";
 import { loginUser, unwrapOrThrow } from "../../api/auth/authApi";
 import { mapApiErrorToMessage } from "../../api/auth/errorHelpers";
@@ -22,8 +27,10 @@ import { mapApiErrorToMessage } from "../../api/auth/errorHelpers";
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const [userEmail, setUserEmail] = useState<string>("");
-  const [userPassword, setUserPassword] = useState<string>("");
+  const [form, setForm] = useState<LoginInput>({
+    userEmail: "",
+    userPassword: "",
+  });
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -35,40 +42,45 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit = async () => {
-    const newErrors: { [key: string]: string } = {};
-    if (!userEmail) {
-      newErrors.userEmail =
-        translate("validation.emailRequired") || "Email is required";
-    }
-    if (!userPassword) {
-      newErrors.userPassword =
-        translate("validation.passwordRequired") || "Password is required";
-    }
-    setErrors(newErrors);
+    // reset previous errors
+    setErrors({});
     setGeneralError(null);
 
-    if (Object.keys(newErrors).length === 0) {
-      console.log(
-        `LoginScreen: Trying to login user with email: '${userEmail}' and password: '${userPassword}'`
+    const schema = createLoginSchema();
+    const parsed = schema.safeParse(form);
+
+    if (!parsed.success) {
+      const { fieldErrors, generalError: gen } = mapZodErrorToFormErrors(
+        parsed.error
       );
-      setLoading(true);
-      try {
-        const validatedData = unwrapOrThrow(
-          await loginUser(userEmail, userPassword, dispatch)
-        );
-        console.log("LoginScreen: Login successful.");
-        console.log(
-          "LoginScreen: Received validatedData:\n",
-          JSON.stringify(validatedData, null, 2)
-        );
-        navigation.goBack();
-      } catch (error: unknown) {
-        console.error("LoginScreen: Unexpected error during login:", error);
-        const message = mapApiErrorToMessage(error, "errors.loginFailed");
-        setGeneralError(message);
-      } finally {
-        setLoading(false);
-      }
+      setErrors(fieldErrors);
+      if (gen) setGeneralError(gen);
+      return;
+    }
+
+    // safe to use parsed.data
+    const { userEmail: email, userPassword: password } = parsed.data;
+
+    console.log(
+      `LoginScreen: Trying to login user with email: '${email}' and password: '${password}'`
+    );
+    setLoading(true);
+    try {
+      const validatedData = unwrapOrThrow(
+        await loginUser(email, password, dispatch)
+      );
+      console.log("LoginScreen: Login successful.");
+      console.log(
+        "LoginScreen: Received validatedData:\n",
+        JSON.stringify(validatedData, null, 2)
+      );
+      navigation.goBack();
+    } catch (error: unknown) {
+      console.error("LoginScreen: Unexpected error during login:", error);
+      const message = mapApiErrorToMessage(error, "errors.loginFailed");
+      setGeneralError(message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -87,8 +99,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                 keyboardType="email-address"
                 autoCorrect={false}
                 autoCapitalize="none"
-                onChangeText={(userEmailInput) => setUserEmail(userEmailInput)}
-                value={userEmail}
+                onChangeText={(userEmailInput) =>
+                  setForm((prev) => ({ ...prev, userEmail: userEmailInput }))
+                }
+                value={form.userEmail}
                 editable={!loading}
               />
               {errors.userEmail && (
@@ -108,9 +122,12 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                   autoCorrect={false}
                   autoCapitalize="none"
                   onChangeText={(userPasswordInput) =>
-                    setUserPassword(userPasswordInput)
+                    setForm((prev) => ({
+                      ...prev,
+                      userPassword: userPasswordInput,
+                    }))
                   }
-                  value={userPassword}
+                  value={form.userPassword}
                   editable={!loading}
                   secureTextEntry={!showPassword}
                 />

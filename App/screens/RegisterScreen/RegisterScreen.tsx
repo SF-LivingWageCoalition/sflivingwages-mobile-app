@@ -16,61 +16,69 @@ import { translate } from "../../translation";
 import { registerCustomer, unwrapOrThrow } from "../../api/auth/authApi";
 import { mapApiErrorToMessage } from "../../api/auth/errorHelpers";
 import { RegisterScreenProps } from "../../types/types";
+import {
+  createRegisterSchema,
+  type RegisterInput,
+} from "../../validation/authValidation";
+import { mapZodErrorToFormErrors } from "../../validation/mapZodError";
 
 const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
-  const [userEmail, setUserEmail] = useState<string>("");
-  const [userPassword, setUserPassword] = useState<string>("");
+  const [form, setForm] = useState<RegisterInput>({
+    userEmail: "",
+    userPassword: "",
+  });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit = async () => {
-    const newErrors: { [key: string]: string } = {};
-    if (!userEmail) {
-      newErrors.userEmail =
-        translate("validation.emailRequired") || "Email is required";
-    }
-    if (!userPassword) {
-      newErrors.userPassword =
-        translate("validation.passwordRequired") || "Password is required";
-    }
-    setErrors(newErrors);
+    // reset previous errors
+    setErrors({});
     setGeneralError(null);
 
-    if (Object.keys(newErrors).length === 0) {
-      console.log(
-        `RegisterScreen: Trying to register user with email: '${userEmail}' and password: '${userPassword}'`
+    const schema = createRegisterSchema();
+    const parsed = schema.safeParse(form);
+
+    if (!parsed.success) {
+      const { fieldErrors, generalError: gen } = mapZodErrorToFormErrors(
+        parsed.error
       );
-      setLoading(true);
-      try {
-        const registrationData = unwrapOrThrow(
-          await registerCustomer(userEmail, userPassword)
-        );
-        console.log("RegisterScreen: Registration successful");
-        console.log(
-          "RegisterScreen: Received registrationData:\n",
-          JSON.stringify(registrationData, null, 2)
-        );
-        Alert.alert(
-          "Registration successful",
-          "You may now log in.",
-          [{ text: "OK", onPress: () => navigation.goBack() }],
-          { cancelable: true, onDismiss: () => navigation.goBack() }
-        );
-      } catch (error: unknown) {
-        console.error(
-          "RegisterScreen: Unexpected error during registration:",
-          error
-        );
-        const message = mapApiErrorToMessage(
-          error,
-          "errors.registrationFailed"
-        );
-        setGeneralError(message);
-      } finally {
-        setLoading(false);
-      }
+      setErrors(fieldErrors);
+      if (gen) setGeneralError(gen);
+      return;
+    }
+
+    const { userEmail: email, userPassword: password } = parsed.data;
+
+    console.log(
+      `RegisterScreen: Trying to register user with email: '${email}' and password: '${password}'`
+    );
+    setLoading(true);
+    try {
+      const registrationData = unwrapOrThrow(
+        await registerCustomer(email, password)
+      );
+      console.log("RegisterScreen: Registration successful");
+      console.log(
+        "RegisterScreen: Received registrationData:\n",
+        JSON.stringify(registrationData, null, 2)
+      );
+      Alert.alert(
+        "Registration successful",
+        "You may now log in.",
+        [{ text: "OK", onPress: () => navigation.goBack() }],
+        { cancelable: true, onDismiss: () => navigation.goBack() }
+      );
+    } catch (error: unknown) {
+      console.error(
+        "RegisterScreen: Unexpected error during registration:",
+        error
+      );
+      const message = mapApiErrorToMessage(error, "errors.registrationFailed");
+      setGeneralError(message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -88,8 +96,10 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
               keyboardType="email-address"
               autoCorrect={false}
               autoCapitalize="none"
-              onChangeText={(userEmailInput) => setUserEmail(userEmailInput)}
-              value={userEmail}
+              onChangeText={(userEmailInput) =>
+                setForm((prev) => ({ ...prev, userEmail: userEmailInput }))
+              }
+              value={form.userEmail}
               editable={!loading}
             />
             {errors.userEmail && (
@@ -108,9 +118,12 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
               autoCorrect={false}
               autoCapitalize="none"
               onChangeText={(userPasswordInput) =>
-                setUserPassword(userPasswordInput)
+                setForm((prev) => ({
+                  ...prev,
+                  userPassword: userPasswordInput,
+                }))
               }
-              value={userPassword}
+              value={form.userPassword}
               editable={!loading}
             />
             {errors.userPassword && (
@@ -155,12 +168,25 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  formContainer: { gap: 20, marginHorizontal: 20 },
+  container: {
+    flex: 1,
+  },
+  formContainer: {
+    gap: 20,
+    marginHorizontal: 20,
+  },
   inputContainer: {},
-  inputName: { ...textStyles.label },
-  requiredField: { ...textStyles.bodyBold, color: colors.light.primary },
-  textInput: { borderBottomColor: colors.light.primary, borderBottomWidth: 1 },
+  inputName: {
+    ...textStyles.label,
+  },
+  requiredField: {
+    ...textStyles.bodyBold,
+    color: colors.light.primary,
+  },
+  textInput: {
+    borderBottomColor: colors.light.primary,
+    borderBottomWidth: 1,
+  },
   inputError: {
     ...textStyles.caption,
     color: colors.light.error,
@@ -172,7 +198,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 10,
   },
-  buttonContainer: { marginTop: 20, gap: 20 },
+  buttonContainer: {
+    marginTop: 20,
+    gap: 20,
+  },
   button: {
     backgroundColor: colors.light.primary,
     borderRadius: 30,
@@ -182,9 +211,14 @@ const styles = StyleSheet.create({
     shadowColor: colors.light.primary,
     shadowOpacity: 0.3,
     shadowRadius: 3,
-    shadowOffset: { width: 1, height: 1 },
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
   },
-  buttonDisabled: { opacity: 0.7 },
+  buttonDisabled: {
+    opacity: 0.7,
+  },
   buttonText: {
     ...textStyles.button,
     color: colors.light.textOnPrimary,
