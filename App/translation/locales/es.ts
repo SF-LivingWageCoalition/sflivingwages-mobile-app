@@ -298,6 +298,7 @@ const es: Translations = {
     title: "Cuenta",
     isLoggedIn: "Bienvenido, ¡has iniciado sesión!",
     isLoggedOut: "No has iniciado sesión.",
+    profile: "Perfil",
   },
   loginScreen: {
     title: "Iniciar Sesión",

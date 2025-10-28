@@ -290,6 +290,7 @@ const en = {
     title: "Account",
     isLoggedIn: "Welcome, you are logged in!",
     isLoggedOut: "You are not logged in.",
+    profile: "Profile",
   },
   loginScreen: {
     title: "Login",

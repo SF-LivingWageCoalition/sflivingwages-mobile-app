@@ -17,6 +17,7 @@ import {
   selectRoles,
   selectJwt,
 } from "../../redux/features/userSlice/userSlice";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
@@ -30,21 +31,31 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
 
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
+  /**
+   * Navigation and Action Handlers
+   * Handle navigation to different screens like login, register, forgot password
+   * Logout confirmation alert calls logoutUser from authApi (immediate logout, no navigation)
+   */
+
+  // Login Handler
   const onLogin = () => {
     // Navigate to Login Screen
     navigation.navigate("AuthNavigator", { screen: "Login" });
   };
 
+  // Register Handler
   const onRegister = () => {
     // Navigate to Register Screen
     navigation.navigate("AuthNavigator", { screen: "Register" });
   };
 
+  // Forgot Password Handler
   const onForgotPassword = () => {
     // Navigate to Forgot Password Screen
     navigation.navigate("AuthNavigator", { screen: "ForgotPassword" });
   };
 
+  // Logout Handler
   const onLogout = () => {
     Alert.alert(
       "Logout",
@@ -60,6 +71,12 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
       { cancelable: true }
     );
   };
+
+  /**
+   * Button Components
+   * Reusable button components for login, register, forgot password, and logout actions
+   * Auth buttons container to group buttons together (login, register, forgot password)
+   */
 
   // Login Button
   const LoginButton: React.FC = () => {
@@ -116,16 +133,69 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
     );
   };
 
+  /**
+   * UI Components
+   * Components for the account screen header, menu, etc.
+   */
+
+  // Account Screen Header
+  const AccountScreenHeader: React.FC = () => {
+    return (
+      <View>
+        <Text style={styles.title}>{translate("accountScreen.title")}</Text>
+        {isLoggedIn && user ? (
+          <View>
+            {/* <Text style={styles.subtitle}>
+              {translate("accountScreen.isLoggedIn")}
+            </Text> */}
+            <Text style={styles.subtitle}>Welcome, {user.display_name}!</Text>
+          </View>
+        ) : (
+          <View>
+            <Text style={styles.subtitle}>
+              {translate("accountScreen.isLoggedOut")}
+            </Text>
+          </View>
+        )}
+      </View>
+    );
+  };
+
+  // Account Screen Menu (Profile, Settings, etc.)
+  const AccountScreenMenu: React.FC = () => {
+    return (
+      <View>
+        <Text style={styles.userSliceSubtitle}>Account Menu:</Text>
+        <HorizontalDivider />
+        <TouchableOpacity
+          style={styles.menuItem}
+          // onPress={() => navigation.navigate("Profile")}
+          onPress={() => {}}
+        >
+          <Text style={styles.menuItemText}>
+            {translate("accountScreen.profile")}
+          </Text>
+          <FontAwesome5
+            name="chevron-right"
+            size={20}
+            color={colors.light.primary}
+          />
+        </TouchableOpacity>
+        <HorizontalDivider />
+      </View>
+    );
+  };
+
+  // Horizontal Divider
+  const HorizontalDivider: React.FC = () => {
+    return <View style={styles.horizontalDivider} />;
+  };
+
+  // User Info Component for Debugging
   const UserInfo: React.FC = () => {
     if (user && roles && jwt) {
       return (
         <View>
-          <View>
-            <Text style={styles.subtitle}>
-              {translate("accountScreen.isLoggedIn")}
-            </Text>
-            <Text style={styles.subtitle}>Welcome, {user.display_name}!</Text>
-          </View>
           <View>
             <Text style={styles.userSliceSubtitle}>userSlice user:</Text>
             <Text>ID: {user.ID}</Text>
@@ -158,18 +228,14 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        {/* Account Header */}
-        <View>
-          <Text style={styles.title}>{translate("accountScreen.title")}</Text>
-          {/* User info */}
-          {isLoggedIn ? (
+        <AccountScreenHeader />
+        {/* Account Menu & Info */}
+        {isLoggedIn ? (
+          <View>
+            <AccountScreenMenu />
             <UserInfo />
-          ) : (
-            <Text style={styles.subtitle}>
-              {translate("accountScreen.isLoggedOut")}
-            </Text>
-          )}
-        </View>
+          </View>
+        ) : null}
         {/* Auth Buttons */}
         {isLoggedIn ? <LogoutButton /> : <AuthButtons />}
       </View>
@@ -237,6 +303,21 @@ const styles = StyleSheet.create({
   textButtonText: {
     ...textStyles.buttonSmall,
     color: colors.light.secondary,
+  },
+  menuItem: {
+    paddingVertical: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  menuItemText: {
+    ...textStyles.body,
+    color: colors.light.primary,
+  },
+  horizontalDivider: {
+    borderBottomColor: colors.light.onSurfaceVariant,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginVertical: 10,
   },
 });
 
