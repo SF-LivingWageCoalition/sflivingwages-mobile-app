@@ -58,15 +58,15 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   // Logout Handler
   const onLogout = () => {
     Alert.alert(
-      "Logout",
-      "Are you sure?",
+      translate("accountScreen.logoutAlert.title"),
+      translate("accountScreen.logoutAlert.message"),
       [
         {
-          text: "Cancel",
+          text: translate("buttons.cancel"),
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel",
         },
-        { text: "OK", onPress: () => logoutUser(dispatch) },
+        { text: translate("buttons.ok"), onPress: () => logoutUser(dispatch) },
       ],
       { cancelable: true }
     );
@@ -169,8 +169,9 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
         <HorizontalDivider />
         <TouchableOpacity
           style={styles.menuItem}
-          // onPress={() => navigation.navigate("Profile")}
-          onPress={() => {}}
+          onPress={() =>
+            navigation.navigate("AccountNavigator", { screen: "Profile" })
+          }
         >
           <Text style={styles.menuItemText}>
             {translate("accountScreen.profile")}
@@ -191,49 +192,14 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
     return <View style={styles.horizontalDivider} />;
   };
 
-  // User Info Component for Debugging
-  const UserInfo: React.FC = () => {
-    if (user && roles && jwt) {
-      return (
-        <View>
-          <View>
-            <Text style={styles.userSliceSubtitle}>userSlice user:</Text>
-            <Text>ID: {user.ID}</Text>
-            <Text>Display Name: {user.display_name}</Text>
-            <Text>Activation Key: {user.user_activation_key}</Text>
-            <Text>Email: {user.user_email}</Text>
-            <Text>Login: {user.user_login}</Text>
-            <Text>Nice Name: {user.user_nicename}</Text>
-            <Text>Registered: {user.user_registered}</Text>
-            <Text>Status: {user.user_status}</Text>
-            <Text>URL: {user.user_url}</Text>
-          </View>
-          <View>
-            <Text style={styles.userSliceSubtitle}>userSlice roles:</Text>
-            <Text>User Roles: {roles.join(", ")}</Text>
-          </View>
-          <View>
-            <Text style={styles.userSliceSubtitle}>userSlice jwt:</Text>
-            <Text>JWT Token: {jwt[0]?.token}</Text>
-            <Text>JWT Header: {JSON.stringify(jwt[0]?.header)}</Text>
-            <Text>JWT Payload: {JSON.stringify(jwt[0]?.payload)}</Text>
-          </View>
-        </View>
-      );
-    } else {
-      return null;
-    }
-  };
-
   return (
     <ScrollView>
       <View style={styles.container}>
         <AccountScreenHeader />
-        {/* Account Menu & Info */}
+        {/* Account Menu */}
         {isLoggedIn ? (
           <View>
             <AccountScreenMenu />
-            <UserInfo />
           </View>
         ) : null}
         {/* Auth Buttons */}

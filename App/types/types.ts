@@ -6,6 +6,7 @@ export type RootStackParamList = {
   EventsNavigator: undefined;
   WhoWeAre: undefined;
   AuthNavigator: undefined;
+  AccountNavigator: undefined;
 };
 
 export type BottomTabParamList = {
@@ -312,5 +313,13 @@ export type RegisterScreenProps = {
 };
 
 export type ForgotPasswordScreenProps = {
+  navigation: NavigationProp<ParamListBase>;
+};
+
+export type AccountStackParamList = {
+  Profile: any;
+};
+
+export type ProfileScreenProps = {
   navigation: NavigationProp<ParamListBase>;
 };

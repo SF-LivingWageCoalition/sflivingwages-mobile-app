@@ -299,6 +299,10 @@ const es: Translations = {
     isLoggedIn: "Bienvenido, ¡has iniciado sesión!",
     isLoggedOut: "No has iniciado sesión.",
     profile: "Perfil",
+    logoutAlert: {
+      title: "Cerrar Sesión",
+      message: "¿Estás seguro de que deseas cerrar sesión?",
+    },
   },
   loginScreen: {
     title: "Iniciar Sesión",
@@ -320,6 +324,8 @@ const es: Translations = {
     register: "Registrarse",
     forgotPassword: "Olvidé Mi Contraseña",
     logout: "Cerrar Sesión",
+    cancel: "Cancelar",
+    ok: "Aceptar",
   },
   validation: {
     emailRequired: "Se requiere correo electrónico",

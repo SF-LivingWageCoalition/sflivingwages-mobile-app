@@ -1,3 +1,5 @@
+import { ok } from "assert";
+
 const en = {
   assistHomeScreen: {
     title: "Assistance Center",
@@ -291,6 +293,10 @@ const en = {
     isLoggedIn: "Welcome, you are logged in!",
     isLoggedOut: "You are not logged in.",
     profile: "Profile",
+    logoutAlert: {
+      title: "Logout",
+      message: "Are you sure you want to logout?",
+    },
   },
   loginScreen: {
     title: "Login",
@@ -312,6 +318,8 @@ const en = {
     register: "Register",
     forgotPassword: "Forgot Password",
     logout: "Logout",
+    cancel: "Cancel",
+    ok: "OK",
   },
   validation: {
     emailRequired: "Email is required",

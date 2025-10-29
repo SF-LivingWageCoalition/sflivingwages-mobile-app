@@ -27,6 +27,7 @@ import { fontFamily } from "./App/theme/fontStyles";
 import { translate } from "./App/translation/i18n";
 import { RootStackParamList } from "./App/types/types";
 import AuthNavigator from "./App/navigation/AuthNav";
+import AccountNavigator from "./App/navigation/AccountNav";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -109,6 +110,14 @@ const App: React.FC = () => {
                   headerShown: false,
                 }}
                 component={AuthNavigator}
+              />
+              <Stack.Screen
+                name="AccountNavigator"
+                options={{
+                  title: translate("accountScreen.profile"),
+                  headerShown: false,
+                }}
+                component={AccountNavigator}
               />
             </Stack.Navigator>
           </NavigationContainer>
