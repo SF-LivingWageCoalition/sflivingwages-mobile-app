@@ -11,6 +11,7 @@ import {
   View,
   ActivityIndicator,
 } from "react-native";
+import LoadingOverlay from "../../components/LoadingOverlay";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
@@ -87,7 +88,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View>
+        <View style={styles.container}>
           <View style={styles.formContainer}>
             <View style={styles.inputContainer}>
               <Text style={styles.inputName}>
@@ -175,11 +176,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         </View>
       </ScrollView>
 
-      {loading ? (
-        <View style={styles.loadingOverlay} pointerEvents="auto">
-          <ActivityIndicator size="large" color={colors.light.primary} />
-        </View>
-      ) : null}
+      {loading && <LoadingOverlay />}
     </View>
   );
 };
@@ -247,16 +244,6 @@ const styles = StyleSheet.create({
     ...textStyles.button,
     color: colors.light.textOnPrimary,
     textAlign: "center",
-  },
-  loadingOverlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.6)",
   },
 });
 

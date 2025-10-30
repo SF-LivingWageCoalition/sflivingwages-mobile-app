@@ -10,6 +10,7 @@ import {
   View,
   ActivityIndicator,
 } from "react-native";
+import LoadingOverlay from "../../components/LoadingOverlay";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
@@ -83,87 +84,85 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.formContainer}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputName}>
-              {translate("inputs.emailAddress")}
-              <Text style={styles.requiredField}>*</Text>
-            </Text>
-            <TextInput
-              style={styles.textInput}
-              keyboardType="email-address"
-              autoCorrect={false}
-              autoCapitalize="none"
-              onChangeText={(userEmailInput) =>
-                setForm((prev) => ({ ...prev, userEmail: userEmailInput }))
-              }
-              value={form.userEmail}
-              editable={!loading}
-            />
-            {errors.userEmail && (
-              <Text style={styles.inputError}>{errors.userEmail}</Text>
-            )}
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputName}>
-              {translate("inputs.password")}
-              <Text style={styles.requiredField}>*</Text>
-            </Text>
-            <TextInput
-              style={styles.textInput}
-              keyboardType="default"
-              autoCorrect={false}
-              autoCapitalize="none"
-              onChangeText={(userPasswordInput) =>
-                setForm((prev) => ({
-                  ...prev,
-                  userPassword: userPasswordInput,
-                }))
-              }
-              value={form.userPassword}
-              editable={!loading}
-            />
-            {errors.userPassword && (
-              <Text style={styles.inputError}>{errors.userPassword}</Text>
-            )}
-          </View>
-
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={[styles.button, loading ? styles.buttonDisabled : null]}
-              onPress={onSubmit}
-              disabled={loading}
-            >
-              {loading ? (
-                <ActivityIndicator
-                  size="small"
-                  color={colors.light.textOnPrimary}
-                />
-              ) : (
-                <Text style={styles.buttonText}>
-                  {translate("buttons.submit")}
-                </Text>
+    <View style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputName}>
+                {translate("inputs.emailAddress")}
+                <Text style={styles.requiredField}>*</Text>
+              </Text>
+              <TextInput
+                style={styles.textInput}
+                keyboardType="email-address"
+                autoCorrect={false}
+                autoCapitalize="none"
+                onChangeText={(userEmailInput) =>
+                  setForm((prev) => ({ ...prev, userEmail: userEmailInput }))
+                }
+                value={form.userEmail}
+                editable={!loading}
+              />
+              {errors.userEmail && (
+                <Text style={styles.inputError}>{errors.userEmail}</Text>
               )}
-            </TouchableOpacity>
-          </View>
-
-          {generalError ? (
-            <View>
-              <Text style={styles.generalError}>{generalError}</Text>
             </View>
-          ) : null}
-        </View>
-      </View>
 
-      {loading ? (
-        <View style={styles.loadingOverlay} pointerEvents="auto">
-          <ActivityIndicator size="large" color={colors.light.primary} />
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputName}>
+                {translate("inputs.password")}
+                <Text style={styles.requiredField}>*</Text>
+              </Text>
+              <TextInput
+                style={styles.textInput}
+                keyboardType="default"
+                autoCorrect={false}
+                autoCapitalize="none"
+                onChangeText={(userPasswordInput) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    userPassword: userPasswordInput,
+                  }))
+                }
+                value={form.userPassword}
+                editable={!loading}
+              />
+              {errors.userPassword && (
+                <Text style={styles.inputError}>{errors.userPassword}</Text>
+              )}
+            </View>
+
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={[styles.button, loading ? styles.buttonDisabled : null]}
+                onPress={onSubmit}
+                disabled={loading}
+              >
+                {loading ? (
+                  <ActivityIndicator
+                    size="small"
+                    color={colors.light.textOnPrimary}
+                  />
+                ) : (
+                  <Text style={styles.buttonText}>
+                    {translate("buttons.submit")}
+                  </Text>
+                )}
+              </TouchableOpacity>
+            </View>
+
+            {generalError ? (
+              <View>
+                <Text style={styles.generalError}>{generalError}</Text>
+              </View>
+            ) : null}
+          </View>
         </View>
-      ) : null}
-    </ScrollView>
+      </ScrollView>
+
+      {loading && <LoadingOverlay />}
+    </View>
   );
 };
 
@@ -223,16 +222,6 @@ const styles = StyleSheet.create({
     ...textStyles.button,
     color: colors.light.textOnPrimary,
     textAlign: "center",
-  },
-  loadingOverlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.6)",
   },
 });
 
