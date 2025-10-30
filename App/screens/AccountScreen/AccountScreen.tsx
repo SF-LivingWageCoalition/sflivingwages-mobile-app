@@ -11,23 +11,15 @@ import { AccountScreenProps } from "../../types/types";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../../redux/store/store";
 import { logoutUser } from "../../api/auth/authApi";
-import {
-  selectIsLoggedIn,
-  selectUser,
-  selectRoles,
-  selectJwt,
-} from "../../redux/features/userSlice/userSlice";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import { selectIsLoggedIn } from "../../redux/features/userSlice/userSlice";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
+import AccountScreenHeader from "./components/AccountScreenHeader";
+import AccountScreenMenu from "./components/AccountScreenMenu";
 
 const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
-
-  const user = useSelector(selectUser);
-  const roles = useSelector(selectRoles);
-  const jwt = useSelector(selectJwt);
 
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
@@ -133,75 +125,12 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
     );
   };
 
-  /**
-   * UI Components
-   * Components for the account screen header, menu, etc.
-   */
-
-  // Account Screen Header
-  const AccountScreenHeader: React.FC = () => {
-    return (
-      <View>
-        <Text style={styles.title}>{translate("accountScreen.title")}</Text>
-        {isLoggedIn && user ? (
-          <View>
-            {/* <Text style={styles.subtitle}>
-              {translate("accountScreen.isLoggedIn")}
-            </Text> */}
-            <Text style={styles.subtitle}>Welcome, {user.display_name}!</Text>
-          </View>
-        ) : (
-          <View>
-            <Text style={styles.subtitle}>
-              {translate("accountScreen.isLoggedOut")}
-            </Text>
-          </View>
-        )}
-      </View>
-    );
-  };
-
-  // Account Screen Menu (Profile, Settings, etc.)
-  const AccountScreenMenu: React.FC = () => {
-    return (
-      <View>
-        <Text style={styles.userSliceSubtitle}>Account Menu:</Text>
-        <HorizontalDivider />
-        <TouchableOpacity
-          style={styles.menuItem}
-          onPress={() =>
-            navigation.navigate("AccountNavigator", { screen: "Profile" })
-          }
-        >
-          <Text style={styles.menuItemText}>
-            {translate("accountScreen.profile")}
-          </Text>
-          <FontAwesome5
-            name="chevron-right"
-            size={20}
-            color={colors.light.primary}
-          />
-        </TouchableOpacity>
-        <HorizontalDivider />
-      </View>
-    );
-  };
-
-  // Horizontal Divider
-  const HorizontalDivider: React.FC = () => {
-    return <View style={styles.horizontalDivider} />;
-  };
-
   return (
     <ScrollView>
       <View style={styles.container}>
         <AccountScreenHeader />
         {/* Account Menu */}
-        {isLoggedIn ? (
-          <View>
-            <AccountScreenMenu />
-          </View>
-        ) : null}
+        {isLoggedIn && <AccountScreenMenu navigation={navigation} />}
         {/* Auth Buttons */}
         {isLoggedIn ? <LogoutButton /> : <AuthButtons />}
       </View>
@@ -214,21 +143,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: colors.light.surfaceVariant,
-  },
-  title: {
-    ...textStyles.h3,
-    textAlign: "center",
-    marginBottom: 10,
-  },
-  subtitle: {
-    ...textStyles.body,
-    textAlign: "center",
-    marginBottom: 10,
-    color: colors.light.textSecondary,
-  },
-  userSliceSubtitle: {
-    ...textStyles.bodyBold,
-    marginVertical: 10,
   },
   authButtonsContainer: {
     marginTop: 10,
@@ -269,21 +183,6 @@ const styles = StyleSheet.create({
   textButtonText: {
     ...textStyles.buttonSmall,
     color: colors.light.secondary,
-  },
-  menuItem: {
-    paddingVertical: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  menuItemText: {
-    ...textStyles.body,
-    color: colors.light.primary,
-  },
-  horizontalDivider: {
-    borderBottomColor: colors.light.onSurfaceVariant,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    marginVertical: 10,
   },
 });
 
