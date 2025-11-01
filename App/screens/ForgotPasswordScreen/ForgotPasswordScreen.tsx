@@ -58,9 +58,9 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
       unwrapOrThrow(await sendPasswordReset(email));
       console.log("ForgotPasswordScreen: Password reset successful");
       Alert.alert(
-        "Password reset email sent.",
-        "Please check your email to complete your password reset.",
-        [{ text: "OK", onPress: () => navigation.goBack() }],
+        translate("forgotPasswordScreen.forgotPasswordAlert.title"),
+        translate("forgotPasswordScreen.forgotPasswordAlert.message"),
+        [{ text: translate("buttons.ok"), onPress: () => navigation.goBack() }],
         { cancelable: true, onDismiss: () => navigation.goBack() }
       );
     } catch (error: unknown) {

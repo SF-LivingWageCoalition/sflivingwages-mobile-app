@@ -309,9 +309,18 @@ const es: Translations = {
   },
   registerScreen: {
     title: "Registrarse",
+    registerAlert: {
+      title: "Registro exitoso",
+      message: "Ahora puedes iniciar sesión.",
+    },
   },
   forgotPasswordScreen: {
     title: "Olvidé Mi Contraseña",
+    forgotPasswordAlert: {
+      title: "Correo de restablecimiento de contraseña enviado",
+      message:
+        "Por favor, revisa tu correo electrónico para completar el restablecimiento de tu contraseña.",
+    },
   },
   inputs: {
     emailAddress: "Correo Electrónico",

@@ -66,9 +66,9 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
         JSON.stringify(registrationData, null, 2)
       );
       Alert.alert(
-        "Registration successful",
-        "You may now log in.",
-        [{ text: "OK", onPress: () => navigation.goBack() }],
+        translate("registerScreen.registerAlert.title"),
+        translate("registerScreen.registerAlert.message"),
+        [{ text: translate("buttons.ok"), onPress: () => navigation.goBack() }],
         { cancelable: true, onDismiss: () => navigation.goBack() }
       );
     } catch (error: unknown) {

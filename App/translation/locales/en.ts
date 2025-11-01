@@ -303,9 +303,17 @@ const en = {
   },
   registerScreen: {
     title: "Register",
+    registerAlert: {
+      title: "Registration successful",
+      message: "You may now log in.",
+    },
   },
   forgotPasswordScreen: {
     title: "Forgot Password",
+    forgotPasswordAlert: {
+      title: "Password reset email sent",
+      message: "Please check your email to complete your password reset.",
+    },
   },
   inputs: {
     emailAddress: "Email Address",
