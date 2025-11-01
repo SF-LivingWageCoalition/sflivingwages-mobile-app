@@ -515,6 +515,109 @@ export const loginUser = async (
 };
 
 /**
+ * Register a new WooCommerce customer via the WooCommerce REST API.
+ * Side-effects: none. Returns ApiResult<CustomerRegistrationData>.
+ *
+ * @param email
+ * @param password
+ * @returns Promise<ApiResult<CustomerRegistrationData>>
+ * Usage: registerCustomer("<email>", "<password>");
+ * See `App/api/auth/README.md` for example API responses.
+ */
+export const registerCustomer = async (
+  email: string,
+  password: string
+): Promise<ApiResult<CustomerRegistrationData>> => {
+  console.log(
+    `authApi: registerCustomer() called with email '${email}' and password: '${password}'`
+  );
+  try {
+    const response = await fetchWithTimeout(
+      `${BASE_URL}${WC_ROUTE}/customers`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Basic " + base64Credentials,
+          "cache-control": "no-cache",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          first_name: "Test",
+          last_name: "Testerson",
+          username: email, // Unique username required. Use email, generate unique, or add field to form.
+          // billing: {
+          //   first_name: "Test",
+          //   last_name: "Testerson",
+          //   address_1: "123 Main St",
+          //   city: "Anytown",
+          //   state: "CA",
+          //   postcode: "12345",
+          //   country: "US",
+          //   email: email,
+          //   phone: "555-555-5555",
+          // },
+          // shipping: {
+          //   first_name: "Test",
+          //   last_name: "Testerson",
+          //   address_1: "123 Main St",
+          //   city: "Anytown",
+          //   state: "CA",
+          //   postcode: "12345",
+          //   country: "US",
+          // },
+        }),
+      }
+    );
+
+    const registrationData = await parseJsonSafe(response);
+    if (response.ok) {
+      // Registration was successful
+      console.log(
+        "authApi: Customer registration succeeded with status:",
+        response.status
+      );
+      console.log(
+        "authApi: Customer registration response data:",
+        registrationData
+      );
+      return { success: true, data: registrationData, status: response.status };
+    } else {
+      // Registration failed
+      console.log(
+        "authApi: Customer registration failed with status:",
+        response.status
+      );
+      console.log(
+        "authApi: Customer registration response data:",
+        registrationData
+      );
+      if (registrationData && registrationData.data) {
+        // Log error details
+        console.error("authApi: Error status:", registrationData.data.status);
+        console.error("authApi: Error code:", registrationData.code);
+        console.error("authApi: Error message:", registrationData.message);
+      }
+      const message =
+        registrationData?.message ??
+        registrationData?.data?.status ??
+        "Customer registration failed";
+      return {
+        success: false,
+        errorMessage: message,
+        status: response.status,
+        data: registrationData,
+      };
+    }
+  } catch (error: any) {
+    // General error during registration process - return failed ApiResult
+    console.error("authApi: Error during customer registration:", error);
+    return { success: false, errorMessage: error?.message || String(error) };
+  }
+};
+
+/**
  * Register a new user via the Simple JWT Login plugin.
  * Side-effects: none. Returns ApiResult<UserRegistrationData>.
  * Note: the site primarily uses WooCommerce customers; this function is provided for completeness.
@@ -578,109 +681,6 @@ export const registerUser = async (
   } catch (error: any) {
     // General error during registration process - return failed ApiResult
     console.error("authApi: Error during registration:", error);
-    return { success: false, errorMessage: error?.message || String(error) };
-  }
-};
-
-/**
- * Register a new WooCommerce customer via the WooCommerce REST API.
- * Side-effects: none. Returns ApiResult<CustomerRegistrationData>.
- *
- * @param email
- * @param password
- * @returns Promise<ApiResult<CustomerRegistrationData>>
- * Usage: registerCustomer("<email>", "<password>");
- * See `App/api/auth/README.md` for example API responses.
- */
-export const registerCustomer = async (
-  email: string,
-  password: string
-): Promise<ApiResult<CustomerRegistrationData>> => {
-  console.log(
-    `authApi: registerCustomer() called with email '${email}' and password: '${password}'`
-  );
-  try {
-    const response = await fetchWithTimeout(
-      `${BASE_URL}${WC_ROUTE}/customers`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Basic " + base64Credentials,
-          "cache-control": "no-cache",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-          first_name: "Test",
-          last_name: "Testerson",
-          username: email,
-          billing: {
-            first_name: "Test",
-            last_name: "Testerson",
-            address_1: "123 Main St",
-            city: "Anytown",
-            state: "CA",
-            postcode: "12345",
-            country: "US",
-            email: email,
-            phone: "555-555-5555",
-          },
-          shipping: {
-            first_name: "Test",
-            last_name: "Testerson",
-            address_1: "123 Main St",
-            city: "Anytown",
-            state: "CA",
-            postcode: "12345",
-            country: "US",
-          },
-        }),
-      }
-    );
-
-    const registrationData = await parseJsonSafe(response);
-    if (response.ok) {
-      // Registration was successful
-      console.log(
-        "authApi: Customer registration succeeded with status:",
-        response.status
-      );
-      console.log(
-        "authApi: Customer registration response data:",
-        registrationData
-      );
-      return { success: true, data: registrationData, status: response.status };
-    } else {
-      // Registration failed
-      console.log(
-        "authApi: Customer registration failed with status:",
-        response.status
-      );
-      console.log(
-        "authApi: Customer registration response data:",
-        registrationData
-      );
-      if (registrationData && registrationData.data) {
-        // Log error details
-        console.error("authApi: Error status:", registrationData.data.status);
-        console.error("authApi: Error code:", registrationData.code);
-        console.error("authApi: Error message:", registrationData.message);
-      }
-      const message =
-        registrationData?.message ??
-        registrationData?.data?.status ??
-        "Customer registration failed";
-      return {
-        success: false,
-        errorMessage: message,
-        status: response.status,
-        data: registrationData,
-      };
-    }
-  } catch (error: any) {
-    // General error during registration process - return failed ApiResult
-    console.error("authApi: Error during customer registration:", error);
     return { success: false, errorMessage: error?.message || String(error) };
   }
 };
