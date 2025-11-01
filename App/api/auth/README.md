@@ -11,7 +11,7 @@ This folder provides the authentication API helpers used by the app to interact 
 The mobile app's authentication flow relies primarily on 2 external API's hosted on the website:
 
 - Simple JWT Login
-  - The API provided by this plugin is used to fetch and validate a JSON Web Token (JWT), which constitutes the user login process. It is also used to send password reset emails and logout users by revoking the JWT token (yet to be implmented). It also provides an endpoint to register users, however we defer to WooCommerce for this in order to remain consistent with the website.
+  - The API provided by this plugin is used to fetch and validate a JSON Web Token (JWT), which constitutes the user login process. It is also used to send password reset emails and logout users by revoking the JWT token (TODO: implement revoke token). It also provides an endpoint to register users, however we defer to WooCommerce for this in order to remain consistent with the website.
   - Note that there are 2 sets of documentation for this API, and that they may present minor conflicts with its actual use (e.g. content of Requests/Responses), therefore you should thoroughly test any changes to helpers or implementation of endpoints.
 - WooCommerce
   - The API provided by this pugin is used to register new customers (users) inline with the website's authentication method.
@@ -362,13 +362,28 @@ telemetry.captureEvent("auth.fetchToken.failure", {
 });
 ```
 
+You can also use the helper `mapApiErrorToTelemetry(error)` exported from `App/api/auth/errorHelpers.ts` to safely extract status and structured data from an `ApiError` before sending telemetry. Example:
+
+```ts
+// inside a catch or error handler
+const telemetryPayload = mapApiErrorToTelemetry(err);
+telemetry.captureEvent("auth.fetchToken.failure", {
+  status: telemetryPayload.status,
+  code: telemetryPayload.data?.data?.errorCode,
+  // intentionally omit PII (email, full user objects)
+});
+```
+
 Common HTTP status → suggested translation keys (docs only)
 
 | HTTP status | Suggested translation key |
 | ----------: | ------------------------- |
+|           0 | errors.networkError       |
 |         400 | errors.invalidRequest     |
-|         401 | errors.invalidCredentials |
-|         409 | errors.emailExists        |
+|         401 | errors.loginFailed        |
+|         403 | errors.loginFailed        |
+|         408 | errors.requestTimedOut    |
+|         409 | errors.registrationFailed |
 |         500 | errors.unexpectedError    |
 
 ---

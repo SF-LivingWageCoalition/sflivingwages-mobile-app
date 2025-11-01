@@ -207,7 +207,7 @@ const fetchWithTimeout = async (
   } catch (err: any) {
     // If the controller aborted the request, surface a clear timeout error
     if (err && (err.name === "AbortError" || err.code === "ERR_ABORTED")) {
-      throw new Error("Request timed out");
+      throw new TimeoutError();
     }
     throw err;
   } finally {
@@ -248,6 +248,34 @@ export const unwrapOrThrow = <T>(
   if (result.success) return result.data;
   const msg = result.errorMessage ?? fallbackMessage ?? "API request failed";
   throw new ApiError(msg, (result as any).status, (result as any).data);
+};
+
+/**
+ * A typed error used to signal a request timeout in `fetchWithTimeout`.
+ * We throw this from the network layer so callers can map timeouts to a
+ * concrete status code (e.g. 408) when building ApiResult failures.
+ */
+class TimeoutError extends Error {
+  constructor(message = "Request timed out") {
+    super(message);
+    this.name = "TimeoutError";
+  }
+}
+
+// Generic helper to create a consistent failure ApiResult
+const apiFailure = <T = any>(
+  errorMessage?: string,
+  status?: number,
+  data?: T
+): ApiResult<T> => ({ success: false, errorMessage, status, data });
+
+// Map runtime exceptions to ApiResult failures. Timeouts are mapped to 408.
+const apiFailureFromException = <T = any>(err: unknown): ApiResult<T> => {
+  const message = (err as any)?.message ?? String(err ?? "");
+  if (err instanceof TimeoutError || message === "Request timed out") {
+    return apiFailure<T>(message, 408, undefined);
+  }
+  return apiFailure<T>(message, undefined, undefined);
 };
 
 /**
@@ -344,23 +372,13 @@ export const fetchToken = async (
         console.error("authApi: Error code:", tokenData.data.errorCode);
         console.error("authApi: Error message:", tokenData.data.message);
       }
-      console.error(
-        "authApi: Token fetch failed with status:",
-        response.status
-      );
-      console.log("authApi: Response data from failed token fetch:", tokenData);
       const message = tokenData?.data?.message ?? "Failed to fetch token";
-      return {
-        success: false,
-        errorMessage: message,
-        status: response.status,
-        data: tokenData,
-      };
+      return apiFailure<TokenData>(message, response.status, tokenData as any);
     }
   } catch (error: any) {
     // General error during token fetch process - return a failed ApiResult
     console.error("authApi: Error fetching token:", error);
-    return { success: false, errorMessage: error?.message || String(error) };
+    return apiFailureFromException(error);
   }
 };
 
@@ -413,17 +431,16 @@ export const validateToken = async (
       console.log("authApi: Token validation response data:", validationData);
       const message =
         validationData?.data?.message ?? "Token validation failed";
-      return {
-        success: false,
-        errorMessage: message,
-        status: response.status,
-        data: validationData,
-      };
+      return apiFailure<ValidationData>(
+        message,
+        response.status,
+        validationData as any
+      );
     }
   } catch (error: any) {
     // General error during token validation process - return failed ApiResult
     console.error("authApi: Error validating token:", error);
-    return { success: false, errorMessage: error?.message || String(error) };
+    return apiFailureFromException(error);
   }
 };
 
@@ -485,15 +502,16 @@ export const loginUser = async (
               validationResult.data?.data?.message ??
               "Token validation failed."
             : "Token validation failed.";
-          return { success: false, errorMessage: message };
+          return apiFailure<ValidationData["data"]>(
+            message,
+            validationResult.status,
+            validationResult.data?.data as any
+          );
         }
       } catch (error: any) {
         // Error during token validation
         console.error("authApi: Error in validateToken():", error);
-        return {
-          success: false,
-          errorMessage: error?.message || String(error),
-        };
+        return apiFailureFromException(error);
       }
     } else {
       // Token fetch failed.
@@ -505,12 +523,16 @@ export const loginUser = async (
           "Invalid credentials or unable to fetch token."
         : tokenResult.data?.data?.message ??
           "Invalid credentials or unable to fetch token.";
-      return { success: false, errorMessage: message };
+      return apiFailure<ValidationData["data"]>(
+        message,
+        tokenResult.status,
+        tokenResult.data?.data as any
+      );
     }
   } catch (error: any) {
     // General error during login process
     console.error("authApi: Error in loginUser():", error);
-    return { success: false, errorMessage: error?.message || String(error) };
+    return apiFailureFromException(error);
   }
 };
 
@@ -603,17 +625,16 @@ export const registerCustomer = async (
         registrationData?.message ??
         registrationData?.data?.status ??
         "Customer registration failed";
-      return {
-        success: false,
-        errorMessage: message,
-        status: response.status,
-        data: registrationData,
-      };
+      return apiFailure<CustomerRegistrationData>(
+        message,
+        response.status,
+        registrationData as any
+      );
     }
   } catch (error: any) {
     // General error during registration process - return failed ApiResult
     console.error("authApi: Error during customer registration:", error);
-    return { success: false, errorMessage: error?.message || String(error) };
+    return apiFailureFromException<CustomerRegistrationData>(error);
   }
 };
 
@@ -671,17 +692,16 @@ export const registerUser = async (
         console.error("authApi: Error message:", registrationData.data.message);
       }
       const message = registrationData?.data?.message ?? "Registration failed";
-      return {
-        success: false,
-        errorMessage: message,
-        status: response.status,
-        data: registrationData,
-      };
+      return apiFailure<UserRegistrationData>(
+        message,
+        response.status,
+        registrationData as any
+      );
     }
   } catch (error: any) {
     // General error during registration process - return failed ApiResult
     console.error("authApi: Error during registration:", error);
-    return { success: false, errorMessage: error?.message || String(error) };
+    return apiFailureFromException<UserRegistrationData>(error);
   }
 };
 
@@ -730,17 +750,16 @@ export const sendPasswordReset = async (
       console.log("authApi: Forgot password response data:", passwordResetData);
       const message =
         passwordResetData?.data?.message ?? "Password reset failed";
-      return {
-        success: false,
-        errorMessage: message,
-        status: response.status,
-        data: passwordResetData,
-      };
+      return apiFailure<PasswordResetData>(
+        message,
+        response.status,
+        passwordResetData as any
+      );
     }
   } catch (error: any) {
     // General error during password reset process - return failed ApiResult
     console.error("authApi: Error sending password reset email:", error);
-    return { success: false, errorMessage: error?.message || String(error) };
+    return apiFailureFromException<PasswordResetData>(error);
   }
 };
 

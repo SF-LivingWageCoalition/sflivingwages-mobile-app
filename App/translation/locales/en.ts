@@ -342,6 +342,8 @@ const en = {
     loginFailed: "Login failed. Please check your credentials.",
     passwordResetFailed: "Password reset failed. Please try again later.",
     registrationFailed: "Registration failed. Please try again.",
+    requestTimedOut:
+      "The request timed out. Please check your connection and try again.",
   },
 };
 

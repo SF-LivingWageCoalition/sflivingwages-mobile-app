@@ -352,6 +352,8 @@ const es: Translations = {
     passwordResetFailed:
       "Error al restablecer la contraseña. Por favor, inténtalo de nuevo más tarde.",
     registrationFailed: "Error de registro. Por favor, inténtalo de nuevo.",
+    requestTimedOut:
+      "La solicitud agotó el tiempo de espera. Por favor, verifica tu conexión e inténtalo de nuevo.",
   },
 };
 
