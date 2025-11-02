@@ -220,14 +220,20 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 <WebView
                   style={styles.youTubeStyle}
                   source={{
-                    uri: "https://www.youtube.com/embed?listType=user_uploads&list=sflivingwage&rel=0&modestbranding=1&playsinline=1",
+                    uri: "https://www.youtube.com/embed/videoseries?list=PLcuBfm3dxksyN__WaZR1pN1hoUcivSMPU&rel=0&modestbranding=1&playsinline=1",
+                    headers: {
+                      Referer: "https://www.livingwage-sf.org",
+                    },
                   }}
+                  userAgent="Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1"
                   javaScriptEnabled={true}
                   domStorageEnabled={true}
-                  mediaPlaybackRequiresUserAction={true}
+                  mediaPlaybackRequiresUserAction={false}
                   scrollEnabled={false}
                   allowsInlineMediaPlayback={true}
                   allowsFullscreenVideo={true}
+                  mixedContentMode="compatibility"
+                  thirdPartyCookiesEnabled={true}
                 />
               </TouchableOpacity>
               <Card.Actions>
@@ -246,18 +252,26 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
               </Card.Actions>
             </Card>
             <Card style={styles.cardStyle}>
-              <WebView
-                style={styles.youTubeStyle}
-                source={{
-                  uri: "https://www.youtube.com/embed?listType=playlist&list=PLcuBfm3dxkszAbt58VCPehuEoi3VjzH2g&rel=0&modestbranding=1&playsinline=1",
-                }}
-                javaScriptEnabled={true}
-                domStorageEnabled={true}
-                mediaPlaybackRequiresUserAction={true}
-                scrollEnabled={false}
-                allowsInlineMediaPlayback={true}
-                allowsFullscreenVideo={true}
-              />
+              <TouchableOpacity>
+                <WebView
+                  style={styles.youTubeStyle}
+                  source={{
+                    uri: "https://www.youtube.com/embed/videoseries?list=PLcuBfm3dxkszAbt58VCPehuEoi3VjzH2g&rel=0&modestbranding=1&playsinline=1",
+                    headers: {
+                      Referer: "https://www.livingwage-sf.org",
+                    },
+                  }}
+                  userAgent="Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1"
+                  javaScriptEnabled={true}
+                  domStorageEnabled={true}
+                  mediaPlaybackRequiresUserAction={false}
+                  scrollEnabled={false}
+                  allowsInlineMediaPlayback={true}
+                  allowsFullscreenVideo={true}
+                  mixedContentMode="compatibility"
+                  thirdPartyCookiesEnabled={true}
+                />
+              </TouchableOpacity>
               <Card.Actions>
                 <View style={styles.cardView}>
                   <Text
@@ -274,18 +288,26 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
               </Card.Actions>
             </Card>
             <Card style={styles.cardStyle}>
-              <WebView
-                style={styles.youTubeStyle}
-                source={{
-                  uri: "https://www.youtube.com/embed?listType=playlist&list=PLcuBfm3dxksz54i7-7QN1XaJbT23m6Pg3&rel=0&modestbranding=1&playsinline=1",
-                }}
-                javaScriptEnabled={true}
-                domStorageEnabled={true}
-                mediaPlaybackRequiresUserAction={true}
-                scrollEnabled={false}
-                allowsInlineMediaPlayback={true}
-                allowsFullscreenVideo={true}
-              />
+              <TouchableOpacity>
+                <WebView
+                  style={styles.youTubeStyle}
+                  source={{
+                    uri: "https://www.youtube.com/embed/videoseries?list=PLcuBfm3dxksz54i7-7QN1XaJbT23m6Pg3&rel=0&modestbranding=1&playsinline=1",
+                    headers: {
+                      Referer: "https://www.livingwage-sf.org",
+                    },
+                  }}
+                  userAgent="Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1"
+                  javaScriptEnabled={true}
+                  domStorageEnabled={true}
+                  mediaPlaybackRequiresUserAction={false}
+                  scrollEnabled={false}
+                  allowsInlineMediaPlayback={true}
+                  allowsFullscreenVideo={true}
+                  mixedContentMode="compatibility"
+                  thirdPartyCookiesEnabled={true}
+                />
+              </TouchableOpacity>
               <Card.Actions>
                 <View style={styles.cardView}>
                   <Text
