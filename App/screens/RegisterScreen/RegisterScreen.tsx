@@ -1,5 +1,5 @@
 // See `App/api/auth/README.md` for examples and error handling patterns.
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Alert,
   ScrollView,
@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import LoadingOverlay from "../../components/LoadingOverlay";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
@@ -24,10 +25,17 @@ import {
 import { mapZodErrorToFormErrors } from "../../validation/mapZodError";
 
 const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
+  const passwordRef = useRef<TextInput | null>(null);
+
   const [form, setForm] = useState<RegisterInput>({
     userEmail: "",
     userPassword: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [generalError, setGeneralError] = useState<string | null>(null);
@@ -96,8 +104,11 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
               <TextInput
                 style={styles.textInput}
                 keyboardType="email-address"
+                autoComplete="email"
                 autoCorrect={false}
                 autoCapitalize="none"
+                returnKeyType="next"
+                onSubmitEditing={() => passwordRef.current?.focus()}
                 onChangeText={(userEmailInput) =>
                   setForm((prev) => ({ ...prev, userEmail: userEmailInput }))
                 }
@@ -114,20 +125,37 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
                 {translate("inputs.password")}
                 <Text style={styles.requiredField}>*</Text>
               </Text>
-              <TextInput
-                style={styles.textInput}
-                keyboardType="default"
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={(userPasswordInput) =>
-                  setForm((prev) => ({
-                    ...prev,
-                    userPassword: userPasswordInput,
-                  }))
-                }
-                value={form.userPassword}
-                editable={!loading}
-              />
+              <View style={styles.passwordInputContainer}>
+                <TextInput
+                  ref={passwordRef}
+                  style={[styles.textInput, styles.textInputWithToggle]}
+                  keyboardType="default"
+                  autoComplete="new-password"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  returnKeyType="done"
+                  onSubmitEditing={onSubmit}
+                  onChangeText={(userPasswordInput) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      userPassword: userPasswordInput,
+                    }))
+                  }
+                  value={form.userPassword}
+                  editable={!loading}
+                  secureTextEntry={!showPassword}
+                />
+                <TouchableOpacity
+                  onPress={togglePasswordVisibility}
+                  style={styles.passwordToggle}
+                >
+                  <FontAwesome5
+                    name={showPassword ? "eye-slash" : "eye"}
+                    color="gray"
+                    size={20}
+                  />
+                </TouchableOpacity>
+              </View>
               {errors.userPassword && (
                 <Text style={styles.inputError}>{errors.userPassword}</Text>
               )}
@@ -185,6 +213,21 @@ const styles = StyleSheet.create({
   textInput: {
     borderBottomColor: colors.light.primary,
     borderBottomWidth: 1,
+    flex: 1,
+  },
+  textInputWithToggle: {
+    paddingRight: 48, // leave room for the toggle (adjust as needed)
+  },
+  passwordInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  passwordToggle: {
+    padding: 10,
+    position: "absolute",
+    right: 0,
+    height: "100%",
+    justifyContent: "center",
   },
   inputError: {
     ...textStyles.caption,

@@ -90,6 +90,9 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
                 keyboardType="email-address"
                 autoCorrect={false}
                 autoCapitalize="none"
+                autoComplete="email"
+                returnKeyType="done"
+                onSubmitEditing={onSubmit}
                 onChangeText={(userEmailInput) =>
                   setForm((prev) => ({ ...prev, userEmail: userEmailInput }))
                 }

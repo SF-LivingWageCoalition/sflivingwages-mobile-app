@@ -1,5 +1,5 @@
 // See `App/api/auth/README.md` for examples and error handling patterns.
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../redux/store/store";
 import {
@@ -27,6 +27,7 @@ import { mapApiErrorToMessage } from "../../api/auth/errorHelpers";
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const passwordRef = useRef<TextInput | null>(null);
 
   const [form, setForm] = useState<LoginInput>({
     userEmail: "",
@@ -98,8 +99,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               <TextInput
                 style={styles.textInput}
                 keyboardType="email-address"
+                autoComplete="email"
                 autoCorrect={false}
                 autoCapitalize="none"
+                returnKeyType="next"
+                onSubmitEditing={() => passwordRef.current?.focus()}
                 onChangeText={(userEmailInput) =>
                   setForm((prev) => ({ ...prev, userEmail: userEmailInput }))
                 }
@@ -118,10 +122,14 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               </Text>
               <View style={styles.passwordInputContainer}>
                 <TextInput
-                  style={styles.textInput}
+                  ref={passwordRef}
+                  style={[styles.textInput, styles.textInputWithToggle]}
                   keyboardType="default"
+                  autoComplete="password"
                   autoCorrect={false}
                   autoCapitalize="none"
+                  returnKeyType="done"
+                  onSubmitEditing={onSubmit}
                   onChangeText={(userPasswordInput) =>
                     setForm((prev) => ({
                       ...prev,
@@ -202,6 +210,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     flex: 1,
   },
+  textInputWithToggle: {
+    paddingRight: 48, // leave room for the toggle (adjust as needed)
+  },
   passwordInputContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -210,6 +221,8 @@ const styles = StyleSheet.create({
     padding: 10,
     position: "absolute",
     right: 0,
+    height: "100%",
+    justifyContent: "center",
   },
   inputError: {
     ...textStyles.caption,
