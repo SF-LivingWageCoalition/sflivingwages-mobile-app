@@ -168,7 +168,8 @@ const apiFailure = <T = any>(
 ): ApiResult<T> => ({ success: false, errorMessage, status, data });
 
 /**
- * Map runtime exceptions to ApiResult failures. Timeouts are mapped to 408.
+ * Maps runtime exceptions to ApiResult failures, converting timeouts to status 408.
+ * Use this to consistently handle errors from API calls and return a standardized failure result.
  *
  * @param err - The error to map
  * @returns An ApiResult representing the failure
@@ -183,10 +184,13 @@ const apiFailureFromException = <T = any>(err: unknown): ApiResult<T> => {
 
 /**
  * Safe JSON parser that handles invalid JSON gracefully.
- * If parsing fails, returns an object with `__parseError: true` and the raw text.
+ * If parsing fails, returns an object with `{ __parseError: true, text }` where:
+ *   - `__parseError`: boolean, always true for parse errors
+ *   - `text`: string | null, the raw response text if available, otherwise null
  *
  * @param response - The fetch Response to parse
- * @returns A promise that resolves to the parsed JSON or a parse error object
+ * @returns A promise that resolves to the parsed JSON (type T) or a parse error object
+ *          { __parseError: true, text: string | null }
  */
 const parseJsonSafe = async <T = any>(
   response: Response
@@ -356,6 +360,7 @@ export const validateToken = async (
 /**
  * Login a WP user via the Simple JWT Login plugin.
  * Side-effect: on successful login `dispatch(setUser(validatedData))` is called to populate Redux user state.
+ * If the Redux dispatch fails (e.g., due to middleware errors), the function will catch the error and return an ApiResult failure.
  * Returns: ApiResult<ValidationData['data']> where `data` is the validated payload.
  *
  * @param email - User's email address
@@ -552,11 +557,15 @@ export const registerCustomer = async (
  * Side-effects: none. Returns ApiResult<UserRegistrationData>.
  * Note: the site primarily uses WooCommerce customers; this function is provided for completeness.
  *
- * @param email
- * @param password
+ * On success: returns { success: true, data: UserRegistrationData, status?: number }
+ * On failure: returns { success: false, errorMessage?: string, status?: number, data?: unknown }
+ * The returned data may include fields such as 'data', 'errorCode', and 'message' for error cases.
+ *
+ * @param email - User's email address
+ * @param password - User's password
  * @returns Promise<ApiResult<UserRegistrationData>>
  * Usage: registerUser("<email>", "<password>");
- * See `App/api/auth/README.md` for example API responses.
+ * See `App/api/auth/README.md` for example API responses and error handling.
  */
 export const registerUser = async (
   email: string,
@@ -673,7 +682,9 @@ export const sendPasswordReset = async (
 };
 
 /**
- * Logs out the current user by clearing authentication data from the Redux store.
+ * Synchronously logs out the current user by clearing authentication data from the Redux store.
+ *
+ * Side effects: This will clear user state, which may trigger downstream effects in the app (e.g., navigation, UI updates).
  *
  * @param dispatch - Redux dispatch function to clear user data.
  * @returns {void}
