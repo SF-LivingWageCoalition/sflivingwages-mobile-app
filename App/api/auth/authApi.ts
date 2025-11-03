@@ -15,6 +15,7 @@
 
 import { clearUser, setUser } from "../../redux/features/userSlice/userSlice";
 import type { AppDispatch } from "../../redux/store/store";
+
 // Import types used in the API functions
 import type {
   TokenData,
@@ -25,6 +26,7 @@ import type {
   ApiResult,
   ParseJsonSafeResult,
 } from "./types";
+
 // Import shared auth configuration constants
 import {
   BASE_URL,
@@ -40,38 +42,8 @@ import {
   FETCH_TIMEOUT_MS,
 } from "./config";
 
-/**
- * Custom Error Classes
- * These classes represent specific error types for API requests.
- */
-
-/**
- * Rich ApiError that preserves HTTP status and raw data when available.
- * Thrown by `unwrapOrThrow` to let callers inspect error.status or error.data.
- */
-export class ApiError extends Error {
-  constructor(
-    message: string,
-    public status?: number,
-    public data?: unknown,
-    public code?: string
-  ) {
-    super(message);
-    this.name = "ApiError";
-  }
-}
-
-/**
- * A typed error used to signal a request timeout in `fetchWithTimeout`.
- * We throw this from the network layer so callers can map timeouts to a
- * concrete status code (e.g. 408) when building ApiResult failures.
- */
-class TimeoutError extends Error {
-  constructor(message = "Request timed out") {
-    super(message);
-    this.name = "TimeoutError";
-  }
-}
+// Shared error types
+import { ApiError, TimeoutError } from "./errors";
 
 /**
  * API Helper Functions
