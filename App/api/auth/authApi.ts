@@ -58,6 +58,39 @@ const FETCH_TIMEOUT_MS =
   Number(process.env.EXPO_PUBLIC_FETCH_TIMEOUT_MS) || 10000;
 
 /**
+ * Custom Error Classes
+ * These classes represent specific error types for API requests.
+ */
+
+/**
+ * Rich ApiError that preserves HTTP status and raw data when available.
+ * Thrown by `unwrapOrThrow` to let callers inspect error.status or error.data.
+ */
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    public status?: number,
+    public data?: unknown,
+    public code?: string
+  ) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
+
+/**
+ * A typed error used to signal a request timeout in `fetchWithTimeout`.
+ * We throw this from the network layer so callers can map timeouts to a
+ * concrete status code (e.g. 408) when building ApiResult failures.
+ */
+class TimeoutError extends Error {
+  constructor(message = "Request timed out") {
+    super(message);
+    this.name = "TimeoutError";
+  }
+}
+
+/**
  * API Helper Functions
  * These functions perform API requests related to authentication.
  */
@@ -65,10 +98,13 @@ const FETCH_TIMEOUT_MS =
 /**
  * Helper that wraps fetch with an AbortController to enforce a timeout.
  * Returns the same Response as fetch or throws when aborted/errored.
+ * Throws a TimeoutError if the request times out.
+ *
  * @param input - Request info (URL or Request object)
  * @param init - Optional fetch init options
  * @param timeoutMs - Timeout in milliseconds (default: FETCH_TIMEOUT_MS)
  * @returns A promise that resolves to the fetch Response
+ * @throws TimeoutError when the request times out
  * Usage:
  *   fetchWithTimeout("<url>", { method: "GET" }, 5000);
  */
@@ -97,32 +133,17 @@ const fetchWithTimeout = async (
   }
 };
 
-// Improved timeout behavior: surface a clearer error when aborted by the
-// controller (timeout). Callers catch this and convert to ApiResult failures.
-
 /**
  * Utility: unwrap an ApiResult or throw an Error.
  * Use this when callers prefer exception control flow instead of checking .success.
+ *
  * @param result - The ApiResult to unwrap
+ * @param fallbackMessage - Optional fallback error message if none in result
+ * @returns The data from the ApiResult if successful
+ * @throws ApiError if the result is a failure
  * Usage:
  *  const data = unwrapOrThrow(await someApiFunction());
  */
-/**
- * Rich ApiError that preserves HTTP status and raw data when available.
- * Thrown by `unwrapOrThrow` to let callers inspect error.status or error.data.
- */
-export class ApiError extends Error {
-  constructor(
-    message: string,
-    public status?: number,
-    public data?: unknown,
-    public code?: string
-  ) {
-    super(message);
-    this.name = "ApiError";
-  }
-}
-
 export const unwrapOrThrow = <T>(
   result: ApiResult<T>,
   fallbackMessage?: string
@@ -133,25 +154,25 @@ export const unwrapOrThrow = <T>(
 };
 
 /**
- * A typed error used to signal a request timeout in `fetchWithTimeout`.
- * We throw this from the network layer so callers can map timeouts to a
- * concrete status code (e.g. 408) when building ApiResult failures.
+ * Helper to create a consistent failure ApiResult.
+ *
+ * @param errorMessage - The error message to include in the result
+ * @param status - The HTTP status code (optional)
+ * @param data - Additional data to include in the result (optional)
+ * @returns An ApiResult representing the failure
  */
-class TimeoutError extends Error {
-  constructor(message = "Request timed out") {
-    super(message);
-    this.name = "TimeoutError";
-  }
-}
-
-// Generic helper to create a consistent failure ApiResult
 const apiFailure = <T = any>(
   errorMessage?: string,
   status?: number,
   data?: T
 ): ApiResult<T> => ({ success: false, errorMessage, status, data });
 
-// Map runtime exceptions to ApiResult failures. Timeouts are mapped to 408.
+/**
+ * Map runtime exceptions to ApiResult failures. Timeouts are mapped to 408.
+ *
+ * @param err - The error to map
+ * @returns An ApiResult representing the failure
+ */
 const apiFailureFromException = <T = any>(err: unknown): ApiResult<T> => {
   const message = (err as any)?.message ?? String(err ?? "");
   if (err instanceof TimeoutError || message === "Request timed out") {
@@ -160,6 +181,13 @@ const apiFailureFromException = <T = any>(err: unknown): ApiResult<T> => {
   return apiFailure<T>(message, undefined, undefined);
 };
 
+/**
+ * Safe JSON parser that handles invalid JSON gracefully.
+ * If parsing fails, returns an object with `__parseError: true` and the raw text.
+ *
+ * @param response - The fetch Response to parse
+ * @returns A promise that resolves to the parsed JSON or a parse error object
+ */
 const parseJsonSafe = async <T = any>(
   response: Response
 ): Promise<ParseJsonSafeResult<T>> => {
@@ -178,6 +206,13 @@ const parseJsonSafe = async <T = any>(
 /**
  * Runtime validator that checks a deserialized `ValidationData['data']`
  * has the minimal expected fields (user.ID and a jwt array).
+ *
+ * Expected structure of ValidationData['data']:
+ * {
+ *   user: { ID: number, ... },
+ *   roles: string[] | unknown,
+ *   jwt: Array<any> // must be a non-empty array
+ * }
  */
 const isValidValidationData = (d: unknown): d is ValidationData["data"] => {
   if (!d || typeof d !== "object") return false;
@@ -261,6 +296,7 @@ export const fetchToken = async (
  * `data.data` contains `user`, `roles`, and `jwt` (array of decoded JWT objects).
  *
  * Note: see https://wordpress.org/support/topic/unable-to-find-user-property-in-jwt/ for a common error.
+ *
  * @param jwtToken - The JWT token to validate
  * @returns Promise<ApiResult<ValidationData>>
  * Usage: validateToken("<jwt_token>");
