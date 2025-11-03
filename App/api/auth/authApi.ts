@@ -15,6 +15,7 @@
 
 import { clearUser, setUser } from "../../redux/features/userSlice/userSlice";
 import type { AppDispatch } from "../../redux/store/store";
+// Import types used in the API functions
 import type {
   TokenData,
   ValidationData,
@@ -24,38 +25,20 @@ import type {
   ApiResult,
   ParseJsonSafeResult,
 } from "./types";
-
-/**
- * Configuration Constants
- * These constants are used for API requests and authentication.
- */
-
-// Base URLs for the API
-const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL; // Base URL for WordPress APIs
-
-// API Routes
-const JWT_ROUTE = process.env.EXPO_PUBLIC_JWT_ROUTE; // Route for Simple JWT Login plugin API
-const WC_ROUTE = process.env.EXPO_PUBLIC_WC_ROUTE; // Route for WooCommerce REST API
-
-// JWT configuration
-const JWT_DE_KEY = process.env.EXPO_PUBLIC_JWT_DE_KEY; // Key used for JWT decryption
-const JWT_DE_ALG = process.env.EXPO_PUBLIC_JWT_DE_ALG; // Algorithm used for JWT decryption
-const JWT_TYP = process.env.EXPO_PUBLIC_JWT_TYP; // Type of token
-
-// Auth key for Simple JWT Login plugin
-const JWT_AUTH_KEY = process.env.EXPO_PUBLIC_JWT_AUTH_KEY; // Auth key for Simple JWT Login plugin
-
-// WooCommerce REST API credentials
-const consumerKey = process.env.EXPO_PUBLIC_CONSUMER_KEY; // WooCommerce Consumer Key (read/write)
-const consumerSecret = process.env.EXPO_PUBLIC_CONSUMER_SECRET; // WooCommerce Consumer Secret (read/write)
-const base64Credentials =
-  typeof Buffer !== "undefined"
-    ? Buffer.from(`${consumerKey}:${consumerSecret}`).toString("base64")
-    : btoa(`${consumerKey}:${consumerSecret}`); // Base64 encoded credentials
-
-// Fetch timeout (ms) - configurable via env var, fallback to 10s
-const FETCH_TIMEOUT_MS =
-  Number(process.env.EXPO_PUBLIC_FETCH_TIMEOUT_MS) || 10000;
+// Import shared auth configuration constants
+import {
+  BASE_URL,
+  JWT_ROUTE,
+  WC_ROUTE,
+  JWT_DE_KEY,
+  JWT_DE_ALG,
+  JWT_TYP,
+  JWT_AUTH_KEY,
+  consumerKey,
+  consumerSecret,
+  base64Credentials,
+  FETCH_TIMEOUT_MS,
+} from "./config";
 
 /**
  * Custom Error Classes

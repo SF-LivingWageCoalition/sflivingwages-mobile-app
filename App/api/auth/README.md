@@ -48,6 +48,7 @@ See the [references](#references) section for links to the above-mentioned docum
 - Auth navigator: `App/navigation/AuthNav.tsx`
 - Auth API: `App/api/auth/authApi.ts`
 - Auth types: `App/api/auth/types.ts`
+- Auth config: `App/api/auth/config.ts`
 
 ---
 
@@ -108,12 +109,28 @@ EXPO_PUBLIC_FETCH_TIMEOUT_MS=10000
 
 Security note: sanitize PII before sending any payloads to telemetry.
 
+Note: these EXPO_PUBLIC environment variables are now read and exported from `App/api/auth/config.ts` and consumed by the auth client and helpers (for example `BASE_URL`, `JWT_ROUTE`, `JWT_AUTH_KEY`, `FETCH_TIMEOUT_MS`, and `base64Credentials`). Centralizing config in `config.ts` reduces duplication, guarantees consistent runtime behavior (for example `base64Credentials` safely returns `undefined` when keys are missing), and makes it easier to stub or mock values when debugging or writing unit tests.
+
+Example usage:
+
+```ts
+// Example: how the rest of the auth code consumes values
+import {
+  BASE_URL,
+  JWT_ROUTE,
+  JWT_AUTH_KEY,
+  base64Credentials,
+  FETCH_TIMEOUT_MS,
+} from "./config";
+```
+
 ---
 
 ## Quick Debug Checklist
 
 1. Check HTTP status (`result.status`): 4xx = client issue; 5xx = server issue.
 2. Inspect `Content-Type` and response body. If non-JSON, `parseJsonSafe` returns `{ __parseError: true, text }`.
+   If using Basic auth for WooCommerce endpoints, ensure `EXPO_PUBLIC_CONSUMER_KEY` and `EXPO_PUBLIC_CONSUMER_SECRET` are set — `base64Credentials` in `App/api/auth/config.ts` returns `undefined` when keys are missing; using an undefined Basic auth value will cause authentication failures.
 3. If `res.data?.__parseError` is true, check server/proxy logs (Nginx/Cloud) for upstream errors.
 4. If `res.data?.data?.errorCode` exists, map that code to a friendly message (do not display raw server text).
 5. For unknown/5xx errors show `errors.unexpectedError` and capture sanitized telemetry (status + structured error code only).
@@ -150,6 +167,8 @@ curl.exe -i -X POST "$BASE${EXPO_PUBLIC_WC_ROUTE}/customers" `
   -H "Authorization: Basic <base64(consKey:consSecret)>" `
   -d '{"email":"new@example.com","password":"pass1234","first_name":"Test","last_name":"User"}'
 ```
+
+(The app computes this value from `EXPO_PUBLIC_CONSUMER_KEY`/`EXPO_PUBLIC_CONSUMER_SECRET` and exposes it via `App/api/auth/config.ts` as `base64Credentials`.)
 
 sendPasswordReset (example):
 
@@ -398,6 +417,8 @@ Common HTTP status → suggested translation keys (docs only)
 ```powershell
 npx tsc --noEmit
 ```
+
+Local setup: populate `.env` with the EXPO*PUBLIC*\* values. `App/api/auth/config.ts` reads them at runtime — do not commit secrets.
 
 If you prefer to keep this file shorter, we can move the large example JSON blobs into `docs/auth-responses.md` and keep this README as a brief developer guide.
 
