@@ -47,6 +47,7 @@ See the [references](#references) section for links to the above-mentioned docum
 - Forgot password screen: `App/screens/ForgotPasswordScreen/ForgotPasswordScreen.tsx`
 - Auth navigator: `App/navigation/AuthNav.tsx`
 - Auth API: `App/api/auth/authApi.ts`
+- Auth types: `App/api/auth/types.ts`
 
 ---
 
@@ -84,7 +85,7 @@ try {
 - Optional throw-style helper: `unwrapOrThrow(result)` — returns `data` or throws `ApiError` (contains `status` and `data`).
 - Side-effects: `loginUser` dispatches `setUser(validatedData)` on success.
 
-Implementation details (see `App/api/auth/authApi.ts`): exported types include `TokenData`, `ValidationData`, `PasswordResetData`, `ApiResult<T>`, and `ApiError`.
+Implementation details (see `App/api/auth/authApi.ts` and `App/api/auth/types.ts`): exported types are defined in `types.ts` (for example `TokenData`, `ValidationData`, `PasswordResetData`, `ApiResult<T>`). `ApiError` and runtime helpers remain exported from `authApi.ts`.
 
 ---
 
@@ -178,7 +179,7 @@ function normalizeJwt(maybeJwt: unknown): DecodedJwt[] {
 }
 ```
 
-Refer to `App/api/auth/authApi.ts` for the canonical implementation and exported runtime types.
+Refer to `App/api/auth/authApi.ts` for the canonical implementation (normalization helpers like `normalizeJwt` live there) and to `App/api/auth/types.ts` for the typed shapes.
 
 ---
 
