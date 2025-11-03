@@ -15,7 +15,8 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
-import { registerCustomer, unwrapOrThrow } from "../../api/auth/authApi";
+import { registerCustomer } from "../../api/auth/authApi";
+import { unwrapOrThrow } from "../../api/auth/utils";
 import { mapApiErrorToMessage } from "../../api/auth/errorHelpers";
 import { RegisterScreenProps } from "../../types/types";
 import {

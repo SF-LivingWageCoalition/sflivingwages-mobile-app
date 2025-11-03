@@ -22,7 +22,8 @@ import {
 } from "../../validation/authValidation";
 import { mapZodErrorToFormErrors } from "../../validation/mapZodError";
 import { LoginScreenProps } from "../../types/types";
-import { loginUser, unwrapOrThrow } from "../../api/auth/authApi";
+import { loginUser } from "../../api/auth/authApi";
+import { unwrapOrThrow } from "../../api/auth/utils";
 import { mapApiErrorToMessage } from "../../api/auth/errorHelpers";
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {

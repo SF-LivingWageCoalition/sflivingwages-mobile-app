@@ -14,7 +14,8 @@ import LoadingOverlay from "../../components/LoadingOverlay";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
-import { sendPasswordReset, unwrapOrThrow } from "../../api/auth/authApi";
+import { sendPasswordReset } from "../../api/auth/authApi";
+import { unwrapOrThrow } from "../../api/auth/utils";
 import { mapApiErrorToMessage } from "../../api/auth/errorHelpers";
 import { ForgotPasswordScreenProps } from "../../types/types";
 import {

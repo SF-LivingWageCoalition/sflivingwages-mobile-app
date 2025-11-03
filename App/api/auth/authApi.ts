@@ -13,6 +13,7 @@
     examples, telemetry guidance, and references (plugin/docs links).
 */
 
+// Import Redux actions and types for user state management
 import { clearUser, setUser } from "../../redux/features/userSlice/userSlice";
 import type { AppDispatch } from "../../redux/store/store";
 
@@ -24,7 +25,6 @@ import type {
   CustomerRegistrationData,
   PasswordResetData,
   ApiResult,
-  ParseJsonSafeResult,
 } from "./types";
 
 // Import shared auth configuration constants
@@ -36,150 +36,17 @@ import {
   JWT_DE_ALG,
   JWT_TYP,
   JWT_AUTH_KEY,
-  consumerKey,
-  consumerSecret,
   base64Credentials,
-  FETCH_TIMEOUT_MS,
 } from "./config";
 
-// Shared error types
-import { ApiError, TimeoutError } from "./errors";
-
-/**
- * API Helper Functions
- * These functions perform API requests related to authentication.
- */
-
-/**
- * Helper that wraps fetch with an AbortController to enforce a timeout.
- * Returns the same Response as fetch or throws when aborted/errored.
- * Throws a TimeoutError if the request times out.
- *
- * @param input - Request info (URL or Request object)
- * @param init - Optional fetch init options
- * @param timeoutMs - Timeout in milliseconds (default: FETCH_TIMEOUT_MS)
- * @returns A promise that resolves to the fetch Response
- * @throws TimeoutError when the request times out
- * Usage:
- *   fetchWithTimeout("<url>", { method: "GET" }, 5000);
- */
-const fetchWithTimeout = async (
-  input: RequestInfo,
-  init?: RequestInit,
-  timeoutMs: number = FETCH_TIMEOUT_MS
-): Promise<Response> => {
-  const controller = new AbortController();
-  const signal = controller.signal;
-  const id = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    const response = await fetch(input, {
-      ...(init || {}),
-      signal,
-    } as RequestInit);
-    return response;
-  } catch (err: any) {
-    // If the controller aborted the request, surface a clear timeout error
-    if (err && (err.name === "AbortError" || err.code === "ERR_ABORTED")) {
-      throw new TimeoutError();
-    }
-    throw err;
-  } finally {
-    clearTimeout(id);
-  }
-};
-
-/**
- * Utility: unwrap an ApiResult or throw an Error.
- * Use this when callers prefer exception control flow instead of checking .success.
- *
- * @param result - The ApiResult to unwrap
- * @param fallbackMessage - Optional fallback error message if none in result
- * @returns The data from the ApiResult if successful
- * @throws ApiError if the result is a failure
- * Usage:
- *  const data = unwrapOrThrow(await someApiFunction());
- */
-export const unwrapOrThrow = <T>(
-  result: ApiResult<T>,
-  fallbackMessage?: string
-): T => {
-  if (result.success) return result.data;
-  const msg = result.errorMessage ?? fallbackMessage ?? "API request failed";
-  throw new ApiError(msg, (result as any).status, (result as any).data);
-};
-
-/**
- * Helper to create a consistent failure ApiResult.
- *
- * @param errorMessage - The error message to include in the result
- * @param status - The HTTP status code (optional)
- * @param data - Additional data to include in the result (optional)
- * @returns An ApiResult representing the failure
- */
-const apiFailure = <T = any>(
-  errorMessage?: string,
-  status?: number,
-  data?: T
-): ApiResult<T> => ({ success: false, errorMessage, status, data });
-
-/**
- * Maps runtime exceptions to ApiResult failures, converting timeouts to status 408.
- * Use this to consistently handle errors from API calls and return a standardized failure result.
- *
- * @param err - The error to map
- * @returns An ApiResult representing the failure
- */
-const apiFailureFromException = <T = any>(err: unknown): ApiResult<T> => {
-  const message = (err as any)?.message ?? String(err ?? "");
-  if (err instanceof TimeoutError || message === "Request timed out") {
-    return apiFailure<T>(message, 408, undefined);
-  }
-  return apiFailure<T>(message, undefined, undefined);
-};
-
-/**
- * Safe JSON parser that handles invalid JSON gracefully.
- * If parsing fails, returns an object with `{ __parseError: true, text }` where:
- *   - `__parseError`: boolean, always true for parse errors
- *   - `text`: string | null, the raw response text if available, otherwise null
- *
- * @param response - The fetch Response to parse
- * @returns A promise that resolves to the parsed JSON (type T) or a parse error object
- *          { __parseError: true, text: string | null }
- */
-const parseJsonSafe = async <T = any>(
-  response: Response
-): Promise<ParseJsonSafeResult<T>> => {
-  try {
-    return (await response.json()) as T;
-  } catch (jsonErr) {
-    try {
-      const text = await response.text();
-      return { __parseError: true, text };
-    } catch (textErr) {
-      return { __parseError: true, text: null };
-    }
-  }
-};
-
-/**
- * Runtime validator that checks a deserialized `ValidationData['data']`
- * has the minimal expected fields (user.ID and a jwt array).
- *
- * Expected structure of ValidationData['data']:
- * {
- *   user: { ID: number, ... },
- *   roles: string[] | unknown,
- *   jwt: Array<any> // must be a non-empty array
- * }
- */
-const isValidValidationData = (d: unknown): d is ValidationData["data"] => {
-  if (!d || typeof d !== "object") return false;
-  const x = d as any;
-  if (!x.user || !x.user.ID) return false;
-  if (!x.jwt || !Array.isArray(x.jwt) || x.jwt.length === 0) return false;
-  return true;
-};
+// Import utility functions
+import {
+  fetchWithTimeout,
+  apiFailure,
+  apiFailureFromException,
+  parseJsonSafe,
+  isValidValidationData,
+} from "./utils";
 
 /**
  * API functions for authentication (fetching and validating JWT tokens)
