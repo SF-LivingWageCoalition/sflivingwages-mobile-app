@@ -69,17 +69,17 @@ Implementation quick-reference: file paths and a one-line purpose to help you ju
 
 ## Primary Functions
 
-The primary exported functions from `App/api/auth/authApi.ts` and a short description of their purpose:
+The primary exported functions from `App/api/auth/authApi.ts`, a short description of their purpose, and their return values:
 
-| Function                               | Purpose                                                                                                                                                              |
-| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `fetchToken(email, password)`          | Request a JWT from the Simple JWT Login endpoint; returns `ApiResult<TokenData>` with the raw token on success.                                                      |
-| `validateToken(jwtToken)`              | Validate a JWT with the Simple JWT Login endpoint; returns `ApiResult<ValidationData>` containing `user`, `roles`, and decoded `jwt`.                                |
-| `loginUser(email, password, dispatch)` | High-level login flow: fetches a token, validates it, and on success dispatches `setUser` to populate Redux user state; returns `ApiResult<ValidationData['data']>`. |
-| `registerCustomer(email, password)`    | Create a WooCommerce customer via the WooCommerce REST API; returns `ApiResult<CustomerRegistrationData>`.                                                           |
-| `registerUser(email, password)`        | Register a WordPress user via the Simple JWT Login plugin (alternate to WooCommerce); returns `ApiResult<UserRegistrationData>`.                                     |
-| `sendPasswordReset(email)`             | Request a password reset email via Simple JWT Login; returns `ApiResult<PasswordResetData>`.                                                                         |
-| `logoutUser(dispatch)`                 | Synchronously clear user auth state from Redux (calls `clearUser`).                                                                                                  |
+| Function                               | Purpose                                                                                                                 | Returns                               |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `fetchToken(email, password)`          | Request a JWT from the Simple JWT Login endpoint.                                                                       | `ApiResult<TokenData>`                |
+| `validateToken(jwtToken)`              | Validate a JWT with the Simple JWT Login endpoint.                                                                      | `ApiResult<ValidationData>`           |
+| `loginUser(email, password, dispatch)` | High-level login flow: fetches a token, validates it, and on success dispatches `setUser` to populate Redux user state. | `ApiResult<ValidationData['data']>`   |
+| `registerCustomer(email, password)`    | Create a WooCommerce customer via the WooCommerce REST API.                                                             | `ApiResult<CustomerRegistrationData>` |
+| `registerUser(email, password)`        | Register a WordPress user via the Simple JWT Login plugin (alternate to WooCommerce).                                   | `ApiResult<UserRegistrationData>`     |
+| `sendPasswordReset(email)`             | Request a password reset email via Simple JWT Login.                                                                    | `ApiResult<PasswordResetData>`        |
+| `logoutUser(dispatch)`                 | Synchronously clear user auth state from Redux (calls `clearUser`).                                                     | void                                  |
 
 ---
 
