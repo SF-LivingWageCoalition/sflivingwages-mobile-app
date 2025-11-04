@@ -8,8 +8,7 @@ import {
   View,
 } from "react-native";
 import { AccountScreenProps } from "../../types/types";
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch } from "../../redux/store/store";
+import { useSelector } from "react-redux";
 import { logoutUser } from "../../api/auth/authApi";
 import { selectIsLoggedIn } from "../../redux/features/userSlice/userSlice";
 import { colors } from "../../theme";
@@ -19,8 +18,6 @@ import AccountScreenHeader from "./components/AccountScreenHeader";
 import AccountScreenMenu from "./components/AccountScreenMenu";
 
 const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
-  const dispatch = useDispatch<AppDispatch>();
-
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
   /**
@@ -58,7 +55,7 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel",
         },
-        { text: translate("buttons.ok"), onPress: () => logoutUser(dispatch) },
+        { text: translate("buttons.ok"), onPress: () => logoutUser() },
       ],
       { cancelable: true }
     );

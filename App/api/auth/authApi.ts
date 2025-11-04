@@ -14,8 +14,13 @@
 */
 
 // Import Redux actions and types for user state management
-import { clearUser, setUser } from "../../redux/features/userSlice/userSlice";
-import type { AppDispatch } from "../../redux/store/store";
+import {
+  clearUser,
+  setUser,
+  selectJwt,
+} from "../../redux/features/userSlice/userSlice";
+import type { RootState, AppDispatch } from "../../redux/store/store";
+import { store } from "../../redux/store/store";
 
 // Import types used in the API functions
 import type {
@@ -226,6 +231,67 @@ export const refreshToken = async (
   } catch (error: any) {
     // General error during token refresh process - return failed ApiResult
     console.error("authApi: Error refreshing token:", error);
+    return apiFailureFromException(error);
+  }
+};
+
+/**
+ * Revoke a JWT token via the Simple JWT Login plugin.
+ * Side-effects: none.
+ * Returns: ApiResult<TokenData> where on success the server returns the
+ * refreshed/confirmed JWT in `data.data.jwt` (i.e. `data` is expected to
+ * contain a `jwt` value rather than being null).
+ *
+ * Note: the Simple JWT Login revoke endpoint commonly responds with a
+ * success message and a JWT in the response `data`. The client posts
+ * `{ JWT, AUTH_CODE }` (AUTH_CODE optional depending on plugin settings).
+ *
+ * @param jwtToken - The JWT token to revoke
+ * @returns Promise<ApiResult<TokenData>>
+ * Usage: revokeToken("<jwt_token>");
+ * See `App/api/auth/README.md` for example API responses.
+ */
+export const revokeToken = async (
+  jwtToken: string
+): Promise<ApiResult<TokenData>> => {
+  try {
+    console.log("authApi: revokeToken() called");
+    const response = await fetchWithTimeout(
+      `${BASE_URL}${JWT_ROUTE}/auth/revoke`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "cache-control": "no-cache",
+          Authorization: `Bearer ${jwtToken}`,
+        },
+        body: JSON.stringify({
+          AUTH_KEY: JWT_AUTH_KEY,
+        }),
+      }
+    );
+
+    const responseData = await parseJsonSafe(response);
+    if (response.ok) {
+      // Token revocation succeeded
+      console.log(
+        "authApi: Token revocation succeeded with status:",
+        response.status
+      );
+      console.log("authApi: Token revocation response data:", responseData);
+      return { success: true, data: responseData, status: response.status };
+    } else {
+      // Token revocation failed
+      console.log(
+        "authApi: Token revocation failed with status:",
+        response.status
+      );
+      console.log("authApi: Token revocation response data:", responseData);
+      return apiFailureWithServerCode<TokenData>(responseData, response.status);
+    }
+  } catch (error: any) {
+    // General error during token revocation process - return failed ApiResult
+    console.error("authApi: Error revoking token:", error);
     return apiFailureFromException(error);
   }
 };
@@ -534,17 +600,41 @@ export const sendPasswordReset = async (
 };
 
 /**
- * Synchronously logs out the current user by clearing authentication data from the Redux store.
+ * Logout the current user. Attempts to revoke the server-side JWT then clears
+ * local auth state by dispatching `clearUser()`.
  *
- * Side effects: This will clear user state, which may trigger downstream effects in the app (e.g., navigation, UI updates).
+ * Side effects: may perform a network call to revoke the token and will clear
+ * user state which can trigger navigation/UI updates.
  *
- * @param dispatch - Redux dispatch function to clear user data.
- * @returns {void}
+ * Note: this function reads the current JWT from the Redux store and will
+ * attempt a best-effort server-side revoke. Local state is always cleared.
+ *
+ * @returns Promise<void>
  *
  * Usage:
- *    logoutUser(dispatch);
+ *    await logoutUser();
  */
-export const logoutUser = (dispatch: AppDispatch): void => {
-  dispatch(clearUser()); // Clear user data from Redux store
-  console.log("authApi: User logged out");
+export const logoutUser = async (): Promise<void> => {
+  try {
+    console.log("authApi: logoutUser() called");
+    // Read the token from the persisted store via selector and attempt revoke.
+    const state = store.getState() as RootState;
+    const currentToken = selectJwt(state)?.[0]?.token;
+    if (currentToken) {
+      try {
+        // Best-effort revoke; swallow errors to ensure local logout proceeds.
+        const revokeResult = await revokeToken(currentToken);
+        console.log("authApi: revokeToken result:", revokeResult);
+      } catch (err) {
+        console.warn(
+          "authApi: revokeToken failed (continuing to clear local state):",
+          err
+        );
+      }
+    }
+  } finally {
+    // Always clear local state even if revoke fails or wasn't provided.
+    store.dispatch(clearUser()); // Clear user data from Redux store
+    console.log("authApi: User logged out");
+  }
 };

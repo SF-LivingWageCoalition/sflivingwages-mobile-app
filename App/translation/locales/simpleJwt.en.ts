@@ -1,5 +1,6 @@
 const simpleJwt = {
   codes: {
+    "0": "Token was already revoked",
     "1": "Key may not be empty",
     "2": "Wrong number of segments",
     "3": "Invalid header encoding",
