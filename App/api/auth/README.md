@@ -33,6 +33,7 @@ See the [references](#references) section for links to the above-mentioned docum
 - [Detailed API Responses (examples)](#detailed-api-responses-examples)
   - [fetchToken — example responses](#fetchtoken---example-responses)
   - [validateToken — example responses](#validatetoken---example-responses)
+  - [refreshToken — example responses](#refreshtoken--example-responses)
   - [loginUser — example responses](#loginuser---example-responses)
   - [registerCustomer — example responses](#registercustomer---example-responses)
   - [registerUser — example responses](#registeruser---example-responses)
@@ -76,6 +77,7 @@ The primary exported functions from `App/api/auth/authApi.ts`, a short descripti
 | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
 | `fetchToken(email, password)`          | Request a JWT from the Simple JWT Login endpoint.                                                                       | `ApiResult<TokenData>`                |
 | `validateToken(jwtToken)`              | Validate a JWT with the Simple JWT Login endpoint.                                                                      | `ApiResult<ValidationData>`           |
+| `refreshToken(jwtToken)`               | Refresh a JWT via the Simple JWT Login endpoint (returns a new token).                                                  | `ApiResult<TokenData>`                |
 | `loginUser(email, password, dispatch)` | High-level login flow: fetches a token, validates it, and on success dispatches `setUser` to populate Redux user state. | `ApiResult<ValidationData['data']>`   |
 | `registerCustomer(email, password)`    | Create a WooCommerce customer via the WooCommerce REST API.                                                             | `ApiResult<CustomerRegistrationData>` |
 | `registerUser(email, password)`        | Register a WordPress user via the Simple JWT Login plugin (alternate to WooCommerce).                                   | `ApiResult<UserRegistrationData>`     |
@@ -89,7 +91,8 @@ The primary exported functions from `App/api/auth/authApi.ts`, a short descripti
 1. Copy the repo root `.env.example` to `.env` and populate the _EXPO_PUBLIC_ values locally (do NOT commit secrets).
 2. Call `fetchToken(email, password)` to obtain a raw JWT string.
 3. Call `validateToken(jwt)` to get decoded JWT(s) + user data.
-4. `loginUser` will dispatch `setUser(validatedData)` on success.
+4. If your app supports token refresh, call `refreshToken(jwt)` to obtain a refreshed JWT before the current token expires, then re-run `validateToken` as needed.
+5. `loginUser` will dispatch `setUser(validatedData)` on success.
 
 Example (exception style)
 
@@ -338,6 +341,23 @@ Failure (expired token example):
     "errorCode": 14,
     "message": "Expired token"
   },
+  "success": false
+}
+```
+
+### refreshToken — example responses
+
+Success (refreshed token returned):
+
+```json
+{ "data": { "jwt": "eyJ0e..." }, "success": true }
+```
+
+Failure (invalid/expired token or other error):
+
+```json
+{
+  "data": { "errorCode": 14, "message": "Expired or invalid token" },
   "success": false
 }
 ```

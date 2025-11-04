@@ -176,6 +176,61 @@ export const validateToken = async (
 };
 
 /**
+ * Refresh a JWT token via the Simple JWT Login plugin.
+ * Side-effects: none.
+ * Returns: ApiResult<TokenData> where on success `data.data.jwt` is the new raw JWT string.
+ *
+ * @param jwtToken - The JWT token to refresh
+ * @returns Promise<ApiResult<TokenData>>
+ * Usage: refreshToken("<jwt_token>");
+ * See `App/api/auth/README.md` for example API responses.
+ */
+export const refreshToken = async (
+  jwtToken: string
+): Promise<ApiResult<TokenData>> => {
+  try {
+    console.log("authApi: refreshToken() called");
+    const response = await fetchWithTimeout(
+      `${BASE_URL}${JWT_ROUTE}/auth/refresh`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "cache-control": "no-cache",
+          Authorization: `Bearer ${jwtToken}`,
+        },
+        body: JSON.stringify({
+          AUTH_KEY: JWT_AUTH_KEY,
+        }),
+      }
+    );
+
+    const tokenData = await parseJsonSafe(response);
+    if (response.ok) {
+      // Token refresh succeeded
+      console.log(
+        "authApi: Token refresh succeeded with status:",
+        response.status
+      );
+      console.log("authApi: Token refresh response data:", tokenData);
+      return { success: true, data: tokenData, status: response.status };
+    } else {
+      // Token refresh failed
+      console.log(
+        "authApi: Token refresh failed with status:",
+        response.status
+      );
+      console.log("authApi: Token refresh response data:", tokenData);
+      return apiFailureWithServerCode<TokenData>(tokenData, response.status);
+    }
+  } catch (error: any) {
+    // General error during token refresh process - return failed ApiResult
+    console.error("authApi: Error refreshing token:", error);
+    return apiFailureFromException(error);
+  }
+};
+
+/**
  * Login a WP user via the Simple JWT Login plugin.
  * Side-effect: on successful login `dispatch(setUser(validatedData))` is called to populate Redux user state.
  * If the Redux dispatch fails (e.g., due to middleware errors), the function will catch the error and return an ApiResult failure.
