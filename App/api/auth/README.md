@@ -21,9 +21,11 @@ See the [references](#references) section for links to the above-mentioned docum
 
 ## Table of contents
 
-- [Quick Links](#quick-links)
+- [Files & Purpose](#files--purpose)
+- [Primary Functions](#primary-functions)
 - [Quick Start (1 minute)](#quick-start-1-minute)
 - [Contract (at-a-glance)](#contract-at-a-glance)
+- [Error codes, translation keys, and UI guidance](#error-codes-translation-keys-and-ui-guidance)
 - [Environment Variables](#environment-variables)
 - [Quick Debug Checklist](#quick-debug-checklist)
 - [Try with curl (PowerShell-friendly)](#try-with-curl-powershell-friendly)
@@ -40,15 +42,44 @@ See the [references](#references) section for links to the above-mentioned docum
 - [How to Contribute / Keep this README Current](#how-to-contribute--keep-this-readme-current)
 - [References](#references)
 
-### Quick Links
+---
 
-- Login screen: `App/screens/LoginScreen/LoginScreen.tsx`
-- Register screen: `App/screens/RegisterScreen/RegisterScreen.tsx`
-- Forgot password screen: `App/screens/ForgotPasswordScreen/ForgotPasswordScreen.tsx`
-- Auth navigator: `App/navigation/AuthNav.tsx`
-- Auth API: `App/api/auth/authApi.ts`
-- Auth types: `App/api/auth/types.ts`
-- Auth config: `App/api/auth/config.ts`
+## Files & Purpose
+
+Implementation quick-reference: file paths and a one-line purpose to help you jump to the code or related translation files.
+
+| File                                                        | Purpose                                                                                 |
+| ----------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `App/screens/LoginScreen/LoginScreen.tsx`                   | Login screen UI                                                                         |
+| `App/screens/RegisterScreen/RegisterScreen.tsx`             | Registration screen UI                                                                  |
+| `App/screens/ForgotPasswordScreen/ForgotPasswordScreen.tsx` | Password reset / forgot password screen UI                                              |
+| `App/navigation/AuthNav.tsx`                                | Navigator that wires auth-related screens together                                      |
+| `App/api/auth/authApi.ts`                                   | Core auth client (fetchToken, validateToken, loginUser) and token-normalization helpers |
+| `App/api/auth/types.ts`                                     | Type definitions and `ApiResult<T>` shapes used across helpers                          |
+| `App/api/auth/config.ts`                                    | Environment-driven config and `base64Credentials` helper for WooCommerce                |
+| `App/api/auth/errorHelpers.ts`                              | Map server error codes to user-facing messages and telemetry helpers                    |
+| `App/api/auth/utils.ts`                                     | Low-level helpers (parseJsonSafe, failure factories, `unwrapOrThrow`)                   |
+| `App/api/auth/errorCodeMap.ts`                              | Numeric and string error-code mappings referenced by `errorHelpers`                     |
+| `App/api/auth/errors.ts`                                    | Runtime `ApiError` type and related error helpers                                       |
+| `App/translation/locales/simpleJwt.*.ts`                    | Localization files for Simple JWT Login responses                                       |
+| `App/translation/locales/wooCommerce.*.ts`                  | Localization files for Woo Commerce responses                                           |
+| `App/validation/authValidation.ts`                          | Zod schema factories for auth validation                                                |
+
+---
+
+## Primary Functions
+
+The primary exported functions from `App/api/auth/authApi.ts` and a short description of their purpose:
+
+| Function                               | Purpose                                                                                                                                                              |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fetchToken(email, password)`          | Request a JWT from the Simple JWT Login endpoint; returns `ApiResult<TokenData>` with the raw token on success.                                                      |
+| `validateToken(jwtToken)`              | Validate a JWT with the Simple JWT Login endpoint; returns `ApiResult<ValidationData>` containing `user`, `roles`, and decoded `jwt`.                                |
+| `loginUser(email, password, dispatch)` | High-level login flow: fetches a token, validates it, and on success dispatches `setUser` to populate Redux user state; returns `ApiResult<ValidationData['data']>`. |
+| `registerCustomer(email, password)`    | Create a WooCommerce customer via the WooCommerce REST API; returns `ApiResult<CustomerRegistrationData>`.                                                           |
+| `registerUser(email, password)`        | Register a WordPress user via the Simple JWT Login plugin (alternate to WooCommerce); returns `ApiResult<UserRegistrationData>`.                                     |
+| `sendPasswordReset(email)`             | Request a password reset email via Simple JWT Login; returns `ApiResult<PasswordResetData>`.                                                                         |
+| `logoutUser(dispatch)`                 | Synchronously clear user auth state from Redux (calls `clearUser`).                                                                                                  |
 
 ---
 
@@ -87,6 +118,57 @@ try {
 - Side-effects: `loginUser` dispatches `setUser(validatedData)` on success.
 
 Implementation details (see `App/api/auth/authApi.ts` and `App/api/auth/types.ts`): exported types are defined in `types.ts` (for example `TokenData`, `ValidationData`, `PasswordResetData`, `ApiResult<T>`). `ApiError` and runtime helpers remain exported from `authApi.ts`.
+
+---
+
+## Error codes, translation keys, and UI guidance
+
+To make UX consistent across different server plugins (Simple JWT Login and WooCommerce) the auth helpers now attach a machine-readable error identifier to ApiResult failures when the server provides one:
+
+- For Simple JWT Login numeric errors the library exposes `errorCode` (number) on the returned `result.data` object.
+- For WooCommerce string error codes the library exposes `errorKey` (string) on `result.data`.
+
+When available the helper `mapApiErrorToMessage` (in `App/api/auth/errorHelpers.ts`) will prefer returning a translated, user-facing message derived from `errorCode` / `errorKey` rather than raw server text. The low-level failure factory `apiFailureWithServerCode` (in `App/api/auth/utils.ts`) attaches these fields so callers can both present translated text and use the machine-readable identifier for telemetry or conditional UI logic.
+
+Example failure shapes you may see from auth helpers:
+
+Simple JWT (numeric code)
+
+```json
+{
+  "success": false,
+  "status": 400,
+  "errorMessage": "Correo o contraseña inválidos.",
+  "data": {
+    "data": { "errorCode": 48, "message": "Wrong user credentials" },
+    "errorCode": 48
+  }
+}
+```
+
+WooCommerce (string code)
+
+```json
+{
+  "success": false,
+  "status": 400,
+  "errorMessage": "An account is already registered with your email address.",
+  "data": {
+    "code": "registration-error-email-exists",
+    "message": "An account is already registered with your email address. Please log in.",
+    "data": { "status": 400 },
+    "errorKey": "registration-error-email-exists"
+  }
+}
+```
+
+UI guidance:
+
+- Prefer `result.errorMessage` when present — it is already localized when a code mapping exists.
+- If `result.errorMessage` is not present, use `mapApiErrorToMessage(result)` to obtain a best-effort translation (this function will check `errorCode` / `errorKey` and fall back to status-based messages).
+- For telemetry and analytics send only the structured `errorCode` / `errorKey` (do not send PII).
+
+See `App/api/auth/errorHelpers.ts` and `App/api/auth/utils.ts` for implementation details and examples.
 
 ---
 

@@ -1,4 +1,6 @@
 import { ok } from "assert";
+import simpleJwt from "./simpleJwt.en";
+import wooCommerce from "./wooCommerce.en";
 
 const en = {
   assistHomeScreen: {
@@ -344,6 +346,10 @@ const en = {
     registrationFailed: "Registration failed. Please try again.",
     requestTimedOut:
       "The request timed out. Please check your connection and try again.",
+    // Simple JWT Login plugin error code messages (split into a separate file)
+    simpleJwt: simpleJwt,
+    // WooCommerce REST API string error codes
+    woocommerce: wooCommerce,
   },
 };
 

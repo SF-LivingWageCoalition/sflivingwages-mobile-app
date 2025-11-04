@@ -42,10 +42,10 @@ import {
 // Import utility functions
 import {
   fetchWithTimeout,
-  apiFailure,
   apiFailureFromException,
   parseJsonSafe,
   isValidValidationData,
+  apiFailureWithServerCode,
 } from "./utils";
 
 /**
@@ -106,8 +106,7 @@ export const fetchToken = async (
         console.error("authApi: Error code:", tokenData.data.errorCode);
         console.error("authApi: Error message:", tokenData.data.message);
       }
-      const message = tokenData?.data?.message ?? "Failed to fetch token";
-      return apiFailure<TokenData>(message, response.status, tokenData as any);
+      return apiFailureWithServerCode<TokenData>(tokenData, response.status);
     }
   } catch (error: any) {
     // General error during token fetch process - return a failed ApiResult
@@ -164,12 +163,9 @@ export const validateToken = async (
         response.status
       );
       console.log("authApi: Token validation response data:", validationData);
-      const message =
-        validationData?.data?.message ?? "Token validation failed";
-      return apiFailure<ValidationData>(
-        message,
-        response.status,
-        validationData as any
+      return apiFailureWithServerCode<ValidationData>(
+        validationData,
+        response.status
       );
     }
   } catch (error: any) {
@@ -233,15 +229,10 @@ export const loginUser = async (
           // Token validation failed.
           console.log("authApi: Login failed during validation");
           console.log("authApi: Validation result:", validationResult);
-          const message = !validationResult.success
-            ? validationResult.errorMessage ??
-              validationResult.data?.data?.message ??
-              "Token validation failed."
-            : "Token validation failed.";
-          return apiFailure<ValidationData["data"]>(
-            message,
-            validationResult.status,
-            validationResult.data?.data as any
+          const payload = validationResult.data?.data ?? validationResult.data;
+          return apiFailureWithServerCode<ValidationData["data"]>(
+            payload,
+            validationResult.status
           );
         }
       } catch (error: any) {
@@ -253,16 +244,10 @@ export const loginUser = async (
       // Token fetch failed.
       console.log("authApi: Login failed during token fetch");
       console.log("authApi: Token result:", tokenResult);
-      const message = !tokenResult.success
-        ? tokenResult.errorMessage ??
-          tokenResult.data?.data?.message ??
-          "Invalid credentials or unable to fetch token."
-        : tokenResult.data?.data?.message ??
-          "Invalid credentials or unable to fetch token.";
-      return apiFailure<ValidationData["data"]>(
-        message,
-        tokenResult.status,
-        tokenResult.data?.data as any
+      const payload = tokenResult.data?.data ?? tokenResult.data;
+      return apiFailureWithServerCode<ValidationData["data"]>(
+        payload,
+        tokenResult.status
       );
     }
   } catch (error: any) {
@@ -357,14 +342,9 @@ export const registerCustomer = async (
         console.error("authApi: Error code:", registrationData.code);
         console.error("authApi: Error message:", registrationData.message);
       }
-      const message =
-        registrationData?.message ??
-        registrationData?.data?.status ??
-        "Customer registration failed";
-      return apiFailure<CustomerRegistrationData>(
-        message,
-        response.status,
-        registrationData as any
+      return apiFailureWithServerCode<CustomerRegistrationData>(
+        registrationData,
+        response.status
       );
     }
   } catch (error: any) {
@@ -431,11 +411,9 @@ export const registerUser = async (
         console.error("authApi: Error code:", registrationData.data.errorCode);
         console.error("authApi: Error message:", registrationData.data.message);
       }
-      const message = registrationData?.data?.message ?? "Registration failed";
-      return apiFailure<UserRegistrationData>(
-        message,
-        response.status,
-        registrationData as any
+      return apiFailureWithServerCode<UserRegistrationData>(
+        registrationData,
+        response.status
       );
     }
   } catch (error: any) {
@@ -488,12 +466,9 @@ export const sendPasswordReset = async (
         response.status
       );
       console.log("authApi: Forgot password response data:", passwordResetData);
-      const message =
-        passwordResetData?.data?.message ?? "Password reset failed";
-      return apiFailure<PasswordResetData>(
-        message,
-        response.status,
-        passwordResetData as any
+      return apiFailureWithServerCode<PasswordResetData>(
+        passwordResetData,
+        response.status
       );
     }
   } catch (error: any) {

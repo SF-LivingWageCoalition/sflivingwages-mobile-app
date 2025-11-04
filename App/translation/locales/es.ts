@@ -1,4 +1,6 @@
 import type { Translations } from "./en";
+import simpleJwt from "./simpleJwt.es";
+import wooCommerce from "./wooCommerce.es";
 
 const es: Translations = {
   assistHomeScreen: {
@@ -354,6 +356,10 @@ const es: Translations = {
     registrationFailed: "Error de registro. Por favor, inténtalo de nuevo.",
     requestTimedOut:
       "La solicitud agotó el tiempo de espera. Por favor, verifica tu conexión e inténtalo de nuevo.",
+    // Simple JWT Login plugin error messages (kept in separate file). Spanish entries are placeholders.
+    simpleJwt: simpleJwt,
+    // WooCommerce REST API string error codes (Spanish)
+    woocommerce: wooCommerce,
   },
 };
 

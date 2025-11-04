@@ -7,6 +7,7 @@
 import { ApiError, TimeoutError } from "./errors";
 import type { ParseJsonSafeResult, ApiResult, ValidationData } from "./types";
 import { FETCH_TIMEOUT_MS } from "./config";
+import { getFriendlyErrorInfo } from "./errorCodeMap";
 
 /**
  * Helper that wraps fetch with an AbortController to enforce a timeout.
@@ -89,6 +90,26 @@ export const apiFailureFromException = <T = any>(
     return apiFailure<T>(message, 408, undefined);
   }
   return apiFailure<T>(message, undefined, undefined);
+};
+
+/**
+ * Create a standardized ApiResult failure using server payloads that may
+ * include Simple JWT numeric `errorCode` or WooCommerce string `code`.
+ * The returned `data` will include the detected `errorCode` or `errorKey`.
+ */
+export const apiFailureWithServerCode = <T = any>(
+  payload: any,
+  status?: number
+): ApiResult<T> => {
+  try {
+    const info = getFriendlyErrorInfo(payload);
+    const augmented = { ...(payload as any) } as any;
+    if (info.errorCode !== undefined) augmented.errorCode = info.errorCode;
+    if (info.errorKey !== undefined) augmented.errorKey = info.errorKey;
+    return apiFailure<T>(info.message, status, augmented as T);
+  } catch (e) {
+    return apiFailure<T>(undefined, status, payload as T);
+  }
 };
 
 /**

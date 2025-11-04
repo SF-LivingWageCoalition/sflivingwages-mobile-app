@@ -1,5 +1,6 @@
 import { ApiError } from "./errors";
 import { translate } from "../../translation";
+import { getFriendlyErrorInfo } from "./errorCodeMap";
 
 /**
  * Map an unknown error (possibly ApiError) to a user-facing translation string.
@@ -14,6 +15,25 @@ export function mapApiErrorToMessage(
     translate((defaultKey ?? "errors.unexpectedError") as any) ||
     "An unexpected error occurred.";
   if (error instanceof ApiError) {
+    // If the server included a numeric `errorCode` (Simple JWT Login provides
+    // this on `data.errorCode`), prefer a mapped/translated message based on
+    // that code. This keeps messages consistent and localizable.
+    try {
+      const payload = (error as any).data;
+      if (payload) {
+        const info = getFriendlyErrorInfo(payload);
+        // Prefer server-code-based translations when available (Simple JWT numeric codes
+        // or WooCommerce string codes). Return that translated message directly.
+        if (
+          (info.errorCode !== undefined || info.errorKey !== undefined) &&
+          info.message
+        ) {
+          return info.message;
+        }
+      }
+    } catch (e) {
+      // ignore and continue to status-based mapping
+    }
     const status = error.status;
     const serverMessage = error.message;
     console.log("mapApiErrorToMessage: ApiError status =", status);
@@ -76,7 +96,11 @@ export function mapApiErrorToMessage(
 
 export function mapApiErrorToTelemetry(error: unknown) {
   if (error instanceof ApiError) {
-    return { status: error.status, data: error.data };
+    const data = error.data as any;
+    const errorCode = data?.data?.errorCode ?? data?.errorCode;
+    const errorKey =
+      data?.data?.errorKey ?? data?.errorKey ?? data?.code ?? data?.data?.code;
+    return { status: error.status, data: error.data, errorCode, errorKey };
   }
   return { status: undefined, data: undefined };
 }
