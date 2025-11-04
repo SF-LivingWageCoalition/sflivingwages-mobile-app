@@ -63,7 +63,8 @@ Implementation quick-reference: file paths and a one-line purpose to help you ju
 | `App/api/auth/errors.ts`                                    | Runtime `ApiError` type and related error helpers                                       |
 | `App/translation/locales/simpleJwt.*.ts`                    | Localization files for Simple JWT Login responses                                       |
 | `App/translation/locales/wooCommerce.*.ts`                  | Localization files for Woo Commerce responses                                           |
-| `App/validation/authValidation.ts`                          | Zod schema factories for auth validation                                                |
+| `App/validation/authValidation.ts`                          | Zod schema factories for auth form validation                                           |
+| `App/redux/features/userSlice/userSlice.ts`                 | Redux slice for user state: actions/reducers/selectors for authenticated user data      |
 
 ---
 
