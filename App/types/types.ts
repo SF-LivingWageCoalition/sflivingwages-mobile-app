@@ -139,7 +139,8 @@ export type PhotoItem = {
 };
 
 export type PhotosProps = {
-  photos: PhotoItem[];
+  photos: ProductItem[];
+  isLoading: boolean;
 };
 
 export type CardData = {
@@ -169,7 +170,7 @@ export type ViewProps = {
 export type AuctionNavState = {
   arts: ProductItem[];
   books: ProductItem[];
-  photos: PhotoItem[];
+  photos: ProductItem[];
   cds: ProductItem[];
   dvds: ProductItem[];
   lps: ProductItem[];
@@ -184,6 +185,7 @@ export type AuctionTabParamList = {
   Cds: undefined;
   Dvds: undefined;
   LPs: undefined;
+  Photos: undefined;
 };
 
 export type DonateSection = { title: string; content: React.ReactNode };

@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   button: {
-    backgroundColor: colors.light.primary,
+    backgroundColor: colors.light.primary, // #d31623
     borderRadius: 30,
     paddingVertical: 10,
     paddingHorizontal: 15,
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     ...textStyles.button,
-    color: colors.light.textOnPrimary,
+    color: colors.light.textOnPrimary, // #991b1b
     textAlign: "center",
   },
 });

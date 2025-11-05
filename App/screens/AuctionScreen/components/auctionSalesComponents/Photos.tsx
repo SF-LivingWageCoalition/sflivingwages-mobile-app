@@ -23,35 +23,25 @@ import {
   PhotoItem,
   PhotosProps,
   PreviewScreenParams,
+  ProductItem,
 } from "../../../../types/types";
 
 const Photos: React.FC<PhotosProps> = ({ photos }) => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
-  const [closeDate, setCloseDate] = useState<string>("");
 
-  const formatDate = (value: string): void => {
-    const date = new Date(value).getDate(); // Current Date
-    const month = new Date(value).getMonth() + 1; // Current Month
-    const year = new Date(value).getFullYear(); // Current Year
-    const hours = new Date(value).getHours() + 5; // Current Hours
-    const min = new Date(value).getMinutes(); // Current Minutes
-
-    setCloseDate(month + "/" + date + "/" + year + " " + hours + ":" + min);
-  };
-
-  const renderItem: ListRenderItem<PhotoItem> = ({ item }) => {
+  const renderItem: ListRenderItem<ProductItem> = ({ item }) => {
     return (
       <View style={styles.container}>
         <View style={styles.cardImage}>
-          <Text style={styles.itemTitle}> {item.title} </Text>
+          <Text style={styles.itemTitle}> {item.name} </Text>
           <TouchableHighlight
             underlayColor="gray"
             onPress={() => {
-              if (item.long_description != null) {
+              if (item.description != null) {
                 navigation.navigate("Details", {
-                  image: item.author_image,
-                  bio: item.long_description,
-                  title: item.title,
+                  image: item.images[0]?.src,
+                  bio: item.description,
+                  title: item.name,
                 } as DetailParams);
               } else {
                 Alert.alert("", "No Detail", [
@@ -64,31 +54,24 @@ const Photos: React.FC<PhotosProps> = ({ photos }) => {
             }}
             onLongPress={() => {
               navigation.navigate("Preview", {
-                image: item.path,
+                image: item.images[0]?.src,
               } as PreviewScreenParams);
             }}
           >
-            <Image style={styles.imageStyle} source={{ uri: item.path }} />
+            <Image style={styles.imageStyle} source={{ uri: item.images[0]?.src }} />
           </TouchableHighlight>
           <Text style={styles.textItalic}>
             Long press to zoom or Tap to show details
           </Text>
 
           <View style={styles.horizontalLine} />
-          <Text style={styles.marginTop}>
-            {(() => {
-              formatDate(item.closeDate);
-              return null;
-            })()}
-            Close date: {closeDate}
-          </Text>
 
           {/* Product Individual page link */}
           <View style={styles.buttonStyle}>
             <TouchableOpacity
               style={styles.submitButton}
               onPress={() => {
-                Linking.openURL(`${item.url}`);
+                Linking.openURL(`${item.permalink}`);
               }}
             >
               <Text style={styles.submitButtonText}> Place bid </Text>
