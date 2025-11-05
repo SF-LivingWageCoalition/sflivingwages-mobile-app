@@ -91,7 +91,7 @@ export const textStyles = {
   },
   buttonSmall: {
     fontFamily: fontFamily.bodyBold, // Roboto Bold
-    fontSize: fontSize.sm, // 16
+    fontSize: fontSize.xs, // 16
   },
   // Labels and captions
   label: {

@@ -158,8 +158,8 @@ const LivingWageCalculator: React.FC = () => {
             </View>
           </View>
 
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={styles.submitButtonText}>Submit</Text>
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Submit</Text>
           </TouchableOpacity>
         </View>
         {calculationResult && (
@@ -268,16 +268,21 @@ const styles = StyleSheet.create({
     ...textStyles.h3,
     textAlign: "center",
   },
-  submitButton: {
-    backgroundColor: colors.light.primary,
-    padding: 16,
-    borderRadius: 12,
-    alignItems: "center",
-    width: "100%",
+  button: {
+    backgroundColor: colors.light.primary, // #d31623
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    elevation: 6,
+    shadowColor: colors.light.primary,
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    shadowOffset: { width: 1, height: 1 },
   },
-  submitButtonText: {
+  buttonText: {
     color: colors.light.textOnPrimary,
     ...textStyles.button,
+    textAlign: "center",
   },
   resultsCard: {
     backgroundColor: colors.light.background,

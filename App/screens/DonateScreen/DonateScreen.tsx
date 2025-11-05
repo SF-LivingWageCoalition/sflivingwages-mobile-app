@@ -39,7 +39,7 @@ const DonateScreen: React.FC = () => {
             or bank account to donate through PayPal.{"\n\n"}Click on the button
             below to be taken to our PayPal site.
           </Text>
-          <View style={styles.buttonStyle}>
+          <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.button}
               onPress={() =>
@@ -125,6 +125,10 @@ const styles = StyleSheet.create({
   dropDownItem: {
     marginTop: 30,
   },
+  buttonContainer: {
+    marginTop: 20,
+    gap: 20,
+  },
   button: {
     backgroundColor: colors.light.primary, // #d31623
     borderRadius: 30,
@@ -135,11 +139,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 3,
     shadowOffset: { width: 1, height: 1 },
-  },
-  buttonStyle: {
-    // padding: 5,
-    // justifyContent: "center",
-    // alignItems: "center",
   },
   buttonText: {
     ...textStyles.button,

@@ -303,15 +303,15 @@ const ReportViolation: React.FC = () => {
           </Text>
           <View style={styles.buttonStyles}>
             <TouchableOpacity onPress={onSubmitData}>
-              <View style={styles.submitButton}>
-                <Text style={styles.submitButtonText}>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>
                   {translate("assistScreen.submit")}
                 </Text>
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.submitButton} onPress={resetAll}>
-              <Text style={styles.submitButtonText}>
+            <TouchableOpacity style={styles.clearButton} onPress={resetAll}>
+              <Text style={styles.clearButtonText}>
                 {translate("assistScreen.clear")}
               </Text>
             </TouchableOpacity>
@@ -381,15 +381,45 @@ const styles = StyleSheet.create({
     ...textStyles.bodyBold,
     color: colors.light.primary,
   },
-  submitButton: {
-    backgroundColor: colors.light.surface,
-    borderColor: colors.light.primary,
-    borderWidth: 1,
-    padding: 10,
+  button: {
+    backgroundColor: colors.light.primary, // #d31623
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    elevation: 6,
     width: 100,
     height: 40,
     marginTop: 20,
-    borderRadius: 10,
+    shadowColor: colors.light.primary,
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    shadowOffset: { width: 1, height: 1 },
+  },
+  clearButton: {
+    backgroundColor: colors.light.surface,
+    borderColor: colors.light.primary,
+    borderWidth: 1,
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    elevation: 6,
+    width: 100,
+    height: 40,
+    marginTop: 20,
+    shadowColor: colors.light.primary,
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    shadowOffset: { width: 1, height: 1 },
+  },
+  buttonText: {
+    ...textStyles.button,
+    color: colors.light.textOnPrimary,
+    textAlign: "center",
+  },
+  clearButtonText: {
+    ...textStyles.button,
+    color: colors.light.primary,
+    textAlign: "center",
   },
   buttonStyles: {
     flexDirection: "row",
@@ -397,10 +427,30 @@ const styles = StyleSheet.create({
     padding: 5,
     paddingBottom: 20,
   },
+  recaptchaButton: {
+    backgroundColor: colors.light.surface,
+    borderColor: colors.light.secondary,
+    borderWidth: 1,
+    borderRadius: 7,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    width: 100,
+    height: 40,
+    marginTop: 20,
+    shadowColor: colors.light.secondary,
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    shadowOffset: { width: 1, height: 1 },
+  },
+  recaptchaText: {
+    ...textStyles.buttonSmall,
+    color: colors.light.secondary,
+    textAlign: "center",
+  },
   buttonStylesRecaptcha: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    padding: 4,
+    padding: 5,
   },
   recaptchaMessage: {
     ...textStyles.caption,
@@ -417,11 +467,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  submitButtonText: {
-    ...textStyles.button,
-    color: colors.light.primary,
-    textAlign: "center",
-  },
   inputContainer: {
     margin: 12,
   },
@@ -431,20 +476,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontStyle: "italic",
     color: colors.light.primary,
-  },
-  recaptchaButton: {
-    backgroundColor: colors.light.secondary,
-    borderColor: colors.light.secondary,
-    // borderWidth: 1,
-    padding: 10,
-    width: 100,
-    height: 40,
-    marginTop: 20,
-  },
-  recaptchaText: {
-    ...textStyles.button,
-    color: colors.light.textOnSecondary,
-    textAlign: "center",
   },
   headerComponentView: {
     marginTop: Platform.OS === "ios" ? 12 : 0,
