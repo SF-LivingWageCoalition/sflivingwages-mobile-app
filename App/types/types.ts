@@ -54,7 +54,11 @@ export type CampaignTitleProps = {
   navigation?: NavigationProp<ParamListBase>;
 };
 
-export type AuctionCardProps = {
+export type PreviewScreenParams = {
+  image: string;
+};
+
+export type CardProps = {
   categoryId?: number;
   name: string;
   description: string;
@@ -62,20 +66,12 @@ export type AuctionCardProps = {
   link: string;
   image: string;
   previewImage: string;
+  buttonText?: string;
+  showDescriptionModal?: boolean;
 };
 
-export type PreviewScreenParams = {
-  image: string;
-};
-
-export type CardProps = {
-  name: string;
-  description: string;
-  price: number;
-  link: string;
-  image: string;
-  previewImage: string;
-};
+// Alias for backwards compatibility
+export type AuctionCardProps = CardProps;
 
 export type ItemModalProps = {
   description: string;

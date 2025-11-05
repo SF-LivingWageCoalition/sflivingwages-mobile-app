@@ -3,7 +3,7 @@ import {
   ParamListBase,
   useNavigation,
 } from "@react-navigation/native";
-import React, { useState } from "react";
+import React from "react";
 import {
   Alert,
   FlatList,
@@ -20,7 +20,6 @@ import { colors } from "../../../../theme";
 import { textStyles } from "../../../../theme/fontStyles";
 import {
   DetailParams,
-  PhotoItem,
   PhotosProps,
   PreviewScreenParams,
   ProductItem,
@@ -58,7 +57,10 @@ const Photos: React.FC<PhotosProps> = ({ photos }) => {
               } as PreviewScreenParams);
             }}
           >
-            <Image style={styles.imageStyle} source={{ uri: item.images[0]?.src }} />
+            <Image
+              style={styles.imageStyle}
+              source={{ uri: item.images[0]?.src }}
+            />
           </TouchableHighlight>
           <Text style={styles.textItalic}>
             Long press to zoom or Tap to show details
@@ -69,12 +71,12 @@ const Photos: React.FC<PhotosProps> = ({ photos }) => {
           {/* Product Individual page link */}
           <View style={styles.buttonStyle}>
             <TouchableOpacity
-              style={styles.submitButton}
+              style={styles.button}
               onPress={() => {
                 Linking.openURL(`${item.permalink}`);
               }}
             >
-              <Text style={styles.submitButtonText}> Place bid </Text>
+              <Text style={styles.buttonText}> Place bid </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -130,17 +132,20 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     marginTop: 10,
   },
-  submitButton: {
+  button: {
     backgroundColor: colors.light.primary,
-    padding: 10,
-    width: 100,
-    height: 40,
-    marginTop: 5,
-    borderRadius: 10,
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    elevation: 6,
+    shadowColor: colors.light.primary,
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    shadowOffset: { width: 1, height: 1 },
   },
-  submitButtonText: {
+  buttonText: {
     ...textStyles.button,
-    color: colors.light.textOnPrimary,
+    color: colors.light.textOnPrimary, // #991b1b
     textAlign: "center",
   },
   itemTitle: {

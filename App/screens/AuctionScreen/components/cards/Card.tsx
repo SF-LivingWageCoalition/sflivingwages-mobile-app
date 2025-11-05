@@ -23,6 +23,8 @@ const Card: React.FC<CardProps> = ({
   link,
   image,
   previewImage,
+  buttonText = "Shop",
+  showDescriptionModal = true,
 }) => {
   const navigate = useNavigation<NavigationProp<ParamListBase>>();
 
@@ -51,18 +53,22 @@ const Card: React.FC<CardProps> = ({
         <Text style={textStyles.caption}>tap picture to enlarge</Text>
         <View style={styles.horizontalLine} />
         <View>
-          <ItemModal title={name} description={cleanDescription} />
+          {showDescriptionModal ? (
+            <ItemModal title={name} description={cleanDescription} />
+          ) : (
+            <Text style={textStyles.body}>{cleanDescription}</Text>
+          )}
           <Text style={textStyles.body}>${itemPrice}</Text>
         </View>
         {/* Product Individual page link */}
-        <View style={styles.submitButtonContainer}>
+        <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={styles.submitButton}
+            style={styles.button}
             onPress={() => {
               Linking.openURL(link);
             }}
           >
-            <Text style={styles.submitButtonText}>Shop</Text>
+            <Text style={styles.buttonText}>{buttonText}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -106,19 +112,23 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.light.textPrimary,
     borderBottomWidth: 1,
   },
-  submitButtonContainer: {
+  buttonContainer: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
-  submitButton: {
-    justifyContent: "center",
-    backgroundColor: colors.light.primary,
-    width: 100,
-    height: 40,
+  button: {
+    backgroundColor: colors.light.primary, // #d31623
     borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    elevation: 6,
+    shadowColor: colors.light.primary,
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    shadowOffset: { width: 1, height: 1 },
   },
-  submitButtonText: {
+  buttonText: {
     ...textStyles.button,
     color: colors.light.textOnPrimary,
     textAlign: "center",
