@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import Button from "../../../../components/Button";
 import { colors } from "../../../../theme";
 import { textStyles } from "../../../../theme/fontStyles";
 import { CardProps, PreviewScreenParams } from "../../../../types/types";
@@ -62,14 +63,13 @@ const Card: React.FC<CardProps> = ({
         </View>
         {/* Product Individual page link */}
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
+          <Button
+            variant="primary"
+            title={buttonText}
             onPress={() => {
               Linking.openURL(link);
             }}
-          >
-            <Text style={styles.buttonText}>{buttonText}</Text>
-          </TouchableOpacity>
+          />
         </View>
       </View>
     </View>
@@ -116,22 +116,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  button: {
-    backgroundColor: colors.light.primary, // #d31623
-    borderRadius: 30,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    elevation: 6,
-    shadowColor: colors.light.primary,
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: { width: 1, height: 1 },
-  },
-  buttonText: {
-    ...textStyles.button,
-    color: colors.light.textOnPrimary,
-    textAlign: "center",
   },
 });
 

@@ -4,10 +4,10 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
+import Button from "../../components/Button";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { DonateSection } from "../../types/types";
@@ -40,16 +40,15 @@ const DonateScreen: React.FC = () => {
             below to be taken to our PayPal site.
           </Text>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.button}
+            <Button
+              variant="primary"
+              title="Donate Online"
               onPress={() =>
                 handleOpenURL(
                   "https://www.livingwage-sf.org/online-donation-form/"
                 )
               }
-            >
-              <Text style={styles.buttonText}>{"Donate Online"}</Text>
-            </TouchableOpacity>
+            />
           </View>
         </View>
       ),
@@ -128,22 +127,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 20,
     gap: 20,
-  },
-  button: {
-    backgroundColor: colors.light.primary, // #d31623
-    borderRadius: 30,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    elevation: 6,
-    shadowColor: colors.light.primary,
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: { width: 1, height: 1 },
-  },
-  buttonText: {
-    ...textStyles.button,
-    color: colors.light.textOnPrimary,
-    textAlign: "center",
   },
 });
 

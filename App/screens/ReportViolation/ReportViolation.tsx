@@ -17,6 +17,7 @@ import {
 import { CheckBox } from "react-native-elements";
 import Recaptcha from "react-native-recaptcha-that-works";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import Button from "../../components/Button";
 import appIcon from "../../../assets/icon.png";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
@@ -172,16 +173,20 @@ const ReportViolation: React.FC = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.circleBackButton}
+        <Button
+          variant="circle"
+          position="absolute"
+          positionTop={27}
+          positionLeft={27}
           onPress={() => navigation.goBack()}
-        >
-          <FontAwesome5
-            name="chevron-left"
-            size={20}
-            color={colors.light.chevronLight}
-          />
-        </TouchableOpacity>
+          icon={
+            <FontAwesome5
+              name="chevron-left"
+              size={20}
+              color={colors.light.chevronLight}
+            />
+          }
+        />
         <View style={styles.card}>
           <View style={styles.logoContainer}>
             <Image style={styles.logo} source={appIcon} />
@@ -269,14 +274,12 @@ const ReportViolation: React.FC = () => {
             <Recaptcha
               headerComponent={
                 <View style={styles.headerComponentView}>
-                  <TouchableOpacity
-                    style={styles.recaptchaButton}
+                  <Button
+                    variant="outlined"
+                    title={translate("assistScreen.close")}
                     onPress={close}
-                  >
-                    <Text style={styles.recaptchaText}>
-                      {translate("assistScreen.close")}
-                    </Text>
-                  </TouchableOpacity>
+                    style={styles.recaptchaButtonStyle}
+                  />
                 </View>
               }
               lang={"en"}
@@ -287,11 +290,12 @@ const ReportViolation: React.FC = () => {
               size={"invisible"} // change to 'normal' for version 2
               theme={"light"}
             />
-            <TouchableOpacity style={styles.recaptchaButton} onPress={send}>
-              <Text style={styles.recaptchaText}>
-                {translate("assistScreen.recaptcha")}
-              </Text>
-            </TouchableOpacity>
+            <Button
+              variant="outlined"
+              title={translate("assistScreen.recaptcha")}
+              onPress={send}
+              style={styles.recaptchaButtonStyle}
+            />
           </View>
           {isEmpty ? (
             <Text style={styles.recaptchaMessage}>
@@ -302,19 +306,19 @@ const ReportViolation: React.FC = () => {
             {translate("assistScreen.review")}
           </Text>
           <View style={styles.buttonStyles}>
-            <TouchableOpacity onPress={onSubmitData}>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>
-                  {translate("assistScreen.submit")}
-                </Text>
-              </View>
-            </TouchableOpacity>
+            <Button
+              variant="primary"
+              title={translate("assistScreen.submit")}
+              onPress={onSubmitData}
+              style={styles.primaryButtonStyle}
+            />
 
-            <TouchableOpacity style={styles.clearButton} onPress={resetAll}>
-              <Text style={styles.clearButtonText}>
-                {translate("assistScreen.clear")}
-              </Text>
-            </TouchableOpacity>
+            <Button
+              variant="clear"
+              title={translate("assistScreen.clear")}
+              onPress={resetAll}
+              style={styles.clearButtonStyle}
+            />
           </View>
         </View>
       </View>
@@ -326,22 +330,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  circleBackButton: {
-    position: "absolute",
-    top: 27,
-    left: 27,
-    backgroundColor: colors.light.primary,
-    width: 40,
+  primaryButtonStyle: {
+    width: 100,
     height: 40,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 10,
-    elevation: 6,
-    shadowColor: colors.light.primary,
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: { width: 1, height: 1 },
+    marginTop: 20,
+  },
+  clearButtonStyle: {
+    width: 100,
+    height: 40,
+    marginTop: 20,
+  },
+  recaptchaButtonStyle: {
+    width: 100,
+    height: 40,
+    marginTop: 20,
   },
   intro: {
     ...textStyles.h3,
@@ -381,71 +383,11 @@ const styles = StyleSheet.create({
     ...textStyles.bodyBold,
     color: colors.light.primary,
   },
-  button: {
-    backgroundColor: colors.light.primary, // #d31623
-    borderRadius: 30,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    elevation: 6,
-    width: 100,
-    height: 40,
-    marginTop: 20,
-    shadowColor: colors.light.primary,
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: { width: 1, height: 1 },
-  },
-  clearButton: {
-    backgroundColor: colors.light.surface,
-    borderColor: colors.light.primary,
-    borderWidth: 1,
-    borderRadius: 30,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    elevation: 6,
-    width: 100,
-    height: 40,
-    marginTop: 20,
-    shadowColor: colors.light.primary,
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: { width: 1, height: 1 },
-  },
-  buttonText: {
-    ...textStyles.button,
-    color: colors.light.textOnPrimary,
-    textAlign: "center",
-  },
-  clearButtonText: {
-    ...textStyles.button,
-    color: colors.light.primary,
-    textAlign: "center",
-  },
   buttonStyles: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     padding: 5,
     paddingBottom: 20,
-  },
-  recaptchaButton: {
-    backgroundColor: colors.light.surface,
-    borderColor: colors.light.secondary,
-    borderWidth: 1,
-    borderRadius: 7,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    width: 100,
-    height: 40,
-    marginTop: 20,
-    shadowColor: colors.light.secondary,
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: { width: 1, height: 1 },
-  },
-  recaptchaText: {
-    ...textStyles.buttonSmall,
-    color: colors.light.secondary,
-    textAlign: "center",
   },
   buttonStylesRecaptcha: {
     flexDirection: "row",

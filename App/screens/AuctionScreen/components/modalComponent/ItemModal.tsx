@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import Button from "../../../../components/Button";
 import { colors } from "../../../../theme";
 import { textStyles } from "../../../../theme/fontStyles";
 import { ItemModalProps } from "../../../../types/types";
@@ -30,12 +31,12 @@ const ItemModal: React.FC<ItemModalProps> = ({ description, title }) => {
             <ScrollView>
               <Text style={styles.modalText}>{description}</Text>
             </ScrollView>
-            <TouchableOpacity
-              style={[styles.button, styles.buttonClose]}
+            <Button
+              variant="primary"
+              title="Close"
               onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyleClose}>Close</Text>
-            </TouchableOpacity>
+              style={styles.buttonClose}
+            />
           </View>
         </View>
       </Modal>
@@ -66,20 +67,8 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  button: {
-    backgroundColor: colors.light.primary, // #d31623
-    borderRadius: 30,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    elevation: 6,
-    shadowColor: colors.light.primary,
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: { width: 1, height: 1 },
-  },
   buttonClose: {
     marginTop: 15,
-    backgroundColor: colors.light.primary,
   },
   titleText: {
     ...textStyles.h3,
@@ -90,11 +79,6 @@ const styles = StyleSheet.create({
   textStyleOpen: {
     ...textStyles.buttonSmall,
     color: colors.light.textPrimary,
-  },
-  textStyleClose: {
-    ...textStyles.button,
-    color: colors.light.textOnPrimary,
-    textAlign: "center",
   },
   modalText: {
     ...textStyles.bodyLarge,

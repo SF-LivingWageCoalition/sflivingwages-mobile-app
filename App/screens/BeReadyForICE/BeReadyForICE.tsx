@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import Collapsible from "react-native-collapsible";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import Button from "../../components/Button";
 import BulletItem from "../../components/lists/BulletItem";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
@@ -35,16 +36,20 @@ const BeReadyForICE: React.FC = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.circleBackButton}
+        <Button
+          variant="circle"
+          position="absolute"
+          positionTop={27}
+          positionLeft={27}
           onPress={() => navigation.goBack()}
-        >
-          <FontAwesome5
-            name="chevron-left"
-            size={20}
-            color={colors.light.chevronLight}
-          />
-        </TouchableOpacity>
+          icon={
+            <FontAwesome5
+              name="chevron-left"
+              size={20}
+              color={colors.light.chevronLight}
+            />
+          }
+        />
         <View style={styles.card}>
           <View style={styles.logoContainer}>
             <Image style={styles.logo} source={appIcon} />
@@ -335,23 +340,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: colors.light.surfaceVariant,
-  },
-  circleBackButton: {
-    position: "absolute",
-    top: 27,
-    left: 27,
-    backgroundColor: colors.light.primary,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 10,
-    elevation: 6,
-    shadowColor: colors.light.primary,
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: { width: 1, height: 1 },
   },
   card: {
     backgroundColor: colors.light.background,
