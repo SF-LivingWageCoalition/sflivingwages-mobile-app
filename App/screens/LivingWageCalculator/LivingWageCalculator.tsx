@@ -1,13 +1,7 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useRef, useState } from "react";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import Button from "../../components/Button";
 import appIcon from "../../../assets/icon.png";
@@ -162,9 +156,7 @@ const LivingWageCalculator: React.FC = () => {
             </View>
           </View>
 
-          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </TouchableOpacity>
+          <Button variant="primary" title="Submit" onPress={handleSubmit} />
         </View>
         {calculationResult && (
           <View ref={resultsCardRef} style={styles.resultsCard}>
@@ -253,22 +245,6 @@ const styles = StyleSheet.create({
   },
   title: {
     ...textStyles.h3,
-    textAlign: "center",
-  },
-  button: {
-    backgroundColor: colors.light.primary, // #d31623
-    borderRadius: 30,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    elevation: 6,
-    shadowColor: colors.light.primary,
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: { width: 1, height: 1 },
-  },
-  buttonText: {
-    color: colors.light.textOnPrimary,
-    ...textStyles.button,
     textAlign: "center",
   },
   resultsCard: {

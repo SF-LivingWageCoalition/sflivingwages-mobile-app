@@ -13,9 +13,9 @@ import {
   StyleSheet,
   Text,
   TouchableHighlight,
-  TouchableOpacity,
   View,
 } from "react-native";
+import Button from "../../../../components/Button";
 import { colors } from "../../../../theme";
 import { textStyles } from "../../../../theme/fontStyles";
 import {
@@ -70,14 +70,13 @@ const Photos: React.FC<PhotosProps> = ({ photos }) => {
 
           {/* Product Individual page link */}
           <View style={styles.buttonStyle}>
-            <TouchableOpacity
-              style={styles.button}
+            <Button
+              variant="primary"
+              title="Place bid"
               onPress={() => {
                 Linking.openURL(`${item.permalink}`);
               }}
-            >
-              <Text style={styles.buttonText}> Place bid </Text>
-            </TouchableOpacity>
+            />
           </View>
         </View>
       </View>
@@ -131,22 +130,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
     marginTop: 10,
-  },
-  button: {
-    backgroundColor: colors.light.primary,
-    borderRadius: 30,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    elevation: 6,
-    shadowColor: colors.light.primary,
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: { width: 1, height: 1 },
-  },
-  buttonText: {
-    ...textStyles.button,
-    color: colors.light.textOnPrimary, // #991b1b
-    textAlign: "center",
   },
   itemTitle: {
     ...textStyles.h3,
