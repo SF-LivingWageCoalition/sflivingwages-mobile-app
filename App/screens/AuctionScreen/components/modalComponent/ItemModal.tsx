@@ -67,10 +67,15 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    color: colors.light.textPrimary,
+    backgroundColor: colors.light.primary, // #d31623
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    elevation: 6,
+    shadowColor: colors.light.primary,
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    shadowOffset: { width: 1, height: 1 },
   },
   buttonClose: {
     marginTop: 15,

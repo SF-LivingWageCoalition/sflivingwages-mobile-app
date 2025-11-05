@@ -41,14 +41,14 @@ const DonateScreen: React.FC = () => {
           </Text>
           <View style={styles.buttonStyle}>
             <TouchableOpacity
-              style={styles.donationButton}
+              style={styles.button}
               onPress={() =>
                 handleOpenURL(
                   "https://www.livingwage-sf.org/online-donation-form/"
                 )
               }
             >
-              <Text style={styles.donationButtonText}>{"Donate Online"}</Text>
+              <Text style={styles.buttonText}>{"Donate Online"}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -125,20 +125,23 @@ const styles = StyleSheet.create({
   dropDownItem: {
     marginTop: 30,
   },
-  donationButton: {
-    backgroundColor: colors.light.primary,
-    padding: 10,
-    width: 200,
-    height: 40,
-    marginTop: 20,
+  button: {
+    backgroundColor: colors.light.primary, // #d31623
     borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    elevation: 6,
+    shadowColor: colors.light.primary,
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    shadowOffset: { width: 1, height: 1 },
   },
   buttonStyle: {
-    padding: 5,
-    justifyContent: "center",
-    alignItems: "center",
+    // padding: 5,
+    // justifyContent: "center",
+    // alignItems: "center",
   },
-  donationButtonText: {
+  buttonText: {
     ...textStyles.button,
     color: colors.light.textOnPrimary,
     textAlign: "center",
