@@ -16,8 +16,8 @@ import {
 import { CheckBox } from "react-native-elements";
 import Recaptcha from "react-native-recaptcha-that-works";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import Button from "../../components/Button";
 import appIcon from "../../../assets/icon.png";
+import Button from "../../components/Button";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
@@ -331,17 +331,14 @@ const styles = StyleSheet.create({
   },
   primaryButtonStyle: {
     width: 100,
-    height: 40,
     marginTop: 20,
   },
   clearButtonStyle: {
     width: 100,
-    height: 40,
     marginTop: 20,
   },
   recaptchaButtonStyle: {
     width: 100,
-    height: 40,
     marginTop: 20,
   },
   intro: {
