@@ -18,6 +18,7 @@ const en = {
       unpaidOvertime: "Unpaid Overtime",
       noBreaks: "No Breaks",
       discrimination: "Discrimination",
+      immigrationStatus: "Immigration Status",
     },
     require: "Fields marked with an * are required",
     close: "Close",
