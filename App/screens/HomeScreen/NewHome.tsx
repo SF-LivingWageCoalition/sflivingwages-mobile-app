@@ -5,9 +5,9 @@ import {
   Linking,
   ScrollView,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
-  Text,
 } from "react-native";
 import { Divider } from "react-native-elements";
 import { Card } from "react-native-paper";
@@ -15,9 +15,20 @@ import Swiper from "react-native-swiper/src";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { WebView } from "react-native-webview";
 import { colors } from "../../theme";
-import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
-import { CarouselImageProps, NewHomeScreenProps } from "../../types";
+import { CarouselImageProps, NewHomeScreenProps } from "../../types/types";
+
+// Import images
+import campaign2Background from "../../assets/images/campaign2_background.jpg";
+import campaign3Background from "../../assets/images/campaign3_background.jpg";
+import encuentroImg from "../../assets/images/Encuentro_2017_021.jpg";
+import eventsSlide from "../../assets/images/events-slide.jpg";
+import fairtradeImg from "../../assets/images/fairtrade.jpg";
+import goldenGateBridge from "../../assets/images/golden-gate-bridge.png";
+import immigrantImg from "../../assets/images/immigrant.jpg";
+import publicSectorImg from "../../assets/images/public-sector.png";
+import welfareImg from "../../assets/images/welfare.jpg";
 
 const bodyPageWidth = Dimensions.get("window").width;
 
@@ -29,7 +40,7 @@ const CarouselImage: React.FC<CarouselImageProps> = ({ image, onPress }) => (
     <ImageBackground
       source={image.src}
       style={styles.imageBackground}
-      imageStyle={{ borderRadius: 10 }}
+      imageStyle={styles.imageBorder}
     >
       <View style={styles.containerBody}>
         <Text style={styles.textEvent}>{image.title}</Text>
@@ -50,7 +61,7 @@ const CarouselImageSmall: React.FC<CarouselImageProps> = ({
       <ImageBackground
         source={image.src}
         style={styles.imageBackgroundSmall}
-        imageStyle={{ borderRadius: 10 }}
+        imageStyle={styles.imageBorder}
       >
         <View style={styles.containerBody}>
           <Text style={styles.textCampaignsImg}>{image.title}</Text>
@@ -68,14 +79,14 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
   const mainSliderImages = [
     {
       id: 1,
-      title:  translate("donateScreen.title"),
-      src: require("../../assets/images/campaign2_background.jpg"),
+      title: translate("donateScreen.title"),
+      src: campaign2Background,
       destination: "Donate",
     },
     {
       id: 2,
       title: translate("eventsScreen.title"),
-      src: require("../../assets/images/events-slide.jpg"),
+      src: eventsSlide,
       destination: "EventsNavigator",
       destinationScreen: "Events",
     },
@@ -85,39 +96,39 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
   const campaignImages = [
     {
       id: 1,
-      src: require("../../assets/images/welfare.jpg"),
+      src: welfareImg,
       title: "Transform Welfare",
       destination:
         "https://www.livingwage-sf.org/transform-welfare-to-work-programs/",
     },
     {
       id: 2,
-      src: require("../../assets/images/public-sector.png"),
+      src: publicSectorImg,
       title: "Protect Public Sector and Union Jobs",
       destination: "https://www.livingwage-sf.org/protect-public-sector-jobs/",
     },
     {
       id: 3,
-      src: require("../../assets/images/Encuentro_2017_021.jpg"),
+      src: encuentroImg,
       title: "End Mass Incarceration and Prison Labor",
       destination: "https://www.livingwage-sf.org/mass-incarceration/",
     },
     {
       id: 4,
-      src: require("../../assets/images/immigrant.jpg"),
+      src: immigrantImg,
       title: "Immigration Reform",
       destination: "https://www.livingwage-sf.org/immigration-reform/",
     },
     {
       id: 5,
-      src: require("../../assets/images/fairtrade.jpg"),
+      src: fairtradeImg,
       title: "Fair Trade",
       destination:
         "https://www.livingwage-sf.org/transform-welfare-to-work-programs/",
     },
     {
       id: 6,
-      src: require("../../assets/images/campaign3_background.jpg"),
+      src: campaign3Background,
       title: "Raise Wages",
       destination: "https://www.livingwage-sf.org/raising-wages/",
     },
@@ -128,10 +139,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
       <View style={styles.container}>
         {/* Top background section: Who we Are */}
         <View style={styles.topBackground}>
-          <ImageBackground
-            source={require("../../assets/images/golden-gate-bridge.png")}
-            style={styles.background}
-          >
+          <ImageBackground source={goldenGateBridge} style={styles.background}>
             <View style={styles.header}>
               <Text style={styles.imageTitle}>
                 {translate("whoWeAreHeader.title")}
@@ -163,18 +171,18 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 showsButtons
                 autoplay={true}
                 autoplayTimeout={4}
-                dotColor={"white"}
+                dotColor={colors.light.onInfo}
                 activeDotColor={colors.light.secondary}
-                dotStyle={{ width: 8, height: 8 }}
+                dotStyle={styles.dotStyle}
               >
                 {mainSliderImages.map((image) => (
                   <CarouselImage
                     image={image}
                     key={image.id}
                     onPress={() => {
-                        navigation.navigate(image.destination, {
-                            screen: image.destinationScreen,
-                          });
+                      navigation.navigate(image.destination, {
+                        screen: image.destinationScreen,
+                      });
                     }}
                   />
                 ))}
@@ -184,15 +192,13 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
 
           {/* Campaigns section */}
           <View style={styles.containerBody}>
-            <Text style={{ ...styles.titles, marginTop: 12, marginBottom: 30 }}>
-              Campaigns
-            </Text>
+            <Text style={styles.campaignsTitle}>Campaigns</Text>
             <Swiper
               style={styles.swiperHigher}
               showsButtons
               autoplay={false}
-              activeDotColor={"#70b5ff"}
-              dotStyle={{ width: 8, height: 8 }}
+              activeDotColor={colors.light.secondary}
+              dotStyle={styles.dotStyle}
             >
               {campaignImages.map((image) => (
                 <CarouselImageSmall
@@ -207,23 +213,27 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
           </View>
 
           {/* Media section */}
-          {/* OLD COMMENT: this is comment because an error occur need to fix : ERROR with WebView */}
           <View style={styles.containerBody}>
             <Text style={styles.titles}>Media</Text>
             <Card style={styles.cardStyle}>
-              <TouchableOpacity>
-                <WebView
-                  style={styles.youTubeStyle}
-                  source={{
-                    uri: "http://www.youtube.com/embed?max-results=1&showinfo=0&rel=0&listType=user_uploads&list=sflivingwage",
-                  }}
-                  javaScriptEnabled={true}
-                  domStorageEnabled={true}
-                  mediaPlaybackRequiresUserAction={true}
-                  scrollEnabled={false}
-                  allowsInlineMediaPlayback={true}
-                />
-              </TouchableOpacity>
+              <WebView
+                style={styles.youTubeStyle}
+                source={{
+                  uri: "https://www.youtube.com/embed/videoseries?list=PLcuBfm3dxksyN__WaZR1pN1hoUcivSMPU&rel=0&modestbranding=1&playsinline=1",
+                  headers: {
+                    Referer: "https://www.livingwage-sf.org",
+                  },
+                }}
+                userAgent="Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1"
+                javaScriptEnabled={true}
+                domStorageEnabled={true}
+                mediaPlaybackRequiresUserAction={false}
+                scrollEnabled={false}
+                allowsInlineMediaPlayback={true}
+                allowsFullscreenVideo={true}
+                mixedContentMode="compatibility"
+                thirdPartyCookiesEnabled={true}
+              />
               <Card.Actions>
                 <View style={styles.cardView}>
                   <Text
@@ -243,13 +253,20 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
               <WebView
                 style={styles.youTubeStyle}
                 source={{
-                  uri: "https://www.youtube.com/embed?max-results=1&controls=0&showinfo=0&rel=0&listType=playlist&list=PLcuBfm3dxkszAbt58VCPehuEoi3VjzH2g",
+                  uri: "https://www.youtube.com/embed/videoseries?list=PLcuBfm3dxkszAbt58VCPehuEoi3VjzH2g&rel=0&modestbranding=1&playsinline=1",
+                  headers: {
+                    Referer: "https://www.livingwage-sf.org",
+                  },
                 }}
+                userAgent="Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1"
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
-                mediaPlaybackRequiresUserAction={true}
+                mediaPlaybackRequiresUserAction={false}
                 scrollEnabled={false}
                 allowsInlineMediaPlayback={true}
+                allowsFullscreenVideo={true}
+                mixedContentMode="compatibility"
+                thirdPartyCookiesEnabled={true}
               />
               <Card.Actions>
                 <View style={styles.cardView}>
@@ -270,13 +287,20 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
               <WebView
                 style={styles.youTubeStyle}
                 source={{
-                  uri: "https://www.youtube.com/embed?max-results=1&controls=0&showinfo=0&rel=0&listType=playlist&list=PLcuBfm3dxksz54i7-7QN1XaJbT23m6Pg3",
+                  uri: "https://www.youtube.com/embed/videoseries?list=PLcuBfm3dxksz54i7-7QN1XaJbT23m6Pg3&rel=0&modestbranding=1&playsinline=1",
+                  headers: {
+                    Referer: "https://www.livingwage-sf.org",
+                  },
                 }}
+                userAgent="Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1"
                 javaScriptEnabled={true}
                 domStorageEnabled={true}
-                mediaPlaybackRequiresUserAction={true}
+                mediaPlaybackRequiresUserAction={false}
                 scrollEnabled={false}
                 allowsInlineMediaPlayback={true}
+                allowsFullscreenVideo={true}
+                mixedContentMode="compatibility"
+                thirdPartyCookiesEnabled={true}
               />
               <Card.Actions>
                 <View style={styles.cardView}>
@@ -316,18 +340,6 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() =>
-                  Linking.openURL("https://twitter.com/sflivingwage?lang=en/")
-                }
-                style={styles.buttonMargin}
-              >
-                <FontAwesome
-                  name="twitter"
-                  size={46}
-                  color={colors.light.secondary}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() =>
                   Linking.openURL(
                     "https://www.instagram.com/sflivingwage/?hl=en"
                   )
@@ -336,6 +348,18 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
               >
                 <FontAwesome
                   name="instagram"
+                  size={46}
+                  color={colors.light.primary}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  Linking.openURL("https://twitter.com/sflivingwage?lang=en/")
+                }
+                style={styles.buttonMargin}
+              >
+                <FontAwesome
+                  name="twitter"
                   size={46}
                   color={colors.light.secondary}
                 />
@@ -375,7 +399,7 @@ const styles = StyleSheet.create({
     height: 256,
     borderColor: colors.light.outline,
     borderWidth: 1,
-    backgroundColor: "white",
+    backgroundColor: colors.light.background,
   },
   background: {
     height: 256,
@@ -388,8 +412,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   imageTitle: {
-    fontSize: fontSize.lg,
-    fontWeight: fontWeight.bold,
+    ...textStyles.h3,
     color: colors.light.textOnPrimary,
     marginLeft: 23,
     marginTop: 25,
@@ -408,8 +431,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   imageContent: {
-    fontSize: fontSize.lg,
-    fontWeight: fontWeight.normal,
+    ...textStyles.bodyLarge,
     color: colors.light.textOnPrimary,
     marginLeft: 23,
     marginTop: 26,
@@ -418,6 +440,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     alignContent: "center",
+  },
+  campaignsTitle: {
+    ...textStyles.h2,
+    lineHeight: 35,
+    marginTop: 12,
+    marginBottom: 30,
   },
   buttonView: {
     marginLeft: 23,
@@ -437,10 +465,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
   },
   buttonText: {
-    fontSize: fontSize.md,
+    ...textStyles.button,
     color: colors.light.textOnPrimary,
     textAlign: "center",
-    fontWeight: fontWeight.bold,
   },
   buttonMargin: {
     marginRight: 27,
@@ -461,21 +488,20 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   textCampaignsImg: {
-    fontSize: fontSize.xl,
+    ...textStyles.h2,
     backgroundColor: colors.light.elevation,
     color: colors.light.textOnPrimary,
-    fontWeight: fontWeight.bold,
     textTransform: "uppercase",
     textAlign: "center",
     padding: 6,
   },
   textEvent: {
-    fontSize: fontSize.xxl,
+    ...textStyles.h2,
     paddingVertical: 40,
     color: colors.light.textOnPrimary,
+    textTransform: "uppercase",
     textAlign: "center",
     textAlignVertical: "center",
-    fontWeight: fontWeight.bold,
   },
   swiperLower: {
     height: bodyPageWidth / 2 + 20,
@@ -505,9 +531,9 @@ const styles = StyleSheet.create({
     height: 30,
   },
   actionText: {
+    ...textStyles.bodyLarge,
     textDecorationLine: "underline",
     alignSelf: "center",
-    fontSize: fontSize.md,
     color: colors.light.secondary,
   },
   socialMediaArea: {
@@ -530,16 +556,21 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   follow: {
+    ...textStyles.h2,
     textAlign: "center",
-    fontSize: fontSize.xl,
-    fontWeight: fontWeight.semibold,
     marginTop: 30,
     marginBottom: 10,
   },
   titles: {
-    fontSize: fontSize.xl,
+    ...textStyles.h2,
     lineHeight: 35,
-    fontWeight: fontWeight.bold,
+  },
+  imageBorder: {
+    borderRadius: 10,
+  },
+  dotStyle: {
+    width: 8,
+    height: 8,
   },
 });
 

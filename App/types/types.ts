@@ -122,12 +122,6 @@ export type LPsProps = {
   isLoading: boolean;
 };
 
-export type MyNavigationButtonProps = {
-  author?: string;
-  description?: string;
-  title?: string;
-};
-
 export type DetailParams = {
   image: string;
   bio: string;
@@ -146,13 +140,6 @@ export type PhotoItem = {
 
 export type PhotosProps = {
   photos: PhotoItem[];
-};
-
-export type TimeLeft = {
-  days?: number;
-  hours?: number;
-  minutes?: number;
-  seconds?: number;
 };
 
 export type CardData = {
@@ -217,24 +204,6 @@ export type ModalScreenProps = {
     };
   };
   navigation: NavigationProp<RootStackParamList>;
-};
-
-export type ArticleSource = {
-  id?: string;
-  name: string;
-};
-
-export type ArticleItem = {
-  title: string;
-  description?: string;
-  publishedAt?: string;
-  source: ArticleSource;
-  urlToImage?: string;
-  url: string;
-};
-
-export type ArticleProps = {
-  article: ArticleItem;
 };
 
 export type EventItem = {

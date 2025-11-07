@@ -1,7 +1,7 @@
 declare module "react-native-credit-card-input" {
   import { Component } from "react";
   import { ViewProps } from "react-native";
-  import { CardData } from "../types";
+  import { CardData } from "./types";
 
   export interface CreditCardInputProps extends ViewProps {
     autoFocus?: boolean;

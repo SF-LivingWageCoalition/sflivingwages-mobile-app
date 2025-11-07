@@ -94,3 +94,10 @@ dist/
 
 # Keep .yarnrc.yml
 !.yarnrc.yml
+
+# Font Troubleshooting
+FONT_TROUBLESHOOTING.md
+FONT_UPDATE_SUMMARY.md
+FontTest.tsx
+FONT_USAGE_GUIDE.md
+FONT_BRANDING_UPDATE.md

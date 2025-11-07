@@ -1,7 +1,7 @@
 import React from "react";
 import { ActivityIndicator, FlatList } from "react-native";
 import { colors } from "../../../../theme";
-import { BooksProps } from "../../../../types";
+import { BooksProps } from "../../../../types/types";
 import Card from "../cards/Card";
 
 const Books: React.FC<BooksProps> = ({ books, isLoading }) => {
