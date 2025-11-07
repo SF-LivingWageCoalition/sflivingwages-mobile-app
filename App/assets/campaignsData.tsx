@@ -1,3 +1,4 @@
+
   const campaignData = [
     {
       id: 1,
@@ -5,6 +6,7 @@
       title: "Transform Welfare",
       destination:
         "https://www.livingwage-sf.org/transform-welfare-to-work-programs/",
+      text:  ''
     },
     {
       id: 2,
@@ -29,7 +31,7 @@
       src: require("./images/fairtrade.jpg"),
       title: "Fair Trade",
       destination:
-        "https://www.livingwage-sf.org/transform-welfare-to-work-programs/",
+        "https://www.livingwage-sf.org/fair-trade/",
     },
     {
       id: 6,

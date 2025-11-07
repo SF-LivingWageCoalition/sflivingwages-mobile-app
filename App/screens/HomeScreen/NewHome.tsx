@@ -90,8 +90,8 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
       src: eventsSlide,
       destination: "EventsNavigator",
       destinationScreen: "Events",
-    },
-
+    }
+  ]
   // Images for the campaigns section
   const campaignImages = [
     {

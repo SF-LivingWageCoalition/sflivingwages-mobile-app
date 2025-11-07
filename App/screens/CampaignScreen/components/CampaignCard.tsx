@@ -7,17 +7,19 @@ import { CampaignItem } from "../../../types/types";
 
 //create a campaign card that uses campaign item as its properties
 const CampaignCard: React.FC<CampaignItem> = ({
+  id,
   title,
-  destination,
+  text,
 }) => {
-  const navigate = useNavigation<NavigationProp<ParamListBase>>();
-
+  const navigation = useNavigation<NavigationProp<any>>();
   return (
     <ScrollView style={styles.container}>
       <View style={styles.container}>
         <Text
           style={styles.homeNavText}
-          onPress={() => Linking.openURL(destination)}
+          onPress={() => {
+            navigation.navigate("PerCampaignScreen", {id})
+          }}
         >
           {/* display item title */}
           {title} 

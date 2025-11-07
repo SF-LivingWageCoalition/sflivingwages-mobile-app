@@ -297,6 +297,9 @@ const es: Translations = {
   campaignScreen: {
     title: "Campañas",
   },
+  PerCampaignScreen: {
+    title: "Campaña",
+  },
 };
 
 export default es;

@@ -6,7 +6,7 @@ import {
   View,
 } from "react-native";
 import { colors } from "../../theme";
-import campaignData from "../../assets/campaignsData";
+import richCampaignsData from "../../assets/richCampaignsData";
 import CampaignCard from "./components/CampaignCard";
 
 const { height } = Dimensions.get("window");
@@ -20,11 +20,11 @@ const CampaignScreen: React.FC = () => {
   return (
     <View style={styles.container}>
               <FlatList
-                data={campaignData}
+                data={richCampaignsData}
                 renderItem={({item}) => <CampaignCard 
-                  src={item.src}
                   title={item.title}
-                  destination={item.destination} id={item.id}                />
+                  text={item.text}
+                  id={item.id} />
               }
               />
     </View>

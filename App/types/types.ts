@@ -292,7 +292,6 @@ export interface WageData {
 }
 export type CampaignItem = {
   id: number;
-  src: string;
+  text: string;
   title: string;
-  destination: string;
 };
