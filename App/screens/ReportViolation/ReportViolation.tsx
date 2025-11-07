@@ -69,6 +69,7 @@ const ReportViolation: React.FC = () => {
     translate("assistScreen.assistList.unpaidOvertime"),
     translate("assistScreen.assistList.noBreaks"),
     translate("assistScreen.assistList.discrimination"),
+    translate("assistScreen.assistList.immigrationStatus"),
   ];
   const [isChecked, setCheckState] = useState<boolean[]>(
     new Array(assistList.length).fill(false)

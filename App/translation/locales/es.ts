@@ -21,6 +21,7 @@ const es: Translations = {
       unpaidOvertime: "Horas extras no pagadas",
       noBreaks: "Sin descansos",
       discrimination: "Discriminación",
+      immigrationStatus: "Estado migratorio",
     },
     require: "Los campos marcados con un * son obligatorios",
     close: "Cerrar",
