@@ -19,6 +19,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import BottomTabStack from "./App/navigation/BottomTabStack";
 import { persistor, store } from "./App/redux/store/store";
+import CampaignScreen from "./App/screens/CampaignScreen/CampaignScreen";
 import ModalScreen from "./App/screens/AuctionScreen/ModalScreen";
 import EventsNavigator from "./App/screens/EventsScreen/components/EventsNav";
 import WhoWeAre from "./App/screens/WhoWeAreScreen/WhoWeAreScreen";
@@ -26,6 +27,8 @@ import { colors } from "./App/theme";
 import { fontFamily } from "./App/theme/fontStyles";
 import { translate } from "./App/translation/i18n";
 import { RootStackParamList } from "./App/types/types";
+import PerCampaignScreen from "./App/screens/PerCampaignScreen/PerCampaignScreen";
+
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -100,6 +103,16 @@ const App: React.FC = () => {
                 name="WhoWeAre"
                 options={{ title: translate("whoWeAreScreen.title") }}
                 component={WhoWeAre}
+              />
+              <Stack.Screen
+                name="CampaignScreen"
+                options={{ title: translate("campaignScreen.title") }}
+                component={CampaignScreen}
+              />
+              <Stack.Screen
+                name="PerCampaignScreen"
+                options={{ title: translate("PerCampaignScreen.title") }}
+                component={PerCampaignScreen}
               />
             </Stack.Navigator>
           </NavigationContainer>

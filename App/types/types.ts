@@ -5,6 +5,7 @@ export type RootStackParamList = {
   Preview: { image: string };
   EventsNavigator: undefined;
   WhoWeAre: undefined;
+  CampaignScreen: undefined;
 };
 
 export type BottomTabParamList = {
@@ -290,3 +291,8 @@ export interface WageData {
   adult1: Household;
   adult2: Household;
 }
+export type CampaignItem = {
+  id: number;
+  text: string;
+  title: string;
+};

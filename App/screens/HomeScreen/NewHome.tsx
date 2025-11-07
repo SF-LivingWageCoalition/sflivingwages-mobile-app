@@ -89,9 +89,8 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
       src: eventsSlide,
       destination: "EventsNavigator",
       destinationScreen: "Events",
-    },
+    }
   ];
-
   // Images for the campaigns section
   const campaignImages = [
     {
@@ -189,7 +188,6 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
               </Swiper>
             </View>
           </View>
-
           {/* Campaigns section */}
           <View style={styles.containerBody}>
             <Text style={styles.campaignsTitle}>Campaigns</Text>
@@ -205,7 +203,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                   key={image.id}
                   image={image}
                   onPress={() => {
-                    Linking.openURL(image.destination);
+                    navigation.navigate("CampaignScreen")
                   }}
                 />
               ))}

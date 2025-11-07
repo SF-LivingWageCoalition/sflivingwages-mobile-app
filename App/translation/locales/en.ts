@@ -1,3 +1,5 @@
+import PerCampaignScreen from "../../screens/PerCampaignScreen/PerCampaignScreen";
+
 const en = {
   assistHomeScreen: {
     title: "Assistance Center",
@@ -285,6 +287,12 @@ const en = {
   },
   eventsDetails: {
     title: "Event Details",
+  },
+  campaignScreen: {
+    title: "Campaigns",
+  },
+  PerCampaignScreen: {
+    title: "Campaign",
   },
 };
 
