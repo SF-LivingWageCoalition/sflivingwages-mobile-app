@@ -122,6 +122,16 @@ export type PasswordResetData = {
   };
 };
 
+// Logout result keeps the same ApiResult<T> wrapper used across this API
+// surface, but guarantees that on success `data` is defined and indicates
+// whether a server-side revoke was performed.
+export type LogoutResult = ApiResult<{
+  // true if a revoke request was attempted and the server returned success
+  revoked: boolean;
+  // optional token payload returned by the revoke endpoint on success
+  tokenData?: TokenData;
+}>;
+
 // Generic API result wrapper used by other helpers to provide consistent shape
 export type ApiResult<T> =
   | { success: true; data: T; status?: number }

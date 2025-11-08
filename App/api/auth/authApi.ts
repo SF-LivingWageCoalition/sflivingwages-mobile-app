@@ -30,6 +30,7 @@ import type {
   CustomerRegistrationData,
   PasswordResetData,
   ApiResult,
+  LogoutResult,
 } from "./types";
 
 // Import shared auth configuration constants
@@ -60,7 +61,7 @@ import {
 /**
  * Fetch a JWT token using email and password via the Simple JWT Login plugin.
  * Side-effects: none.
- * Returns: ApiResult<TokenData> where on success `data.data.jwt` is the raw JWT string.
+ * Returns: ApiResult<TokenData> where on success `data.jwt` is the raw JWT string.
  *
  * @param email - User's email address
  * @param password - User's password
@@ -123,7 +124,7 @@ export const fetchToken = async (
 /**
  * Validate a JWT token via the Simple JWT Login plugin.
  * Side-effects: none. Returns ApiResult<ValidationData> where on success
- * `data.data` contains `user`, `roles`, and `jwt` (array of decoded JWT objects).
+ * `data` contains `user`, `roles`, and `jwt` (array of decoded JWT objects).
  *
  * Note: see https://wordpress.org/support/topic/unable-to-find-user-property-in-jwt/ for a common error.
  *
@@ -183,7 +184,7 @@ export const validateToken = async (
 /**
  * Refresh a JWT token via the Simple JWT Login plugin.
  * Side-effects: none.
- * Returns: ApiResult<TokenData> where on success `data.data.jwt` is the new raw JWT string.
+ * Returns: ApiResult<TokenData> where on success `data.jwt` is the new raw JWT string.
  *
  * @param jwtToken - The JWT token to refresh
  * @returns Promise<ApiResult<TokenData>>
@@ -239,7 +240,7 @@ export const refreshToken = async (
  * Revoke a JWT token via the Simple JWT Login plugin.
  * Side-effects: none.
  * Returns: ApiResult<TokenData> where on success the server returns the
- * refreshed/confirmed JWT in `data.data.jwt` (i.e. `data` is expected to
+ * refreshed/confirmed JWT in `data.jwt` (i.e. `data` is expected to
  * contain a `jwt` value rather than being null).
  *
  * Note: the Simple JWT Login revoke endpoint commonly responds with a
@@ -614,24 +615,46 @@ export const sendPasswordReset = async (
  * Usage:
  *    await logoutUser();
  */
-export const logoutUser = async (): Promise<void> => {
+export const logoutUser = async (): Promise<LogoutResult> => {
   try {
     console.log("authApi: logoutUser() called");
     // Read the token from the persisted store via selector and attempt revoke.
     const state = store.getState() as RootState;
     const currentToken = selectJwt(state)?.[0]?.token;
-    if (currentToken) {
-      try {
-        // Best-effort revoke; swallow errors to ensure local logout proceeds.
-        const revokeResult = await revokeToken(currentToken);
-        console.log("authApi: revokeToken result:", revokeResult);
-      } catch (err) {
-        console.warn(
-          "authApi: revokeToken failed (continuing to clear local state):",
-          err
-        );
-      }
+    if (!currentToken) {
+      console.log("authApi: No token present to revoke");
+      // Local logout succeeded but nothing to revoke on server.
+      return { success: true, data: { revoked: false } };
     }
+
+    try {
+      // Attempt server revoke and normalize the success path to the LogoutResult
+      const revokeResult = await revokeToken(currentToken);
+      console.log("authApi: revokeToken result:", revokeResult);
+      if (revokeResult.success) {
+        return {
+          success: true,
+          data: { revoked: true, tokenData: revokeResult.data },
+          status: revokeResult.status,
+        };
+      }
+
+      // Server returned a non-OK response; convert to a LogoutResult failure
+      // while preserving server payload and HTTP status.
+      return apiFailureWithServerCode<{ revoked: false }>(
+        revokeResult.data ?? { message: "revoke failed" },
+        revokeResult.status
+      );
+    } catch (err: any) {
+      console.warn(
+        "authApi: revokeToken failed (continuing to clear local state):",
+        err
+      );
+      return apiFailureFromException<{ revoked: false }>(err);
+    }
+  } catch (error: any) {
+    console.error("authApi: Error in logoutUser():", error);
+    return apiFailureFromException<{ revoked: false }>(error);
   } finally {
     // Always clear local state even if revoke fails or wasn't provided.
     store.dispatch(clearUser()); // Clear user data from Redux store

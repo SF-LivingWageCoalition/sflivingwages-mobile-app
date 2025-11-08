@@ -102,8 +102,20 @@ export const apiFailureWithServerCode = <T = any>(
   status?: number
 ): ApiResult<T> => {
   try {
-    const info = getFriendlyErrorInfo(payload);
-    const augmented = { ...(payload as any) } as any;
+    // If the payload itself looks like an ApiResult (wrapped by other helpers
+    // or returned by upstream code), prefer the inner server payload so we
+    // don't create nested `.data.data` shapes. Use the inner payload for
+    // extracting friendly info and return a failure whose `data` is the
+    // normalized server payload.
+    const serverPayload =
+      payload &&
+      typeof payload === "object" &&
+      typeof payload.success === "boolean"
+        ? payload.data ?? payload
+        : payload;
+
+    const info = getFriendlyErrorInfo(serverPayload);
+    const augmented = { ...(serverPayload as any) } as any;
     if (info.errorCode !== undefined) augmented.errorCode = info.errorCode;
     if (info.errorKey !== undefined) augmented.errorKey = info.errorKey;
     return apiFailure<T>(info.message, status, augmented as T);
