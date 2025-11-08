@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   ScrollView,
@@ -16,9 +16,15 @@ import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
 import AccountScreenHeader from "./components/AccountScreenHeader";
 import AccountScreenMenu from "./components/AccountScreenMenu";
+import LoadingOverlay from "../../components/LoadingOverlay";
 
 const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  // Local flag used to show a small in-app overlay while logout is in progress.
+  // Note: the native Alert cannot be kept open programmatically. We keep the
+  // native Alert as you asked; when the user confirms we show this overlay
+  // until the Redux `clearUser()` has run (i.e. `isLoggedIn` becomes false).
+  const [loggingOut, setLoggingOut] = useState(false);
 
   /**
    * Navigation and Action Handlers
@@ -55,11 +61,30 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel",
         },
-        { text: translate("buttons.ok"), onPress: () => logoutUser() },
+        {
+          text: translate("buttons.ok"),
+          onPress: () => {
+            // Start the in-app overlay and kick off logout.
+            setLoggingOut(true);
+            // Call logoutUser(); it will dispatch clearUser() in its finally block.
+            // We don't await here because Alert buttons expect a sync callback,
+            // but setLoggingOut(true) gives immediate UI feedback.
+            void logoutUser();
+          },
+        },
       ],
       { cancelable: true }
     );
   };
+
+  // When the Redux user state shows logged out while we thought we were
+  // logging out, hide the overlay. This ensures the overlay remains visible
+  // until `clearUser()` has been dispatched.
+  useEffect(() => {
+    if (loggingOut && !isLoggedIn) {
+      setLoggingOut(false);
+    }
+  }, [isLoggedIn, loggingOut]);
 
   /**
    * Button Components
@@ -102,7 +127,11 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   const LogoutButton: React.FC = () => {
     return (
       <View style={styles.authButtonsContainer}>
-        <TouchableOpacity style={styles.button} onPress={onLogout}>
+        <TouchableOpacity
+          style={[styles.button, loggingOut ? styles.buttonDisabled : null]}
+          onPress={onLogout}
+          disabled={loggingOut}
+        >
           <Text style={styles.buttonText}>{translate("buttons.logout")}</Text>
         </TouchableOpacity>
       </View>
@@ -123,15 +152,20 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <AccountScreenHeader />
-        {/* Account Menu */}
-        {isLoggedIn && <AccountScreenMenu navigation={navigation} />}
-        {/* Auth Buttons */}
-        {isLoggedIn ? <LogoutButton /> : <AuthButtons />}
-      </View>
-    </ScrollView>
+    <View style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
+          <AccountScreenHeader />
+          {/* Account Menu */}
+          {isLoggedIn && <AccountScreenMenu navigation={navigation} />}
+          {/* Auth Buttons */}
+          {isLoggedIn ? <LogoutButton /> : <AuthButtons />}
+        </View>
+      </ScrollView>
+
+      {/* Overlay shown while logout is in progress. */}
+      {loggingOut && <LoadingOverlay />}
+    </View>
   );
 };
 
@@ -157,6 +191,9 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOffset: { width: 1, height: 1 },
   },
+  buttonDisabled: {
+    opacity: 0.7,
+  },
   buttonText: {
     ...textStyles.button,
     color: colors.light.textOnPrimary,
@@ -181,6 +218,7 @@ const styles = StyleSheet.create({
     ...textStyles.buttonSmall,
     color: colors.light.secondary,
   },
+  // overlay styles removed; using shared LoadingOverlay component instead
 });
 
 export default AccountScreen;

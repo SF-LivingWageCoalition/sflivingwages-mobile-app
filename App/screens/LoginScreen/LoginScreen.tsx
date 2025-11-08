@@ -163,16 +163,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                 onPress={onSubmit}
                 disabled={loading}
               >
-                {loading ? (
-                  <ActivityIndicator
-                    size="small"
-                    color={colors.light.textOnPrimary}
-                  />
-                ) : (
-                  <Text style={styles.buttonText}>
-                    {translate("buttons.submit")}
-                  </Text>
-                )}
+                <Text style={styles.buttonText}>
+                  {translate("buttons.submit")}
+                </Text>
               </TouchableOpacity>
             </View>
 
