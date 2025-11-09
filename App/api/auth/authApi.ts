@@ -75,9 +75,7 @@ export const fetchToken = async (
   password: string
 ): Promise<ApiResult<TokenData>> => {
   try {
-    console.log(
-      `authApi: fetchToken() called with email '${email}' and password: '${password}'`
-    );
+    console.log("authApi: fetchToken() called with email address and password");
     const response = await fetchWithTimeout(`${BASE_URL}${JWT_ROUTE}/auth`, {
       method: "POST",
       headers: {
@@ -98,7 +96,7 @@ export const fetchToken = async (
         "authApi: Token fetch succeeded with status:",
         response.status
       );
-      console.log("authApi: Token fetch response data:", tokenData);
+      console.log("authApi: Successful token fetch response data:", tokenData);
       return { success: true, data: tokenData, status: response.status };
       // Handle successful token fetch (e.g., store token, navigate to another screen)
     } else {
@@ -107,7 +105,7 @@ export const fetchToken = async (
         "authApi: Token fetch failed with status:",
         response.status
       );
-      console.log("authApi: Response data from failed token fetch:", tokenData);
+      console.log("authApi: Failed token fetch response data:", tokenData);
       if (tokenData && tokenData.data) {
         // Log error details
         console.error("authApi: Error code:", tokenData.data.errorCode);
@@ -162,7 +160,10 @@ export const validateToken = async (
         "authApi: Token validation succeeded with status:",
         response.status
       );
-      console.log("authApi: Token validation response data:", validationData);
+      console.log(
+        "authApi: Successful token validation response data:",
+        validationData
+      );
       return { success: true, data: validationData, status: response.status };
     } else {
       // Token validation failed
@@ -170,7 +171,10 @@ export const validateToken = async (
         "authApi: Token validation failed with status:",
         response.status
       );
-      console.log("authApi: Token validation response data:", validationData);
+      console.log(
+        "authApi: Failed token validation response data:",
+        validationData
+      );
       return apiFailureWithServerCode<ValidationData>(
         validationData,
         response.status
@@ -221,7 +225,10 @@ export const refreshToken = async (
         "authApi: Token refresh succeeded with status:",
         response.status
       );
-      console.log("authApi: Token refresh response data:", tokenData);
+      console.log(
+        "authApi: Successful token refresh response data:",
+        tokenData
+      );
       return { success: true, data: tokenData, status: response.status };
     } else {
       // Token refresh failed
@@ -229,7 +236,7 @@ export const refreshToken = async (
         "authApi: Token refresh failed with status:",
         response.status
       );
-      console.log("authApi: Token refresh response data:", tokenData);
+      console.log("authApi: Failed token refresh response data:", tokenData);
       return apiFailureWithServerCode<TokenData>(tokenData, response.status);
     }
   } catch (error: any) {
@@ -283,7 +290,10 @@ export const revokeToken = async (
         "authApi: Token revocation succeeded with status:",
         response.status
       );
-      console.log("authApi: Token revocation response data:", responseData);
+      console.log(
+        "authApi: Successful token revocation response data:",
+        responseData
+      );
       return { success: true, data: responseData, status: response.status };
     } else {
       // Token revocation failed
@@ -291,7 +301,10 @@ export const revokeToken = async (
         "authApi: Token revocation failed with status:",
         response.status
       );
-      console.log("authApi: Token revocation response data:", responseData);
+      console.log(
+        "authApi: Failed token revocation response data:",
+        responseData
+      );
       return apiFailureWithServerCode<TokenData>(responseData, response.status);
     }
   } catch (error: any) {
@@ -331,7 +344,7 @@ export const loginUser = async (
     if (tokenResult.success && typeof jwt === "string" && jwt.length > 0) {
       // Token fetch success. Validate the received token
       try {
-        console.log("authApi: validateToken() called within loginUser()");
+        console.log("authApi: loginUser() calling validateToken()");
         const validationResult = await validateToken(jwt);
         const validatedData = validationResult.success
           ? validationResult.data?.data
@@ -355,7 +368,7 @@ export const loginUser = async (
         } else {
           // Token validation failed.
           console.log("authApi: Login failed during validation");
-          console.log("authApi: Validation result:", validationResult);
+          console.log("authApi: Failed validation result:", validationResult);
           const payload = validationResult.data?.data ?? validationResult.data;
           return apiFailureWithServerCode<ValidationData["data"]>(
             payload,
@@ -370,7 +383,7 @@ export const loginUser = async (
     } else {
       // Token fetch failed.
       console.log("authApi: Login failed during token fetch");
-      console.log("authApi: Token result:", tokenResult);
+      console.log("authApi: Failed token result:", tokenResult);
       const payload = tokenResult.data?.data ?? tokenResult.data;
       return apiFailureWithServerCode<ValidationData["data"]>(
         payload,
@@ -400,7 +413,7 @@ export const registerCustomer = async (
   password: string
 ): Promise<ApiResult<CustomerRegistrationData>> => {
   console.log(
-    `authApi: registerCustomer() called with email '${email}' and password: '${password}'`
+    "authApi: registerCustomer() called with email address and password"
   );
   try {
     const response = await fetchWithTimeout(
@@ -450,7 +463,7 @@ export const registerCustomer = async (
         response.status
       );
       console.log(
-        "authApi: Customer registration response data:",
+        "authApi: Successful customer registration response data:",
         registrationData
       );
       return { success: true, data: registrationData, status: response.status };
@@ -461,14 +474,23 @@ export const registerCustomer = async (
         response.status
       );
       console.log(
-        "authApi: Customer registration response data:",
+        "authApi: Failed customer registration response data:",
         registrationData
       );
       if (registrationData && registrationData.data) {
         // Log error details
-        console.error("authApi: Error status:", registrationData.data.status);
-        console.error("authApi: Error code:", registrationData.code);
-        console.error("authApi: Error message:", registrationData.message);
+        console.error(
+          "authApi: registerCustomer() Error status:",
+          registrationData.data.status
+        );
+        console.error(
+          "authApi: registerCustomer() Error code:",
+          registrationData.code
+        );
+        console.error(
+          "authApi: registerCustomer() Error message:",
+          registrationData.message
+        );
       }
       return apiFailureWithServerCode<CustomerRegistrationData>(
         registrationData,
@@ -504,7 +526,7 @@ export const registerUser = async (
 ): Promise<ApiResult<UserRegistrationData>> => {
   try {
     console.log(
-      `authApi: registerUser() called with email '${email}' and password: '${password}'`
+      "authApi: registerUser() called with email address and password"
     );
     const response = await fetchWithTimeout(`${BASE_URL}${JWT_ROUTE}/users`, {
       method: "POST",
@@ -526,7 +548,10 @@ export const registerUser = async (
         "authApi: Registration succeeded with status:",
         response.status
       );
-      console.log("authApi: Registration response data:", registrationData);
+      console.log(
+        "authApi: Successful registration response data:",
+        registrationData
+      );
       return { success: true, data: registrationData, status: response.status };
     } else {
       // Registration failed
@@ -534,11 +559,20 @@ export const registerUser = async (
         "authApi: Registration failed with status:",
         response.status
       );
-      console.log("authApi: Registration response data:", registrationData);
+      console.log(
+        "authApi: Failed registration response data:",
+        registrationData
+      );
       if (registrationData && registrationData.data) {
         // Log error details
-        console.error("authApi: Error code:", registrationData.data.errorCode);
-        console.error("authApi: Error message:", registrationData.data.message);
+        console.error(
+          "authApi: registerUser() Error code:",
+          registrationData.data.errorCode
+        );
+        console.error(
+          "authApi: registerUser() Error message:",
+          registrationData.data.message
+        );
       }
       return apiFailureWithServerCode<UserRegistrationData>(
         registrationData,
@@ -567,7 +601,7 @@ export const sendPasswordReset = async (
   email: string
 ): Promise<ApiResult<PasswordResetData>> => {
   try {
-    console.log(`authApi: sendPasswordReset() called with email: '${email}'`);
+    console.log("authApi: sendPasswordReset() called with email address");
     const response = await fetchWithTimeout(
       `${BASE_URL}${JWT_ROUTE}/user/reset_password&email=${email}&AUTH_KEY=${JWT_AUTH_KEY}`,
       {
@@ -583,7 +617,10 @@ export const sendPasswordReset = async (
         "authApi: Forgot password succeeded with status:",
         response.status
       );
-      console.log("authApi: Forgot password response data:", passwordResetData);
+      console.log(
+        "authApi: Successful forgot password response data:",
+        passwordResetData
+      );
       return {
         success: true,
         data: passwordResetData,
@@ -595,7 +632,10 @@ export const sendPasswordReset = async (
         "authApi: Forgot password failed with status:",
         response.status
       );
-      console.log("authApi: Forgot password response data:", passwordResetData);
+      console.log(
+        "authApi: Failed forgot password response data:",
+        passwordResetData
+      );
       return apiFailureWithServerCode<PasswordResetData>(
         passwordResetData,
         response.status

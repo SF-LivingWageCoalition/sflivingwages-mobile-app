@@ -64,7 +64,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     const { userEmail: email, userPassword: password } = parsed.data;
 
     console.log(
-      `LoginScreen: Trying to login user with email: '${email}' and password: '${password}'`
+      "LoginScreen: Trying to login user with email address and password..."
     );
     setLoading(true);
     try {
@@ -74,7 +74,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       console.log("LoginScreen: Login successful.");
       console.log(
         "LoginScreen: Received validatedData:\n",
-        JSON.stringify(validatedData, null, 2)
+        JSON.stringify(validatedData, null, 2) // PPI leak check: ensure no sensitive data is logged
       );
       navigation.goBack();
     } catch (error: unknown) {

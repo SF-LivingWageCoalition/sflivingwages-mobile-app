@@ -63,7 +63,7 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
       [
         {
           text: translate("buttons.cancel"),
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => {},
           style: "cancel",
         },
         {

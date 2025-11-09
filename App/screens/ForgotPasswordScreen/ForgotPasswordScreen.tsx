@@ -51,7 +51,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
     const { userEmail: email } = parsed.data;
 
     console.log(
-      `ForgotPasswordScreen: Trying to reset password for email: '${email}'`
+      "ForgotPasswordScreen: Trying to reset password with email address..."
     );
     setLoading(true);
     try {
