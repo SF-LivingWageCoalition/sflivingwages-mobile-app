@@ -24,7 +24,8 @@ export function mapApiErrorToMessage(
     // this on `data.errorCode`), prefer a mapped/translated message based on
     // that code. This keeps messages consistent and localizable.
     // Only call getFriendlyErrorInfo when payload is a non-null object (not an array).
-    const payload = (error as any)?.data;
+    const apiErr = error as ApiError<unknown>;
+    const payload = apiErr.data;
     if (payload && typeof payload === "object" && !Array.isArray(payload)) {
       try {
         const info = getFriendlyErrorInfo(payload);
@@ -39,8 +40,8 @@ export function mapApiErrorToMessage(
         // ignore and continue to status-based mapping
       }
     }
-    const status = error.status;
-    const serverMessage = error.message;
+    const status = apiErr.status;
+    const serverMessage = apiErr.message;
     console.log("mapApiErrorToMessage: ApiError status =", status);
     console.log("mapApiErrorToMessage: ApiError message =", serverMessage);
     // Network error (status === 0)
@@ -91,7 +92,10 @@ export function mapApiErrorToMessage(
   }
 
   // Non-ApiError: prefer error.message, then translation, then fallback
-  const message = (error as any)?.message;
+  const message =
+    typeof error === "object" && error !== null && "message" in error
+      ? (error as any).message
+      : undefined;
   return (
     message ||
     translate((defaultKey ?? "errors.unexpectedError") as any) ||
@@ -113,11 +117,16 @@ export function mapApiErrorToMessage(
  */
 export function mapApiErrorToTelemetry(error: unknown) {
   if (error instanceof ApiError) {
-    const data = error.data as any;
-    const errorCode = data?.data?.errorCode ?? data?.errorCode;
-    const errorKey =
-      data?.data?.errorKey ?? data?.errorKey ?? data?.code ?? data?.data?.code;
-    return { status: error.status, data: error.data, errorCode, errorKey };
+    const apiErr = error as ApiError<unknown>;
+    const data = apiErr.data;
+    let errorCode: string | number | undefined = undefined;
+    let errorKey: string | undefined = undefined;
+    if (data && typeof data === "object") {
+      const d = data as Record<string, any>;
+      errorCode = d?.data?.errorCode ?? d?.errorCode;
+      errorKey = d?.data?.errorKey ?? d?.errorKey ?? d?.code ?? d?.data?.code;
+    }
+    return { status: apiErr.status, data: apiErr.data, errorCode, errorKey };
   }
   return { status: undefined, data: undefined };
 }

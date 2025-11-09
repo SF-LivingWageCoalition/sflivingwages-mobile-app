@@ -60,7 +60,9 @@ export const unwrapOrThrow = <T>(
 ): T => {
   if (result.success) return result.data;
   const msg = result.errorMessage ?? fallbackMessage ?? "API request failed";
-  throw new ApiError(msg, (result as any).status, (result as any).data);
+  // Preserve the ApiResult's data type in the thrown ApiError so callers can
+  // benefit from typed `error.data` (ApiError<T>).
+  throw new ApiError<T>(msg, result.status, result.data as T);
 };
 
 /**
@@ -96,6 +98,10 @@ export const apiFailureFromException = <T = any>(
  * Create a standardized ApiResult failure using server payloads that may
  * include Simple JWT numeric `errorCode` or WooCommerce string `code`.
  * The returned `data` will include the detected `errorCode` or `errorKey`.
+ *
+ * @param payload - The server response payload (parsed JSON).
+ * @param status - Optional HTTP status code associated with the failure.
+ * @returns An ApiResult representing the failure with friendly message.
  */
 export const apiFailureWithServerCode = <T = any>(
   payload: any,

@@ -1,6 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../store/store";
 
+/**
+ * Represents a JSON Web Token (JWT) item.
+ * Includes the token string, header, and payload information.
+ *
+ * @property token - The JWT token string.
+ * @property header - The header information of the JWT.
+ * @property payload - The payload information of the JWT.
+ */
 interface JwtItem {
   token: string;
   header: {
@@ -18,6 +26,14 @@ interface JwtItem {
   };
 }
 
+/**
+ * Represents the structure of the user data stored in the Redux state.
+ * Includes user information, roles, and JWT tokens.
+ *
+ * @property user - The user information.
+ * @property roles - The roles assigned to the user.
+ * @property jwt - An array of JWT items associated with the user.
+ */
 interface User {
   ID: string;
   user_login: string;
@@ -30,6 +46,14 @@ interface User {
   display_name: string;
 }
 
+/**
+ * Defines the shape of the user-related state in the Redux store.
+ * Includes user information, roles, and JWT tokens.
+ *
+ * @property user - The user information, or undefined if no user is set.
+ * @property roles - The roles assigned to the user.
+ * @property jwt - An array of JWT items associated with the user.
+ */
 interface DataState {
   // `user` is undefined when no user is set (clearer than an object of empty strings)
   user?: User | undefined;
@@ -38,12 +62,20 @@ interface DataState {
   jwt?: JwtItem[];
 }
 
+/**
+ * Initial state for the user slice.
+ * `user` is undefined, `roles` is an empty array, and `jwt` is an empty array.
+ */
 const initialState: DataState = {
   user: undefined,
   roles: [],
   jwt: [],
 };
 
+/**
+ * Redux slice for managing user-related state.
+ * Includes actions to set and clear user information.
+ */
 const userSlice = createSlice({
   name: "user",
   initialState: initialState,
@@ -72,7 +104,13 @@ export const selectRoles = (state: RootState) =>
 export const selectJwt = (state: RootState) =>
   state.userData.jwt as JwtItem[] | undefined;
 
-// Determine login status: we require a user ID and at least one non-empty token
+/**
+ * Determine if the user is logged in based on the Redux state.
+ * We require a user ID and at least one non-empty token
+ *
+ * @param state
+ * @returns
+ */
 export const selectIsLoggedIn = (state: RootState): boolean => {
   const user = selectUser(state);
   const jwt = selectJwt(state);

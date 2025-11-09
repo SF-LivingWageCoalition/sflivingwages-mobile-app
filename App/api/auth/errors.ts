@@ -8,13 +8,15 @@
 /**
  * Rich ApiError that preserves HTTP status and raw data when available.
  * Thrown by helpers to let callers inspect `error.status` or `error.data`.
+ *
+ * @template T - The type of the additional data associated with the error.
  */
-export class ApiError extends Error {
+export class ApiError<T = unknown> extends Error {
   public status?: number;
-  public data?: unknown;
+  public data?: T;
   public code?: string;
 
-  constructor(message: string, status?: number, data?: unknown, code?: string) {
+  constructor(message: string, status?: number, data?: T, code?: string) {
     super(message);
     this.name = "ApiError";
     this.status = status;
