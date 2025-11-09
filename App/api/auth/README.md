@@ -281,24 +281,40 @@ curl.exe -i -X POST "$BASE${EXPO_PUBLIC_JWT_ROUTE}/user/reset_password&email=use
 
 ## JWT Shapes & Normalization (short)
 
-- `fetchToken` returns a raw JWT string at `data.jwt`.
-- `validateToken` returns decoded JWT objects in `data.jwt` (an array of decoded JWTs).
+Notes:
 
-Use this small helper to normalize either shape before persisting:
+- `fetchToken` returns a raw JWT string at `data.jwt`.
+- `validateToken` typically returns decoded JWT object(s) in `data.jwt` (usually an array).
+
+Normalization guidance:
+
+- The project now exports a single runtime helper: `normalizeJwt` (in `App/api/auth/utils.ts`).
+- The canonical normalized shape is `JwtItem` (defined and exported from `App/api/auth/types.ts`).
+- Always call `normalizeJwt` at the point where a token value is written into the Redux store (for example, before `dispatch(setUser(...))`). This guarantees the `userSlice.jwt` array contains a predictable runtime shape.
+
+Compact example:
 
 ```ts
-type DecodedJwt = { token: string; header?: any; payload?: any };
+import { normalizeJwt } from "./utils";
+import type { JwtItem } from "./types";
+// Import the exported payload type from the user slice
+import type { SetUserPayload } from "../../redux/features/userSlice/userSlice";
 
-function normalizeJwt(maybeJwt: unknown): DecodedJwt[] {
-  if (Array.isArray(maybeJwt)) return maybeJwt as DecodedJwt[];
-  if (maybeJwt && typeof maybeJwt === "object" && (maybeJwt as any).token)
-    return [maybeJwt as DecodedJwt];
-  if (typeof maybeJwt === "string") return [{ token: maybeJwt }];
-  return [];
-}
+const maybeJwt = tokenData.data?.jwt ?? validatedData?.jwt;
+const jwtArray: JwtItem[] = normalizeJwt(maybeJwt);
+
+const payload: SetUserPayload = {
+  user: validatedData!.user,
+  roles: validatedData!.roles,
+  jwt: jwtArray,
+};
+
+dispatch(setUser(payload));
 ```
 
-Refer to `App/api/auth/authApi.ts` for the canonical implementation (normalization helpers like `normalizeJwt` live there) and to `App/api/auth/types.ts` for the typed shapes.
+Additional note: the revoke/refresh endpoints may also return either a raw
+JWT string or a decoded object — the auth helpers now normalize those
+responses so callers receive a consistent runtime shape when present.
 
 ---
 

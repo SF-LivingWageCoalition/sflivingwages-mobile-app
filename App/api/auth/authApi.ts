@@ -19,6 +19,7 @@ import {
   setUser,
   selectJwt,
 } from "../../redux/features/userSlice/userSlice";
+import type { SetUserPayload } from "../../redux/features/userSlice/userSlice";
 import type { RootState, AppDispatch } from "../../redux/store/store";
 import { store } from "../../redux/store/store";
 
@@ -53,6 +54,8 @@ import {
   isValidValidationData,
   apiFailureWithServerCode,
 } from "./utils";
+import { normalizeJwt } from "./utils";
+import type { JwtItem } from "./types";
 
 /**
  * API functions for authentication (fetching and validating JWT tokens)
@@ -353,16 +356,15 @@ export const loginUser = async (
           // Token validation success. Set user data in Redux store
           console.log("authApi: Login successful");
           // Normalize the payload to the DataState shape expected by the store.
-          const jwtArray = Array.isArray(validatedData!.jwt)
-            ? (validatedData!.jwt as any[])
-            : validatedData!.jwt
-            ? [validatedData!.jwt as any]
-            : [];
-          const payload = {
+          // Normalize the JWT(s) returned by the validation endpoint into a
+          // canonical array shape so the Redux store always receives the same
+          // runtime shape (array of items with `.token`, optional header/payload).
+          const jwtArray = normalizeJwt(validatedData!.jwt ?? jwt);
+          const payload: SetUserPayload = {
             user: validatedData!.user,
             roles: validatedData!.roles,
-            jwt: jwtArray,
-          } as any;
+            jwt: jwtArray as JwtItem[],
+          };
           dispatch(setUser(payload)); // Set user data in Redux store
           return { success: true, data: validatedData };
         } else {
@@ -699,9 +701,21 @@ export const logoutUser = async (): Promise<LogoutResult> => {
       const revokeResult = await revokeToken(currentToken);
       console.log("authApi: revokeToken result:", revokeResult);
       if (revokeResult.success) {
+        // Normalize any jwt returned by the revoke endpoint so callers that
+        // inspect the returned token payload can reliably consume an array.
+        const tokenDataAny = (revokeResult.data as any) ?? {};
+        try {
+          tokenDataAny.data = tokenDataAny.data ?? {};
+          tokenDataAny.data.jwt = normalizeJwt(
+            tokenDataAny.data.jwt ?? (tokenDataAny.jwt as any)
+          );
+        } catch (e) {
+          /* swallow normalization errors - we still return the raw server payload */
+        }
+
         return {
           success: true,
-          data: { revoked: true, tokenData: revokeResult.data },
+          data: { revoked: true, tokenData: tokenDataAny as TokenData },
           status: revokeResult.status,
         };
       }

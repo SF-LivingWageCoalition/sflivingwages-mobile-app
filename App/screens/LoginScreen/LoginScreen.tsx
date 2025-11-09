@@ -67,6 +67,12 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       "LoginScreen: Trying to login user with email address and password..."
     );
     setLoading(true);
+    /*
+      Note: `loginUser(email, password, dispatch)` performs the full
+      login flow and will dispatch `setUser(...)` on success. That helper
+      normalizes JWT shapes before writing to the store (see
+      `App/api/auth/utils.normalizeJwt`).
+    */
     try {
       const validatedData = unwrapOrThrow(
         await loginUser(email, password, dispatch)

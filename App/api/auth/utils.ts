@@ -5,7 +5,12 @@
  */
 
 import { ApiError, TimeoutError } from "./errors";
-import type { ParseJsonSafeResult, ApiResult, ValidationData } from "./types";
+import type {
+  ParseJsonSafeResult,
+  ApiResult,
+  ValidationData,
+  JwtItem,
+} from "./types";
 import { FETCH_TIMEOUT_MS } from "./config";
 import { getFriendlyErrorInfo } from "./errorCodeMap";
 
@@ -168,4 +173,29 @@ export const isValidValidationData = (
   if (!x.user || !x.user.ID) return false;
   if (!x.jwt || !Array.isArray(x.jwt) || x.jwt.length === 0) return false;
   return true;
+};
+
+/**
+ * Normalize a JWT-like value into a canonical array of decoded JWT items.
+ *
+ * Accepts one of the common server shapes:
+ * - an array of decoded JWT objects (returned by some validate endpoints)
+ * - a single decoded JWT object with a `token` property
+ * - a raw JWT string (returned by fetch/refresh/revoke endpoints)
+ *
+ * Always returns an array (possibly empty) so callers can safely index into
+ * the result (`jwtArray[0]?.token`) and persist a consistent shape to Redux.
+ *
+ * Exported so code across the auth layer can standardize values before
+ * storing or consuming JWTs.
+ *
+ * @param maybeJwt - The value that might contain a JWT
+ * @returns Array of normalized JWT items: { token: string; header?: any; payload?: any }
+ */
+export const normalizeJwt = (maybeJwt: unknown): JwtItem[] => {
+  if (Array.isArray(maybeJwt)) return maybeJwt as JwtItem[];
+  if (maybeJwt && typeof maybeJwt === "object" && (maybeJwt as any).token)
+    return [maybeJwt as JwtItem];
+  if (typeof maybeJwt === "string") return [{ token: maybeJwt } as JwtItem];
+  return [];
 };

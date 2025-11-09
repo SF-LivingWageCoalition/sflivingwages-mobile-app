@@ -132,6 +132,16 @@ export type LogoutResult = ApiResult<{
   tokenData?: TokenData;
 }>;
 
+// Export a reusable JwtItem type that describes the normalized runtime shape
+// used by the auth layer. Prefer importing and using this type when
+// normalizing values with `normalizeJwt` so the normalized arrays are
+// strongly typed across modules.
+export type JwtItem = {
+  token: string;
+  header?: { alg?: string; typ?: string } | any;
+  payload?: { [k: string]: any } | any;
+};
+
 // Generic API result wrapper used by other helpers to provide consistent shape
 export type ApiResult<T> =
   | { success: true; data: T; status?: number }
