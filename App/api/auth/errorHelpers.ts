@@ -3,9 +3,14 @@ import { translate } from "../../translation";
 import { getFriendlyErrorInfo } from "./errorCodeMap";
 
 /**
- * Map an unknown error (possibly ApiError) to a user-facing translation string.
- * - `defaultKey` is a translation key used for the caller's default message
- *   (for example: 'errors.loginFailed' or 'errors.registrationFailed').
+ * Convert an unknown error (often an ApiError) into a user-facing message.
+ *
+ * Priority: server-friendly message (via getFriendlyErrorInfo) -> server
+ * message -> caller default key -> generic fallback.
+ *
+ * @param error Unknown error value (may be ApiError).
+ * @param defaultKey Optional translation key (e.g. 'errors.loginFailed').
+ * @returns Localized user-facing message (never empty; falls back to a default).
  */
 export function mapApiErrorToMessage(
   error: unknown,
@@ -18,39 +23,39 @@ export function mapApiErrorToMessage(
     // If the server included a numeric `errorCode` (Simple JWT Login provides
     // this on `data.errorCode`), prefer a mapped/translated message based on
     // that code. This keeps messages consistent and localizable.
-    try {
-      const payload = (error as any).data;
-      if (payload) {
+    // Only call getFriendlyErrorInfo when payload is a non-null object (not an array).
+    const payload = (error as any)?.data;
+    if (payload && typeof payload === "object" && !Array.isArray(payload)) {
+      try {
         const info = getFriendlyErrorInfo(payload);
-        // Prefer server-code-based translations when available (Simple JWT numeric codes
-        // or WooCommerce string codes). Return that translated message directly.
+        // If server-provided friendly info exists, use its message.
         if (
-          (info.errorCode !== undefined || info.errorKey !== undefined) &&
-          info.message
+          (info?.errorCode !== undefined || info?.errorKey !== undefined) &&
+          info?.message
         ) {
           return info.message;
         }
+      } catch {
+        // ignore and continue to status-based mapping
       }
-    } catch (e) {
-      // ignore and continue to status-based mapping
     }
     const status = error.status;
     const serverMessage = error.message;
     console.log("mapApiErrorToMessage: ApiError status =", status);
     console.log("mapApiErrorToMessage: ApiError message =", serverMessage);
-    // 1) Network-level failures (status 0) - treat as network error
+    // Network error (status === 0)
     if (status === 0) {
       return (
         translate("errors.networkError" as any) || serverMessage || fallback
       );
     }
-    // 2) Timeout mapping: treat 408 as a network timeout and show a specific message
+    // Timeout (408)
     if (status === 408) {
       return (
         translate("errors.requestTimedOut" as any) || serverMessage || fallback
       );
     }
-    // 3) Authentication / permission errors
+    // Auth/permission errors (401, 403)
     if (status === 401 || status === 403) {
       return (
         translate((defaultKey ?? "errors.loginFailed") as any) ||
@@ -58,7 +63,7 @@ export function mapApiErrorToMessage(
         fallback
       );
     }
-    // 4) Bad request / validation-like errors
+    // Bad request / validation (400)
     if (status === 400) {
       return (
         translate((defaultKey ?? "errors.unexpectedError") as any) ||
@@ -66,19 +71,18 @@ export function mapApiErrorToMessage(
         fallback
       );
     }
-    // 5) Conflict / registration-specific
+    // Conflict / registration (409)
     if (status === 409) {
       return (
         translate("errors.registrationFailed") || serverMessage || fallback
       );
     }
-    // 6) Server errors
+    // Server errors (>= 500)
     if (status && status >= 500) {
       return translate("errors.unexpectedError") || serverMessage || fallback;
     }
 
-    // Fallback: prefer the server-provided message, then the caller's default key,
-    // then the generic fallback string.
+    // Fallback: server message -> defaultKey translation -> generic fallback
     return (
       serverMessage ||
       translate((defaultKey ?? "errors.unexpectedError") as any) ||
@@ -86,6 +90,7 @@ export function mapApiErrorToMessage(
     );
   }
 
+  // Non-ApiError: prefer error.message, then translation, then fallback
   const message = (error as any)?.message;
   return (
     message ||
@@ -94,6 +99,18 @@ export function mapApiErrorToMessage(
   );
 }
 
+/**
+ * Extract compact telemetry fields from an error.
+ *
+ * Returns {status, data, errorCode?, errorKey?}. For non-ApiError values,
+ * returns {status: undefined, data: undefined}.
+ *
+ * Note: `data` is returned raw — redact before sending externally.
+ *
+ * @param error Unknown error (may be ApiError).
+ * @returns An object with keys: `status?: number`, `data?: unknown`,
+ *   `errorCode?: string | number | undefined`, `errorKey?: string | undefined`.
+ */
 export function mapApiErrorToTelemetry(error: unknown) {
   if (error instanceof ApiError) {
     const data = error.data as any;
