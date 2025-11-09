@@ -9,7 +9,6 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  ActivityIndicator,
 } from "react-native";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
@@ -205,7 +204,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   textInputWithToggle: {
-    paddingRight: 48, // leave room for the toggle (adjust as needed)
+    paddingRight: 48, // leave room for the visibility toggle
   },
   passwordInputContainer: {
     flexDirection: "row",

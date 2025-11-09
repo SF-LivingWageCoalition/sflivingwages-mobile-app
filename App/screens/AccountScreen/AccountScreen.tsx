@@ -20,11 +20,16 @@ import LoadingOverlay from "../../components/LoadingOverlay";
 
 const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  // Local flag used to show a small in-app overlay while logout is in progress.
-  // Note: the native Alert cannot be kept open programmatically. We keep the
-  // native Alert as you asked; when the user confirms we show this overlay
-  // until the Redux `clearUser()` has run (i.e. `isLoggedIn` becomes false).
+
+  // Local flag used to show an in-app overlay while logout is in progress.
   const [loggingOut, setLoggingOut] = useState(false);
+
+  // This ensures the overlay remains visible until `clearUser()` has been dispatched.
+  useEffect(() => {
+    if (loggingOut && !isLoggedIn) {
+      setLoggingOut(false);
+    }
+  }, [isLoggedIn, loggingOut]);
 
   /**
    * Navigation and Action Handlers
@@ -76,15 +81,6 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
       { cancelable: true }
     );
   };
-
-  // When the Redux user state shows logged out while we thought we were
-  // logging out, hide the overlay. This ensures the overlay remains visible
-  // until `clearUser()` has been dispatched.
-  useEffect(() => {
-    if (loggingOut && !isLoggedIn) {
-      setLoggingOut(false);
-    }
-  }, [isLoggedIn, loggingOut]);
 
   /**
    * Button Components
@@ -218,7 +214,6 @@ const styles = StyleSheet.create({
     ...textStyles.buttonSmall,
     color: colors.light.secondary,
   },
-  // overlay styles removed; using shared LoadingOverlay component instead
 });
 
 export default AccountScreen;

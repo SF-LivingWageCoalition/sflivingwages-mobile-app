@@ -1,7 +1,6 @@
 // See `App/api/auth/README.md` for examples and error handling patterns.
 import React, { useState } from "react";
 import {
-  ActivityIndicator,
   Alert,
   ScrollView,
   StyleSheet,

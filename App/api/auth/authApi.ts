@@ -66,6 +66,7 @@ import {
  * @param email - User's email address
  * @param password - User's password
  * @returns Promise<ApiResult<TokenData>>
+ *
  * Usage: fetchToken("<email>", "<password>");
  * See `App/api/auth/README.md` for example API responses.
  */
@@ -130,6 +131,7 @@ export const fetchToken = async (
  *
  * @param jwtToken - The JWT token to validate
  * @returns Promise<ApiResult<ValidationData>>
+ *
  * Usage: validateToken("<jwt_token>");
  * See `App/api/auth/README.md` for example API responses.
  */
@@ -188,6 +190,7 @@ export const validateToken = async (
  *
  * @param jwtToken - The JWT token to refresh
  * @returns Promise<ApiResult<TokenData>>
+ *
  * Usage: refreshToken("<jwt_token>");
  * See `App/api/auth/README.md` for example API responses.
  */
@@ -249,6 +252,7 @@ export const refreshToken = async (
  *
  * @param jwtToken - The JWT token to revoke
  * @returns Promise<ApiResult<TokenData>>
+ *
  * Usage: revokeToken("<jwt_token>");
  * See `App/api/auth/README.md` for example API responses.
  */
@@ -307,6 +311,7 @@ export const revokeToken = async (
  * @param password - User's password
  * @param dispatch - Redux dispatch function to set user data on successful login
  * @returns Promise<ApiResult<ValidationData['data']>>
+ *
  * Usage: loginUser("<email>", "<password>", dispatch);
  * See `App/api/auth/README.md` for example API responses and side-effects.
  */
@@ -386,6 +391,7 @@ export const loginUser = async (
  * @param email
  * @param password
  * @returns Promise<ApiResult<CustomerRegistrationData>>
+ *
  * Usage: registerCustomer("<email>", "<password>");
  * See `App/api/auth/README.md` for example API responses.
  */
@@ -488,6 +494,7 @@ export const registerCustomer = async (
  * @param email - User's email address
  * @param password - User's password
  * @returns Promise<ApiResult<UserRegistrationData>>
+ *
  * Usage: registerUser("<email>", "<password>");
  * See `App/api/auth/README.md` for example API responses and error handling.
  */
@@ -552,6 +559,7 @@ export const registerUser = async (
  *
  * @param email
  * @returns Promise<ApiResult<PasswordResetData>>
+ *
  * Usage: sendPasswordReset("<email>");
  * See `App/api/auth/README.md` for example API responses.
  */
@@ -601,19 +609,38 @@ export const sendPasswordReset = async (
 };
 
 /**
- * Logout the current user. Attempts to revoke the server-side JWT then clears
- * local auth state by dispatching `clearUser()`.
+ * Logout the current user.
  *
- * Side effects: may perform a network call to revoke the token and will clear
- * user state which can trigger navigation/UI updates.
+ * Behavior:
+ * - Attempts a best-effort server-side revoke of the current JWT (if present).
+ * - Always clears local auth state by dispatching `clearUser()` so the UI and
+ *   navigation can react to the logged-out state.
  *
- * Note: this function reads the current JWT from the Redux store and will
- * attempt a best-effort server-side revoke. Local state is always cleared.
+ * Side effects:
+ * - May perform a network call to revoke the token (network or server errors
+ *   are handled and do not prevent clearing local state).
+ * - Dispatches the Redux action `clearUser()` in a `finally` block.
  *
- * @returns Promise<void>
+ * Returns:
+ * - Promise<LogoutResult> — on success `data.revoked === true` when the server
+ *   revoke succeeded; otherwise `revoked === false`. On failure the result
+ *   follows the ApiResult failure shape and may include `status` and `data`.
  *
- * Usage:
- *    await logoutUser();
+ * Note: The function reads the current JWT from the Redux store (via selector).
+ * If no token is present it will still clear local state and return a success
+ * result indicating nothing was revoked.
+ *
+ * @param none
+ * @returns Promise<LogoutResult>
+ *
+ * Usage example:
+ *   const result = await logoutUser();
+ *   if (result.success) {
+ *     // logged out; result.data.revoked may be true/false
+ *   } else {
+ *     // handle failure (result.status, result.errorMessage, result.data)
+ *   }
+ * See `App/api/auth/README.md` for example API responses.
  */
 export const logoutUser = async (): Promise<LogoutResult> => {
   try {
