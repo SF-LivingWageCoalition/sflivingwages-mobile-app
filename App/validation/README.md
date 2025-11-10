@@ -151,8 +151,3 @@ const disallowedOther = /[^\w\s!"#$%&'()*+,\-./:;<=>?@\[\]^_{}|~`]/;
   message: "Password must contain at least one allowed special character and no other symbols.",
 })
 ```
-
-If you'd like, I can update `passwordSchema.ts` to switch to the explicit
-whitelist shown above, add a runtime detection for Unicode property support,
-or add unit tests demonstrating allowed / disallowed passwords. Just tell me
-which option you prefer.
