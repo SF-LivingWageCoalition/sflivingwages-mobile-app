@@ -336,6 +336,11 @@ const en = {
     emailInvalid: "Invalid email address",
     passwordRequired: "Password is required",
     passwordTooShort: "Password must be at least 8 characters",
+    passwordLowercase: "Password must contain a lowercase letter",
+    passwordUppercase: "Password must contain an uppercase letter",
+    passwordNumber: "Password must contain a number",
+    passwordSpecial: "Password must contain a special character",
+    passwordNoSpaces: "Password must not contain spaces",
   },
   errors: {
     networkError: "Network error. Please try again later.",

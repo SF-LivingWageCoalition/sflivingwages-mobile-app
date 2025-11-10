@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { translate } from "../translation";
+import { createStrongPasswordSchema } from "./passwordPolicy";
 
 // NOTE: See `App/validation/README.md` for guidance on schema factories and
 // the `mapZodErrorToFormErrors` mapper. The factories here intentionally build
@@ -13,16 +14,7 @@ export function createLoginSchema() {
       .string()
       .nonempty(translate("validation.emailRequired") || "Email is required")
       .email(translate("validation.emailInvalid") || "Invalid email address"),
-    userPassword: z
-      .string()
-      .nonempty(
-        translate("validation.passwordRequired") || "Password is required"
-      )
-      .min(
-        8,
-        translate("validation.passwordTooShort") ||
-          "Password must be at least 8 characters"
-      ),
+    userPassword: createStrongPasswordSchema(),
   });
 }
 

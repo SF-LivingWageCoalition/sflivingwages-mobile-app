@@ -7,36 +7,36 @@ export function createStrongPasswordSchema() {
   return z
     .string()
     .nonempty(
-      translate("validation.passwordRequired" as any) || "Password is required"
+      translate("validation.passwordRequired") || "Password is required"
     )
     .min(
       10,
-      translate("validation.passwordTooShort" as any) ||
+      translate("validation.passwordTooShort") ||
         "Password must be at least 10 characters"
     )
     .refine((val) => /[a-z]/.test(val), {
       message:
-        translate("validation.passwordLowercase" as any) ||
+        translate("validation.passwordLowercase") ||
         "Password must contain a lowercase letter",
     })
     .refine((val) => /[A-Z]/.test(val), {
       message:
-        translate("validation.passwordUppercase" as any) ||
+        translate("validation.passwordUppercase") ||
         "Password must contain an uppercase letter",
     })
     .refine((val) => /[0-9]/.test(val), {
       message:
-        translate("validation.passwordNumber" as any) ||
+        translate("validation.passwordNumber") ||
         "Password must contain a number",
     })
     .refine((val) => /[^\w\s]/.test(val), {
       message:
-        translate("validation.passwordSpecial" as any) ||
+        translate("validation.passwordSpecial") ||
         "Password must contain a special character",
     })
     .refine((val) => !/\s/.test(val), {
       message:
-        translate("validation.passwordNoSpaces" as any) ||
+        translate("validation.passwordNoSpaces") ||
         "Password must not contain spaces",
     });
 }
@@ -44,6 +44,3 @@ export function createStrongPasswordSchema() {
 export type StrongPassword = z.infer<
   ReturnType<typeof createStrongPasswordSchema>
 >;
-
-// Example usage (for later wiring):
-// const schema = z.object({ userPassword: createStrongPasswordSchema(), ... });
