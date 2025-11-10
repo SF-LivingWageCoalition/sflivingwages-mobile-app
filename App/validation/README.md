@@ -7,7 +7,7 @@ centralized and easy to reuse.
 
 Files
 
-- `authValidation.ts` — schema factories (createLoginSchema, createRegisterSchema, createForgotPasswordSchema).
+- `authSchema.ts` — schema factories (`loginSchema`, `registerSchema`, `forgotPasswordSchema`).
   - Factories are functions that build zod schemas at runtime so localized
     messages (via the `translate()` helper) are evaluated when the schema is
     used. This avoids capturing translations at module initialization time and
@@ -28,9 +28,9 @@ Usage examples
 - Build and validate in a screen (Login):
 
 ```ts
-import { createLoginSchema } from "../../validation/authValidation";
+import { loginSchema } from "../../validation/authSchema";
 
-const schema = createLoginSchema();
+const schema = loginSchema();
 const parsed = schema.safeParse({ userEmail, userPassword });
 if (!parsed.success) {
   const { fieldErrors, generalError } = mapZodErrorToFormErrors(parsed.error);
@@ -52,7 +52,7 @@ const { fieldErrors, generalError } = mapZodErrorToFormErrors(zodError);
 
 API notes
 
-- `createLoginSchema()` / `createRegisterSchema()` / `createForgotPasswordSchema()`
+- `loginSchema()` / `registerSchema()` / `forgotPasswordSchema()`
   - Return a `z.ZodObject` ready to run `parse()` or `safeParse()` against.
 - `mapZodErrorToFormErrors(zodError, options?)`
   - Returns `{ fieldErrors, generalError }`.
@@ -61,15 +61,15 @@ API notes
 
 Types
 
-- The validation module also exports TypeScript types inferred from the
-  schemas (for example `LoginInput`, `RegisterInput`, `ForgotPasswordInput`).
-  These are produced with `z.infer` / `ReturnType` in `authValidation.ts` and
+- The validation module exports TypeScript types inferred from the
+  schemas (for example `LoginFormValues`, `RegisterFormValues`, `ForgotPasswordFormValues`).
+  These are produced with `z.infer` / `ReturnType` in `authSchema.ts` and
   can be imported where you want strongly-typed form handlers:
 
 ```ts
-import type { LoginInput } from "../../validation/authValidation";
+import type { LoginFormValues } from "../../validation/authSchema";
 
-function handleSubmit(data: LoginInput) {
+function handleSubmit(data: LoginFormValues) {
   // `data.userEmail` and `data.userPassword` are strongly typed here
 }
 ```
@@ -88,3 +88,71 @@ Tips and future improvements
 
 That's it — these small conventions make form validation consistent, localized,
 and easier to maintain across the app.
+
+## Password schema
+
+This repository includes a `passwordSchema()` helper used by registration and
+password-change flows. It centralizes the password policy so validation and
+error messages stay consistent and localized via `translate()`.
+
+Policy enforced by the current `passwordSchema()` (summary):
+
+- Minimum length: 10 characters
+- At least one lowercase letter (`/[a-z]/`)
+- At least one uppercase letter (`/[A-Z]/`)
+- At least one digit (`/[0-9]/` / `\d`)
+- At least one special character from an explicit allowed set (see below)
+- No whitespace characters allowed (`/\s/`)
+
+Allowed special characters (explicit whitelist used in the schema):
+
+!"#$%&'()\*+,-./:;<=>?@[]^\_{}|~`
+
+This means the schema treats characters from that set as valid "special"
+characters. Underscore (`_`) is included in the allowed set. Backslash (`\`) and
+emoji are not considered allowed special characters by the whitelist.
+
+Example of the refine used to require at least one allowed special character:
+
+```ts
+.refine((val) => /[!"#$%&'()*+,\-./:;<=>?@\[\]^_{}|~`]/.test(val), {
+  message:
+    translate("validation.passwordSpecial") ||
+    "Password must contain one of the following special characters: !\"#$%&'()*+,-./:;<=>?@[]^_{}|~`",
+})
+```
+
+Notes and alternatives
+
+- If you want to allow underscore to be _not_ treated as a special character,
+  modify the allowed set accordingly (e.g., remove `_`).
+- If you prefer to allow emoji or other Unicode symbol categories, you can use
+  Unicode property escapes (requires the `u` flag and a JS engine that supports
+  `\p{...}`):
+
+```ts
+// allow any Unicode punctuation or symbol as "special"
+/[\p{P}\p{S}]/u;
+```
+
+- If the JS runtime does not support Unicode property escapes (older engines
+  or some JS runtimes used by React Native), prefer an explicit whitelist or
+  add a small runtime detection + fallback.
+- To enforce that only letters, digits, whitespace and the allowed special
+  characters appear in the password (i.e., forbid emoji or other symbols),
+  combine a positive test for the allowed special set with a negative test for
+  any other non-word/non-space symbol. Example:
+
+```ts
+const allowedSpecial = /[!"#$%&'()*+,\-./:;<=>?@\[\]^_{}|~`]/;
+const disallowedOther = /[^\w\s!"#$%&'()*+,\-./:;<=>?@\[\]^_{}|~`]/;
+
+.refine((val) => allowedSpecial.test(val) && !disallowedOther.test(val), {
+  message: "Password must contain at least one allowed special character and no other symbols.",
+})
+```
+
+If you'd like, I can update `passwordSchema.ts` to switch to the explicit
+whitelist shown above, add a runtime detection for Unicode property support,
+or add unit tests demonstrating allowed / disallowed passwords. Just tell me
+which option you prefer.
