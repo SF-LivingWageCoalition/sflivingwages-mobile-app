@@ -347,6 +347,7 @@ const es: Translations = {
     passwordUppercase: "La contraseña debe contener una letra mayúscula",
     passwordNumber: "La contraseña debe contener un número",
     passwordSpecial: "La contraseña debe contener un carácter especial",
+    passwordInvalidChars: "La contraseña contiene caracteres no válidos",
     passwordNoSpaces: "La contraseña no debe contener espacios",
   },
   errors: {

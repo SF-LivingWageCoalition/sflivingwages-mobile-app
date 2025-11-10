@@ -19,15 +19,15 @@ import { unwrapOrThrow } from "../../api/auth/utils";
 import { mapApiErrorToMessage } from "../../api/auth/errorHelpers";
 import { RegisterScreenProps } from "../../types/types";
 import {
-  createRegisterSchema,
-  type RegisterInput,
-} from "../../validation/authValidation";
+  registerSchema,
+  type RegisterFormValues,
+} from "../../validation/authSchema";
 import { mapZodErrorToFormErrors } from "../../validation/mapZodError";
 
 const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
   const passwordRef = useRef<TextInput | null>(null);
 
-  const [form, setForm] = useState<RegisterInput>({
+  const [form, setForm] = useState<RegisterFormValues>({
     userEmail: "",
     userPassword: "",
   });
@@ -46,7 +46,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
     setErrors({});
     setGeneralError(null);
 
-    const schema = createRegisterSchema();
+    const schema = registerSchema();
     const parsed = schema.safeParse(form);
 
     if (!parsed.success) {

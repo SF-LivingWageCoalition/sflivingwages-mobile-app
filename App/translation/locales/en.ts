@@ -340,6 +340,7 @@ const en = {
     passwordUppercase: "Password must contain an uppercase letter",
     passwordNumber: "Password must contain a number",
     passwordSpecial: "Password must contain a special character",
+    passwordInvalidChars: "Password contains invalid characters",
     passwordNoSpaces: "Password must not contain spaces",
   },
   errors: {

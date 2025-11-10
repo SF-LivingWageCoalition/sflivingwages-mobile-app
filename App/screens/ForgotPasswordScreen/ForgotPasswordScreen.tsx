@@ -18,15 +18,15 @@ import { unwrapOrThrow } from "../../api/auth/utils";
 import { mapApiErrorToMessage } from "../../api/auth/errorHelpers";
 import { ForgotPasswordScreenProps } from "../../types/types";
 import {
-  createForgotPasswordSchema,
-  type ForgotPasswordInput,
-} from "../../validation/authValidation";
+  forgotPasswordSchema,
+  type ForgotPasswordFormValues,
+} from "../../validation/authSchema";
 import { mapZodErrorToFormErrors } from "../../validation/mapZodError";
 
 const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
   navigation,
 }) => {
-  const [form, setForm] = useState<ForgotPasswordInput>({ userEmail: "" });
+  const [form, setForm] = useState<ForgotPasswordFormValues>({ userEmail: "" });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -36,7 +36,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
     setErrors({});
     setGeneralError(null);
 
-    const schema = createForgotPasswordSchema();
+    const schema = forgotPasswordSchema();
     const parsed = schema.safeParse(form);
 
     if (!parsed.success) {

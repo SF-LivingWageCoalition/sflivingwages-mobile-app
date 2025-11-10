@@ -15,10 +15,7 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
-import {
-  createLoginSchema,
-  type LoginInput,
-} from "../../validation/authValidation";
+import { loginSchema, type LoginFormValues } from "../../validation/authSchema";
 import { mapZodErrorToFormErrors } from "../../validation/mapZodError";
 import { LoginScreenProps } from "../../types/types";
 import { loginUser } from "../../api/auth/authApi";
@@ -29,7 +26,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
   const passwordRef = useRef<TextInput | null>(null);
 
-  const [form, setForm] = useState<LoginInput>({
+  const [form, setForm] = useState<LoginFormValues>({
     userEmail: "",
     userPassword: "",
   });
@@ -48,7 +45,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     setErrors({});
     setGeneralError(null);
 
-    const schema = createLoginSchema();
+    const schema = loginSchema();
     const parsed = schema.safeParse(form);
 
     if (!parsed.success) {

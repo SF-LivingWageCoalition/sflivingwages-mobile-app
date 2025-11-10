@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { translate } from "../translation";
-import { createStrongPasswordSchema } from "./passwordPolicy";
+import { passwordSchema, type StrongPassword } from "./passwordSchema";
 
 // NOTE: See `App/validation/README.md` for guidance on schema factories and
 // the `mapZodErrorToFormErrors` mapper. The factories here intentionally build
@@ -8,19 +8,19 @@ import { createStrongPasswordSchema } from "./passwordPolicy";
 //
 // Factory functions that build zod schemas at runtime so localized messages
 // are fetched when the schema is used (rather than at module init time).
-export function createLoginSchema() {
+export function loginSchema() {
   return z.object({
     userEmail: z
       .string()
       .nonempty(translate("validation.emailRequired") || "Email is required")
       .email(translate("validation.emailInvalid") || "Invalid email address"),
-    userPassword: createStrongPasswordSchema(),
+    userPassword: passwordSchema() as z.ZodType<StrongPassword>,
   });
 }
 
-export const createRegisterSchema = createLoginSchema;
+export const registerSchema = loginSchema;
 
-export function createForgotPasswordSchema() {
+export function forgotPasswordSchema() {
   return z.object({
     userEmail: z
       .string()
@@ -30,8 +30,8 @@ export function createForgotPasswordSchema() {
 }
 
 // Export inferred types based on the factory return types.
-export type LoginInput = z.infer<ReturnType<typeof createLoginSchema>>;
-export type RegisterInput = z.infer<ReturnType<typeof createRegisterSchema>>;
-export type ForgotPasswordInput = z.infer<
-  ReturnType<typeof createForgotPasswordSchema>
+export type LoginFormValues = z.infer<ReturnType<typeof loginSchema>>;
+export type RegisterFormValues = z.infer<ReturnType<typeof registerSchema>>;
+export type ForgotPasswordFormValues = z.infer<
+  ReturnType<typeof forgotPasswordSchema>
 >;
