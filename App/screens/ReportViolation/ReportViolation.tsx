@@ -328,6 +328,8 @@ const ReportViolation: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 16,
+    backgroundColor: colors.light.backgroundSecondary,
   },
   primaryButtonStyle: {
     width: 100,
@@ -356,18 +358,14 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   card: {
-    paddingTop: 35,
-    backgroundColor: colors.light.background,
-    margin: 10,
-    padding: 1,
+    backgroundColor: colors.light.surface,
+    borderRadius: 10,
+    padding: 20,
     shadowColor: colors.light.shadow,
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.34,
-    shadowRadius: 6.27,
-    elevation: 10,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   textInput: {
     height: 30,
