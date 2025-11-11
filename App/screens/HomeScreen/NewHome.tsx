@@ -448,8 +448,7 @@ const styles = StyleSheet.create({
   buttonView: {
     marginLeft: 23,
     marginTop: 28,
-    width: 120,
-    height: 40,
+    flexDirection: "row",
   },
   buttonMargin: {
     marginRight: 27,
