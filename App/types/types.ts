@@ -166,7 +166,6 @@ export type ViewProps = {
 export type AuctionNavState = {
   arts: ProductItem[];
   books: ProductItem[];
-  photos: ProductItem[];
   cds: ProductItem[];
   dvds: ProductItem[];
   lps: ProductItem[];
