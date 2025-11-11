@@ -50,13 +50,9 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
 
     const { userEmail: email } = parsed.data;
 
-    console.log(
-      "ForgotPasswordScreen: Trying to reset password with email address..."
-    );
     setLoading(true);
     try {
       unwrapOrThrow(await sendPasswordReset(email));
-      console.log("ForgotPasswordScreen: Password reset successful");
       Alert.alert(
         translate("forgotPasswordScreen.forgotPasswordAlert.title"),
         translate("forgotPasswordScreen.forgotPasswordAlert.message"),
@@ -64,10 +60,6 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
         { cancelable: true, onDismiss: () => navigation.goBack() }
       );
     } catch (error: unknown) {
-      console.error(
-        "ForgotPasswordScreen: Error occurred during password reset:",
-        error
-      );
       const message = mapApiErrorToMessage(error, "errors.passwordResetFailed");
       setGeneralError(message);
     } finally {

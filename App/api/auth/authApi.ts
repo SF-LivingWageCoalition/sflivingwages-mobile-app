@@ -78,7 +78,6 @@ export const fetchToken = async (
   password: string
 ): Promise<ApiResult<TokenData>> => {
   try {
-    console.log("authApi: fetchToken() called with email address and password");
     const response = await fetchWithTimeout(`${BASE_URL}${JWT_ROUTE}/auth`, {
       method: "POST",
       headers: {
@@ -95,30 +94,14 @@ export const fetchToken = async (
     const tokenData = await parseJsonSafe(response);
     if (response.ok) {
       // Token fetch succeeded
-      console.log(
-        "authApi: Token fetch succeeded with status:",
-        response.status
-      );
-      console.log("authApi: Successful token fetch response data:", tokenData);
       return { success: true, data: tokenData, status: response.status };
       // Handle successful token fetch (e.g., store token, navigate to another screen)
     } else {
       // Token fetch failed
-      console.error(
-        "authApi: Token fetch failed with status:",
-        response.status
-      );
-      console.log("authApi: Failed token fetch response data:", tokenData);
-      if (tokenData && tokenData.data) {
-        // Log error details
-        console.error("authApi: Error code:", tokenData.data.errorCode);
-        console.error("authApi: Error message:", tokenData.data.message);
-      }
       return apiFailureWithServerCode<TokenData>(tokenData, response.status);
     }
   } catch (error: any) {
     // General error during token fetch process - return a failed ApiResult
-    console.error("authApi: Error fetching token:", error);
     return apiFailureFromException(error);
   }
 };
@@ -140,7 +123,6 @@ export const validateToken = async (
   jwtToken: string
 ): Promise<ApiResult<ValidationData>> => {
   try {
-    console.log("authApi: validateToken() called");
     const response = await fetchWithTimeout(
       `${BASE_URL}${JWT_ROUTE}/auth/validate`,
       {
@@ -159,25 +141,9 @@ export const validateToken = async (
     const validationData = await parseJsonSafe(response);
     if (response.ok) {
       // Token validation succeeded
-      console.log(
-        "authApi: Token validation succeeded with status:",
-        response.status
-      );
-      console.log(
-        "authApi: Successful token validation response data:",
-        validationData
-      );
       return { success: true, data: validationData, status: response.status };
     } else {
       // Token validation failed
-      console.log(
-        "authApi: Token validation failed with status:",
-        response.status
-      );
-      console.log(
-        "authApi: Failed token validation response data:",
-        validationData
-      );
       return apiFailureWithServerCode<ValidationData>(
         validationData,
         response.status
@@ -185,7 +151,6 @@ export const validateToken = async (
     }
   } catch (error: any) {
     // General error during token validation process - return failed ApiResult
-    console.error("authApi: Error validating token:", error);
     return apiFailureFromException(error);
   }
 };
@@ -205,7 +170,6 @@ export const refreshToken = async (
   jwtToken: string
 ): Promise<ApiResult<TokenData>> => {
   try {
-    console.log("authApi: refreshToken() called");
     const response = await fetchWithTimeout(
       `${BASE_URL}${JWT_ROUTE}/auth/refresh`,
       {
@@ -224,27 +188,13 @@ export const refreshToken = async (
     const tokenData = await parseJsonSafe(response);
     if (response.ok) {
       // Token refresh succeeded
-      console.log(
-        "authApi: Token refresh succeeded with status:",
-        response.status
-      );
-      console.log(
-        "authApi: Successful token refresh response data:",
-        tokenData
-      );
       return { success: true, data: tokenData, status: response.status };
     } else {
       // Token refresh failed
-      console.log(
-        "authApi: Token refresh failed with status:",
-        response.status
-      );
-      console.log("authApi: Failed token refresh response data:", tokenData);
       return apiFailureWithServerCode<TokenData>(tokenData, response.status);
     }
   } catch (error: any) {
     // General error during token refresh process - return failed ApiResult
-    console.error("authApi: Error refreshing token:", error);
     return apiFailureFromException(error);
   }
 };
@@ -270,7 +220,6 @@ export const revokeToken = async (
   jwtToken: string
 ): Promise<ApiResult<TokenData>> => {
   try {
-    console.log("authApi: revokeToken() called");
     const response = await fetchWithTimeout(
       `${BASE_URL}${JWT_ROUTE}/auth/revoke`,
       {
@@ -289,30 +238,13 @@ export const revokeToken = async (
     const responseData = await parseJsonSafe(response);
     if (response.ok) {
       // Token revocation succeeded
-      console.log(
-        "authApi: Token revocation succeeded with status:",
-        response.status
-      );
-      console.log(
-        "authApi: Successful token revocation response data:",
-        responseData
-      );
       return { success: true, data: responseData, status: response.status };
     } else {
       // Token revocation failed
-      console.log(
-        "authApi: Token revocation failed with status:",
-        response.status
-      );
-      console.log(
-        "authApi: Failed token revocation response data:",
-        responseData
-      );
       return apiFailureWithServerCode<TokenData>(responseData, response.status);
     }
   } catch (error: any) {
     // General error during token revocation process - return failed ApiResult
-    console.error("authApi: Error revoking token:", error);
     return apiFailureFromException(error);
   }
 };
@@ -337,7 +269,6 @@ export const loginUser = async (
   dispatch: AppDispatch
 ): Promise<ApiResult<ValidationData["data"]>> => {
   try {
-    console.log("authApi: loginUser() called");
     // First, fetch the JWT token
     const tokenResult = await fetchToken(email, password);
     // Use optional chaining and local variables to simplify checks
@@ -347,14 +278,12 @@ export const loginUser = async (
     if (tokenResult.success && typeof jwt === "string" && jwt.length > 0) {
       // Token fetch success. Validate the received token
       try {
-        console.log("authApi: loginUser() calling validateToken()");
         const validationResult = await validateToken(jwt);
         const validatedData = validationResult.success
           ? validationResult.data?.data
           : undefined;
         if (validationResult.success && isValidValidationData(validatedData)) {
           // Token validation success. Set user data in Redux store
-          console.log("authApi: Login successful");
           // Normalize the payload to the DataState shape expected by the store.
           // Normalize the JWT(s) returned by the validation endpoint into a
           // canonical array shape so the Redux store always receives the same
@@ -369,8 +298,6 @@ export const loginUser = async (
           return { success: true, data: validatedData };
         } else {
           // Token validation failed.
-          console.log("authApi: Login failed during validation");
-          console.log("authApi: Failed validation result:", validationResult);
           const payload = validationResult.data?.data ?? validationResult.data;
           return apiFailureWithServerCode<ValidationData["data"]>(
             payload,
@@ -379,13 +306,10 @@ export const loginUser = async (
         }
       } catch (error: any) {
         // Error during token validation
-        console.error("authApi: Error in validateToken():", error);
         return apiFailureFromException(error);
       }
     } else {
       // Token fetch failed.
-      console.log("authApi: Login failed during token fetch");
-      console.log("authApi: Failed token result:", tokenResult);
       const payload = tokenResult.data?.data ?? tokenResult.data;
       return apiFailureWithServerCode<ValidationData["data"]>(
         payload,
@@ -394,7 +318,6 @@ export const loginUser = async (
     }
   } catch (error: any) {
     // General error during login process
-    console.error("authApi: Error in loginUser():", error);
     return apiFailureFromException(error);
   }
 };
@@ -414,9 +337,6 @@ export const registerCustomer = async (
   email: string,
   password: string
 ): Promise<ApiResult<CustomerRegistrationData>> => {
-  console.log(
-    "authApi: registerCustomer() called with email address and password"
-  );
   try {
     const response = await fetchWithTimeout(
       `${BASE_URL}${WC_ROUTE}/customers`,
@@ -460,40 +380,9 @@ export const registerCustomer = async (
     const registrationData = await parseJsonSafe(response);
     if (response.ok) {
       // Registration was successful
-      console.log(
-        "authApi: Customer registration succeeded with status:",
-        response.status
-      );
-      console.log(
-        "authApi: Successful customer registration response data:",
-        registrationData
-      );
       return { success: true, data: registrationData, status: response.status };
     } else {
       // Registration failed
-      console.log(
-        "authApi: Customer registration failed with status:",
-        response.status
-      );
-      console.log(
-        "authApi: Failed customer registration response data:",
-        registrationData
-      );
-      if (registrationData && registrationData.data) {
-        // Log error details
-        console.error(
-          "authApi: registerCustomer() Error status:",
-          registrationData.data.status
-        );
-        console.error(
-          "authApi: registerCustomer() Error code:",
-          registrationData.code
-        );
-        console.error(
-          "authApi: registerCustomer() Error message:",
-          registrationData.message
-        );
-      }
       return apiFailureWithServerCode<CustomerRegistrationData>(
         registrationData,
         response.status
@@ -501,7 +390,6 @@ export const registerCustomer = async (
     }
   } catch (error: any) {
     // General error during registration process - return failed ApiResult
-    console.error("authApi: Error during customer registration:", error);
     return apiFailureFromException<CustomerRegistrationData>(error);
   }
 };
@@ -527,9 +415,6 @@ export const registerUser = async (
   password: string
 ): Promise<ApiResult<UserRegistrationData>> => {
   try {
-    console.log(
-      "authApi: registerUser() called with email address and password"
-    );
     const response = await fetchWithTimeout(`${BASE_URL}${JWT_ROUTE}/users`, {
       method: "POST",
       headers: {
@@ -546,36 +431,9 @@ export const registerUser = async (
     const registrationData = await parseJsonSafe(response);
     if (response.ok) {
       // Registration was successful
-      console.log(
-        "authApi: Registration succeeded with status:",
-        response.status
-      );
-      console.log(
-        "authApi: Successful registration response data:",
-        registrationData
-      );
       return { success: true, data: registrationData, status: response.status };
     } else {
       // Registration failed
-      console.error(
-        "authApi: Registration failed with status:",
-        response.status
-      );
-      console.log(
-        "authApi: Failed registration response data:",
-        registrationData
-      );
-      if (registrationData && registrationData.data) {
-        // Log error details
-        console.error(
-          "authApi: registerUser() Error code:",
-          registrationData.data.errorCode
-        );
-        console.error(
-          "authApi: registerUser() Error message:",
-          registrationData.data.message
-        );
-      }
       return apiFailureWithServerCode<UserRegistrationData>(
         registrationData,
         response.status
@@ -583,7 +441,6 @@ export const registerUser = async (
     }
   } catch (error: any) {
     // General error during registration process - return failed ApiResult
-    console.error("authApi: Error during registration:", error);
     return apiFailureFromException<UserRegistrationData>(error);
   }
 };
@@ -603,7 +460,6 @@ export const sendPasswordReset = async (
   email: string
 ): Promise<ApiResult<PasswordResetData>> => {
   try {
-    console.log("authApi: sendPasswordReset() called with email address");
     const response = await fetchWithTimeout(
       `${BASE_URL}${JWT_ROUTE}/user/reset_password&email=${email}&AUTH_KEY=${JWT_AUTH_KEY}`,
       {
@@ -615,14 +471,6 @@ export const sendPasswordReset = async (
     const passwordResetData = await parseJsonSafe(response);
     if (response.ok) {
       // Password reset succeeded
-      console.log(
-        "authApi: Forgot password succeeded with status:",
-        response.status
-      );
-      console.log(
-        "authApi: Successful forgot password response data:",
-        passwordResetData
-      );
       return {
         success: true,
         data: passwordResetData,
@@ -630,14 +478,6 @@ export const sendPasswordReset = async (
       };
     } else {
       // Password reset failed
-      console.log(
-        "authApi: Forgot password failed with status:",
-        response.status
-      );
-      console.log(
-        "authApi: Failed forgot password response data:",
-        passwordResetData
-      );
       return apiFailureWithServerCode<PasswordResetData>(
         passwordResetData,
         response.status
@@ -645,7 +485,6 @@ export const sendPasswordReset = async (
     }
   } catch (error: any) {
     // General error during password reset process - return failed ApiResult
-    console.error("authApi: Error sending password reset email:", error);
     return apiFailureFromException<PasswordResetData>(error);
   }
 };
@@ -686,12 +525,10 @@ export const sendPasswordReset = async (
  */
 export const logoutUser = async (): Promise<LogoutResult> => {
   try {
-    console.log("authApi: logoutUser() called");
     // Read the token from the persisted store via selector and attempt revoke.
     const state = store.getState() as RootState;
     const currentToken = selectJwt(state)?.[0]?.token;
     if (!currentToken) {
-      console.log("authApi: No token present to revoke");
       // Local logout succeeded but nothing to revoke on server.
       return { success: true, data: { revoked: false } };
     }
@@ -699,7 +536,6 @@ export const logoutUser = async (): Promise<LogoutResult> => {
     try {
       // Attempt server revoke and normalize the success path to the LogoutResult
       const revokeResult = await revokeToken(currentToken);
-      console.log("authApi: revokeToken result:", revokeResult);
       if (revokeResult.success) {
         // Normalize any jwt returned by the revoke endpoint so callers that
         // inspect the returned token payload can reliably consume an array.
@@ -727,18 +563,12 @@ export const logoutUser = async (): Promise<LogoutResult> => {
         revokeResult.status
       );
     } catch (err: any) {
-      console.warn(
-        "authApi: revokeToken failed (continuing to clear local state):",
-        err
-      );
       return apiFailureFromException<{ revoked: false }>(err);
     }
   } catch (error: any) {
-    console.error("authApi: Error in logoutUser():", error);
     return apiFailureFromException<{ revoked: false }>(error);
   } finally {
     // Always clear local state even if revoke fails or wasn't provided.
     store.dispatch(clearUser()); // Clear user data from Redux store
-    console.log("authApi: User logged out");
   }
 };

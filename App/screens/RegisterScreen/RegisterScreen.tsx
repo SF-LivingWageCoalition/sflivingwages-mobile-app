@@ -60,18 +60,10 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
 
     const { userEmail: email, userPassword: password } = parsed.data;
 
-    console.log(
-      "RegisterScreen: Trying to register user with email address and password..."
-    );
     setLoading(true);
     try {
       const registrationData = unwrapOrThrow(
         await registerCustomer(email, password)
-      );
-      console.log("RegisterScreen: Registration successful");
-      console.log(
-        "RegisterScreen: Received registrationData:\n",
-        JSON.stringify(registrationData, null, 2) // PPI leak check: ensure no sensitive data is logged
       );
       Alert.alert(
         translate("registerScreen.registerAlert.title"),
@@ -80,10 +72,6 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
         { cancelable: true, onDismiss: () => navigation.goBack() }
       );
     } catch (error: unknown) {
-      console.error(
-        "RegisterScreen: Unexpected error during registration:",
-        error
-      );
       const message = mapApiErrorToMessage(error, "errors.registrationFailed");
       setGeneralError(message);
     } finally {

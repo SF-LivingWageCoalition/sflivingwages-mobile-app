@@ -60,9 +60,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     // safe to use parsed.data
     const { userEmail: email, userPassword: password } = parsed.data;
 
-    console.log(
-      "LoginScreen: Trying to login user with email address and password..."
-    );
     setLoading(true);
     /*
       Note: `loginUser(email, password, dispatch)` performs the full
@@ -74,14 +71,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       const validatedData = unwrapOrThrow(
         await loginUser(email, password, dispatch)
       );
-      console.log("LoginScreen: Login successful.");
-      console.log(
-        "LoginScreen: Received validatedData:\n",
-        JSON.stringify(validatedData, null, 2) // PPI leak check: ensure no sensitive data is logged
-      );
       navigation.goBack();
     } catch (error: unknown) {
-      console.error("LoginScreen: Unexpected error during login:", error);
       const message = mapApiErrorToMessage(error, "errors.loginFailed");
       setGeneralError(message);
     } finally {

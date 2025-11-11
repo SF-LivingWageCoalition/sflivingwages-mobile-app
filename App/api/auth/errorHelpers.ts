@@ -42,8 +42,6 @@ export function mapApiErrorToMessage(
     }
     const status = apiErr.status;
     const serverMessage = apiErr.message;
-    console.log("mapApiErrorToMessage: ApiError status =", status);
-    console.log("mapApiErrorToMessage: ApiError message =", serverMessage);
     // Network error (status === 0)
     if (status === 0) {
       return (
