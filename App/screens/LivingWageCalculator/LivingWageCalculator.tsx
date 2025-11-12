@@ -1,15 +1,9 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useRef, useState } from "react";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
+import Button from "../../components/Button";
 import appIcon from "../../../assets/icon.png";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
@@ -85,16 +79,20 @@ const LivingWageCalculator: React.FC = () => {
   return (
     <ScrollView ref={scrollViewRef}>
       <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.circleBackButton}
+        <Button
+          variant="circle"
+          position="absolute"
+          positionTop={27}
+          positionLeft={27}
           onPress={() => navigation.goBack()}
-        >
-          <FontAwesome5
-            name="chevron-left"
-            size={20}
-            color={colors.light.chevronLight}
-          />
-        </TouchableOpacity>
+          icon={
+            <FontAwesome5
+              name="chevron-left"
+              size={20}
+              color={colors.light.chevronLight}
+            />
+          }
+        />
         <View style={styles.card}>
           <View style={styles.logoContainer}>
             <Image style={styles.logo} source={appIcon} />
@@ -158,9 +156,7 @@ const LivingWageCalculator: React.FC = () => {
             </View>
           </View>
 
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={styles.submitButtonText}>Submit</Text>
-          </TouchableOpacity>
+          <Button variant="primary" title="Submit" onPress={handleSubmit} />
         </View>
         {calculationResult && (
           <View ref={resultsCardRef} style={styles.resultsCard}>
@@ -227,23 +223,6 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: colors.light.backgroundSecondary,
   },
-  circleBackButton: {
-    position: "absolute",
-    top: 27,
-    left: 27,
-    backgroundColor: colors.light.primary,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 10,
-    elevation: 5,
-    shadowColor: colors.light.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
   card: {
     backgroundColor: colors.light.surface,
     borderRadius: 10,
@@ -267,17 +246,6 @@ const styles = StyleSheet.create({
   title: {
     ...textStyles.h3,
     textAlign: "center",
-  },
-  submitButton: {
-    backgroundColor: colors.light.primary,
-    padding: 16,
-    borderRadius: 12,
-    alignItems: "center",
-    width: "100%",
-  },
-  submitButtonText: {
-    color: colors.light.textOnPrimary,
-    ...textStyles.button,
   },
   resultsCard: {
     backgroundColor: colors.light.background,

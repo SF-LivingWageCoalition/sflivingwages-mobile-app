@@ -2,7 +2,7 @@ import React from "react";
 import { ActivityIndicator, FlatList } from "react-native";
 import { colors } from "../../../../theme";
 import { ArtsProps } from "../../../../types/types";
-import AuctionCard from "../cards/AuctionCard";
+import Card from "../cards/Card";
 
 const Arts: React.FC<ArtsProps> = ({ arts, isLoading }) => {
   return (
@@ -14,7 +14,7 @@ const Arts: React.FC<ArtsProps> = ({ arts, isLoading }) => {
           horizontal={false}
           data={arts}
           renderItem={({ item }) => (
-            <AuctionCard
+            <Card
               key={item.id}
               categoryId={944}
               name={item.name}
@@ -23,6 +23,8 @@ const Arts: React.FC<ArtsProps> = ({ arts, isLoading }) => {
               link={item.permalink}
               image={item.images[0].thumbnail}
               previewImage={item.images[0].src}
+              buttonText="Place bid"
+              showDescriptionModal={false}
             />
           )}
           keyExtractor={(item) => item.id.toString()}

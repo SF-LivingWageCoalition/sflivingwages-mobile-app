@@ -115,8 +115,8 @@ const lightTheme = {
   chevronDark: palette.black,
 
   // Shadow colors
-  shadow: `${palette.black}15`, // 15% opacity
-  elevation: `${palette.black}12`, // 12% opacity
+  shadow: `${palette.black}26`, // 15% opacity
+  elevation: `${palette.black}1F`, // 12% opacity
 } as const;
 
 // Dark theme colors

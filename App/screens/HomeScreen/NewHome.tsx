@@ -14,6 +14,7 @@ import { Card } from "react-native-paper";
 import Swiper from "react-native-swiper/src";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { WebView } from "react-native-webview";
+import Button from "../../components/Button";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
@@ -148,14 +149,11 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 {translate("whoWeAreHeader.body")}
               </Text>
               <View style={styles.buttonView}>
-                <TouchableOpacity
+                <Button
+                  variant="primary"
+                  title={translate("whoWeAreHeader.buttonText")}
                   onPress={() => navigation.navigate("WhoWeAre")}
-                  style={styles.button}
-                >
-                  <Text style={styles.buttonText}>
-                    {translate("whoWeAreHeader.buttonText")}
-                  </Text>
-                </TouchableOpacity>
+                />
               </View>
             </View>
           </ImageBackground>
@@ -450,24 +448,7 @@ const styles = StyleSheet.create({
   buttonView: {
     marginLeft: 23,
     marginTop: 28,
-    width: 120,
-    height: 40,
-  },
-  button: {
-    backgroundColor: colors.light.primary,
-    borderRadius: 30,
-    paddingVertical: 7,
-    paddingHorizontal: 15,
-    elevation: 6,
-    shadowColor: colors.light.primary,
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: { width: 1, height: 1 },
-  },
-  buttonText: {
-    ...textStyles.button,
-    color: colors.light.textOnPrimary,
-    textAlign: "center",
+    flexDirection: "row",
   },
   buttonMargin: {
     marginRight: 27,
