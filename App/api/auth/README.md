@@ -131,7 +131,7 @@ try {
 - Inputs: plain JS objects (email/password, customer data, etc.)
 - Outputs: `ApiResult<T>` — a minimal contract for all helpers
   - Success: `{ success: true, data: T, status?: number }`
-  - Failure: `{ success: false, errorMessage?: string, status?: number, data?: any }`
+  - Failure: `{ success: false, errorMessage?: string, status?: number, data?: unknown }`
 - Optional throw-style helper: `unwrapOrThrow(result)` — returns `data` or throws `ApiError` (contains `status` and `data`).
 - Side-effects: `loginUser` dispatches `setUser(validatedData)` on success.
 
