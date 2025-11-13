@@ -1,5 +1,6 @@
 import { ApiError } from "./errors";
 import { translate } from "../../translation";
+import type { TxKeyPath } from "../../translation";
 import { getFriendlyErrorInfo } from "./errorCodeMap";
 
 /**
@@ -17,7 +18,7 @@ export function mapApiErrorToMessage(
   defaultKey?: string
 ): string {
   const fallback =
-    translate((defaultKey ?? "errors.unexpectedError") as any) ||
+    translate((defaultKey ?? "errors.unexpectedError") as TxKeyPath) ||
     "An unexpected error occurred.";
   if (error instanceof ApiError) {
     // If the server included a numeric `errorCode` (Simple JWT Login provides
@@ -45,19 +46,23 @@ export function mapApiErrorToMessage(
     // Network error (status === 0)
     if (status === 0) {
       return (
-        translate("errors.networkError" as any) || serverMessage || fallback
+        translate("errors.networkError" as TxKeyPath) ||
+        serverMessage ||
+        fallback
       );
     }
     // Timeout (408)
     if (status === 408) {
       return (
-        translate("errors.requestTimedOut" as any) || serverMessage || fallback
+        translate("errors.requestTimedOut" as TxKeyPath) ||
+        serverMessage ||
+        fallback
       );
     }
     // Auth/permission errors (401, 403)
     if (status === 401 || status === 403) {
       return (
-        translate((defaultKey ?? "errors.loginFailed") as any) ||
+        translate((defaultKey ?? "errors.loginFailed") as TxKeyPath) ||
         serverMessage ||
         fallback
       );
@@ -65,7 +70,7 @@ export function mapApiErrorToMessage(
     // Bad request / validation (400)
     if (status === 400) {
       return (
-        translate((defaultKey ?? "errors.unexpectedError") as any) ||
+        translate((defaultKey ?? "errors.unexpectedError") as TxKeyPath) ||
         serverMessage ||
         fallback
       );
@@ -73,18 +78,24 @@ export function mapApiErrorToMessage(
     // Conflict / registration (409)
     if (status === 409) {
       return (
-        translate("errors.registrationFailed") || serverMessage || fallback
+        translate("errors.registrationFailed" as TxKeyPath) ||
+        serverMessage ||
+        fallback
       );
     }
     // Server errors (>= 500)
     if (status && status >= 500) {
-      return translate("errors.unexpectedError") || serverMessage || fallback;
+      return (
+        translate("errors.unexpectedError" as TxKeyPath) ||
+        serverMessage ||
+        fallback
+      );
     }
 
     // Fallback: server message -> defaultKey translation -> generic fallback
     return (
       serverMessage ||
-      translate((defaultKey ?? "errors.unexpectedError") as any) ||
+      translate((defaultKey ?? "errors.unexpectedError") as TxKeyPath) ||
       fallback
     );
   }
@@ -92,11 +103,11 @@ export function mapApiErrorToMessage(
   // Non-ApiError: prefer error.message, then translation, then fallback
   const message =
     typeof error === "object" && error !== null && "message" in error
-      ? (error as any).message
+      ? ((error as { message?: unknown }).message as string | undefined)
       : undefined;
   return (
     message ||
-    translate((defaultKey ?? "errors.unexpectedError") as any) ||
+    translate((defaultKey ?? "errors.unexpectedError") as TxKeyPath) ||
     fallback
   );
 }

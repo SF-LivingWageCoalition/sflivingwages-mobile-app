@@ -40,8 +40,13 @@ export const fetchWithTimeout = async (
       signal,
     } as RequestInit);
     return response;
-  } catch (err: any) {
-    if (err && (err.name === "AbortError" || err.code === "ERR_ABORTED")) {
+  } catch (err: unknown) {
+    if (
+      typeof err === "object" &&
+      err !== null &&
+      ((err as { name?: unknown }).name === "AbortError" ||
+        (err as { code?: unknown }).code === "ERR_ABORTED")
+    ) {
       throw new TimeoutError();
     }
     throw err;

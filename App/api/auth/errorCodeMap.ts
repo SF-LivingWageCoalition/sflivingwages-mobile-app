@@ -1,4 +1,5 @@
-import { translate } from "../../translation/i18n";
+import { translate } from "../../translation";
+import type { TxKeyPath } from "../../translation";
 
 /**
  * Build a translation key for a given numeric code.
@@ -47,14 +48,14 @@ export function getFriendlyErrorInfo(payload: any): {
     const txKey = getTxKeyForCode(code);
     // translate will return the key if not found; we still return that so the
     // UI will show something useful (and missing keys can be filled in later).
-    return { message: translate(txKey as any), errorCode: code };
+    return { message: translate(txKey as TxKeyPath), errorCode: code };
   }
 
   // Next, check for WooCommerce-style string codes (e.g. "registration-error-email-exists").
   const wcCode = payload?.data?.code ?? payload?.code;
   if (typeof wcCode === "string" && wcCode.length > 0) {
     const txKey = `errors.woocommerce.codes.${wcCode}`;
-    return { message: translate(txKey as any), errorKey: wcCode };
+    return { message: translate(txKey as TxKeyPath), errorKey: wcCode };
   }
 
   // Some server responses include a textual message at common locations.
@@ -68,7 +69,12 @@ export function getFriendlyErrorInfo(payload: any): {
   }
 
   // Final fallback: generic localized unexpected error
-  return { message: translate("errors.unexpectedError"), errorCode: code };
+  return {
+    message:
+      translate("errors.unexpectedError" as TxKeyPath) ||
+      "An unexpected error occurred.",
+    errorCode: code,
+  };
 }
 
 export { getTxKeyForCode };

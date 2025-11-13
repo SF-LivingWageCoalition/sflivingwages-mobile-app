@@ -100,7 +100,7 @@ export const fetchToken = async (
       // Token fetch failed
       return apiFailureWithServerCode<TokenData>(tokenData, response.status);
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // General error during token fetch process - return a failed ApiResult
     return apiFailureFromException(error);
   }
@@ -149,7 +149,7 @@ export const validateToken = async (
         response.status
       );
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // General error during token validation process - return failed ApiResult
     return apiFailureFromException(error);
   }
@@ -193,7 +193,7 @@ export const refreshToken = async (
       // Token refresh failed
       return apiFailureWithServerCode<TokenData>(tokenData, response.status);
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // General error during token refresh process - return failed ApiResult
     return apiFailureFromException(error);
   }
@@ -243,7 +243,7 @@ export const revokeToken = async (
       // Token revocation failed
       return apiFailureWithServerCode<TokenData>(responseData, response.status);
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // General error during token revocation process - return failed ApiResult
     return apiFailureFromException(error);
   }
@@ -304,7 +304,7 @@ export const loginUser = async (
             validationResult.status
           );
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         // Error during token validation
         return apiFailureFromException(error);
       }
@@ -316,7 +316,7 @@ export const loginUser = async (
         tokenResult.status
       );
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // General error during login process
     return apiFailureFromException(error);
   }
@@ -388,7 +388,7 @@ export const registerCustomer = async (
         response.status
       );
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // General error during registration process - return failed ApiResult
     return apiFailureFromException<CustomerRegistrationData>(error);
   }
@@ -439,7 +439,7 @@ export const registerUser = async (
         response.status
       );
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // General error during registration process - return failed ApiResult
     return apiFailureFromException<UserRegistrationData>(error);
   }
@@ -483,7 +483,7 @@ export const sendPasswordReset = async (
         response.status
       );
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // General error during password reset process - return failed ApiResult
     return apiFailureFromException<PasswordResetData>(error);
   }
@@ -562,10 +562,10 @@ export const logoutUser = async (): Promise<LogoutResult> => {
         revokeResult.data ?? { message: "revoke failed" },
         revokeResult.status
       );
-    } catch (err: any) {
+    } catch (err: unknown) {
       return apiFailureFromException<{ revoked: false }>(err);
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     return apiFailureFromException<{ revoked: false }>(error);
   } finally {
     // Always clear local state even if revoke fails or wasn't provided.
