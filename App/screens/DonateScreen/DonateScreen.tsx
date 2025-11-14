@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Linking,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Linking, ScrollView, StyleSheet, Text, View } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
 import Button from "../../components/Button";
 import { colors } from "../../theme";

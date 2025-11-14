@@ -1,4 +1,6 @@
 import type { Translations } from "./en";
+import simpleJwt from "./simpleJwt.es";
+import wooCommerce from "./wooCommerce.es";
 
 const es: Translations = {
   assistHomeScreen: {
@@ -244,7 +246,7 @@ const es: Translations = {
         name: "David Frias",
         title: "Codirector de Campaña",
       },
-      {        
+      {
         id: 3,
         name: "Julia Toscano",
         title: "Codirectora de Campaña",
@@ -286,14 +288,85 @@ const es: Translations = {
       },
     ],
   },
-    donateScreen: {
-    title: "Donar"
+  donateScreen: {
+    title: "Donar",
   },
   eventsScreen: {
     title: "Eventos",
   },
   eventsDetails: {
     title: "Detalles del Evento",
+  },
+  accountScreen: {
+    title: "Cuenta",
+    isLoggedIn: "Bienvenido, ¡has iniciado sesión!",
+    isLoggedOut: "No has iniciado sesión.",
+    profile: "Perfil",
+    logoutAlert: {
+      title: "Cerrar Sesión",
+      message: "¿Estás seguro de que deseas cerrar sesión?",
+    },
+  },
+  loginScreen: {
+    title: "Iniciar Sesión",
+  },
+  registerScreen: {
+    title: "Registrarse",
+    registerAlert: {
+      title: "Registro exitoso",
+      message: "Ahora puedes iniciar sesión.",
+    },
+  },
+  forgotPasswordScreen: {
+    title: "Olvidé Mi Contraseña",
+    forgotPasswordAlert: {
+      title: "Correo de restablecimiento de contraseña enviado",
+      message:
+        "Por favor, revisa tu correo electrónico para completar el restablecimiento de tu contraseña.",
+    },
+  },
+  inputs: {
+    emailAddress: "Correo Electrónico",
+    password: "Contraseña",
+  },
+  buttons: {
+    submit: "Enviar",
+    clear: "Limpiar",
+    login: "Iniciar Sesión",
+    register: "Registrarse",
+    forgotPassword: "Olvidé Mi Contraseña",
+    logout: "Cerrar Sesión",
+    cancel: "Cancelar",
+    ok: "Aceptar",
+  },
+  validation: {
+    emailRequired: "Se requiere correo electrónico",
+    emailInvalid: "Dirección de correo electrónico no válida",
+    passwordRequired: "Se requiere contraseña",
+    passwordTooShort: "La contraseña debe tener al menos 8 caracteres",
+    passwordLowercase: "La contraseña debe contener una letra minúscula",
+    passwordUppercase: "La contraseña debe contener una letra mayúscula",
+    passwordNumber: "La contraseña debe contener un número",
+    passwordSpecial: "La contraseña debe contener un carácter especial",
+    passwordInvalidChars: "La contraseña contiene caracteres no válidos",
+    passwordNoSpaces: "La contraseña no debe contener espacios",
+  },
+  errors: {
+    networkError: "Error de red. Por favor, inténtalo de nuevo más tarde.",
+    serverError: "Error del servidor. Por favor, inténtalo de nuevo más tarde.",
+    unexpectedError:
+      "Ocurrió un error desconocido. Por favor, inténtalo de nuevo.",
+    loginFailed:
+      "Error de inicio de sesión. Por favor, verifica tus credenciales.",
+    passwordResetFailed:
+      "Error al restablecer la contraseña. Por favor, inténtalo de nuevo más tarde.",
+    registrationFailed: "Error de registro. Por favor, inténtalo de nuevo.",
+    requestTimedOut:
+      "La solicitud agotó el tiempo de espera. Por favor, verifica tu conexión e inténtalo de nuevo.",
+    // Simple JWT Login plugin error messages (kept in separate file). Spanish entries are placeholders.
+    simpleJwt: simpleJwt,
+    // WooCommerce REST API string error codes (Spanish)
+    woocommerce: wooCommerce,
   },
 };
 
