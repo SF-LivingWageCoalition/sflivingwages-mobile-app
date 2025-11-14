@@ -31,25 +31,14 @@ export const consumerSecret: string | undefined =
 
 // Base64 encoded credentials for Basic auth (if keys are available). Try Buffer first, then btoa.
 export const base64Credentials: string | undefined = (() => {
-  if (
-    typeof consumerKey === "undefined" ||
-    typeof consumerSecret === "undefined"
-  )
-    return undefined;
-  try {
-    // Node / some bundlers provide Buffer
-    if (typeof Buffer !== "undefined") {
-      return Buffer.from(`${consumerKey}:${consumerSecret}`).toString("base64");
-    }
-  } catch (e) {
-    // ignore and fall back to btoa below
-  }
-  // Fallback to btoa if available (browser-like envs)
-  if (typeof (global as any).btoa !== "undefined") {
-    return (global as any).btoa(`${consumerKey}:${consumerSecret}`);
-  }
-  if (typeof (globalThis as any).btoa !== "undefined") {
+  if (!consumerKey || !consumerSecret) return undefined;
+  // Prefer browser-like `btoa` when available (e.g., Expo/React Native polyfills)
+  if (typeof (globalThis as any).btoa === "function") {
     return (globalThis as any).btoa(`${consumerKey}:${consumerSecret}`);
+  }
+  // Minimal Node/bundler fallback
+  if (typeof Buffer !== "undefined") {
+    return Buffer.from(`${consumerKey}:${consumerSecret}`).toString("base64");
   }
   return undefined;
 })();
