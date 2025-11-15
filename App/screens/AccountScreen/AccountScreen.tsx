@@ -14,6 +14,7 @@ import { selectIsLoggedIn } from "../../redux/features/userSlice/userSlice";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
+import Button from "../../components/Button";
 import AccountScreenHeader from "./components/AccountScreenHeader";
 import AccountScreenMenu from "./components/AccountScreenMenu";
 import LoadingOverlay from "../../components/LoadingOverlay";
@@ -91,17 +92,22 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   // Login Button
   const LoginButton: React.FC = () => {
     return (
-      <TouchableOpacity style={styles.button} onPress={onLogin}>
-        <Text style={styles.buttonText}>{translate("buttons.login")}</Text>
-      </TouchableOpacity>
+      <Button
+        variant="primary"
+        title={translate("buttons.login")}
+        onPress={onLogin}
+      />
     );
   };
 
   // Forgot Password Button
   const ForgotPasswordButton: React.FC = () => {
     return (
-      <TouchableOpacity style={styles.textButton} onPress={onForgotPassword}>
-        <Text style={styles.textButtonText}>
+      <TouchableOpacity
+        style={styles.textOnlyButton}
+        onPress={onForgotPassword}
+      >
+        <Text style={styles.textOnlyButtonText}>
           {translate("buttons.forgotPassword")}
         </Text>
       </TouchableOpacity>
@@ -111,8 +117,8 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   // Register Button
   const RegisterButton: React.FC = () => {
     return (
-      <TouchableOpacity style={styles.textButton} onPress={onRegister}>
-        <Text style={styles.textButtonText}>
+      <TouchableOpacity style={styles.textOnlyButton} onPress={onRegister}>
+        <Text style={styles.textOnlyButtonText}>
           {translate("buttons.register")}
         </Text>
       </TouchableOpacity>
@@ -123,13 +129,12 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   const LogoutButton: React.FC = () => {
     return (
       <View style={styles.authButtonsContainer}>
-        <TouchableOpacity
-          style={[styles.button, loggingOut ? styles.buttonDisabled : null]}
+        <Button
+          variant="primary"
+          title={translate("buttons.logout")}
           onPress={onLogout}
           disabled={loggingOut}
-        >
-          <Text style={styles.buttonText}>{translate("buttons.logout")}</Text>
-        </TouchableOpacity>
+        />
       </View>
     );
   };
@@ -139,7 +144,7 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
     return (
       <View style={styles.authButtonsContainer}>
         <LoginButton />
-        <View style={styles.textButtonContainer}>
+        <View style={styles.textOnlyButtonContainer}>
           <ForgotPasswordButton />
           <RegisterButton />
         </View>
@@ -176,41 +181,15 @@ const styles = StyleSheet.create({
     marginHorizontal: 22,
     gap: 16,
   },
-  button: {
-    backgroundColor: colors.light.primary,
-    borderRadius: 30,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    elevation: 6,
-    shadowColor: colors.light.primary,
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: { width: 1, height: 1 },
-  },
-  buttonDisabled: {
-    opacity: 0.7,
-  },
-  buttonText: {
-    ...textStyles.button,
-    color: colors.light.textOnPrimary,
-    textAlign: "center",
-  },
-  textButtonContainer: {
+  textOnlyButtonContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
   },
-  textButton: {
-    // backgroundColor: colors.light.primary,
-    // borderRadius: 30,
-    // paddingVertical: 10,
-    // paddingHorizontal: 15,
-    // elevation: 6,
-    // shadowColor: colors.light.primary,
-    // shadowOpacity: 0.3,
-    // shadowRadius: 3,
-    // shadowOffset: { width: 1, height: 1 },
+  textOnlyButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
   },
-  textButtonText: {
+  textOnlyButtonText: {
     ...textStyles.buttonSmall,
     color: colors.light.secondary,
   },

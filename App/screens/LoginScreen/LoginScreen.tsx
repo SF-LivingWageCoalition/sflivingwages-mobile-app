@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import Button from "../../components/Button";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { colors } from "../../theme";
@@ -151,15 +152,12 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
             </View>
 
             <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={[styles.button, loading ? styles.buttonDisabled : null]}
+              <Button
+                variant="primary"
+                title={translate("buttons.submit")}
                 onPress={onSubmit}
                 disabled={loading}
-              >
-                <Text style={styles.buttonText}>
-                  {translate("buttons.submit")}
-                </Text>
-              </TouchableOpacity>
+              />
             </View>
 
             {generalError ? (

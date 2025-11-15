@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import Button from "../../components/Button";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
@@ -97,15 +98,12 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
             </View>
 
             <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={[styles.button, loading ? styles.buttonDisabled : null]}
+              <Button
+                variant="primary"
+                title={translate("buttons.submit")}
                 onPress={onSubmit}
                 disabled={loading}
-              >
-                <Text style={styles.buttonText}>
-                  {translate("buttons.submit")}
-                </Text>
-              </TouchableOpacity>
+              />
             </View>
 
             {generalError ? (
