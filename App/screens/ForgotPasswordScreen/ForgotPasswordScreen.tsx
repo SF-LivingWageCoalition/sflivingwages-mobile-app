@@ -123,10 +123,12 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 16,
+    backgroundColor: colors.light.background,
   },
   formContainer: {
     gap: 20,
-    marginHorizontal: 20,
+    // marginHorizontal: 20,
   },
   inputContainer: {},
   inputName: {

@@ -174,11 +174,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: colors.light.surfaceVariant,
+    backgroundColor: colors.light.background,
   },
   authButtonsContainer: {
     marginTop: 10,
-    marginHorizontal: 22,
+    // marginHorizontal: 22,
     gap: 16,
   },
   textOnlyButtonContainer: {
