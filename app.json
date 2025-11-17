@@ -8,7 +8,7 @@
     "ios": {
       "supportsTablet": true,
       "icon": "./assets/icon.png",
-      "bundleIdentifier": "com.sfLiving.sflivingwagecoalition",
+      "bundleIdentifier": "com.sfLiving.sflivingwages",
 
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
