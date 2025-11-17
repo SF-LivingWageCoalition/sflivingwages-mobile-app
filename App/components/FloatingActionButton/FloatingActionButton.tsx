@@ -23,7 +23,7 @@ const FloatingActionButton = (props: FloatingActionButtonProps) => {
       onPress={props.onPress}
     >
       {props.icon || (
-        <Ionicons name="add" size={30} color={colors.palette.red200} />
+        <Ionicons name="add" size={30} color={colors.palette.red100} />
       )}
     </TouchableOpacity>
   );
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   fabText: {
-    color: colors.palette.red200,
+    color: colors.palette.red100,
     fontSize: 32,
     fontWeight: "bold",
     lineHeight: 36,
