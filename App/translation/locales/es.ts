@@ -343,7 +343,7 @@ const es: Translations = {
     emailRequired: "Se requiere correo electrónico",
     emailInvalid: "Dirección de correo electrónico no válida",
     passwordRequired: "Se requiere contraseña",
-    passwordTooShort: "La contraseña debe tener al menos 8 caracteres",
+    passwordTooShort: "La contraseña debe tener al menos 10 caracteres",
     passwordLowercase: "La contraseña debe contener una letra minúscula",
     passwordUppercase: "La contraseña debe contener una letra mayúscula",
     passwordNumber: "La contraseña debe contener un número",

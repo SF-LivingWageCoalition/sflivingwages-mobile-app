@@ -145,5 +145,3 @@ Why this is minimal
 - Only new code: one small thunk + two tiny wiring spots in `App.tsx` (PersistGate + AppState).
 
 ---
-
-If you want, I can apply these edits directly in the repo: add the thunk to your `userSlice` and patch `App.tsx`. Reply with `apply` and I will make the changes and run a quick check for TypeScript errors.

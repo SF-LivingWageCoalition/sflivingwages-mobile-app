@@ -336,7 +336,7 @@ const en = {
     emailRequired: "Email is required",
     emailInvalid: "Invalid email address",
     passwordRequired: "Password is required",
-    passwordTooShort: "Password must be at least 8 characters",
+    passwordTooShort: "Password must be at least 10 characters",
     passwordLowercase: "Password must contain a lowercase letter",
     passwordUppercase: "Password must contain an uppercase letter",
     passwordNumber: "Password must contain a number",
