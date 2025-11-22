@@ -81,7 +81,6 @@ const ReportBusinessMap = () => {
   const [description, setDescription] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  // Markers state
   const [markersAndroid, setMarkersAndroid] = useState([initialAndroidMarker]);
   const [markersIOS, setMarkersIOS] = useState([initialIOSMarker]);
 
@@ -145,7 +144,6 @@ const ReportBusinessMap = () => {
         "Selected Place";
       const address = `Violation Type: ${violationType} - ${description}`;
 
-      // Android marker
       const newAndroidMarker = {
         coordinates: { latitude, longitude },
         title,
@@ -153,7 +151,6 @@ const ReportBusinessMap = () => {
         draggable: false,
       };
 
-      // iOS marker
       const newIOSMarker = {
         coordinates: { latitude, longitude },
         title,
@@ -164,9 +161,8 @@ const ReportBusinessMap = () => {
       setMarkersAndroid((prev) => [...prev, newAndroidMarker]);
       setMarkersIOS((prev) => [...prev, newIOSMarker]);
 
-      // Reset form
       resetForm();
-      setIsModalVisible(false); // Close modal after submit
+      setIsModalVisible(false);
     }
   };
 
@@ -183,7 +179,6 @@ const ReportBusinessMap = () => {
           markers={Platform.OS === "ios" ? markersIOS : markersAndroid}
         />
 
-        {/* Back button */}
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}
@@ -247,7 +242,6 @@ const ReportBusinessMap = () => {
                   <Text style={styles.errorText}>{errors.violationType}</Text>
                 )}
 
-                {/* Use BottomSheetTextInput so the sheet reacts to the keyboard */}
                 <TextInput
                   value={description}
                   onChangeText={(text) => {
@@ -370,7 +364,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: "white", // Or any background color for full screen
+    backgroundColor: "white",
   },
   modalHeader: {
     flexDirection: "row",
@@ -429,7 +423,6 @@ const styles = StyleSheet.create({
     borderColor: colors.palette.gray300,
     borderRadius: 10,
     marginTop: 16,
-    // marginBottom: 16,
     fontSize: fontSize.md,
     paddingHorizontal: 12,
   },
