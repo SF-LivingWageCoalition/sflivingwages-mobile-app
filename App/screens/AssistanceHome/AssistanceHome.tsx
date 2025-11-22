@@ -7,12 +7,11 @@ import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { AssistanceTabParamList } from "../../types/types";
+import { useNavigation } from "@react-navigation/native";
 
-interface AssistanceHomeProps {
-  navigation: NativeStackNavigationProp<AssistanceTabParamList>;
-}
-
-const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
+const AssistanceHome: React.FC = () => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<AssistanceTabParamList>>();
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -50,6 +49,13 @@ const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
               variant="primary"
               title="Living Wage Calculator"
               onPress={() => navigation.navigate("LivingWageCalculator")}
+            />
+            <Button
+              variant="primary"
+              title={translate("assistHomeScreen.reportBusiness")}
+              onPress={() =>
+                navigation.navigate("Assistance", { screen: "ReportBusiness" })
+              }
             />
           </View>
         </View>
