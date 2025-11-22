@@ -4,7 +4,6 @@ import {
   Text,
   View,
   ScrollView,
-  SafeAreaView,
   Pressable,
   Platform,
 } from "react-native";
@@ -14,11 +13,12 @@ import {
   useNavigation,
   useRoute,
 } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Violation } from "../ListReportScreen/ListReportScreen";
-import { colors } from "../../theme";
 import { fontSize } from "../../theme/fontStyles";
+import { colors } from "../../theme";
 
 const ReportDetailScreen = () => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();

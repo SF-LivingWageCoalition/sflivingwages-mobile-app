@@ -19,6 +19,7 @@ import LottieView from "lottie-react-native";
 import { colors } from "../../theme";
 import { fontSize } from "../../theme/fontStyles";
 
+//TODO: refactor - move to types file
 interface ViolationAcf {
   business_name: string;
   address: string;
