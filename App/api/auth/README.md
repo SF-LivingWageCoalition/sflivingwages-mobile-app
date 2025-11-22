@@ -93,7 +93,7 @@ The primary exported functions from `App/api/auth/authApi.ts`, a short descripti
 Implementation details:
 
 - It reads the current JWT from the persisted Redux store via the `selectJwt` selector.
-- It attempts a best-effort server-side revoke by calling `revokeToken(jwt)`; the helper returns a normalized `LogoutResult` so callers may inspect the revoke outcome. On success `result.success === true` and `result.data` is always present with a `revoked: boolean` flag. If a revoke was attempted and succeeded, `result.data.revoked === true` and `result.data.tokenData` may contain server-provided token info. If the revoke failed the function returns a standard failure `ApiResult` (inspect `.status`, `.errorMessage`, and `.data` for details).
+- It attempts a best-effort server-side revoke by calling `revokeToken(jwt)`; `logoutUser` returns a `LogoutResult` so callers may inspect the revoke outcome. On success `result.success === true` and `result.data` is always present with a `revoked: boolean` flag. If a revoke was attempted and succeeded, `result.data.revoked === true` and `result.data.tokenData` may contain the raw server-provided payload (for example, `data.jwt` as a string). Callers that need a normalized `JwtItem[]` should call `normalizeJwt` before storing tokens in Redux. If the revoke failed the function returns a standard failure `ApiResult` (inspect `.status`, `.errorMessage`, and `.data` for details).
 - It always clears local auth state by dispatching `clearUser()` (so callers do not need to supply a `dispatch`).
 
 If you prefer the logout logic to live inside Redux for testability, consider converting this helper into a Redux thunk that calls `getState()` and `dispatch`.
@@ -312,9 +312,11 @@ const payload: SetUserPayload = {
 dispatch(setUser(payload));
 ```
 
-Additional note: the revoke/refresh endpoints may also return either a raw
-JWT string or a decoded object — the auth helpers now normalize those
-responses so callers receive a consistent runtime shape when present.
+Additional note: the revoke endpoint (and refresh) typically return a raw
+JWT string in `data.jwt`. The auth helpers no longer perform automatic
+normalization for revoke responses; callers that need the canonical
+`JwtItem[]` shape should call `normalizeJwt` explicitly before writing
+tokens into the Redux store (for example, before `dispatch(setUser(...))`).
 
 ---
 

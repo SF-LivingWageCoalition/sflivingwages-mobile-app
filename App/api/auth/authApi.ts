@@ -237,7 +237,7 @@ export const revokeToken = async (
 
     const responseData = await parseJsonSafe(response);
     if (response.ok) {
-      // Token revocation succeeded
+      // Return the parsed server payload unchanged so callers can inspect it.
       return { success: true, data: responseData, status: response.status };
     } else {
       // Token revocation failed
@@ -537,21 +537,9 @@ export const logoutUser = async (): Promise<LogoutResult> => {
       // Attempt server revoke and normalize the success path to the LogoutResult
       const revokeResult = await revokeToken(currentToken);
       if (revokeResult.success) {
-        // Normalize any jwt returned by the revoke endpoint so callers that
-        // inspect the returned token payload can reliably consume an array.
-        const tokenDataAny = (revokeResult.data as any) ?? {};
-        try {
-          tokenDataAny.data = tokenDataAny.data ?? {};
-          tokenDataAny.data.jwt = normalizeJwt(
-            tokenDataAny.data.jwt ?? (tokenDataAny.jwt as any)
-          );
-        } catch (e) {
-          /* swallow normalization errors - we still return the raw server payload */
-        }
-
         return {
           success: true,
-          data: { revoked: true, tokenData: tokenDataAny as TokenData },
+          data: { revoked: true, tokenData: revokeResult.data as TokenData },
           status: revokeResult.status,
         };
       }
