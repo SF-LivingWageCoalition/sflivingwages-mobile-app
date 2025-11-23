@@ -350,29 +350,7 @@ export const registerCustomer = async (
         body: JSON.stringify({
           email: email,
           password: password,
-          first_name: "Test",
-          last_name: "Testerson",
           username: email, // Unique username required. Use email, generate unique, or add field to form.
-          // billing: {
-          //   first_name: "Test",
-          //   last_name: "Testerson",
-          //   address_1: "123 Main St",
-          //   city: "Anytown",
-          //   state: "CA",
-          //   postcode: "12345",
-          //   country: "US",
-          //   email: email,
-          //   phone: "555-555-5555",
-          // },
-          // shipping: {
-          //   first_name: "Test",
-          //   last_name: "Testerson",
-          //   address_1: "123 Main St",
-          //   city: "Anytown",
-          //   state: "CA",
-          //   postcode: "12345",
-          //   country: "US",
-          // },
         }),
       }
     );
