@@ -129,16 +129,21 @@ export type LogoutResult = ApiResult<{
 // strongly typed across modules.
 export type JwtItem = {
   token: string;
-  header?: { alg?: string; typ?: string } | any;
-  payload?: { [k: string]: any } | any;
+  header?: { alg?: string; typ?: string } | Record<string, unknown>;
+  payload?: Record<string, unknown>;
 };
 
 // Generic API result wrapper used by other helpers to provide consistent shape
 export type ApiResult<T> =
   | { success: true; data: T; status?: number }
-  | { success: false; errorMessage?: string; status?: number; data?: any };
+  | {
+      success: false;
+      errorMessage?: string;
+      status?: number;
+      data?: T | Record<string, unknown>;
+    };
 
 // Result type for `parseJsonSafe` (kept here so other modules can reuse the shape)
-export type ParseJsonSafeResult<T = any> =
+export type ParseJsonSafeResult<T = unknown> =
   | T
   | { __parseError: true; text: string | null };
