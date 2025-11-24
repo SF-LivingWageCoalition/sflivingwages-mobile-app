@@ -41,7 +41,6 @@ See the [references](#references) section for links to the above-mentioned docum
   - [sendPasswordReset — example responses](#sendpasswordreset--example-responses)
   - [logoutUser — example responses](#logoutuser--example-responses)
   - [Non-JSON / Parse Errors (what `parseJsonSafe` returns)](#non-json--parse-errors-what-parsejsonsafe-returns)
-- [Telemetry Guidance](#telemetry-guidance)
 - [How to Contribute / Keep this README Current](#how-to-contribute--keep-this-readme-current)
 - [References](#references)
 
@@ -60,7 +59,7 @@ Implementation quick-reference: file paths and a one-line purpose to help you ju
 | `App/api/auth/authApi.ts`                                   | Core auth client (fetchToken, validateToken, loginUser) and token-normalization helpers |
 | `App/api/auth/types.ts`                                     | Type definitions and `ApiResult<T>` shapes used across helpers                          |
 | `App/api/auth/config.ts`                                    | Environment-driven config and `base64Credentials` helper for WooCommerce                |
-| `App/api/auth/errorHelpers.ts`                              | Map server error codes to user-facing messages and telemetry helpers                    |
+| `App/api/auth/errorHelpers.ts`                              | Map server error codes to user-facing messages                                          |
 | `App/api/auth/utils.ts`                                     | Low-level helpers (parseJsonSafe, failure factories, `unwrapOrThrow`)                   |
 | `App/api/auth/errorCodeMap.ts`                              | Numeric and string error-code mappings referenced by `errorHelpers`                     |
 | `App/api/auth/errors.ts`                                    | Runtime `ApiError` type and related error helpers                                       |
@@ -119,7 +118,7 @@ try {
   // loginUser already dispatches setUser(validated)
 } catch (err) {
   if (err instanceof ApiError) {
-    // err.status and err.data are available for telemetry/UX decisions
+    // err.status and err.data are available for UX decisions
   }
 }
 ```
@@ -146,7 +145,7 @@ To make UX consistent across different server plugins (Simple JWT Login and WooC
 - For Simple JWT Login numeric errors the library exposes `errorCode` (number) on the returned `result.data` object.
 - For WooCommerce string error codes the library exposes `errorKey` (string) on `result.data`.
 
-When available the helper `mapApiErrorToMessage` (in `App/api/auth/errorHelpers.ts`) will prefer returning a translated, user-facing message derived from `errorCode` / `errorKey` rather than raw server text. The low-level failure factory `apiFailureWithServerCode` (in `App/api/auth/utils.ts`) attaches these fields so callers can both present translated text and use the machine-readable identifier for telemetry or conditional UI logic.
+When available the helper `mapApiErrorToMessage` (in `App/api/auth/errorHelpers.ts`) will prefer returning a translated, user-facing message derived from `errorCode` / `errorKey` rather than raw server text. The low-level failure factory `apiFailureWithServerCode` (in `App/api/auth/utils.ts`) attaches these fields so callers can both present translated text and use the machine-readable identifier for conditional UI logic.
 
 Example failure shapes you may see from auth helpers:
 
@@ -184,9 +183,20 @@ UI guidance:
 
 - Prefer `result.errorMessage` when present — it is already localized when a code mapping exists.
 - If `result.errorMessage` is not present, use `mapApiErrorToMessage(result)` to obtain a best-effort translation (this function will check `errorCode` / `errorKey` and fall back to status-based messages).
-- For telemetry and analytics send only the structured `errorCode` / `errorKey` (do not send PII).
 
 See `App/api/auth/errorHelpers.ts` and `App/api/auth/utils.ts` for implementation details and examples.
+
+Common HTTP status → suggested translation keys (docs only)
+
+| HTTP status | Suggested translation key |
+| ----------: | ------------------------- |
+|           0 | errors.networkError       |
+|         400 | errors.invalidRequest     |
+|         401 | errors.loginFailed        |
+|         403 | errors.loginFailed        |
+|         408 | errors.requestTimedOut    |
+|         409 | errors.registrationFailed |
+|         500 | errors.unexpectedError    |
 
 ---
 
@@ -206,8 +216,6 @@ EXPO_PUBLIC_CONSUMER_KEY=<wc_consumer_key>
 EXPO_PUBLIC_CONSUMER_SECRET=<wc_consumer_secret>
 EXPO_PUBLIC_FETCH_TIMEOUT_MS=10000
 ```
-
-Security note: sanitize PII before sending any payloads to telemetry.
 
 Note: these EXPO_PUBLIC environment variables are now read and exported from `App/api/auth/config.ts` and consumed by the auth client and helpers (for example `BASE_URL`, `JWT_ROUTE`, `JWT_AUTH_KEY`, `FETCH_TIMEOUT_MS`, and `base64Credentials`). Centralizing config in `config.ts` reduces duplication, guarantees consistent runtime behavior (for example `base64Credentials` safely returns `undefined` when keys are missing), and makes it easier to stub or mock values when debugging or writing unit tests.
 
@@ -233,7 +241,7 @@ import {
    If using Basic auth for WooCommerce endpoints, ensure `EXPO_PUBLIC_CONSUMER_KEY` and `EXPO_PUBLIC_CONSUMER_SECRET` are set — `base64Credentials` in `App/api/auth/config.ts` returns `undefined` when keys are missing; using an undefined Basic auth value will cause authentication failures.
 3. If `res.data?.__parseError` is true, check server/proxy logs (Nginx/Cloud) for upstream errors.
 4. If `res.data?.errorCode` or `res.data?.errorKey` exists, map that code to a friendly message (do not display raw server text).
-5. For unknown/5xx errors show `errors.unexpectedError` and capture sanitized telemetry (status + structured error code only).
+5. For unknown/5xx errors show `errors.unexpectedError`.
 
 ---
 
@@ -560,47 +568,6 @@ If the server returns non-JSON content (HTML error page, plain text, etc.), `par
   "text": "<html>\n  <head>... (truncated)</head>\n  <body>Server error</body>\n</html>"
 }
 ```
-
----
-
-## Telemetry Guidance
-
-- Capture `result.status` and structured `errorCode` only. Do NOT include emails or full user objects.
-
-Example:
-
-```ts
-telemetry.captureEvent("auth.fetchToken.failure", {
-  status: result.status,
-  code: result.data?.errorCode ?? result.data?.errorKey,
-});
-```
-
-You can also use the helper `mapApiErrorToTelemetry(error)` exported from `App/api/auth/errorHelpers.ts` to safely extract status and structured data from an `ApiError` before sending telemetry. Example:
-
-```ts
-// inside a catch or error handler
-const telemetryPayload = mapApiErrorToTelemetry(err);
-telemetry.captureEvent("auth.fetchToken.failure", {
-  status: telemetryPayload.status,
-  code: telemetryPayload.data?.errorCode ?? telemetryPayload.data?.errorKey,
-  // intentionally omit PII (email, full user objects)
-});
-```
-
-Common HTTP status → suggested translation keys (docs only)
-
-| HTTP status | Suggested translation key |
-| ----------: | ------------------------- |
-|           0 | errors.networkError       |
-|         400 | errors.invalidRequest     |
-|         401 | errors.loginFailed        |
-|         403 | errors.loginFailed        |
-|         408 | errors.requestTimedOut    |
-|         409 | errors.registrationFailed |
-|         500 | errors.unexpectedError    |
-
----
 
 ## How to Contribute / Keep this README Current
 

@@ -10,7 +10,7 @@
     `.status` and `.data`).
 
   - This header is intentionally short. See `App/api/auth/README.md` for full
-    examples, telemetry guidance, and references (plugin/docs links).
+    examples and references (plugin/docs links).
 */
 
 // Import Redux actions and types for user state management

@@ -111,31 +111,3 @@ export function mapApiErrorToMessage(
     fallback
   );
 }
-
-/**
- * Extract compact telemetry fields from an error.
- *
- * Returns {status, data, errorCode?, errorKey?}. For non-ApiError values,
- * returns {status: undefined, data: undefined}.
- *
- * Note: `data` is returned raw — redact before sending externally.
- *
- * @param error Unknown error (may be ApiError).
- * @returns An object with keys: `status?: number`, `data?: unknown`,
- *   `errorCode?: string | number | undefined`, `errorKey?: string | undefined`.
- */
-export function mapApiErrorToTelemetry(error: unknown) {
-  if (error instanceof ApiError) {
-    const apiErr = error as ApiError<unknown>;
-    const data = apiErr.data;
-    let errorCode: string | number | undefined = undefined;
-    let errorKey: string | undefined = undefined;
-    if (data && typeof data === "object") {
-      const d = data as Record<string, any>;
-      errorCode = d?.data?.errorCode ?? d?.errorCode;
-      errorKey = d?.data?.errorKey ?? d?.errorKey ?? d?.code ?? d?.data?.code;
-    }
-    return { status: apiErr.status, data: apiErr.data, errorCode, errorKey };
-  }
-  return { status: undefined, data: undefined };
-}
