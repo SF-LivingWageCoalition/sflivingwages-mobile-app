@@ -14,11 +14,23 @@ export function loginSchema() {
       .string()
       .nonempty(translate("validation.emailRequired") || "Email is required")
       .email(translate("validation.emailInvalid") || "Invalid email address"),
-    userPassword: passwordSchema() as z.ZodType<StrongPassword>,
+    userPassword: z
+      .string()
+      .nonempty(
+        translate("validation.passwordRequired") || "Password is required"
+      ),
   });
 }
 
-export const registerSchema = loginSchema;
+export function registerSchema() {
+  return z.object({
+    userEmail: z
+      .string()
+      .nonempty(translate("validation.emailRequired") || "Email is required")
+      .email(translate("validation.emailInvalid") || "Invalid email address"),
+    userPassword: passwordSchema() as z.ZodType<StrongPassword>,
+  });
+}
 
 export function forgotPasswordSchema() {
   return z.object({
