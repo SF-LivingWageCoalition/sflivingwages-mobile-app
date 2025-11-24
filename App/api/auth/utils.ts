@@ -10,6 +10,7 @@ import type {
   ApiResult,
   ValidationData,
   JwtItem,
+  ApiErrorPayload,
 } from "./types";
 import { FETCH_TIMEOUT_MS } from "./config";
 import { getFriendlyErrorInfo } from "./errorCodeMap";
@@ -83,7 +84,7 @@ export const unwrapOrThrow = <T>(
  * @param data - Optional additional data related to the failure.
  * @returns An ApiResult representing the failure.
  */
-export const apiFailure = <T = any>(
+export const apiFailure = <T = unknown>(
   errorMessage?: string,
   status?: number,
   data?: T
@@ -94,7 +95,7 @@ export const apiFailure = <T = any>(
  * @param err - The exception to map.
  * @returns An ApiResult representing the failure.
  */
-export const apiFailureFromException = <T = any>(
+export const apiFailureFromException = <T = unknown>(
   err: unknown
 ): ApiResult<T> => {
   const message = (err as any)?.message ?? String(err ?? "");
@@ -113,8 +114,8 @@ export const apiFailureFromException = <T = any>(
  * @param status - Optional HTTP status code associated with the failure.
  * @returns An ApiResult representing the failure with friendly message.
  */
-export const apiFailureWithServerCode = <T = any>(
-  payload: any,
+export const apiFailureWithServerCode = <T = unknown>(
+  payload: unknown,
   status?: number
 ): ApiResult<T> => {
   try {
@@ -126,11 +127,11 @@ export const apiFailureWithServerCode = <T = any>(
     const serverPayload =
       payload &&
       typeof payload === "object" &&
-      typeof payload.success === "boolean"
-        ? payload.data ?? payload
+      typeof (payload as Record<string, unknown>)["success"] === "boolean"
+        ? (payload as Record<string, unknown>)["data"] ?? payload
         : payload;
 
-    const info = getFriendlyErrorInfo(serverPayload);
+    const info = getFriendlyErrorInfo(serverPayload as ApiErrorPayload);
     const augmented = { ...(serverPayload as any) } as any;
     if (info.errorCode !== undefined) augmented.errorCode = info.errorCode;
     if (info.errorKey !== undefined) augmented.errorKey = info.errorKey;
@@ -148,7 +149,7 @@ export const apiFailureWithServerCode = <T = any>(
  * @param response - The Response object to parse JSON from.
  * @returns A Promise resolving to the parsed JSON or a parse error object.
  */
-export const parseJsonSafe = async <T = any>(
+export const parseJsonSafe = async <T = unknown>(
   response: Response
 ): Promise<ParseJsonSafeResult<T>> => {
   try {

@@ -91,10 +91,14 @@ export const fetchToken = async (
       }),
     });
 
-    const tokenData = await parseJsonSafe(response);
+    const tokenData = await parseJsonSafe<TokenData>(response);
     if (response.ok) {
       // Token fetch succeeded
-      return { success: true, data: tokenData, status: response.status };
+      return {
+        success: true,
+        data: tokenData as TokenData,
+        status: response.status,
+      };
       // Handle successful token fetch (e.g., store token, navigate to another screen)
     } else {
       // Token fetch failed
@@ -138,10 +142,14 @@ export const validateToken = async (
       }
     );
 
-    const validationData = await parseJsonSafe(response);
+    const validationData = await parseJsonSafe<ValidationData>(response);
     if (response.ok) {
       // Token validation succeeded
-      return { success: true, data: validationData, status: response.status };
+      return {
+        success: true,
+        data: validationData as ValidationData,
+        status: response.status,
+      };
     } else {
       // Token validation failed
       return apiFailureWithServerCode<ValidationData>(
@@ -185,10 +193,14 @@ export const refreshToken = async (
       }
     );
 
-    const tokenData = await parseJsonSafe(response);
+    const tokenData = await parseJsonSafe<TokenData>(response);
     if (response.ok) {
       // Token refresh succeeded
-      return { success: true, data: tokenData, status: response.status };
+      return {
+        success: true,
+        data: tokenData as TokenData,
+        status: response.status,
+      };
     } else {
       // Token refresh failed
       return apiFailureWithServerCode<TokenData>(tokenData, response.status);
@@ -235,10 +247,14 @@ export const revokeToken = async (
       }
     );
 
-    const responseData = await parseJsonSafe(response);
+    const responseData = await parseJsonSafe<TokenData>(response);
     if (response.ok) {
       // Return the parsed server payload unchanged so callers can inspect it.
-      return { success: true, data: responseData, status: response.status };
+      return {
+        success: true,
+        data: responseData as TokenData,
+        status: response.status,
+      };
     } else {
       // Token revocation failed
       return apiFailureWithServerCode<TokenData>(responseData, response.status);
@@ -355,10 +371,16 @@ export const registerCustomer = async (
       }
     );
 
-    const registrationData = await parseJsonSafe(response);
+    const registrationData = await parseJsonSafe<CustomerRegistrationData>(
+      response
+    );
     if (response.ok) {
       // Registration was successful
-      return { success: true, data: registrationData, status: response.status };
+      return {
+        success: true,
+        data: registrationData as CustomerRegistrationData,
+        status: response.status,
+      };
     } else {
       // Registration failed
       return apiFailureWithServerCode<CustomerRegistrationData>(
@@ -406,10 +428,16 @@ export const registerUser = async (
       }),
     });
 
-    const registrationData = await parseJsonSafe(response);
+    const registrationData = await parseJsonSafe<UserRegistrationData>(
+      response
+    );
     if (response.ok) {
       // Registration was successful
-      return { success: true, data: registrationData, status: response.status };
+      return {
+        success: true,
+        data: registrationData as UserRegistrationData,
+        status: response.status,
+      };
     } else {
       // Registration failed
       return apiFailureWithServerCode<UserRegistrationData>(
@@ -446,12 +474,12 @@ export const sendPasswordReset = async (
       }
     );
 
-    const passwordResetData = await parseJsonSafe(response);
+    const passwordResetData = await parseJsonSafe<PasswordResetData>(response);
     if (response.ok) {
       // Password reset succeeded
       return {
         success: true,
-        data: passwordResetData,
+        data: passwordResetData as PasswordResetData,
         status: response.status,
       };
     } else {
