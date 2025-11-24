@@ -147,3 +147,27 @@ export type ApiResult<T> =
 export type ParseJsonSafeResult<T = unknown> =
   | T
   | { __parseError: true; text: string | null };
+
+// Define the structure of the error data returned by the API
+export interface ApiErrorData {
+  errorCode?: number | string;
+  code?: string;
+  message?: string;
+  error?: string;
+}
+
+// Define the structure of the error payload returned by the API
+export interface ApiErrorPayload {
+  errorCode?: number | string;
+  code?: string;
+  message?: string;
+  error?: string;
+  data?: ApiErrorData;
+}
+
+// Define the structure of the friendly error info returned by getFriendlyErrorInfo
+export interface ErrorInfo {
+  message: string;
+  errorCode?: number;
+  errorKey?: string;
+}
