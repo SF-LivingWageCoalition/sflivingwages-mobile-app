@@ -29,12 +29,13 @@ export const consumerKey: string | undefined =
 export const consumerSecret: string | undefined =
   process.env.EXPO_PUBLIC_CONSUMER_SECRET; // WooCommerce Consumer Secret (read/write)
 
-// Base64 encoded credentials for Basic auth (if keys are available). Try Buffer first, then btoa.
+// Base64 encoded credentials for Basic auth (if keys are available).
 export const base64Credentials: string | undefined = (() => {
   if (!consumerKey || !consumerSecret) return undefined;
   // Prefer browser-like `btoa` when available (e.g., Expo/React Native polyfills)
-  if (typeof (globalThis as any).btoa === "function") {
-    return (globalThis as any).btoa(`${consumerKey}:${consumerSecret}`);
+  const globalWithBtoa = globalThis as { btoa?: (input: string) => string };
+  if (typeof globalWithBtoa.btoa === "function") {
+    return globalWithBtoa.btoa(`${consumerKey}:${consumerSecret}`);
   }
   // Minimal Node/bundler fallback
   if (typeof Buffer !== "undefined") {
