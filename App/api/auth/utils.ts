@@ -98,7 +98,7 @@ export const apiFailure = <T = unknown>(
 export const apiFailureFromException = <T = unknown>(
   err: unknown
 ): ApiResult<T> => {
-  const message = (err as any)?.message ?? String(err ?? "");
+  const message = err instanceof Error ? err.message : String(err ?? "");
   if (err instanceof TimeoutError || message === "Request timed out") {
     return apiFailure<T>(message, 408, undefined);
   }
@@ -132,7 +132,9 @@ export const apiFailureWithServerCode = <T = unknown>(
         : payload;
 
     const info = getFriendlyErrorInfo(serverPayload as ApiErrorPayload);
-    const augmented = { ...(serverPayload as any) } as any;
+    const augmented = {
+      ...(serverPayload as Record<string, unknown>),
+    } as Record<string, unknown> & Partial<ApiErrorPayload>;
     if (info.errorCode !== undefined) augmented.errorCode = info.errorCode;
     if (info.errorKey !== undefined) augmented.errorKey = info.errorKey;
     return apiFailure<T>(info.message, status, augmented as T);
@@ -175,9 +177,14 @@ export const isValidValidationData = (
   d: unknown
 ): d is ValidationData["data"] => {
   if (!d || typeof d !== "object") return false;
-  const x = d as any;
-  if (!x.user || !x.user.ID) return false;
-  if (!x.jwt || !Array.isArray(x.jwt) || x.jwt.length === 0) return false;
+  const x = d as Record<string, unknown>;
+  if (!("user" in x)) return false;
+  const user = x["user"];
+  if (!user || typeof user !== "object") return false;
+  const userRec = user as Record<string, unknown>;
+  if (!("ID" in userRec)) return false;
+  const jwtVal = x["jwt"];
+  if (!Array.isArray(jwtVal) || jwtVal.length === 0) return false;
   return true;
 };
 
@@ -200,8 +207,15 @@ export const isValidValidationData = (
  */
 export const normalizeJwt = (maybeJwt: unknown): JwtItem[] => {
   if (Array.isArray(maybeJwt)) return maybeJwt as JwtItem[];
-  if (maybeJwt && typeof maybeJwt === "object" && (maybeJwt as any).token)
-    return [maybeJwt as JwtItem];
+  if (
+    maybeJwt &&
+    typeof maybeJwt === "object" &&
+    "token" in (maybeJwt as Record<string, unknown>)
+  ) {
+    const candidate = maybeJwt as Record<string, unknown>;
+    if (typeof candidate["token"] === "string") return [maybeJwt as JwtItem];
+    return [];
+  }
   if (typeof maybeJwt === "string") return [{ token: maybeJwt } as JwtItem];
   return [];
 };
