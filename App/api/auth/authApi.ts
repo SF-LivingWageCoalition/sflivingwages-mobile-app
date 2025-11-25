@@ -530,39 +530,41 @@ export const sendPasswordReset = async (
  * See `App/api/auth/README.md` for example API responses.
  */
 export const logoutUser = async (): Promise<LogoutResult> => {
-  try {
-    // Read the token from the persisted store via selector and attempt revoke.
-    const state = store.getState() as RootState;
-    const currentToken = selectJwt(state)?.[0]?.token;
-    if (!currentToken) {
-      // Local logout succeeded but nothing to revoke on server.
-      return { success: true, data: { revoked: false } };
-    }
+  // Read the token(s) from the persisted store via selector.
+  const state = store.getState() as RootState;
+  const jwtItems = selectJwt(state);
+  const currentToken = jwtItems?.[0]?.token;
 
+  // If there's no token to revoke on the server, clear local state and
+  // return early. Clearing is done in the `finally` block below to ensure
+  // a single guaranteed side-effect path in all cases.
+  if (!currentToken) {
     try {
-      // Attempt server revoke and normalize the success path to the LogoutResult
-      const revokeResult = await revokeToken(currentToken);
-      if (revokeResult.success) {
-        return {
-          success: true,
-          data: { revoked: true, tokenData: revokeResult.data as TokenData },
-          status: revokeResult.status,
-        };
-      }
-
-      // Server returned a non-OK response; convert to a LogoutResult failure
-      // while preserving server payload and HTTP status.
-      return apiFailureWithServerCode<{ revoked: false }>(
-        revokeResult.data ?? { message: "revoke failed" },
-        revokeResult.status
-      );
-    } catch (err: unknown) {
-      return apiFailureFromException<{ revoked: false }>(err);
+      return { success: true, data: { revoked: false } };
+    } finally {
+      store.dispatch(clearUser());
     }
-  } catch (error: unknown) {
-    return apiFailureFromException<{ revoked: false }>(error);
+  }
+
+  // Attempt a best-effort revoke on the server. Errors are handled by the
+  // single catch below and we always clear local state in `finally`.
+  try {
+    const revokeResult = await revokeToken(currentToken);
+    if (revokeResult.success) {
+      return {
+        success: true,
+        data: { revoked: true, tokenData: revokeResult.data as TokenData },
+        status: revokeResult.status,
+      };
+    }
+
+    return apiFailureWithServerCode<{ revoked: false }>(
+      revokeResult.data ?? { message: "revoke failed" },
+      revokeResult.status
+    );
+  } catch (err: unknown) {
+    return apiFailureFromException<{ revoked: false }>(err);
   } finally {
-    // Always clear local state even if revoke fails or wasn't provided.
-    store.dispatch(clearUser()); // Clear user data from Redux store
+    store.dispatch(clearUser());
   }
 };
