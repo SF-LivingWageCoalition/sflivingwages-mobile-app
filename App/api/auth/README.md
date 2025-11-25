@@ -2,19 +2,19 @@
 
 # Auth API — developer reference
 
-Maintainer: `@scottmotion` — Last updated: 2025-10-24
+Maintainer: `@scottmotion` — Last updated: 2025-11-25
 
 This folder provides the authentication API helpers used by the app to interact with the WordPress backend (JWT auth, token validation, user registration, WooCommerce customer creation, and password reset flows). The authentication UI/screens live under `App/screens` (for example: `App/screens/LoginScreen`, `App/screens/RegisterScreen`, `App/screens/ForgotPasswordScreen`). The auth navigator is implemented at `App/navigation/AuthNav.tsx`.
 
 ## Preamble
 
-The mobile app's authentication flow relies primarily on 2 external API's hosted on the website:
+The mobile app's authentication flow relies primarily on 2 external APIs hosted on the website:
 
 - Simple JWT Login
   - The API provided by this plugin is used to fetch and validate a JSON Web Token (JWT), which constitutes the user login process. It is also used to send password reset emails and logout users by revoking the JWT token (via the plugin's revoke endpoint). It also provides an endpoint to register users, however we defer to WooCommerce for this in order to remain consistent with the website.
   - Note that there are 2 sets of documentation for this API, and that they may present minor conflicts with its actual use (e.g. content of Requests/Responses), therefore you should thoroughly test any changes to helpers or implementation of endpoints.
 - WooCommerce
-  - The API provided by this pugin is used to register new customers (users) inline with the website's authentication method.
+  - The API provided by this plugin is used to register new customers (users) inline with the website's authentication method.
   - Since WooCommerce is an Automattic product (owners of WordPress) it is regularly updated and the documentation for this API is fairly reliable.
 
 See the [references](#references) section for links to the above-mentioned documentation.
@@ -28,7 +28,6 @@ See the [references](#references) section for links to the above-mentioned docum
 - [Error codes, translation keys, and UI guidance](#error-codes-translation-keys-and-ui-guidance)
 - [Environment Variables](#environment-variables)
 - [Quick Debug Checklist](#quick-debug-checklist)
-- [Try with curl (PowerShell-friendly)](#try-with-curl-powershell-friendly)
 - [JWT Shapes & Normalization (short)](#jwt-shapes--normalization-short)
 - [Detailed API Responses (examples)](#detailed-api-responses-examples)
   - [fetchToken — example responses](#fetchtoken--example-responses)
@@ -50,23 +49,23 @@ See the [references](#references) section for links to the above-mentioned docum
 
 Implementation quick-reference: file paths and a one-line purpose to help you jump to the code or related translation files.
 
-| File                                                        | Purpose                                                                                 |
-| ----------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| `App/screens/LoginScreen/LoginScreen.tsx`                   | Login screen UI                                                                         |
-| `App/screens/RegisterScreen/RegisterScreen.tsx`             | Registration screen UI                                                                  |
-| `App/screens/ForgotPasswordScreen/ForgotPasswordScreen.tsx` | Password reset / forgot password screen UI                                              |
-| `App/navigation/AuthNav.tsx`                                | Navigator that wires auth-related screens together                                      |
-| `App/api/auth/authApi.ts`                                   | Core auth client (fetchToken, validateToken, loginUser) and token-normalization helpers |
-| `App/api/auth/types.ts`                                     | Type definitions and `ApiResult<T>` shapes used across helpers                          |
-| `App/api/auth/config.ts`                                    | Environment-driven config and `base64Credentials` helper for WooCommerce                |
-| `App/api/auth/errorHelpers.ts`                              | Map server error codes to user-facing messages                                          |
-| `App/api/auth/utils.ts`                                     | Low-level helpers (parseJsonSafe, failure factories, `unwrapOrThrow`)                   |
-| `App/api/auth/errorCodeMap.ts`                              | Numeric and string error-code mappings referenced by `errorHelpers`                     |
-| `App/api/auth/errors.ts`                                    | Runtime `ApiError` type and related error helpers                                       |
-| `App/translation/locales/simpleJwt.*.ts`                    | Localization files for Simple JWT Login responses                                       |
-| `App/translation/locales/wooCommerce.*.ts`                  | Localization files for Woo Commerce responses                                           |
-| `App/validation/authValidation.ts`                          | Zod schema factories for auth form validation                                           |
-| `App/redux/features/userSlice/userSlice.ts`                 | Redux slice for user state: actions/reducers/selectors for authenticated user data      |
+| File                                                        | Purpose                                                                            |
+| ----------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `App/screens/LoginScreen/LoginScreen.tsx`                   | Login screen UI                                                                    |
+| `App/screens/RegisterScreen/RegisterScreen.tsx`             | Registration screen UI                                                             |
+| `App/screens/ForgotPasswordScreen/ForgotPasswordScreen.tsx` | Password reset / forgot password screen UI                                         |
+| `App/navigation/AuthNav.tsx`                                | Navigator that wires auth-related screens together                                 |
+| `App/api/auth/authApi.ts`                                   | Core auth client (fetchToken, validateToken, loginUser, etc.);                     |
+| `App/api/auth/types.ts`                                     | Type definitions and `ApiResult<T>` shapes used across helpers                     |
+| `App/api/auth/config.ts`                                    | Environment-driven config and `base64Credentials` helper for WooCommerce           |
+| `App/api/auth/errorHelpers.ts`                              | Map server error codes to user-facing messages                                     |
+| `App/api/auth/utils.ts`                                     | Low-level helpers (parseJsonSafe, failure factories, `unwrapOrThrow`)              |
+| `App/api/auth/errorCodeMap.ts`                              | Numeric and string error-code mappings referenced by `errorHelpers`                |
+| `App/api/auth/errors.ts`                                    | Runtime `ApiError` type and related error helpers                                  |
+| `App/translation/locales/simpleJwt.*.ts`                    | Localization files for Simple JWT Login responses                                  |
+| `App/translation/locales/wooCommerce.*.ts`                  | Localization files for Woo Commerce responses                                      |
+| `App/validation/authValidation.ts`                          | Zod schema factories for auth form validation                                      |
+| `App/redux/features/userSlice/userSlice.ts`                 | Redux slice for user state: actions/reducers/selectors for authenticated user data |
 
 ---
 
@@ -74,17 +73,17 @@ Implementation quick-reference: file paths and a one-line purpose to help you ju
 
 The primary exported functions from `App/api/auth/authApi.ts`, a short description of their purpose, and their return values:
 
-| Function                               | Purpose                                                                                                                                                      | Returns                                                                                      |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
-| `fetchToken(email, password)`          | Request a JWT from the Simple JWT Login endpoint.                                                                                                            | `ApiResult<TokenData>`                                                                       |
-| `validateToken(jwtToken)`              | Validate a JWT with the Simple JWT Login endpoint.                                                                                                           | `ApiResult<ValidationData>`                                                                  |
-| `refreshToken(jwtToken)`               | Refresh a JWT via the Simple JWT Login endpoint (returns a new token).                                                                                       | `ApiResult<TokenData>`                                                                       |
-| `revokeToken(jwtToken)`                | Revoke a JWT on the server using the Simple JWT Login revoke endpoint.                                                                                       | `ApiResult<TokenData>`                                                                       |
-| `loginUser(email, password, dispatch)` | High-level login flow: fetches a token, validates it, and on success dispatches `setUser` to populate Redux user state.                                      | `ApiResult<ValidationData['data']>`                                                          |
-| `registerCustomer(email, password)`    | Create a WooCommerce customer via the WooCommerce REST API.                                                                                                  | `ApiResult<CustomerRegistrationData>`                                                        |
-| `registerUser(email, password)`        | Register a WordPress user via the Simple JWT Login plugin (alternate to WooCommerce).                                                                        | `ApiResult<UserRegistrationData>`                                                            |
-| `sendPasswordReset(email)`             | Request a password reset email via Simple JWT Login.                                                                                                         | `ApiResult<PasswordResetData>`                                                               |
-| `logoutUser()`                         | Clear local user auth state and attempt a best-effort revoke of the JWT on the server. Returns a normalized ApiResult so callers can inspect revoke outcome. | `Promise<LogoutResult>` (alias of `ApiResult<{ revoked: boolean; tokenData?: TokenData }>` ) |
+| Function                               | Purpose                                                                                                                                                | Returns                               |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------- |
+| `fetchToken(email, password)`          | Request a JWT from the Simple JWT Login endpoint.                                                                                                      | `ApiResult<TokenData>`                |
+| `validateToken(jwtToken)`              | Validate a JWT with the Simple JWT Login endpoint.                                                                                                     | `ApiResult<ValidationData>`           |
+| `refreshToken(jwtToken)`               | Refresh a JWT via the Simple JWT Login endpoint (returns a new token).                                                                                 | `ApiResult<TokenData>`                |
+| `revokeToken(jwtToken)`                | Revoke a JWT on the server using the Simple JWT Login revoke endpoint.                                                                                 | `ApiResult<TokenData>`                |
+| `loginUser(email, password, dispatch)` | High-level login flow: fetches a token, validates it, and on success dispatches `setUser` to populate Redux user state.                                | `ApiResult<ValidationData['data']>`   |
+| `registerCustomer(email, password)`    | Create a WooCommerce customer via the WooCommerce REST API.                                                                                            | `ApiResult<CustomerRegistrationData>` |
+| `registerUser(email, password)`        | Register a WordPress user via the Simple JWT Login plugin (alternate to WooCommerce).                                                                  | `ApiResult<UserRegistrationData>`     |
+| `sendPasswordReset(email)`             | Request a password reset email via Simple JWT Login.                                                                                                   | `ApiResult<PasswordResetData>`        |
+| `logoutUser()`                         | Clear local user auth state and attempt a best-effort revoke of the JWT on the server. Returns a `LogoutResult` so callers can inspect revoke outcome. | `Promise<LogoutResult>`               |
 
 ### Note about `logoutUser()`
 
@@ -134,7 +133,7 @@ try {
 - Optional throw-style helper: `unwrapOrThrow(result)` — returns `data` or throws `ApiError` (contains `status` and `data`).
 - Side-effects: `loginUser` dispatches `setUser(validatedData)` on success.
 
-Implementation details (see `App/api/auth/authApi.ts` and `App/api/auth/types.ts`): exported types are defined in `types.ts` (for example `TokenData`, `ValidationData`, `PasswordResetData`, `ApiResult<T>`). `ApiError` and runtime helpers remain exported from `authApi.ts`.
+Implementation details (see `App/api/auth/authApi.ts` and `App/api/auth/types.ts`): exported types are defined in `types.ts` (for example `TokenData`, `ValidationData`, `PasswordResetData`, `ApiResult<T>`). `ApiError` is defined in `App/api/auth/errors.ts` and runtime helpers (for example `unwrapOrThrow`, `normalizeJwt`, `parseJsonSafe`) live in `App/api/auth/utils.ts`.
 
 ---
 
@@ -242,48 +241,6 @@ import {
 3. If `res.data?.__parseError` is true, check server/proxy logs (Nginx/Cloud) for upstream errors.
 4. If `res.data?.errorCode` or `res.data?.errorKey` exists, map that code to a friendly message (do not display raw server text).
 5. For unknown/5xx errors show `errors.unexpectedError`.
-
----
-
-## Try with curl (PowerShell-friendly)
-
-Replace `$BASE` and placeholders with your `EXPO_PUBLIC_BASE_URL` and `EXPO_PUBLIC_JWT_ROUTE`.
-
-fetchToken (POST email/password):
-
-```powershell
-$BASE = 'https://staging.example.com'
-curl.exe -i -X POST "$BASE${EXPO_PUBLIC_JWT_ROUTE}/auth" `
-  -H "Content-Type: application/json" `
-  -d '{"email":"user@example.com","password":"hunter2","AUTH_KEY":"<auth_key>"}'
-```
-
-validateToken (POST with Authorization):
-
-```powershell
-curl.exe -i -X POST "$BASE${EXPO_PUBLIC_JWT_ROUTE}/auth/validate" `
-  -H "Content-Type: application/json" `
-  -H "Authorization: Bearer eyJ0e..." `
-  -d '{"AUTH_KEY":"<auth_key>"}'
-```
-
-registerCustomer (WooCommerce POST with Basic auth):
-
-```powershell
-curl.exe -i -X POST "$BASE${EXPO_PUBLIC_WC_ROUTE}/customers" `
-  -H "Content-Type: application/json" `
-  -H "Authorization: Basic <base64(consKey:consSecret)>" `
-  -d '{"email":"new@example.com","password":"pass1234","first_name":"Test","last_name":"User"}'
-```
-
-(The app computes this value from `EXPO_PUBLIC_CONSUMER_KEY`/`EXPO_PUBLIC_CONSUMER_SECRET` and exposes it via `App/api/auth/config.ts` as `base64Credentials`.)
-
-sendPasswordReset (example):
-
-```powershell
-curl.exe -i -X POST "$BASE${EXPO_PUBLIC_JWT_ROUTE}/user/reset_password&email=user@example.com&AUTH_KEY=<auth_key>" `
-  -H "cache-control: no-cache"
-```
 
 ---
 
@@ -597,7 +554,7 @@ If you prefer to keep this file shorter, we can move the large example JSON blob
 - WooCommerce website: https://woocommerce.com/
 - WooCommerce REST API docs: https://developer.woocommerce.com/docs/apis/rest-api/
 
-Canonical API code: `App/api/auth/authApi.ts` (types and normalization live there). Authentication screens live under `App/screens` (see `App/screens/LoginScreen/LoginScreen.tsx`, `App/screens/RegisterScreen/RegisterScreen.tsx`, and `App/screens/ForgotPasswordScreen/ForgotPasswordScreen.tsx`). The auth navigator is at `App/navigation/AuthNav.tsx`.
+Canonical API code: `App/api/auth/authApi.ts`. Types: `App/api/auth/types.ts`. Normalization helper: `App/api/auth/utils.ts`. Authentication screens live under `App/screens` (see `App/screens/LoginScreen/LoginScreen.tsx`, `App/screens/RegisterScreen/RegisterScreen.tsx`, and `App/screens/ForgotPasswordScreen/ForgotPasswordScreen.tsx`). The auth navigator is at `App/navigation/AuthNav.tsx`.
 
 ---
 
