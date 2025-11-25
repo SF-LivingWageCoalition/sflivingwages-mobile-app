@@ -310,6 +310,8 @@ const en = {
       title: "Registration successful",
       message: "You may now log in.",
     },
+    passwordRequirements:
+      "Hint: Password must be at least 10 characters and include uppercase, lowercase, number, and special character.",
   },
   forgotPasswordScreen: {
     title: "Forgot Password",

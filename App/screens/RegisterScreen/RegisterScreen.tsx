@@ -148,6 +148,9 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
               {errors.userPassword && (
                 <Text style={styles.inputError}>{errors.userPassword}</Text>
               )}
+              <Text style={styles.passwordHint}>
+                {translate("registerScreen.passwordRequirements")}
+              </Text>
             </View>
 
             <View style={styles.buttonContainer}>
@@ -209,6 +212,11 @@ const styles = StyleSheet.create({
     right: 0,
     height: "100%",
     justifyContent: "center",
+  },
+  passwordHint: {
+    ...textStyles.caption,
+    color: colors.light.textSecondary,
+    marginTop: 10,
   },
   inputError: {
     ...textStyles.caption,

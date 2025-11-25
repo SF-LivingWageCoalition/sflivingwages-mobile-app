@@ -316,6 +316,8 @@ const es: Translations = {
       title: "Registro exitoso",
       message: "Ahora puedes iniciar sesión.",
     },
+    passwordRequirements:
+      "Consejo: La contraseña debe tener al menos 10 caracteres e incluir mayúsculas, minúsculas, números y un carácter especial.",
   },
   forgotPasswordScreen: {
     title: "Olvidé Mi Contraseña",
