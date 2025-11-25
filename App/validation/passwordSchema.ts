@@ -1,44 +1,46 @@
 import { z } from "zod";
 import { translate } from "../translation";
 
+// Module-level allowed special characters set (used by password validation)
+const ALLOWED_SPECIALS = new Set<string>([
+  "!",
+  '"',
+  "#",
+  "$",
+  "%",
+  "&",
+  "'",
+  "(",
+  ")",
+  "*",
+  "+",
+  ",",
+  "-",
+  ".",
+  "/",
+  ":",
+  ";",
+  "<",
+  "=",
+  ">",
+  "?",
+  "@",
+  "[",
+  "]",
+  "^",
+  "_",
+  "{",
+  "}",
+  "|",
+  "~",
+  "`",
+]);
+
 // Policy: min 10, at least one lowercase, one uppercase, one number, one special char, no spaces.
 // Allowed special characters: !"#$%&'()*+,-./:;<=>?@[]^_{}|~`
 // See: https://wordpress.org/documentation/article/password-best-practices/
 export function passwordSchema() {
-  const allowedSpecials = new Set([
-    "!",
-    '"',
-    "#",
-    "$",
-    "%",
-    "&",
-    "'",
-    "(",
-    ")",
-    "*",
-    "+",
-    ",",
-    "-",
-    ".",
-    "/",
-    ":",
-    ";",
-    "<",
-    "=",
-    ">",
-    "?",
-    "@",
-    "[",
-    "]",
-    "^",
-    "_",
-    "{",
-    "}",
-    "|",
-    "~",
-    "`",
-  ]);
-
+  // Uses module-level `ALLOWED_SPECIALS`
   return (
     z
       .string()
@@ -66,7 +68,7 @@ export function passwordSchema() {
           "Password must contain a number",
       })
       // Ensure at least one allowed special character is present
-      .refine((val) => val.split("").some((ch) => allowedSpecials.has(ch)), {
+      .refine((val) => val.split("").some((ch) => ALLOWED_SPECIALS.has(ch)), {
         message:
           translate("validation.passwordSpecial") ||
           "Password must contain a special character",
@@ -76,7 +78,7 @@ export function passwordSchema() {
         (val) =>
           val
             .split("")
-            .every((ch) => /[A-Za-z0-9]/.test(ch) || allowedSpecials.has(ch)),
+            .every((ch) => /[A-Za-z0-9]/.test(ch) || ALLOWED_SPECIALS.has(ch)),
         {
           message:
             translate("validation.passwordInvalidChars") ||
