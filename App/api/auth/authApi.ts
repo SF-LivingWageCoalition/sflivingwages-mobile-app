@@ -58,20 +58,12 @@ import { normalizeJwt } from "./utils";
 import type { JwtItem } from "./types";
 
 /**
- * API functions for authentication (fetching and validating JWT tokens)
+ * API helper functions for authentication.
+ * Each function interacts with the WordPress backend using the Simple JWT Login plugin and WooCommerce REST API where applicable.
  */
 
 /**
  * Fetch a JWT token using email and password via the Simple JWT Login plugin.
- * Side-effects: none.
- * Returns: ApiResult<TokenData> where on success `data.jwt` is the raw JWT string.
- *
- * @param email - User's email address
- * @param password - User's password
- * @returns Promise<ApiResult<TokenData>>
- *
- * Usage: fetchToken("<email>", "<password>");
- * See `App/api/auth/README.md` for example API responses.
  */
 export const fetchToken = async (
   email: string,
@@ -112,16 +104,6 @@ export const fetchToken = async (
 
 /**
  * Validate a JWT token via the Simple JWT Login plugin.
- * Side-effects: none. Returns ApiResult<ValidationData> where on success
- * `data` contains `user`, `roles`, and `jwt` (array of decoded JWT objects).
- *
- * Note: see https://wordpress.org/support/topic/unable-to-find-user-property-in-jwt/ for a common error.
- *
- * @param jwtToken - The JWT token to validate
- * @returns Promise<ApiResult<ValidationData>>
- *
- * Usage: validateToken("<jwt_token>");
- * See `App/api/auth/README.md` for example API responses.
  */
 export const validateToken = async (
   jwtToken: string
@@ -165,14 +147,6 @@ export const validateToken = async (
 
 /**
  * Refresh a JWT token via the Simple JWT Login plugin.
- * Side-effects: none.
- * Returns: ApiResult<TokenData> where on success `data.jwt` is the new raw JWT string.
- *
- * @param jwtToken - The JWT token to refresh
- * @returns Promise<ApiResult<TokenData>>
- *
- * Usage: refreshToken("<jwt_token>");
- * See `App/api/auth/README.md` for example API responses.
  */
 export const refreshToken = async (
   jwtToken: string
@@ -213,20 +187,6 @@ export const refreshToken = async (
 
 /**
  * Revoke a JWT token via the Simple JWT Login plugin.
- * Side-effects: none.
- * Returns: ApiResult<TokenData> where on success the server returns the
- * refreshed/confirmed JWT in `data.jwt` (i.e. `data` is expected to
- * contain a `jwt` value rather than being null).
- *
- * Note: the Simple JWT Login revoke endpoint commonly responds with a
- * success message and a JWT in the response `data`. The client posts
- * `{ JWT, AUTH_CODE }` (AUTH_CODE optional depending on plugin settings).
- *
- * @param jwtToken - The JWT token to revoke
- * @returns Promise<ApiResult<TokenData>>
- *
- * Usage: revokeToken("<jwt_token>");
- * See `App/api/auth/README.md` for example API responses.
  */
 export const revokeToken = async (
   jwtToken: string
@@ -267,17 +227,6 @@ export const revokeToken = async (
 
 /**
  * Login a WP user via the Simple JWT Login plugin.
- * Side-effect: on successful login `dispatch(setUser(validatedData))` is called to populate Redux user state.
- * If the Redux dispatch fails (e.g., due to middleware errors), the function will catch the error and return an ApiResult failure.
- * Returns: ApiResult<ValidationData['data']> where `data` is the validated payload.
- *
- * @param email - User's email address
- * @param password - User's password
- * @param dispatch - Redux dispatch function to set user data on successful login
- * @returns Promise<ApiResult<ValidationData['data']>>
- *
- * Usage: loginUser("<email>", "<password>", dispatch);
- * See `App/api/auth/README.md` for example API responses and side-effects.
  */
 export const loginUser = async (
   email: string,
@@ -340,14 +289,6 @@ export const loginUser = async (
 
 /**
  * Register a new WooCommerce customer via the WooCommerce REST API.
- * Side-effects: none. Returns ApiResult<CustomerRegistrationData>.
- *
- * @param email
- * @param password
- * @returns Promise<ApiResult<CustomerRegistrationData>>
- *
- * Usage: registerCustomer("<email>", "<password>");
- * See `App/api/auth/README.md` for example API responses.
  */
 export const registerCustomer = async (
   email: string,
@@ -396,19 +337,6 @@ export const registerCustomer = async (
 
 /**
  * Register a new user via the Simple JWT Login plugin.
- * Side-effects: none. Returns ApiResult<UserRegistrationData>.
- * Note: the site primarily uses WooCommerce customers; this function is provided for completeness.
- *
- * On success: returns { success: true, data: UserRegistrationData, status?: number }
- * On failure: returns { success: false, errorMessage?: string, status?: number, data?: unknown }
- * The returned data may include fields such as 'data', 'errorCode', and 'message' for error cases.
- *
- * @param email - User's email address
- * @param password - User's password
- * @returns Promise<ApiResult<UserRegistrationData>>
- *
- * Usage: registerUser("<email>", "<password>");
- * See `App/api/auth/README.md` for example API responses and error handling.
  */
 export const registerUser = async (
   email: string,
@@ -453,14 +381,6 @@ export const registerUser = async (
 
 /**
  * Send a password reset email to the specified email address.
- * Side-effects: none. Returns ApiResult<PasswordResetData>.
- * Note: the Simple JWT Login plugin requires building the URL using &email=... instead of ?email=...
- *
- * @param email
- * @returns Promise<ApiResult<PasswordResetData>>
- *
- * Usage: sendPasswordReset("<email>");
- * See `App/api/auth/README.md` for example API responses.
  */
 export const sendPasswordReset = async (
   email: string
@@ -497,37 +417,6 @@ export const sendPasswordReset = async (
 
 /**
  * Logout the current user.
- *
- * Behavior:
- * - Attempts a best-effort server-side revoke of the current JWT (if present).
- * - Always clears local auth state by dispatching `clearUser()` so the UI and
- *   navigation can react to the logged-out state.
- *
- * Side effects:
- * - May perform a network call to revoke the token (network or server errors
- *   are handled and do not prevent clearing local state).
- * - Dispatches the Redux action `clearUser()` in a `finally` block.
- *
- * Returns:
- * - Promise<LogoutResult> — on success `data.revoked === true` when the server
- *   revoke succeeded; otherwise `revoked === false`. On failure the result
- *   follows the ApiResult failure shape and may include `status` and `data`.
- *
- * Note: The function reads the current JWT from the Redux store (via selector).
- * If no token is present it will still clear local state and return a success
- * result indicating nothing was revoked.
- *
- * @param none
- * @returns Promise<LogoutResult>
- *
- * Usage example:
- *   const result = await logoutUser();
- *   if (result.success) {
- *     // logged out; result.data.revoked may be true/false
- *   } else {
- *     // handle failure (result.status, result.errorMessage, result.data)
- *   }
- * See `App/api/auth/README.md` for example API responses.
  */
 export const logoutUser = async (): Promise<LogoutResult> => {
   // Read the token(s) from the persisted store via selector.
@@ -535,9 +424,7 @@ export const logoutUser = async (): Promise<LogoutResult> => {
   const jwtItems = selectJwt(state);
   const currentToken = jwtItems?.[0]?.token;
 
-  // If there's no token to revoke on the server, clear local state and
-  // return early. Clearing is done in the `finally` block below to ensure
-  // a single guaranteed side-effect path in all cases.
+  // If there's no token to revoke on the server, clear local state and return early.
   if (!currentToken) {
     try {
       return { success: true, data: { revoked: false } };
@@ -546,8 +433,8 @@ export const logoutUser = async (): Promise<LogoutResult> => {
     }
   }
 
-  // Attempt a best-effort revoke on the server. Errors are handled by the
-  // single catch below and we always clear local state in `finally`.
+  // Attempt a best-effort revoke on the server.
+  // Errors are handled by the single catch below and we always clear local state in `finally`.
   try {
     const revokeResult = await revokeToken(currentToken);
     if (revokeResult.success) {

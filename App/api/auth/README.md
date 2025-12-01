@@ -29,16 +29,16 @@ See the [references](#references) section for links to the above-mentioned docum
 - [Environment Variables](#environment-variables)
 - [Quick Debug Checklist](#quick-debug-checklist)
 - [JWT Shapes & Normalization (short)](#jwt-shapes--normalization-short)
-- [Detailed API Responses (examples)](#detailed-api-responses-examples)
-  - [fetchToken — example responses](#fetchtoken--example-responses)
-  - [validateToken — example responses](#validatetoken--example-responses)
-  - [refreshToken — example responses](#refreshtoken--example-responses)
-  - [revokeToken — example responses](#revoketoken--example-responses)
-  - [loginUser — example responses](#loginuser--example-responses)
-  - [registerCustomer — example responses](#registercustomer--example-responses)
-  - [registerUser — example responses](#registeruser--example-responses)
-  - [sendPasswordReset — example responses](#sendpasswordreset--example-responses)
-  - [logoutUser — example responses](#logoutuser--example-responses)
+- [Auth API Helpers](#auth-api-helpers)
+  - [fetchToken()](#fetchtoken)
+  - [validateToken()](#validatetoken)
+  - [refreshToken()](#refreshtoken)
+  - [revokeToken()](#revoketoken)
+  - [loginUser()](#loginuser)
+  - [registerCustomer()](#registercustomer)
+  - [registerUser()](#registeruser)
+  - [sendPasswordReset()](#sendpasswordreset)
+  - [logoutUser()](#logoutuser)
   - [Non-JSON / Parse Errors (what `parseJsonSafe` returns)](#non-json--parse-errors-what-parsejsonsafe-returns)
 - [How to Contribute / Keep this README Current](#how-to-contribute--keep-this-readme-current)
 - [References](#references)
@@ -178,13 +178,6 @@ WooCommerce (string code)
 }
 ```
 
-UI guidance:
-
-- Prefer `result.errorMessage` when present — it is already localized when a code mapping exists.
-- If `result.errorMessage` is not present, use `mapApiErrorToMessage(result)` to obtain a best-effort translation (this function will check `errorCode` / `errorKey` and fall back to status-based messages).
-
-See `App/api/auth/errorHelpers.ts` and `App/api/auth/utils.ts` for implementation details and examples.
-
 Common HTTP status → suggested translation keys (docs only)
 
 | HTTP status | Suggested translation key |
@@ -196,6 +189,13 @@ Common HTTP status → suggested translation keys (docs only)
 |         408 | errors.requestTimedOut    |
 |         409 | errors.registrationFailed |
 |         500 | errors.unexpectedError    |
+
+UI guidance:
+
+- Prefer `result.errorMessage` when present — it is already localized when a code mapping exists.
+- If `result.errorMessage` is not present, use `mapApiErrorToMessage(result)` to obtain a best-effort translation (this function will check `errorCode` / `errorKey` and fall back to status-based messages).
+
+See `App/api/auth/errorHelpers.ts` and `App/api/auth/utils.ts` for implementation details and examples.
 
 ---
 
@@ -216,7 +216,7 @@ EXPO_PUBLIC_CONSUMER_SECRET=<wc_consumer_secret>
 EXPO_PUBLIC_FETCH_TIMEOUT_MS=10000
 ```
 
-Note: these EXPO_PUBLIC environment variables are now read and exported from `App/api/auth/config.ts` and consumed by the auth client and helpers (for example `BASE_URL`, `JWT_ROUTE`, `JWT_AUTH_KEY`, `FETCH_TIMEOUT_MS`, and `base64Credentials`). Centralizing config in `config.ts` reduces duplication, guarantees consistent runtime behavior (for example `base64Credentials` safely returns `undefined` when keys are missing), and makes it easier to stub or mock values when debugging or writing unit tests.
+Note: these EXPO_PUBLIC environment variables are read and exported from `App/api/auth/config.ts` and consumed by the auth client and helpers (for example `BASE_URL`, `JWT_ROUTE`, `JWT_AUTH_KEY`, `FETCH_TIMEOUT_MS`, and `base64Credentials`).
 
 Example usage:
 
@@ -285,11 +285,26 @@ tokens into the Redux store (for example, before `dispatch(setUser(...))`).
 
 ---
 
-## Detailed API Responses (examples)
+## Auth API Helpers
 
 Keep these as a reference for debugging. Update when server shapes change.
 
-### fetchToken — example responses
+All helpers except logoutUser() return Promise\<ApiResult\<T>>:
+
+- Success: { success: true; data: T; status?: number }
+- Failure: { success: false; errorMessage?: string; status?: number; data?: unknown }
+
+Prefer checking `result.success`. If you want exception-style flow use
+`unwrapOrThrow(result)` which throws an exported `ApiError` (includes
+`.status` and `.data`).
+
+### `fetchToken()`
+
+Fetch a JWT token using email and password via the Simple JWT Login plugin.
+
+Usage: fetchToken("\<email>", "\<password>")
+
+Returns: ApiResult\<TokenData> where on success `data.jwt` is the raw JWT string.
 
 Success (token returned):
 
@@ -306,7 +321,15 @@ Failure (wrong credentials):
 }
 ```
 
-### validateToken — example responses
+### `validateToken()`
+
+Validate a JWT token via the Simple JWT Login plugin.
+
+Note: see https://wordpress.org/support/topic/unable-to-find-user-property-in-jwt/ for a common error.
+
+Usage: validateToken("\<jwt_token>")
+
+Returns: ApiResult\<ValidationData> where on success `data` contains `user`, `roles`, and `jwt` (array of decoded JWT objects).
 
 Success (token valid, excerpt):
 
@@ -342,7 +365,13 @@ Failure (expired token example):
 }
 ```
 
-### refreshToken — example responses
+### `refreshToken()`
+
+Refresh a JWT token via the Simple JWT Login plugin.
+
+Usage: refreshToken("\<jwt_token>")
+
+Returns: ApiResult\<TokenData> where on success `data.jwt` is the new raw JWT string.
 
 Success (refreshed token returned):
 
@@ -359,12 +388,15 @@ Failure (invalid/expired token or other error):
 }
 ```
 
-### revokeToken — example responses
+### `revokeToken()`
 
-Success (token revoked). The Simple JWT Login docs show a success response
-that includes a message and returns a refreshed or confirmation JWT in
-`data.jwt`. In this codebase we expect the server to return the new/confirmed
-JWT in `data.jwt` (i.e. `data` is not null). Example:
+Revoke a JWT token via the Simple JWT Login plugin.
+
+Usage: revokeToken("\<jwt_token>")
+
+Returns: ApiResult\<TokenData> where on success the server returns the refreshed/confirmed JWT in `data.jwt` (i.e. `data` is expected to contain a `jwt` value rather than being null).
+
+Success (token revoked):
 
 ```json
 {
@@ -383,9 +415,15 @@ Failure (invalid/expired token or other error):
 }
 ```
 
-### loginUser — example responses
+### `loginUser()`
 
-Success (login flow returns user, roles and jwt, excerpt):
+Login a WP user via the Simple JWT Login plugin.
+
+Usage: loginUser("\<email>", "\<password>", dispatch)
+
+Returns: ApiResult\<ValidationData['data']> where `data` is the validated payload.
+
+Success (login flow returns user, roles and jwt):
 
 ```json
 {
@@ -412,7 +450,13 @@ Failure (validation / expired token example):
 }
 ```
 
-### registerCustomer — example responses
+### `registerCustomer()`
+
+Register a new WooCommerce customer via the WooCommerce REST API.
+
+Usage: registerCustomer("\<email>", "\<password>")
+
+Returns: ApiResult\<CustomerRegistrationData>
 
 Success (customer created, excerpt):
 
@@ -435,7 +479,19 @@ Failure (email exists):
 }
 ```
 
-### registerUser — example responses
+### `registerUser()`
+
+Register a new user via the Simple JWT Login plugin.
+
+Note: the site primarily uses WooCommerce customers; this function is provided for completeness.
+
+Usage: registerUser("\<email>", "\<password>")
+
+Returns: ApiResult\<UserRegistrationData>
+
+On success: returns { success: true, data: UserRegistrationData, status?: number }
+On failure: returns { success: false, errorMessage?: string, status?: number, data?: unknown }
+The returned data may include fields such as 'data', 'errorCode', and 'message' for error cases.
 
 Success (user created, excerpt):
 
@@ -463,7 +519,15 @@ Failure (email already exists):
 }
 ```
 
-### sendPasswordReset — example responses
+### `sendPasswordReset()`
+
+Send a password reset email to the specified email address.
+
+Note: the Simple JWT Login plugin requires building a potentially fragile URL using `&email=` instead of `?email=`. This form is a plugin-specific quirk; it is intentional and not a typo.
+
+Usage: sendPasswordReset("\<email>")
+
+Returns ApiResult\<PasswordResetData>
 
 Success (reset email sent):
 
@@ -480,7 +544,38 @@ Failure (wrong user):
 }
 ```
 
-### logoutUser — example responses
+### `logoutUser()`
+
+Logout the current user.
+
+Usage:
+
+```
+const result = await logoutUser();
+if (result.success) {
+  // logged out; result.data.revoked may be true/false
+} else {
+  // handle failure (result.status, result.errorMessage, result.data)
+}
+```
+
+Returns: LogoutResult
+
+Behavior:
+
+- Attempts a best-effort server-side revoke of the current JWT (if present).
+- Always clears local auth state by dispatching `clearUser()` so the UI and navigation can react to the logged-out state.
+
+Side effects:
+
+- May perform a network call to revoke the token (network or server errors are handled and do not prevent clearing local state).
+- Dispatches the Redux action `clearUser()` in a `finally` block.
+
+Returns:
+
+- Promise<LogoutResult> — on success `data.revoked === true` when the server revoke succeeded; otherwise `revoked === false`. On failure the result follows the ApiResult failure shape and may include `status` and `data`.
+
+Note: The function reads the current JWT from the Redux store (via selector). If no token is present it will still clear local state and return a success result indicating nothing was revoked.
 
 Success — no token present (local logout only):
 
@@ -536,9 +631,7 @@ If the server returns non-JSON content (HTML error page, plain text, etc.), `par
 npx tsc --noEmit
 ```
 
-Local setup: populate `.env` with the EXPO*PUBLIC*\* values. `App/api/auth/config.ts` reads them at runtime — do not commit secrets.
-
-If you prefer to keep this file shorter, we can move the large example JSON blobs into `docs/auth-responses.md` and keep this README as a brief developer guide.
+Local setup: populate `.env` with the EXPO_PUBLIC values. `App/api/auth/config.ts` reads them at runtime — do not commit secrets.
 
 ---
 
@@ -555,7 +648,3 @@ If you prefer to keep this file shorter, we can move the large example JSON blob
 - WooCommerce REST API docs: https://developer.woocommerce.com/docs/apis/rest-api/
 
 Canonical API code: `App/api/auth/authApi.ts`. Types: `App/api/auth/types.ts`. Normalization helper: `App/api/auth/utils.ts`. Authentication screens live under `App/screens` (see `App/screens/LoginScreen/LoginScreen.tsx`, `App/screens/RegisterScreen/RegisterScreen.tsx`, and `App/screens/ForgotPasswordScreen/ForgotPasswordScreen.tsx`). The auth navigator is at `App/navigation/AuthNav.tsx`.
-
----
-
-Maintainer notes: keep this README as the canonical developer guide for `App/api/auth`. When in doubt, update the examples here along with any code changes.
