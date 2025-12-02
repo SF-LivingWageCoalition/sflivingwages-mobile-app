@@ -17,7 +17,7 @@ import { CheckBox } from "react-native-elements";
 import Recaptcha from "react-native-recaptcha-that-works";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import appIcon from "../../../assets/icon.png";
-import Button from "../../components/MainButton";
+import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
@@ -173,7 +173,7 @@ const ReportViolation: React.FC = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Button
+        <MainButton
           variant="circle"
           position="absolute"
           positionTop={27}
@@ -274,7 +274,7 @@ const ReportViolation: React.FC = () => {
             <Recaptcha
               headerComponent={
                 <View style={styles.headerComponentView}>
-                  <Button
+                  <MainButton
                     variant="outlined"
                     title={translate("assistScreen.close")}
                     onPress={close}
@@ -290,7 +290,7 @@ const ReportViolation: React.FC = () => {
               size={"invisible"} // change to 'normal' for version 2
               theme={"light"}
             />
-            <Button
+            <MainButton
               variant="outlined"
               title={translate("assistScreen.recaptcha")}
               size="small"
@@ -307,14 +307,14 @@ const ReportViolation: React.FC = () => {
             {translate("assistScreen.review")}
           </Text>
           <View style={styles.buttonStyles}>
-            <Button
+            <MainButton
               variant="primary"
               title={translate("assistScreen.submit")}
               onPress={onSubmitData}
               style={styles.primaryButtonStyle}
             />
 
-            <Button
+            <MainButton
               variant="clear"
               title={translate("assistScreen.clear")}
               onPress={resetAll}

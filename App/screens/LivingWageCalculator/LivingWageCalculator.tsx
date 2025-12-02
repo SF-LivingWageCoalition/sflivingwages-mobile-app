@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useRef, useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import Button from "../../components/MainButton";
+import MainButton from "../../components/MainButton";
 import appIcon from "../../../assets/icon.png";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
@@ -79,7 +79,7 @@ const LivingWageCalculator: React.FC = () => {
   return (
     <ScrollView ref={scrollViewRef}>
       <View style={styles.container}>
-        <Button
+        <MainButton
           variant="circle"
           position="absolute"
           positionTop={27}
@@ -156,7 +156,12 @@ const LivingWageCalculator: React.FC = () => {
             </View>
           </View>
 
-          <Button variant="primary" title="Submit" onPress={handleSubmit} />
+          <MainButton
+            variant="primary"
+            size="large"
+            title="Submit"
+            onPress={handleSubmit}
+          />
         </View>
         {calculationResult && (
           <View ref={resultsCardRef} style={styles.resultsCard}>

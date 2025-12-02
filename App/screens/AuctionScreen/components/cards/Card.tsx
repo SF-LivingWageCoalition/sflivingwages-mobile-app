@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Button from "../../../../components/MainButton";
+import MainButton from "../../../../components/MainButton";
 import { colors } from "../../../../theme";
 import { textStyles } from "../../../../theme/fontStyles";
 import { CardProps, PreviewScreenParams } from "../../../../types/types";
@@ -63,7 +63,7 @@ const Card: React.FC<CardProps> = ({
         </View>
         {/* Product Individual page link */}
         <View style={styles.buttonContainer}>
-          <Button
+          <MainButton
             variant="primary"
             title={buttonText}
             onPress={() => {

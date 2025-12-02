@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dimensions,
   ImageBackground,
@@ -76,7 +76,8 @@ const CarouselImageSmall: React.FC<CarouselImageProps> = ({
  * New Home Screen component
  */
 const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
-  // Images for the main slider
+  const [isLoading, setIsLoading] = useState(false);
+
   const mainSliderImages = [
     {
       id: 1,
@@ -93,7 +94,6 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
     },
   ];
 
-  // Images for the campaigns section
   const campaignImages = [
     {
       id: 1,
@@ -153,7 +153,17 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                   variant="primary"
                   size="large"
                   title={translate("whoWeAreHeader.buttonText")}
+                  isLoading={isLoading}
+                  loadingText="Loading..."
                   onPress={() => navigation.navigate("WhoWeAre")}
+                  // onPress={() => {
+                  //   setIsLoading(true);
+                  //   // Simulate an async operation
+                  //   setTimeout(() => {
+                  //     setIsLoading(false);
+                  //     navigation.navigate("WhoWeAre");
+                  //   }, 2000);
+                  // }}
                 />
               </View>
             </View>

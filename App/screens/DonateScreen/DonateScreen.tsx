@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Linking, ScrollView, StyleSheet, Text, View } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
-import Button from "../../components/MainButton";
+import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { DonateSection } from "../../types/types";
@@ -34,7 +34,7 @@ const DonateScreen: React.FC = () => {
             below to be taken to our PayPal site.
           </Text>
           <View style={styles.buttonContainer}>
-            <Button
+            <MainButton
               variant="primary"
               title="Donate Online"
               onPress={() =>

@@ -1,8 +1,8 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import Button from "../../components/MainButton";
 import appIcon from "../../../assets/icon.png";
+import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
@@ -28,25 +28,25 @@ const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
           </Text>
 
           <View style={styles.buttonContainer}>
-            <Button
+            <MainButton
               variant="primary"
               title={translate("assistHomeScreen.getAssistance")}
               onPress={() => navigation.navigate("ReportViolation")}
             />
 
-            <Button
+            <MainButton
               variant="primary"
               title={translate("assistHomeScreen.wageRights")}
               onPress={() => navigation.navigate("WageRights")}
             />
 
-            <Button
+            <MainButton
               variant="primary"
               title={translate("assistHomeScreen.beReadyForICE")}
               onPress={() => navigation.navigate("BeReadyForICE")}
             />
 
-            <Button
+            <MainButton
               variant="primary"
               title="Living Wage Calculator"
               onPress={() => navigation.navigate("LivingWageCalculator")}

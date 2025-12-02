@@ -229,10 +229,10 @@ const MainButton: React.FC<ButtonProps> = ({
 
 const styles = StyleSheet.create({
   isDisabled: {
-    opacity: 0.5,
+    opacity: 0.9,
   },
   pressed: {
-    opacity: 0.8,
+    opacity: 0.9,
   },
   content: {
     flexDirection: "row",
