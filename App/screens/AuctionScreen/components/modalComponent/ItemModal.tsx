@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Button from "../../../../components/Button";
+import Button from "../../../../components/MainButton";
 import { colors } from "../../../../theme";
 import { textStyles } from "../../../../theme/fontStyles";
 import { ItemModalProps } from "../../../../types/types";

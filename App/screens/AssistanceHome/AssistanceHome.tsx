@@ -1,7 +1,7 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import Button from "../../components/Button";
+import Button from "../../components/MainButton";
 import appIcon from "../../../assets/icon.png";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";

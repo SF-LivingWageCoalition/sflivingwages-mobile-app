@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useRef, useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import Button from "../../components/Button";
+import Button from "../../components/MainButton";
 import appIcon from "../../../assets/icon.png";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";

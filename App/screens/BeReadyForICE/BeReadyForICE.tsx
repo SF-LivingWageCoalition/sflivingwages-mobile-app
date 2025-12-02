@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Collapsible from "react-native-collapsible";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import Button from "../../components/Button";
+import Button from "../../components/MainButton";
 import BulletItem from "../../components/lists/BulletItem";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";

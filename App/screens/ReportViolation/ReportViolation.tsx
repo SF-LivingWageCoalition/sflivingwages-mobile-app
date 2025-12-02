@@ -17,7 +17,7 @@ import { CheckBox } from "react-native-elements";
 import Recaptcha from "react-native-recaptcha-that-works";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import appIcon from "../../../assets/icon.png";
-import Button from "../../components/Button";
+import Button from "../../components/MainButton";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";

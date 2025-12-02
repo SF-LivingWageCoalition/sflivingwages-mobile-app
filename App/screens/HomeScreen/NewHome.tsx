@@ -14,7 +14,7 @@ import { Card } from "react-native-paper";
 import Swiper from "react-native-swiper/src";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { WebView } from "react-native-webview";
-import Button from "../../components/Button";
+import Button from "../../components/MainButton";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
