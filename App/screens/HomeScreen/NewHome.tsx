@@ -14,7 +14,7 @@ import { Card } from "react-native-paper";
 import Swiper from "react-native-swiper/src";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { WebView } from "react-native-webview";
-import Button from "../../components/MainButton";
+import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
@@ -149,8 +149,9 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 {translate("whoWeAreHeader.body")}
               </Text>
               <View style={styles.buttonView}>
-                <Button
+                <MainButton
                   variant="primary"
+                  size="large"
                   title={translate("whoWeAreHeader.buttonText")}
                   onPress={() => navigation.navigate("WhoWeAre")}
                 />

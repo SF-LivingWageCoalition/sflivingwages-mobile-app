@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  ActivityIndicator,
   Pressable,
   StyleSheet,
   Text,
@@ -19,7 +20,9 @@ export interface ButtonProps {
   variant?: ButtonVariant;
   size?: ButtonSize;
   icon?: React.ReactNode; // For circle button or icon+text buttons
-  disabled?: boolean;
+  isDisabled?: boolean;
+  isLoading?: boolean;
+  loadingText?: string;
   style?: ViewStyle;
   textStyle?: TextStyle;
   position?: "absolute"; // For circle back button positioning
@@ -45,13 +48,15 @@ const fontSizes = {
   large: fontSize.lg,
 } as const;
 
-const Button: React.FC<ButtonProps> = ({
+const MainButton: React.FC<ButtonProps> = ({
   title,
   onPress,
   variant = "primary",
   size = "medium",
   icon,
-  disabled = false,
+  isDisabled = false,
+  isLoading = false,
+  loadingText,
   style,
   textStyle,
   position,
@@ -132,26 +137,26 @@ const Button: React.FC<ButtonProps> = ({
 
   const getTextStyle = (): TextStyle[] => {
     const variantTextStyles: TextStyle = {};
-    const fontSize = fontSizes[size];
+    const selectedFontSize = fontSizes[size];
 
     switch (variant) {
       case "primary":
         variantTextStyles.fontFamily = textStyles.button.fontFamily;
-        variantTextStyles.fontSize = fontSize;
+        variantTextStyles.fontSize = selectedFontSize;
         variantTextStyles.color = colors.light.textOnPrimary;
         variantTextStyles.textAlign = "center";
         break;
 
       case "clear":
         variantTextStyles.fontFamily = textStyles.button.fontFamily;
-        variantTextStyles.fontSize = fontSize;
+        variantTextStyles.fontSize = selectedFontSize;
         variantTextStyles.color = colors.light.primary;
         variantTextStyles.textAlign = "center";
         break;
 
       case "outlined":
         variantTextStyles.fontFamily = textStyles.buttonSmall.fontFamily;
-        variantTextStyles.fontSize = fontSize;
+        variantTextStyles.fontSize = selectedFontSize;
         variantTextStyles.color = colors.light.secondary;
         variantTextStyles.textAlign = "center";
         break;
@@ -165,30 +170,55 @@ const Button: React.FC<ButtonProps> = ({
 
   const buttonStyles = getButtonStyle();
   const textStylesArray = getTextStyle();
+  const buttonDisabled = isDisabled || isLoading;
+  const displayText = isLoading ? loadingText || "Loading..." : title;
+
+  let activityIndicatorColor;
+  if (variant === "primary") {
+    activityIndicatorColor = colors.light.textOnPrimary;
+  } else if (variant === "clear") {
+    activityIndicatorColor = colors.light.primary;
+  } else if (variant === "outlined") {
+    activityIndicatorColor = colors.light.secondary;
+  } else if (variant === "circle") {
+    activityIndicatorColor = colors.light.textOnPrimary;
+  }
+
+  const loadingIcon = isLoading ? (
+    <ActivityIndicator size="small" color={activityIndicatorColor} />
+  ) : (
+    icon
+  );
 
   return (
     <Pressable
       onPress={onPress}
-      disabled={disabled}
+      disabled={buttonDisabled}
       style={({ pressed }) => [
-        ...buttonStyles,
         style,
-        disabled && styles.disabled,
-        pressed && styles.pressed,
+        ...buttonStyles,
+        buttonDisabled && styles.isDisabled,
+        pressed && !buttonDisabled && styles.pressed,
       ]}
     >
       {variant === "circle" ? (
-        icon
+        isLoading ? (
+          <ActivityIndicator size="small" color={activityIndicatorColor} />
+        ) : (
+          icon
+        )
       ) : (
         <View style={styles.content}>
-          {icon && <View style={styles.iconContainer}>{icon}</View>}
-          {title && (
+          {loadingIcon && (
+            <View style={styles.iconContainer}>{loadingIcon}</View>
+          )}
+          {displayText && (
             <Text
               style={
                 textStyle ? [...textStylesArray, textStyle] : textStylesArray
               }
             >
-              {title}
+              {displayText}
             </Text>
           )}
         </View>
@@ -198,7 +228,7 @@ const Button: React.FC<ButtonProps> = ({
 };
 
 const styles = StyleSheet.create({
-  disabled: {
+  isDisabled: {
     opacity: 0.5,
   },
   pressed: {
@@ -214,4 +244,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Button;
+export default MainButton;

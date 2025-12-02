@@ -293,6 +293,7 @@ const ReportViolation: React.FC = () => {
             <Button
               variant="outlined"
               title={translate("assistScreen.recaptcha")}
+              size="small"
               onPress={send}
               style={styles.recaptchaButtonStyle}
             />
