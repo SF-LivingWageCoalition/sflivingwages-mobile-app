@@ -153,17 +153,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                   variant="primary"
                   size="large"
                   title={translate("whoWeAreHeader.buttonText")}
-                  isLoading={isLoading}
-                  loadingText="Loading..."
                   onPress={() => navigation.navigate("WhoWeAre")}
-                  // onPress={() => {
-                  //   setIsLoading(true);
-                  //   // Simulate an async operation
-                  //   setTimeout(() => {
-                  //     setIsLoading(false);
-                  //     navigation.navigate("WhoWeAre");
-                  //   }, 2000);
-                  // }}
                 />
               </View>
             </View>
