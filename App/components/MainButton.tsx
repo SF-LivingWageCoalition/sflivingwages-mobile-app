@@ -32,14 +32,15 @@ export interface ButtonProps {
 
 const paddingSizes = {
   small: { vertical: 6, horizontal: 12 },
-  medium: { vertical: 10, horizontal: 15 },
+  medium: { vertical: 12, horizontal: 16 },
   large: { vertical: 14, horizontal: 20 },
 } as const;
 
+// The circle button will only have one size option, but this is here in case we need to add more sizes in the future
 const circleSizes = {
-  small: 32,
+  small: 40,
   medium: 40,
-  large: 48,
+  large: 40,
 } as const;
 
 const fontSizes = {
