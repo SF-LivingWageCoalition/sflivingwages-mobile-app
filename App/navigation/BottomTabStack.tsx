@@ -11,7 +11,7 @@ import LivingWageCalculator from "../screens/LivingWageCalculator/LivingWageCalc
 import ReportViolation from "../screens/ReportViolation/ReportViolation";
 import WageRights from "../screens/WageRights/WageRights";
 import { colors } from "../theme";
-import { BottomTabParamList } from "../types";
+import { BottomTabParamList } from "../types/types";
 
 // Create a stack navigator for the Assistance section
 const AssistanceStack = createStackNavigator();

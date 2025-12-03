@@ -54,7 +54,11 @@ export type CampaignTitleProps = {
   navigation?: NavigationProp<ParamListBase>;
 };
 
-export type AuctionCardProps = {
+export type PreviewScreenParams = {
+  image: string;
+};
+
+export type CardProps = {
   categoryId?: number;
   name: string;
   description: string;
@@ -62,20 +66,12 @@ export type AuctionCardProps = {
   link: string;
   image: string;
   previewImage: string;
+  buttonText?: string;
+  showDescriptionModal?: boolean;
 };
 
-export type PreviewScreenParams = {
-  image: string;
-};
-
-export type CardProps = {
-  name: string;
-  description: string;
-  price: number;
-  link: string;
-  image: string;
-  previewImage: string;
-};
+// Alias for backwards compatibility
+export type AuctionCardProps = CardProps;
 
 export type ItemModalProps = {
   description: string;
@@ -122,12 +118,6 @@ export type LPsProps = {
   isLoading: boolean;
 };
 
-export type MyNavigationButtonProps = {
-  author?: string;
-  description?: string;
-  title?: string;
-};
-
 export type DetailParams = {
   image: string;
   bio: string;
@@ -145,14 +135,8 @@ export type PhotoItem = {
 };
 
 export type PhotosProps = {
-  photos: PhotoItem[];
-};
-
-export type TimeLeft = {
-  days?: number;
-  hours?: number;
-  minutes?: number;
-  seconds?: number;
+  photos: ProductItem[];
+  isLoading: boolean;
 };
 
 export type CardData = {
@@ -182,7 +166,6 @@ export type ViewProps = {
 export type AuctionNavState = {
   arts: ProductItem[];
   books: ProductItem[];
-  photos: PhotoItem[];
   cds: ProductItem[];
   dvds: ProductItem[];
   lps: ProductItem[];
@@ -197,6 +180,7 @@ export type AuctionTabParamList = {
   Cds: undefined;
   Dvds: undefined;
   LPs: undefined;
+  Photos: undefined;
 };
 
 export type DonateSection = { title: string; content: React.ReactNode };
@@ -217,24 +201,6 @@ export type ModalScreenProps = {
     };
   };
   navigation: NavigationProp<RootStackParamList>;
-};
-
-export type ArticleSource = {
-  id?: string;
-  name: string;
-};
-
-export type ArticleItem = {
-  title: string;
-  description?: string;
-  publishedAt?: string;
-  source: ArticleSource;
-  urlToImage?: string;
-  url: string;
-};
-
-export type ArticleProps = {
-  article: ArticleItem;
 };
 
 export type EventItem = {

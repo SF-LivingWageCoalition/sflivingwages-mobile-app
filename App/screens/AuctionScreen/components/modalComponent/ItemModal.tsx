@@ -7,9 +7,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { ItemModalProps } from "../../../../types";
+import Button from "../../../../components/Button";
 import { colors } from "../../../../theme";
-import { fontSize, fontWeight } from "../../../../theme/fontStyles";
+import { textStyles } from "../../../../theme/fontStyles";
+import { ItemModalProps } from "../../../../types/types";
 
 const ItemModal: React.FC<ItemModalProps> = ({ description, title }) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -30,12 +31,12 @@ const ItemModal: React.FC<ItemModalProps> = ({ description, title }) => {
             <ScrollView>
               <Text style={styles.modalText}>{description}</Text>
             </ScrollView>
-            <TouchableOpacity
-              style={[styles.button, styles.buttonClose]}
+            <Button
+              variant="primary"
+              title="Close"
               onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyleClose}>Close</Text>
-            </TouchableOpacity>
+              style={styles.buttonClose}
+            />
           </View>
         </View>
       </Modal>
@@ -66,36 +67,22 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    color: colors.light.textPrimary,
-  },
   buttonClose: {
     marginTop: 15,
-    backgroundColor: colors.light.primary,
   },
   titleText: {
+    ...textStyles.h3,
     padding: 10,
-    fontSize: fontSize.lg,
     color: colors.light.textPrimary,
-    fontWeight: fontWeight.bold,
     textAlign: "center",
   },
   textStyleOpen: {
+    ...textStyles.buttonSmall,
     color: colors.light.textPrimary,
-    fontWeight: fontWeight.bold,
-  },
-  textStyleClose: {
-    color: colors.light.textOnPrimary,
-    fontWeight: fontWeight.bold,
-    textAlign: "center",
-    fontSize: fontSize.lg,
   },
   modalText: {
+    ...textStyles.bodyLarge,
     marginBottom: 15,
-    fontSize: fontSize.md,
   },
 });
 

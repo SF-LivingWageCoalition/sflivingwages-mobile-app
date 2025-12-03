@@ -11,9 +11,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import Button from "../../../../components/Button";
 import { colors } from "../../../../theme";
-import { fontSize, fontWeight } from "../../../../theme/fontStyles";
-import { CardProps, PreviewScreenParams } from "../../../../types";
+import { textStyles } from "../../../../theme/fontStyles";
+import { CardProps, PreviewScreenParams } from "../../../../types/types";
 import ItemModal from "../modalComponent/ItemModal";
 
 const Card: React.FC<CardProps> = ({
@@ -23,8 +24,9 @@ const Card: React.FC<CardProps> = ({
   link,
   image,
   previewImage,
+  buttonText = "Shop",
+  showDescriptionModal = true,
 }) => {
-  // Get navigation
   const navigate = useNavigation<NavigationProp<ParamListBase>>();
 
   // Regular expression to remove HTML tags and entities
@@ -34,7 +36,6 @@ const Card: React.FC<CardProps> = ({
   const cleanDescription = description.replace(rgex, "");
   const cleanName = name.replace(rgex, "");
 
-  // Calculate the price
   const itemPrice = +price / 100;
 
   return (
@@ -50,22 +51,25 @@ const Card: React.FC<CardProps> = ({
         >
           <Image style={styles.imageStyle} source={{ uri: image }} />
         </TouchableOpacity>
-        <Text>tap picture to enlarge</Text>
+        <Text style={textStyles.caption}>tap picture to enlarge</Text>
         <View style={styles.horizontalLine} />
         <View>
-          <ItemModal title={name} description={cleanDescription} />
-          <Text>${itemPrice}</Text>
+          {showDescriptionModal ? (
+            <ItemModal title={name} description={cleanDescription} />
+          ) : (
+            <Text style={textStyles.body}>{cleanDescription}</Text>
+          )}
+          <Text style={textStyles.body}>${itemPrice}</Text>
         </View>
         {/* Product Individual page link */}
-        <View style={styles.submitButtonContainer}>
-          <TouchableOpacity
-            style={styles.submitButton}
+        <View style={styles.buttonContainer}>
+          <Button
+            variant="primary"
+            title={buttonText}
             onPress={() => {
               Linking.openURL(link);
             }}
-          >
-            <Text style={styles.submitButtonText}>Shop</Text>
-          </TouchableOpacity>
+          />
         </View>
       </View>
     </View>
@@ -77,13 +81,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cardTitle: {
+    ...textStyles.h3,
     textAlign: "center", // <-- the magic
-    fontWeight: fontWeight.bold,
-    fontSize: fontSize.md,
     margin: 5,
   },
   cardImage: {
-    backgroundColor: "white",
+    backgroundColor: colors.light.background,
     margin: 10,
     padding: 20,
     flex: 1,
@@ -109,22 +112,10 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.light.textPrimary,
     borderBottomWidth: 1,
   },
-  submitButtonContainer: {
+  buttonContainer: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  submitButton: {
-    justifyContent: "center",
-    backgroundColor: colors.light.primary,
-    width: 100,
-    height: 40,
-    borderRadius: 30,
-  },
-  submitButtonText: {
-    color: colors.light.textOnPrimary,
-    fontWeight: fontWeight.bold,
-    textAlign: "center",
   },
 });
 

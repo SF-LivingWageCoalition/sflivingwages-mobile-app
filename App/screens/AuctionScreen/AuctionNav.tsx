@@ -1,8 +1,12 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import React, { useEffect, useState } from "react";
 import { colors } from "../../theme";
-import { fontSize, fontWeight } from "../../theme/fontStyles";
-import { AuctionNavState, AuctionTabParamList, ProductItem } from "../../types";
+import { textStyles } from "../../theme/fontStyles";
+import {
+  AuctionNavState,
+  AuctionTabParamList,
+  ProductItem,
+} from "../../types/types";
 import { CustomTabBar } from "./components/CustomTabBar";
 import Arts from "./components/auctionSalesComponents/Arts";
 import Books from "./components/auctionSalesComponents/Books";
@@ -13,11 +17,9 @@ import LPs from "./components/auctionSalesComponents/LPs";
 const Tab = createMaterialTopTabNavigator<AuctionTabParamList>();
 
 const AuctionNav: React.FC = () => {
-  // Initialize state with default values
   const [state, setState] = useState<AuctionNavState>({
     arts: [],
     books: [],
-    photos: [],
     cds: [],
     dvds: [],
     lps: [],
@@ -26,7 +28,6 @@ const AuctionNav: React.FC = () => {
     isLoading: true,
   });
 
-  // Fetch art data
   const fetchArt = (): void => {
     fetch(
       "https://www.livingwage-sf.org/wp-json/wc/store/v1/products?category=944&per_page=100"
@@ -41,7 +42,6 @@ const AuctionNav: React.FC = () => {
       );
   };
 
-  // Fetch book data
   const fetchBook = async (): Promise<void> => {
     fetch(
       "https://www.livingwage-sf.org/wp-json/wc/store/v1/products?category=196&per_page=12"
@@ -56,7 +56,6 @@ const AuctionNav: React.FC = () => {
       );
   };
 
-  // Fetch CDs data
   const fetchCds = async (): Promise<void> => {
     fetch(
       "https://www.livingwage-sf.org/wp-json/wc/store/v1/products?category=190"
@@ -71,7 +70,6 @@ const AuctionNav: React.FC = () => {
       );
   };
 
-  // Fetch DVDs data
   const fetchDvds = async (): Promise<void> => {
     fetch(
       "https://www.livingwage-sf.org/wp-json/wc/store/v1/products?category=192"
@@ -86,7 +84,6 @@ const AuctionNav: React.FC = () => {
       );
   };
 
-  // Fetch LPs data
   const fetchLPs = async (): Promise<void> => {
     fetch(
       "https://www.livingwage-sf.org/wp-json/wc/store/v1/products?category=1133"
@@ -116,10 +113,7 @@ const AuctionNav: React.FC = () => {
       screenOptions={{
         tabBarActiveTintColor: colors.light.primary,
         tabBarInactiveTintColor: colors.light.textPrimary,
-        tabBarLabelStyle: {
-          fontSize: fontSize.md,
-          fontWeight: fontWeight.medium,
-        },
+        tabBarLabelStyle: textStyles.label,
       }}
       tabBar={(props) => <CustomTabBar {...props} />}
     >

@@ -1,17 +1,12 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import Button from "../../components/Button";
+import appIcon from "../../../assets/icon.png";
 import { colors } from "../../theme";
-import { fontSize, fontWeight } from "../../theme/fontStyles";
+import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
-import { AssistanceTabParamList } from "../../types";
+import { AssistanceTabParamList } from "../../types/types";
 
 interface AssistanceHomeProps {
   navigation: NativeStackNavigationProp<AssistanceTabParamList>;
@@ -23,10 +18,7 @@ const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
       <View style={styles.container}>
         <View style={styles.card}>
           <View style={styles.logoContainer}>
-            <Image
-              style={styles.logo}
-              source={require("../../../assets/icon.png")}
-            />
+            <Image style={styles.logo} source={appIcon} />
           </View>
           <Text style={styles.title}>
             {translate("assistHomeScreen.title")}
@@ -36,39 +28,29 @@ const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
           </Text>
 
           <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.button}
+            <Button
+              variant="primary"
+              title={translate("assistHomeScreen.getAssistance")}
               onPress={() => navigation.navigate("ReportViolation")}
-            >
-              <Text style={styles.buttonText}>
-                {translate("assistHomeScreen.getAssistance")}
-              </Text>
-            </TouchableOpacity>
+            />
 
-            <TouchableOpacity
-              style={styles.button}
+            <Button
+              variant="primary"
+              title={translate("assistHomeScreen.wageRights")}
               onPress={() => navigation.navigate("WageRights")}
-            >
-              <Text style={styles.buttonText}>
-                {translate("assistHomeScreen.wageRights")}
-              </Text>
-            </TouchableOpacity>
+            />
 
-            <TouchableOpacity
-              style={styles.button}
+            <Button
+              variant="primary"
+              title={translate("assistHomeScreen.beReadyForICE")}
               onPress={() => navigation.navigate("BeReadyForICE")}
-            >
-              <Text style={styles.buttonText}>
-                {translate("assistHomeScreen.beReadyForICE")}
-              </Text>
-            </TouchableOpacity>
+            />
 
-            <TouchableOpacity
-              style={styles.button}
+            <Button
+              variant="primary"
+              title="Living Wage Calculator"
               onPress={() => navigation.navigate("LivingWageCalculator")}
-            >
-              <Text style={styles.buttonText}>Living Wage Calculator</Text>
-            </TouchableOpacity>
+            />
           </View>
         </View>
       </View>
@@ -100,15 +82,15 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     resizeMode: "contain",
+    borderRadius: 10,
   },
   title: {
-    fontSize: fontSize.lg,
-    fontWeight: fontWeight.bold,
+    ...textStyles.h3,
     textAlign: "center",
     marginBottom: 10,
   },
   subtitle: {
-    fontSize: fontSize.sm,
+    ...textStyles.body,
     textAlign: "center",
     marginBottom: 30,
     color: colors.light.textSecondary,
@@ -116,23 +98,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 20,
     gap: 20,
-  },
-  button: {
-    backgroundColor: colors.light.primary,
-    borderRadius: 30,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    elevation: 6,
-    shadowColor: colors.light.primary,
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: { width: 1, height: 1 },
-  },
-  buttonText: {
-    fontSize: fontSize.md,
-    color: colors.light.textOnPrimary,
-    textAlign: "center",
-    fontWeight: fontWeight.bold,
   },
 });
 

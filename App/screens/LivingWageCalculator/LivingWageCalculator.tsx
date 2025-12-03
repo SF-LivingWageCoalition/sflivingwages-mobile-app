@@ -1,19 +1,13 @@
+import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import React, { useRef, useState } from "react";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import IC_ARR_DOWN from "../../assets/icons/ic_arr_down.png";
+import Button from "../../components/Button";
+import appIcon from "../../../assets/icon.png";
 import { colors } from "../../theme";
-import { fontSize, fontWeight } from "../../theme/fontStyles";
-import { WageData } from "../../types";
+import { textStyles } from "../../theme/fontStyles";
+import { WageData } from "../../types/types";
 import wageDataRaw from "./livingwage.json";
 
 const wageData = wageDataRaw as WageData;
@@ -22,6 +16,8 @@ const LivingWageCalculator: React.FC = () => {
   const [adults, setAdults] = useState<number>(1);
   const [children, setChildren] = useState<number>(0);
   const [calculationResult, setCalculationResult] = useState<any | null>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const resultsCardRef = useRef<View>(null);
 
   function formatNumber(num: number) {
     return num.toLocaleString();
@@ -65,24 +61,46 @@ const LivingWageCalculator: React.FC = () => {
       totalMonthly,
       totalAnnual,
     });
+
+    // Scroll to results card after state update
+    setTimeout(() => {
+      resultsCardRef.current?.measureLayout(
+        scrollViewRef.current as any,
+        (x, y) => {
+          scrollViewRef.current?.scrollTo({ y: y - 20, animated: true });
+        },
+        () => {}
+      );
+    }, 100);
   };
 
   const navigation = useNavigation();
 
   return (
-    <ScrollView>
+    <ScrollView ref={scrollViewRef}>
       <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.circleBackButton}
+        <Button
+          variant="circle"
+          position="absolute"
+          positionTop={27}
+          positionLeft={27}
           onPress={() => navigation.goBack()}
-        >
-          <Text style={styles.backArrow}>{"<"}</Text>
-        </TouchableOpacity>
+          icon={
+            <FontAwesome5
+              name="chevron-left"
+              size={20}
+              color={colors.light.chevronLight}
+            />
+          }
+        />
         <View style={styles.card}>
-          <Text style={styles.title}>LIVING WAGE CALCULATOR</Text>
+          <View style={styles.logoContainer}>
+            <Image style={styles.logo} source={appIcon} />
+          </View>
+          <Text style={styles.title}>Living Wage Calculator</Text>
         </View>
-        <View style={{ marginTop: 24, paddingHorizontal: 16 }}>
-          <View style={{ marginBottom: 24 }}>
+        <View style={styles.formContainer}>
+          <View style={styles.dropDownContainer}>
             <Text style={styles.numInHousehold}>
               Number of adults in your household
             </Text>
@@ -96,18 +114,20 @@ const LivingWageCalculator: React.FC = () => {
                 ]}
                 placeholder={{}}
                 style={pickerSelectStyles}
-                Icon={
-                  Platform.OS === "ios"
-                    ? () => (
-                        <Image source={IC_ARR_DOWN} style={styles.arrowIcon} />
-                      )
-                    : undefined
-                }
+                Icon={() => {
+                  return (
+                    <FontAwesome5
+                      name="chevron-down"
+                      size={16}
+                      color={colors.light.textSecondary}
+                    />
+                  );
+                }}
               />
             </View>
           </View>
 
-          <View style={{ marginBottom: 32 }}>
+          <View style={styles.dropDownContainer2}>
             <Text style={styles.numInHousehold}>
               Number of children in your household
             </Text>
@@ -123,103 +143,72 @@ const LivingWageCalculator: React.FC = () => {
                 ]}
                 placeholder={{}}
                 style={pickerSelectStyles}
-                Icon={
-                  Platform.OS === "ios"
-                    ? () => (
-                        <Image source={IC_ARR_DOWN} style={styles.arrowIcon} />
-                      )
-                    : undefined
-                }
+                Icon={() => {
+                  return (
+                    <FontAwesome5
+                      name="chevron-down"
+                      size={16}
+                      color={colors.light.textSecondary}
+                    />
+                  );
+                }}
               />
             </View>
           </View>
 
-          <TouchableOpacity
-            style={{
-              backgroundColor: colors.light.primary,
-              padding: 16,
-              borderRadius: 12,
-              alignItems: "center",
-              width: "100%",
-            }}
-            onPress={handleSubmit}
-          >
-            <Text
-              style={{
-                color: colors.light.textOnPrimary,
-                fontWeight: fontWeight.semibold,
-                fontSize: fontSize.md,
-              }}
-            >
-              Submit
-            </Text>
-          </TouchableOpacity>
+          <Button variant="primary" title="Submit" onPress={handleSubmit} />
         </View>
         {calculationResult && (
-          <View
-            style={{
-              backgroundColor: colors.light.background,
-              borderRadius: 12,
-              padding: 20,
-              marginTop: 32,
-              shadowColor: colors.light.shadow,
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.08,
-              shadowRadius: 8,
-              elevation: 2,
-            }}
-          >
-            <Text
-              style={{
-                fontWeight: fontWeight.semibold,
-                fontSize: fontSize.md,
-                marginBottom: 12,
-              }}
-            >
-              Results
-            </Text>
-            <Text>
+          <View ref={resultsCardRef} style={styles.resultsCard}>
+            <Text style={styles.resultsTitle}>Results</Text>
+            <Text style={textStyles.body}>
               Poverty wage:{" "}
               <Text style={styles.infoText}>
                 ${calculationResult.povertyWage} /hour/adult
               </Text>
             </Text>
-            <Text>
+            <Text style={textStyles.body}>
               Living wage:{" "}
               <Text style={styles.infoText}>
                 ${calculationResult.livingWage.toFixed(2)} /hour/adult
               </Text>
             </Text>
-            <Text style={{ marginTop: 10 }}>
+            <Text style={styles.monthlyTotalText}>
               Monthly total:{" "}
               <Text style={styles.infoText}>
                 ${formatNumber(calculationResult.totalMonthly)}
               </Text>
             </Text>
-            <Text>
+            <Text style={textStyles.body}>
               Annual total:{" "}
               <Text style={styles.infoText}>
                 ${formatNumber(calculationResult.totalAnnual)}
               </Text>
             </Text>
-            <View style={{ marginTop: 16 }}>
-              <Text
-                style={{ fontWeight: fontWeight.semibold, marginBottom: 4 }}
-              >
-                Breakdown:
+            <View style={styles.breakdownContainer}>
+              <Text style={styles.breakdownTitle}>Breakdown:</Text>
+              <Text style={textStyles.body}>
+                Housing: ${formatNumber(calculationResult.housing)}
               </Text>
-              <Text>Housing: ${formatNumber(calculationResult.housing)}</Text>
-              <Text>Food: ${formatNumber(calculationResult.food)}</Text>
-              <Text>
+              <Text style={textStyles.body}>
+                Food: ${formatNumber(calculationResult.food)}
+              </Text>
+              <Text style={textStyles.body}>
                 Childcare: ${formatNumber(calculationResult.childcare)}
               </Text>
-              <Text>Medical: ${formatNumber(calculationResult.medical)}</Text>
-              <Text>
+              <Text style={textStyles.body}>
+                Medical: ${formatNumber(calculationResult.medical)}
+              </Text>
+              <Text style={textStyles.body}>
                 Transportation: $
                 {formatNumber(calculationResult.transportation)}
               </Text>
-              <Text>Other: ${formatNumber(calculationResult.other)}</Text>
-              <Text>Taxes: ${formatNumber(calculationResult.taxes)}</Text>
+              <Text style={textStyles.body}>
+                Other: ${formatNumber(calculationResult.other)}
+              </Text>
+              <Text style={textStyles.body}>
+                Taxes: ${formatNumber(calculationResult.taxes)}
+              </Text>
             </View>
           </View>
         )}
@@ -233,28 +222,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: colors.light.backgroundSecondary,
-  },
-  circleBackButton: {
-    position: "absolute",
-    top: 27,
-    left: 27,
-    backgroundColor: colors.light.primary,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 10,
-    elevation: 5,
-    shadowColor: colors.light.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  backArrow: {
-    color: colors.light.textOnPrimary,
-    fontSize: fontSize.md,
-    fontWeight: fontWeight.medium,
   },
   card: {
     backgroundColor: colors.light.surface,
@@ -274,15 +241,34 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     resizeMode: "cover",
+    borderRadius: 10,
   },
   title: {
-    fontSize: fontSize.md,
-    fontWeight: fontWeight.semibold,
-    textAlign: "right",
+    ...textStyles.h3,
+    textAlign: "center",
+  },
+  resultsCard: {
+    backgroundColor: colors.light.background,
+    borderRadius: 12,
+    padding: 20,
+    marginTop: 32,
+    shadowColor: colors.light.shadow,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 2,
   },
   numInHousehold: {
-    fontWeight: fontWeight.semibold,
+    ...textStyles.label,
     marginBottom: 8,
+  },
+  resultsTitle: {
+    ...textStyles.label,
+    marginBottom: 12,
+  },
+  breakdownTitle: {
+    ...textStyles.label,
+    marginBottom: 4,
   },
   inputContainer: {
     borderWidth: 1,
@@ -291,32 +277,45 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light.background,
     overflow: "hidden",
   },
-  arrowIcon: {
-    width: 20,
-    height: 20,
-    position: "absolute",
-    right: 12,
-    top: 15,
+  formContainer: {
+    marginTop: 24,
+    paddingHorizontal: 16,
+  },
+  dropDownContainer: {
+    marginBottom: 24,
+  },
+  dropDownContainer2: {
+    marginBottom: 32,
   },
   infoText: {
-    fontWeight: fontWeight.semibold,
+    ...textStyles.bodyBold,
+  },
+  monthlyTotalText: {
+    ...textStyles.body,
+    marginTop: 10,
+  },
+  breakdownContainer: {
+    marginTop: 16,
   },
 });
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     height: 50,
-    width: "100%",
     paddingHorizontal: 12,
     borderWidth: 0,
     borderRadius: 8,
     color: colors.light.textPrimary,
     backgroundColor: colors.light.background,
-    fontSize: fontSize.sm,
+    ...textStyles.body,
   },
   placeholder: {
     color: colors.light.textDisabled,
-    fontSize: fontSize.sm,
+    ...textStyles.body,
+  },
+  iconContainer: {
+    top: 17,
+    right: 15,
   },
 });
 
