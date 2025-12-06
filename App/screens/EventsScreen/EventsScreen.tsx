@@ -29,19 +29,6 @@ const Events: React.FC = () => {
 
   /**
    * Fetch first page of events
-   *
-   * Using The Events Calendar REST API
-   * ex: /events/ defaults to
-   * https://www.livingwage-sf.org/wp-json/tribe/events/v1/events/?page=1&per_page=5&start_date=2025-08-15 00:00:00&end_date=2027-08-16 23:59:59&status=publish
-   *
-   * Default Parameters:
-   * page=1
-   * per_page=5
-   * start_date=2025-08-15 00:00:00 (today)
-   * end_date=2027-08-16 23:59:59 (today + 2 years)
-   * status=publish
-   *
-   * Alternatively using the WP REST API: https://www.livingwage-sf.org/wp-json/wp/v2/tribe_events
    */
   const fetchEvents = async (): Promise<void> => {
     try {
@@ -59,10 +46,10 @@ const Events: React.FC = () => {
           events: data.events,
           next_rest_url: data.next_rest_url,
         });
-        setLoading(false);
       }
     } catch (error) {
       console.error("Error fetching events:", error);
+    } finally {
       setLoading(false);
     }
   };
@@ -71,6 +58,7 @@ const Events: React.FC = () => {
   const fetchMoreEvents = async (): Promise<void> => {
     if (events.next_rest_url) {
       setLoadingMore(true);
+
       try {
         const response = await fetch(events.next_rest_url, {
           method: "GET",
@@ -83,26 +71,24 @@ const Events: React.FC = () => {
             events: [...prevEvents.events, ...data.events],
             next_rest_url: data.next_rest_url,
           }));
-          setLoadingMore(false);
         }
       } catch (error) {
         console.error("Error fetching events:", error);
+      } finally {
         setLoadingMore(false);
       }
     }
   };
 
-  // Fetch events data when component mounts
+  // Fetch events when screen mounts
   useEffect(() => {
     fetchEvents();
   }, []);
 
-  // Trigger fetch on pull-to-refresh
+  // Refresh handler
   const onRefresh = () => {
     setRefreshing(true);
-    fetchEvents().then(() => {
-      setRefreshing(false);
-    });
+    fetchEvents().then(() => setRefreshing(false));
   };
 
   const renderItem: ListRenderItem<EventItem> = ({ item, index }) => (
@@ -132,14 +118,23 @@ const Events: React.FC = () => {
         </View>
       ) : (
         <FlatList
-          data={events.events}
+          data={events.events} 
           renderItem={renderItem}
           keyExtractor={keyExtractor}
-          onRefresh={() => onRefresh()}
+          onRefresh={onRefresh}
           refreshing={refreshing}
-          onEndReached={() => (events.next_rest_url ? fetchMoreEvents() : null)}
+          onEndReached={() =>
+            events.next_rest_url ? fetchMoreEvents() : null
+          }
           onEndReachedThreshold={0.5}
           ListFooterComponent={listFooterComponent}
+          ListEmptyComponent={
+            <View style={styles.emptyStateContainer}>
+              <Text style={styles.emptyStateText}>
+                No active events available at the moment.
+              </Text>
+            </View>
+          }
         />
       )}
     </View>
@@ -170,6 +165,16 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: colors.light.textSecondary,
     fontStyle: "italic",
+  },
+
+  // ⭐ ADDED STYLES FOR EMPTY STATE
+  emptyStateContainer: {
+    alignItems: "center",
+    marginTop: 50,
+  },
+  emptyStateText: {
+    fontSize: 18,
+    color: "#555",
   },
 });
 
