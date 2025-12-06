@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Collapsible from "react-native-collapsible";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import Button from "../../components/Button";
+import MainButton from "../../components/MainButton";
 import appIcon from "../../../assets/icon.png";
 import BulletItem from "../../components/lists/BulletItem";
 import SubBulletItem from "../../components/lists/SubBulletItem";
@@ -36,7 +36,7 @@ const WageRights: React.FC = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Button
+        <MainButton
           variant="circle"
           position="absolute"
           positionTop={27}

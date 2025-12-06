@@ -48,11 +48,8 @@ const App: React.FC = () => {
         // Hide splash screen once fonts are loaded
         await SplashScreen.hideAsync();
 
-        // Debug: Log font loading status
         if (fontError) {
           console.error("Font loading error:", fontError);
-        } else {
-          console.log("Fonts loaded successfully!");
         }
       }
     }

@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  ActivityIndicator,
   Pressable,
   StyleSheet,
   Text,
@@ -8,10 +9,10 @@ import {
   ViewStyle,
 } from "react-native";
 import { colors } from "../theme/colors";
-import { textStyles } from "../theme/fontStyles";
+import { textStyles, fontSize } from "../theme/fontStyles";
 
 export type ButtonVariant = "primary" | "clear" | "outlined" | "circle";
-export type ButtonSize = "default" | "small";
+export type ButtonSize = "small" | "medium" | "large";
 
 export interface ButtonProps {
   title?: string;
@@ -19,7 +20,9 @@ export interface ButtonProps {
   variant?: ButtonVariant;
   size?: ButtonSize;
   icon?: React.ReactNode; // For circle button or icon+text buttons
-  disabled?: boolean;
+  isDisabled?: boolean;
+  isLoading?: boolean;
+  loadingText?: string;
   style?: ViewStyle;
   textStyle?: TextStyle;
   position?: "absolute"; // For circle back button positioning
@@ -27,13 +30,34 @@ export interface ButtonProps {
   positionLeft?: number;
 }
 
-const Button: React.FC<ButtonProps> = ({
+const paddingSizes = {
+  small: { vertical: 6, horizontal: 12 },
+  medium: { vertical: 12, horizontal: 16 },
+  large: { vertical: 14, horizontal: 20 },
+} as const;
+
+// The circle button will only have one size option, but this is here in case we need to add more sizes in the future
+const circleSizes = {
+  small: 40,
+  medium: 40,
+  large: 40,
+} as const;
+
+const fontSizes = {
+  small: fontSize.xs,
+  medium: fontSize.md,
+  large: fontSize.lg,
+} as const;
+
+const MainButton: React.FC<ButtonProps> = ({
   title,
   onPress,
   variant = "primary",
-  size = "default",
+  size = "medium",
   icon,
-  disabled = false,
+  isDisabled = false,
+  isLoading = false,
+  loadingText,
   style,
   textStyle,
   position,
@@ -44,7 +68,6 @@ const Button: React.FC<ButtonProps> = ({
     const baseStyle: ViewStyle = {};
     const variantStyles: ViewStyle = {};
 
-    // Position styles
     if (position === "absolute") {
       baseStyle.position = "absolute";
       if (positionTop !== undefined) baseStyle.top = positionTop;
@@ -52,13 +75,15 @@ const Button: React.FC<ButtonProps> = ({
       baseStyle.zIndex = 10;
     }
 
-    // Variant-specific styles
+    const sizePadding = paddingSizes[size];
+    const circleSize = circleSizes[size];
+
     switch (variant) {
       case "primary":
         variantStyles.backgroundColor = colors.light.primary;
         variantStyles.borderRadius = 30;
-        variantStyles.paddingVertical = 10;
-        variantStyles.paddingHorizontal = 15;
+        variantStyles.paddingVertical = sizePadding.vertical;
+        variantStyles.paddingHorizontal = sizePadding.horizontal;
         variantStyles.elevation = 6;
         variantStyles.shadowColor = colors.light.primary;
         variantStyles.shadowOpacity = 0.3;
@@ -71,8 +96,8 @@ const Button: React.FC<ButtonProps> = ({
         variantStyles.borderColor = colors.light.primary;
         variantStyles.borderWidth = 1;
         variantStyles.borderRadius = 30;
-        variantStyles.paddingVertical = 10;
-        variantStyles.paddingHorizontal = 15;
+        variantStyles.paddingVertical = sizePadding.vertical;
+        variantStyles.paddingHorizontal = sizePadding.horizontal;
         variantStyles.elevation = 6;
         variantStyles.shadowColor = colors.light.primary;
         variantStyles.shadowOpacity = 0.3;
@@ -85,8 +110,8 @@ const Button: React.FC<ButtonProps> = ({
         variantStyles.borderColor = colors.light.secondary;
         variantStyles.borderWidth = 1;
         variantStyles.borderRadius = 7;
-        variantStyles.paddingVertical = 10;
-        variantStyles.paddingHorizontal = 15;
+        variantStyles.paddingVertical = sizePadding.vertical;
+        variantStyles.paddingHorizontal = sizePadding.horizontal;
         variantStyles.elevation = 6;
         variantStyles.shadowColor = colors.light.secondary;
         variantStyles.shadowOpacity = 0.3;
@@ -96,9 +121,9 @@ const Button: React.FC<ButtonProps> = ({
 
       case "circle":
         variantStyles.backgroundColor = colors.light.primary;
-        variantStyles.width = 40;
-        variantStyles.height = 40;
-        variantStyles.borderRadius = 20;
+        variantStyles.width = circleSize;
+        variantStyles.height = circleSize;
+        variantStyles.borderRadius = circleSize / 2;
         variantStyles.justifyContent = "center";
         variantStyles.alignItems = "center";
         variantStyles.elevation = 6;
@@ -108,31 +133,31 @@ const Button: React.FC<ButtonProps> = ({
         variantStyles.shadowOffset = { width: 1, height: 1 };
         break;
     }
-
     return [baseStyle, variantStyles];
   };
 
   const getTextStyle = (): TextStyle[] => {
     const variantTextStyles: TextStyle = {};
+    const selectedFontSize = fontSizes[size];
 
     switch (variant) {
       case "primary":
         variantTextStyles.fontFamily = textStyles.button.fontFamily;
-        variantTextStyles.fontSize = textStyles.button.fontSize;
+        variantTextStyles.fontSize = selectedFontSize;
         variantTextStyles.color = colors.light.textOnPrimary;
         variantTextStyles.textAlign = "center";
         break;
 
       case "clear":
         variantTextStyles.fontFamily = textStyles.button.fontFamily;
-        variantTextStyles.fontSize = textStyles.button.fontSize;
+        variantTextStyles.fontSize = selectedFontSize;
         variantTextStyles.color = colors.light.primary;
         variantTextStyles.textAlign = "center";
         break;
 
       case "outlined":
         variantTextStyles.fontFamily = textStyles.buttonSmall.fontFamily;
-        variantTextStyles.fontSize = textStyles.buttonSmall.fontSize;
+        variantTextStyles.fontSize = selectedFontSize;
         variantTextStyles.color = colors.light.secondary;
         variantTextStyles.textAlign = "center";
         break;
@@ -141,36 +166,60 @@ const Button: React.FC<ButtonProps> = ({
         // Circle buttons don't have text, only icons
         break;
     }
-
     return [variantTextStyles];
   };
 
   const buttonStyles = getButtonStyle();
   const textStylesArray = getTextStyle();
+  const buttonDisabled = isDisabled || isLoading;
+  const displayText = isLoading ? loadingText || "Loading..." : title;
+
+  let activityIndicatorColor;
+  if (variant === "primary") {
+    activityIndicatorColor = colors.light.textOnPrimary;
+  } else if (variant === "clear") {
+    activityIndicatorColor = colors.light.primary;
+  } else if (variant === "outlined") {
+    activityIndicatorColor = colors.light.secondary;
+  } else if (variant === "circle") {
+    activityIndicatorColor = colors.light.textOnPrimary;
+  }
+
+  const loadingIcon = isLoading ? (
+    <ActivityIndicator size="small" color={activityIndicatorColor} />
+  ) : (
+    icon
+  );
 
   return (
     <Pressable
       onPress={onPress}
-      disabled={disabled}
+      disabled={buttonDisabled}
       style={({ pressed }) => [
-        ...buttonStyles,
         style,
-        disabled && styles.disabled,
-        pressed && styles.pressed,
+        ...buttonStyles,
+        buttonDisabled && styles.isDisabled,
+        pressed && !buttonDisabled && styles.pressed,
       ]}
     >
       {variant === "circle" ? (
-        icon
+        isLoading ? (
+          <ActivityIndicator size="small" color={activityIndicatorColor} />
+        ) : (
+          icon
+        )
       ) : (
         <View style={styles.content}>
-          {icon && <View style={styles.iconContainer}>{icon}</View>}
-          {title && (
+          {loadingIcon && (
+            <View style={styles.iconContainer}>{loadingIcon}</View>
+          )}
+          {displayText && (
             <Text
               style={
                 textStyle ? [...textStylesArray, textStyle] : textStylesArray
               }
             >
-              {title}
+              {displayText}
             </Text>
           )}
         </View>
@@ -180,11 +229,11 @@ const Button: React.FC<ButtonProps> = ({
 };
 
 const styles = StyleSheet.create({
-  disabled: {
-    opacity: 0.5,
+  isDisabled: {
+    opacity: 0.9,
   },
   pressed: {
-    opacity: 0.8,
+    opacity: 0.9,
   },
   content: {
     flexDirection: "row",
@@ -196,4 +245,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Button;
+export default MainButton;

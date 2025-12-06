@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dimensions,
   ImageBackground,
@@ -14,7 +14,7 @@ import { Card } from "react-native-paper";
 import Swiper from "react-native-swiper/src";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { WebView } from "react-native-webview";
-import Button from "../../components/Button";
+import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
@@ -76,7 +76,8 @@ const CarouselImageSmall: React.FC<CarouselImageProps> = ({
  * New Home Screen component
  */
 const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
-  // Images for the main slider
+  const [isLoading, setIsLoading] = useState(false);
+
   const mainSliderImages = [
     {
       id: 1,
@@ -93,7 +94,6 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
     },
   ];
 
-  // Images for the campaigns section
   const campaignImages = [
     {
       id: 1,
@@ -149,8 +149,9 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 {translate("whoWeAreHeader.body")}
               </Text>
               <View style={styles.buttonView}>
-                <Button
+                <MainButton
                   variant="primary"
+                  size="large"
                   title={translate("whoWeAreHeader.buttonText")}
                   onPress={() => navigation.navigate("WhoWeAre")}
                 />

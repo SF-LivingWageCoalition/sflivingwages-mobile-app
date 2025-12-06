@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Button from "../../../../components/Button";
+import MainButton from "../../../../components/MainButton";
 import { colors } from "../../../../theme";
 import { textStyles } from "../../../../theme/fontStyles";
 import { ItemModalProps } from "../../../../types/types";
@@ -31,7 +31,7 @@ const ItemModal: React.FC<ItemModalProps> = ({ description, title }) => {
             <ScrollView>
               <Text style={styles.modalText}>{description}</Text>
             </ScrollView>
-            <Button
+            <MainButton
               variant="primary"
               title="Close"
               onPress={() => setModalVisible(!modalVisible)}

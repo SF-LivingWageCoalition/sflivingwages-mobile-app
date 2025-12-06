@@ -90,5 +90,6 @@
     "typescript": "^5.3.3"
   },
   "private": true,
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "packageManager": "yarn@4.12.0"
 }
