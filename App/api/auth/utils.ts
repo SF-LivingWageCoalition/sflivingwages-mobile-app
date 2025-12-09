@@ -19,13 +19,6 @@ import { getFriendlyErrorInfo } from "./errorCodeMap";
  * Helper that wraps fetch with an AbortController to enforce a timeout.
  * Returns the same Response as fetch or throws when aborted/errored.
  * Throws a TimeoutError if the request times out.
- *
- * @param input - The resource that you wish to fetch.
- * @param init - An options object containing any custom settings.
- * @param timeoutMs - Timeout in milliseconds (default from config).
- * @returns A Promise that resolves to the Response object.
- * @throws TimeoutError if the request times out.
- * @throws Other errors thrown by fetch.
  */
 export const fetchWithTimeout = async (
   input: RequestInfo,
@@ -59,11 +52,6 @@ export const fetchWithTimeout = async (
 /**
  * Utility: unwrap an ApiResult or throw an Error.
  * Use this when callers prefer exception control flow instead of checking .success.
- *
- * @param result - The ApiResult to unwrap.
- * @param fallbackMessage - Optional fallback error message if result.errorMessage is absent.
- * @returns The data from the ApiResult if successful.
- * @throws ApiError with details from the ApiResult if not successful.
  */
 export const unwrapOrThrow = <T>(
   result: ApiResult<T>,
@@ -78,11 +66,6 @@ export const unwrapOrThrow = <T>(
 
 /**
  * Helper to create a consistent failure ApiResult.
- *
- * @param errorMessage - Optional error message describing the failure.
- * @param status - Optional HTTP status code associated with the failure.
- * @param data - Optional additional data related to the failure.
- * @returns An ApiResult representing the failure.
  */
 export const apiFailure = <T = unknown>(
   errorMessage?: string,
@@ -92,8 +75,6 @@ export const apiFailure = <T = unknown>(
 
 /**
  * Maps runtime exceptions to ApiResult failures, converting timeouts to status 408.
- * @param err - The exception to map.
- * @returns An ApiResult representing the failure.
  */
 export const apiFailureFromException = <T = unknown>(
   err: unknown
@@ -109,10 +90,6 @@ export const apiFailureFromException = <T = unknown>(
  * Create a standardized ApiResult failure using server payloads that may
  * include Simple JWT numeric `errorCode` or WooCommerce string `code`.
  * The returned `data` will include the detected `errorCode` or `errorKey`.
- *
- * @param payload - The server response payload (parsed JSON).
- * @param status - Optional HTTP status code associated with the failure.
- * @returns An ApiResult representing the failure with friendly message.
  */
 export const apiFailureWithServerCode = <T = unknown>(
   payload: unknown,
@@ -147,9 +124,6 @@ export const apiFailureWithServerCode = <T = unknown>(
  * Safe JSON parser that handles invalid JSON gracefully.
  * If parsing fails, returns an object with `{ __parseError: true, text }`.
  * If reading text also fails, returns `{ __parseError: true, text: null }`.
- *
- * @param response - The Response object to parse JSON from.
- * @returns A Promise resolving to the parsed JSON or a parse error object.
  */
 export const parseJsonSafe = async <T = unknown>(
   response: Response
@@ -170,8 +144,6 @@ export const parseJsonSafe = async <T = unknown>(
  * Runtime validator that checks a deserialized `ValidationData['data']`
  * has the minimal expected fields (user.ID and a jwt array).
  * Used to validate data received from the auth API.
- * @param d - The data to validate.
- * @returns True if the data matches the expected shape, false otherwise.
  */
 export const isValidValidationData = (
   d: unknown
@@ -201,9 +173,6 @@ export const isValidValidationData = (
  *
  * Exported so code across the auth layer can standardize values before
  * storing or consuming JWTs.
- *
- * @param maybeJwt - The value that might contain a JWT
- * @returns Array of normalized JWT items: { token: string; header?: any; payload?: any }
  */
 export const normalizeJwt = (maybeJwt: unknown): JwtItem[] => {
   if (Array.isArray(maybeJwt)) return maybeJwt as JwtItem[];

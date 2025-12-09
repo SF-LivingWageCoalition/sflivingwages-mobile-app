@@ -8,8 +8,6 @@
 /**
  * Rich ApiError that preserves HTTP status and raw data when available.
  * Thrown by helpers to let callers inspect `error.status` or `error.data`.
- *
- * @template T - The type of the additional data associated with the error.
  */
 export class ApiError<T = unknown> extends Error {
   public status?: number;

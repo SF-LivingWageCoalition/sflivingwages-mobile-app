@@ -6,12 +6,8 @@ import { getFriendlyErrorInfo } from "./errorCodeMap";
 /**
  * Convert an unknown error (often an ApiError) into a user-facing message.
  *
- * Priority: server-friendly message (via getFriendlyErrorInfo) -> server
- * message -> caller default key -> generic fallback.
- *
- * @param error Unknown error value (may be ApiError).
- * @param defaultKey Optional translation key (e.g. 'errors.loginFailed').
- * @returns Localized user-facing message (never empty; falls back to a default).
+ * Priority: server-friendly message (via getFriendlyErrorInfo) ->
+ * server message -> caller default key -> generic fallback.
  */
 export function mapApiErrorToMessage(
   error: unknown,

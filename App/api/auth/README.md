@@ -2,11 +2,11 @@
 
 # Auth API — developer reference
 
-Maintainer: `@scottmotion` — Last updated: 2025-11-25
-
-This folder provides the authentication API helpers used by the app to interact with the WordPress backend (JWT auth, token validation, user registration, WooCommerce customer creation, and password reset flows). The authentication UI/screens live under `App/screens` (for example: `App/screens/LoginScreen`, `App/screens/RegisterScreen`, `App/screens/ForgotPasswordScreen`). The auth navigator is implemented at `App/navigation/AuthNav.tsx`.
+Maintainer: `@scottmotion` — Last updated: 2025-12-08
 
 ## Preamble
+
+This folder provides the authentication API helpers used by the app to interact with the WordPress backend (JWT auth, token validation, user registration, WooCommerce customer creation, and password reset flows). The authentication UI/screens live under `App/screens` (see `LoginScreen.tsx`, `RegisterScreen.tsx`, `ForgotPasswordScreen.tsx`). The auth navigator is implemented at `App/navigation/AuthNav.tsx`.
 
 The mobile app's authentication flow relies primarily on 2 external APIs hosted on the website:
 
@@ -15,7 +15,7 @@ The mobile app's authentication flow relies primarily on 2 external APIs hosted 
   - Note that there are 2 sets of documentation for this API, and that they may present minor conflicts with its actual use (e.g. content of Requests/Responses), therefore you should thoroughly test any changes to helpers or implementation of endpoints.
 - WooCommerce
   - The API provided by this plugin is used to register new customers (users) inline with the website's authentication method.
-  - Since WooCommerce is an Automattic product (owners of WordPress) it is regularly updated and the documentation for this API is fairly reliable.
+  - Since WooCommerce is an Automattic product (maintainers of WordPress) it is regularly updated and the documentation for this API is fairly reliable.
 
 See the [references](#references) section for links to the above-mentioned documentation.
 
@@ -23,12 +23,11 @@ See the [references](#references) section for links to the above-mentioned docum
 
 - [Files & Purpose](#files--purpose)
 - [Primary Functions](#primary-functions)
+- [Environment Variables](#environment-variables)
 - [Quick Start (1 minute)](#quick-start-1-minute)
 - [Contract (at-a-glance)](#contract-at-a-glance)
-- [Error codes, translation keys, and UI guidance](#error-codes-translation-keys-and-ui-guidance)
-- [Environment Variables](#environment-variables)
 - [Quick Debug Checklist](#quick-debug-checklist)
-- [JWT Shapes & Normalization (short)](#jwt-shapes--normalization-short)
+- [JWT Shapes & Normalization](#jwt-shapes--normalization)
 - [Auth API Helpers](#auth-api-helpers)
   - [fetchToken()](#fetchtoken)
   - [validateToken()](#validatetoken)
@@ -39,8 +38,12 @@ See the [references](#references) section for links to the above-mentioned docum
   - [registerUser()](#registeruser)
   - [sendPasswordReset()](#sendpasswordreset)
   - [logoutUser()](#logoutuser)
-  - [Non-JSON / Parse Errors (what `parseJsonSafe` returns)](#non-json--parse-errors-what-parsejsonsafe-returns)
-- [How to Contribute / Keep this README Current](#how-to-contribute--keep-this-readme-current)
+  - [Non-JSON / Parse Errors (what parseJsonSafe returns)](#non-json--parse-errors-what-parsejsonsafe-returns)
+- [Error Codes, Translation Keys, and UI Guidance](#error-codes-translation-keys-and-ui-guidance)
+- [Error Classes](#error-classes)
+- [Error Helpers](#error-helpers)
+- [Error Code Map](#error-code-map)
+- [Utility Functions](#utility-functions)
 - [References](#references)
 
 ---
@@ -59,9 +62,9 @@ Implementation quick-reference: file paths and a one-line purpose to help you ju
 | `App/api/auth/types.ts`                                     | Type definitions and `ApiResult<T>` shapes used across helpers                     |
 | `App/api/auth/config.ts`                                    | Environment-driven config and `base64Credentials` helper for WooCommerce           |
 | `App/api/auth/errorHelpers.ts`                              | Map server error codes to user-facing messages                                     |
-| `App/api/auth/utils.ts`                                     | Low-level helpers (parseJsonSafe, failure factories, `unwrapOrThrow`)              |
+| `App/api/auth/utils.ts`                                     | Low-level helpers (normalizeJwt, parseJsonSafe, failure factories, unwrapOrThrow)  |
 | `App/api/auth/errorCodeMap.ts`                              | Numeric and string error-code mappings referenced by `errorHelpers`                |
-| `App/api/auth/errors.ts`                                    | Runtime `ApiError` type and related error helpers                                  |
+| `App/api/auth/errors.ts`                                    | Runtime `ApiError` and `TimeoutError` classes helpers                              |
 | `App/translation/locales/simpleJwt.*.ts`                    | Localization files for Simple JWT Login responses                                  |
 | `App/translation/locales/wooCommerce.*.ts`                  | Localization files for Woo Commerce responses                                      |
 | `App/validation/authValidation.ts`                          | Zod schema factories for auth form validation                                      |
@@ -98,9 +101,30 @@ If you prefer the logout logic to live inside Redux for testability, consider co
 
 ---
 
+## Environment Variables
+
+Store secrets locally and never commit them. Example entries (copy from `.env.example`):
+
+```env
+EXPO_PUBLIC_BASE_URL=https://www.livingwage-sf.org
+EXPO_PUBLIC_JWT_ROUTE=/wp-json/simple-jwt-login/v1
+EXPO_PUBLIC_WC_ROUTE=/wp-json/wc/v3
+EXPO_PUBLIC_JWT_DE_KEY=<decryption_key_here>
+EXPO_PUBLIC_JWT_DE_ALG=<jwt_algorithm>
+EXPO_PUBLIC_JWT_TYP=<jwt_type>
+EXPO_PUBLIC_JWT_AUTH_KEY=<auth_key>
+EXPO_PUBLIC_CONSUMER_KEY=<wc_consumer_key>
+EXPO_PUBLIC_CONSUMER_SECRET=<wc_consumer_secret>
+EXPO_PUBLIC_FETCH_TIMEOUT_MS=10000
+```
+
+Note: these EXPO_PUBLIC environment variables are read and exported from `App/api/auth/config.ts` and consumed by the auth client and helpers.
+
+---
+
 ## Quick Start (1 minute)
 
-1. Copy the repo root `.env.example` to `.env` and populate the _EXPO_PUBLIC_ values locally (do NOT commit secrets).
+1. Copy the repo root `.env.example` to `.env` and populate the _EXPO_PUBLIC_ values locally.
 2. Call `fetchToken(email, password)` to obtain a raw JWT string.
 3. Call `validateToken(jwt)` to get decoded JWT(s) + user data.
 4. If your app supports token refresh, call `refreshToken(jwt)` to obtain a refreshed JWT before the current token expires, then re-run `validateToken` as needed.
@@ -137,102 +161,6 @@ Implementation details (see `App/api/auth/authApi.ts` and `App/api/auth/types.ts
 
 ---
 
-## Error codes, translation keys, and UI guidance
-
-To make UX consistent across different server plugins (Simple JWT Login and WooCommerce) the auth helpers now attach a machine-readable error identifier to ApiResult failures when the server provides one:
-
-- For Simple JWT Login numeric errors the library exposes `errorCode` (number) on the returned `result.data` object.
-- For WooCommerce string error codes the library exposes `errorKey` (string) on `result.data`.
-
-When available the helper `mapApiErrorToMessage` (in `App/api/auth/errorHelpers.ts`) will prefer returning a translated, user-facing message derived from `errorCode` / `errorKey` rather than raw server text. The low-level failure factory `apiFailureWithServerCode` (in `App/api/auth/utils.ts`) attaches these fields so callers can both present translated text and use the machine-readable identifier for conditional UI logic.
-
-Example failure shapes you may see from auth helpers:
-
-Simple JWT (numeric code)
-
-```json
-{
-  "success": false,
-  "status": 400,
-  "errorMessage": "Wrong user credentials.",
-  "data": {
-    "errorCode": 48,
-    "message": "Wrong user credentials"
-  }
-}
-```
-
-WooCommerce (string code)
-
-```json
-{
-  "success": false,
-  "status": 400,
-  "errorMessage": "An account is already registered with your email address.",
-  "data": {
-    "code": "registration-error-email-exists",
-    "message": "An account is already registered with your email address. Please log in.",
-    "data": { "status": 400 },
-    "errorKey": "registration-error-email-exists"
-  }
-}
-```
-
-Common HTTP status → suggested translation keys (docs only)
-
-| HTTP status | Suggested translation key |
-| ----------: | ------------------------- |
-|           0 | errors.networkError       |
-|         400 | errors.invalidRequest     |
-|         401 | errors.loginFailed        |
-|         403 | errors.loginFailed        |
-|         408 | errors.requestTimedOut    |
-|         409 | errors.registrationFailed |
-|         500 | errors.unexpectedError    |
-
-UI guidance:
-
-- Prefer `result.errorMessage` when present — it is already localized when a code mapping exists.
-- If `result.errorMessage` is not present, use `mapApiErrorToMessage(result)` to obtain a best-effort translation (this function will check `errorCode` / `errorKey` and fall back to status-based messages).
-
-See `App/api/auth/errorHelpers.ts` and `App/api/auth/utils.ts` for implementation details and examples.
-
----
-
-## Environment Variables
-
-Store secrets locally and never commit them. Example entries (copy from `.env.example`):
-
-```env
-EXPO_PUBLIC_BASE_URL=https://www.livingwage-sf.org
-EXPO_PUBLIC_JWT_ROUTE=/wp-json/simple-jwt-login/v1
-EXPO_PUBLIC_WC_ROUTE=/wp-json/wc/v3
-EXPO_PUBLIC_JWT_DE_KEY=<decryption_key_here>
-EXPO_PUBLIC_JWT_DE_ALG=<jwt_algorithm>
-EXPO_PUBLIC_JWT_TYP=<jwt_type>
-EXPO_PUBLIC_JWT_AUTH_KEY=<auth_key>
-EXPO_PUBLIC_CONSUMER_KEY=<wc_consumer_key>
-EXPO_PUBLIC_CONSUMER_SECRET=<wc_consumer_secret>
-EXPO_PUBLIC_FETCH_TIMEOUT_MS=10000
-```
-
-Note: these EXPO_PUBLIC environment variables are read and exported from `App/api/auth/config.ts` and consumed by the auth client and helpers (for example `BASE_URL`, `JWT_ROUTE`, `JWT_AUTH_KEY`, `FETCH_TIMEOUT_MS`, and `base64Credentials`).
-
-Example usage:
-
-```ts
-// Example: how the rest of the auth code consumes values
-import {
-  BASE_URL,
-  JWT_ROUTE,
-  JWT_AUTH_KEY,
-  base64Credentials,
-  FETCH_TIMEOUT_MS,
-} from "./config";
-```
-
----
-
 ## Quick Debug Checklist
 
 1. Check HTTP status (`result.status`): 4xx = client issue; 5xx = server issue.
@@ -244,7 +172,7 @@ import {
 
 ---
 
-## JWT Shapes & Normalization (short)
+## JWT Shapes & Normalization
 
 Notes:
 
@@ -253,7 +181,7 @@ Notes:
 
 Normalization guidance:
 
-- The project now exports a single runtime helper: `normalizeJwt` (in `App/api/auth/utils.ts`).
+- The project exports a single runtime helper: `normalizeJwt` (in `App/api/auth/utils.ts`).
 - The canonical normalized shape is `JwtItem` (defined and exported from `App/api/auth/types.ts`).
 - Always call `normalizeJwt` at the point where a token value is written into the Redux store (for example, before `dispatch(setUser(...))`). This guarantees the `userSlice.jwt` array contains a predictable runtime shape.
 
@@ -287,7 +215,7 @@ tokens into the Redux store (for example, before `dispatch(setUser(...))`).
 
 ## Auth API Helpers
 
-Keep these as a reference for debugging. Update when server shapes change.
+See `App/api/auth/authApi.ts` for helper function definitions.
 
 All helpers except logoutUser() return Promise\<ApiResult\<T>>:
 
@@ -527,7 +455,7 @@ Note: the Simple JWT Login plugin requires building a potentially fragile URL us
 
 Usage: sendPasswordReset("\<email>")
 
-Returns ApiResult\<PasswordResetData>
+Returns: ApiResult\<PasswordResetData>
 
 Success (reset email sent):
 
@@ -621,17 +549,274 @@ If the server returns non-JSON content (HTML error page, plain text, etc.), `par
 }
 ```
 
-## How to Contribute / Keep this README Current
+---
 
-- When API shapes or error codes change, update the "Detailed API responses" and add a short note indicating the source (mock vs live).
-- If you add translation keys, include them in `App/translation/locales/*.ts`.
-- Run a typecheck before opening a PR:
+## Error codes, translation keys, and UI guidance
 
-```powershell
-npx tsc --noEmit
+To make UX consistent across different server plugins (Simple JWT Login and WooCommerce) the auth helpers attach a machine-readable error identifier to ApiResult failures when the server provides one:
+
+- For common HTTP status errors the library exposes `status` (number) on the returned `result` object.
+- For Simple JWT Login numeric errors the library exposes `errorCode` (number) on `result.data`.
+- For WooCommerce string error codes the library exposes `errorKey` (string) on `result.data`.
+
+When available the helper `mapApiErrorToMessage` (in `App/api/auth/errorHelpers.ts`) will prefer returning a translated, user-facing message derived from `errorCode` / `errorKey` rather than raw server text. The low-level failure factory `apiFailureWithServerCode` (in `App/api/auth/utils.ts`) attaches these fields so callers can both present translated text and use the machine-readable identifier for conditional UI logic.
+
+Example failure shapes you may see from auth helpers:
+
+Simple JWT (numeric code)
+
+```json
+{
+  "success": false,
+  "status": 400,
+  "errorMessage": "Wrong user credentials.",
+  "data": {
+    "errorCode": 48,
+    "message": "Wrong user credentials"
+  }
+}
 ```
 
-Local setup: populate `.env` with the EXPO_PUBLIC values. `App/api/auth/config.ts` reads them at runtime — do not commit secrets.
+WooCommerce (string code)
+
+```json
+{
+  "success": false,
+  "status": 400,
+  "errorMessage": "An account is already registered with your email address.",
+  "data": {
+    "code": "registration-error-email-exists",
+    "message": "An account is already registered with your email address. Please log in.",
+    "data": { "status": 400 },
+    "errorKey": "registration-error-email-exists"
+  }
+}
+```
+
+Common HTTP status → suggested translation keys:
+
+| HTTP status | Suggested translation key |
+| ----------: | ------------------------- |
+|           0 | errors.networkError       |
+|         400 | errors.invalidRequest     |
+|         401 | errors.loginFailed        |
+|         403 | errors.loginFailed        |
+|         408 | errors.requestTimedOut    |
+|         409 | errors.registrationFailed |
+|         500 | errors.unexpectedError    |
+
+UI guidance:
+
+- Prefer `result.errorMessage` when present — it is already localized when a code mapping exists.
+- If `result.errorMessage` is not present, use `mapApiErrorToMessage(result)` to obtain a best-effort translation (this function will check `errorCode` / `errorKey` and fall back to status-based messages).
+
+See `App/api/auth/errorHelpers.ts` and `App/api/auth/utils.ts` for implementation details and examples.
+
+---
+
+## Error Classes
+
+See `App/api/auth/errors.ts` for error class definitions.
+
+### `ApiError`
+
+Rich ApiError that preserves HTTP status and raw data when available.
+
+Thrown by helpers to let callers inspect `error.status` or `error.data`.
+
+### `TimeoutError`
+
+A typed error used to signal a request timeout in `fetchWithTimeout`.
+
+Thrown from the network layer so callers can map timeouts to a concrete status code (e.g. 408) when building ApiResult failures.
+
+---
+
+## Error Helpers
+
+See `App/api/auth/errorHelpers.ts` for helper function definitions.
+
+### `mapApiErrorToMessage()`
+
+Convert an unknown error (often an ApiError) into a user-facing message.
+
+Priority: server-friendly message (via getFriendlyErrorInfo) -> server message -> caller default key -> generic fallback.
+
+Usage: mapApiErrorToMessage("\<error>", "\<defaultKey>")
+
+- error - Unknown error value (may be ApiError).
+- defaultKey - Optional translation key (e.g. 'errors.loginFailed').
+
+Returns: Localized user-facing message (never empty; falls back to a default).
+
+---
+
+## Error Code Map
+
+See `App/api/auth/errorCodeMap.ts` for function definitions.
+
+### `getTxKeyForCode()`
+
+Build a translation key for a given numeric code.
+
+We store error messages in the locale under `errors.simpleJwt.codes['<n>']`.
+
+Usage: getTxKeyForCode(\<code>)
+
+- code - The numeric error code.
+
+Returns: The translation key for the error code.
+
+### `isObject()`
+
+Type guard to check if a value is a non-null object.
+
+Usage: isObject(\<x>)
+
+- x - The value to check.
+
+Returns: True if x is a non-null object, false otherwise.
+
+### `extractNumericCode()`
+
+Extract a numeric error code from the plugin response payload.
+Per Simple JWT Login behavior we expect a numeric `errorCode` on the top-level `data` object (i.e. `payload.data.errorCode`). We also accept a top-level `errorCode` fallback.
+
+Usage: extractNumericCode(\<payload>)
+
+- payload - The parsed response payload from the server.
+
+Returns: The numeric error code, or undefined if not found.
+
+### `getFriendlyErrorInfo()`
+
+Given a parsed API response (or error payload), return a user-facing translated message and the numeric error code when available.
+
+Usage: getFriendlyErrorInfo(\<payload>)
+
+- payload - The parsed response payload from the server.
+
+Returns:An object with `message`, and optionally `errorCode` or `errorKey`.
+
+---
+
+## Utility Functions
+
+See `App/api/auth/utils.ts` for function definitions.
+
+### `fetchWithTimeout`
+
+Helper that wraps fetch with an AbortController to enforce a timeout.
+
+Returns the same Response as fetch or throws when aborted/errored.
+
+Throws a TimeoutError if the request times out.
+
+Usage: fetchWithTimeout(\<input>, \<init>, \<timeoutMs>)
+
+- input - The resource that you wish to fetch.
+- init - An options object containing any custom settings.
+- timeoutMs - Timeout in milliseconds (default from config).
+
+Returns: A Promise that resolves to the Response object.
+
+Throws: TimeoutError if the request times out. Other errors thrown by fetch.
+
+### `unwrapOrThrow`
+
+Unwrap an ApiResult or throw an Error.
+
+Use this when callers prefer exception control flow instead of checking .success.
+
+Usage: unwrapOrThrow(\<result>, \<fallbackMessage>)
+
+- result - The ApiResult to unwrap.
+- fallbackMessage - Optional fallback error message if result.errorMessage is absent.
+
+Returns: The data from the ApiResult if successful.
+
+Throws: ApiError with details from the ApiResult if not successful.
+
+### `apiFailure`
+
+Helper to create a consistent failure ApiResult.
+
+Usage: apiFailure(\<errorMessage>, \<status>, \<data>)
+
+- errorMessage - Optional error message describing the failure.
+- status - Optional HTTP status code associated with the failure.
+- data - Optional additional data related to the failure.
+
+Returns An ApiResult representing the failure.
+
+### `apiFailureFromException`
+
+Maps runtime exceptions to ApiResult failures, converting timeouts to status 408.
+
+Usage: apiFailureFromException(\<err>)
+
+- err - The exception to map.
+
+Returns: An ApiResult representing the failure.
+
+### `apiFailureWithServerCode`
+
+Create a standardized ApiResult failure using server payloads that may include Simple JWT numeric `errorCode` or WooCommerce string `code`.
+
+The returned `data` will include the detected `errorCode` or `errorKey`.
+
+Usage: apiFailureWithServerCode(\<payload>, \<status>)
+
+- payload - The server response payload (parsed JSON).
+- status - Optional HTTP status code associated with the failure.
+
+Returns: An ApiResult representing the failure with friendly message.
+
+### `parseJsonSafe`
+
+Safe JSON parser that handles invalid JSON gracefully.
+
+If parsing fails, returns an object with `{ __parseError: true, text }`.
+
+If reading text also fails, returns `{ __parseError: true, text: null }`.
+
+Usage: parseJsonSafe(\<response>)
+
+- response - The Response object to parse JSON from.
+
+Returns: A Promise resolving to the parsed JSON or a parse error object.
+
+### `isValidValidationData`
+
+Runtime validator that checks a deserialized `ValidationData['data']` has the minimal expected fields (user.ID and a jwt array).
+
+Used to validate data received from the auth API.
+
+Usage: isValidValidationData(\<d>)
+
+- d - The data to validate.
+
+Returns: True if the data matches the expected shape, false otherwise.
+
+### `normalizeJwt`
+
+Normalize a JWT-like value into a canonical array of decoded JWT items.
+
+Accepts one of the common server shapes:
+
+- an array of decoded JWT objects (returned by some validate endpoints)
+- a single decoded JWT object with a `token` property
+- a raw JWT string (returned by fetch/refresh/revoke endpoints)
+
+Always returns an array (possibly empty) so callers can safely index into the result (`jwtArray[0]?.token`) and persist a consistent shape to Redux.
+
+Exported so code across the auth layer can standardize values before storing or consuming JWTs.
+
+Usage: normalizeJwt(\<maybeJwt>)
+
+- maybeJwt - The value that might contain a JWT
+
+Returns: Array of normalized JWT items: { token: string; header?: any; payload?: any }
 
 ---
 
@@ -646,5 +831,3 @@ Local setup: populate `.env` with the EXPO_PUBLIC values. `App/api/auth/config.t
 - WooCommerce plugin: https://wordpress.org/plugins/woocommerce/
 - WooCommerce website: https://woocommerce.com/
 - WooCommerce REST API docs: https://developer.woocommerce.com/docs/apis/rest-api/
-
-Canonical API code: `App/api/auth/authApi.ts`. Types: `App/api/auth/types.ts`. Normalization helper: `App/api/auth/utils.ts`. Authentication screens live under `App/screens` (see `App/screens/LoginScreen/LoginScreen.tsx`, `App/screens/RegisterScreen/RegisterScreen.tsx`, and `App/screens/ForgotPasswordScreen/ForgotPasswordScreen.tsx`). The auth navigator is at `App/navigation/AuthNav.tsx`.

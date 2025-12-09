@@ -5,9 +5,6 @@ import type { ApiErrorPayload, ErrorInfo } from "./types";
 /**
  * Build a translation key for a given numeric code.
  * We store error messages in the locale under `errors.simpleJwt.codes['<n>']`.
- *
- * @param code - The numeric error code.
- * @returns The translation key for the error code.
  */
 function getTxKeyForCode(code: number): string {
   return `errors.simpleJwt.codes.${code}`;
@@ -15,8 +12,6 @@ function getTxKeyForCode(code: number): string {
 
 /**
  * Type guard to check if a value is a non-null object.
- * @param x - The value to check.
- * @returns True if x is a non-null object, false otherwise.
  */
 function isObject(x: unknown): x is Record<string, unknown> {
   return typeof x === "object" && x !== null;
@@ -27,9 +22,6 @@ function isObject(x: unknown): x is Record<string, unknown> {
  * Per Simple JWT Login behavior we expect a numeric `errorCode` on the
  * top-level `data` object (i.e. `payload.data.errorCode`). We also accept
  * a top-level `errorCode` fallback.
- *
- * @param payload - The parsed response payload from the server.
- * @returns The numeric error code, or undefined if not found.
  */
 function extractNumericCode(payload: ApiErrorPayload): number | undefined {
   if (!isObject(payload)) return undefined;
@@ -57,9 +49,6 @@ function extractNumericCode(payload: ApiErrorPayload): number | undefined {
 /**
  * Given a parsed API response (or error payload), return a user-facing
  * translated message and the numeric error code when available.
- *
- * @param payload - The parsed response payload from the server.
- * @returns An object with `message`, and optionally `errorCode` or `errorKey`.
  */
 export function getFriendlyErrorInfo(payload: ApiErrorPayload): ErrorInfo {
   // Prefer server-provided numeric code
