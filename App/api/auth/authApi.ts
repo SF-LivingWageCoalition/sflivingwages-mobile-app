@@ -336,50 +336,6 @@ export const registerCustomer = async (
 };
 
 /**
- * Register a new user via the Simple JWT Login plugin.
- */
-export const registerUser = async (
-  email: string,
-  password: string
-): Promise<ApiResult<UserRegistrationData>> => {
-  try {
-    const response = await fetchWithTimeout(`${BASE_URL}${JWT_ROUTE}/users`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "cache-control": "no-cache",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-        AUTH_KEY: JWT_AUTH_KEY,
-      }),
-    });
-
-    const registrationData = await parseJsonSafe<UserRegistrationData>(
-      response
-    );
-    if (response.ok) {
-      // Registration was successful
-      return {
-        success: true,
-        data: registrationData as UserRegistrationData,
-        status: response.status,
-      };
-    } else {
-      // Registration failed
-      return apiFailureWithServerCode<UserRegistrationData>(
-        registrationData,
-        response.status
-      );
-    }
-  } catch (error: unknown) {
-    // General error during registration process - return failed ApiResult
-    return apiFailureFromException<UserRegistrationData>(error);
-  }
-};
-
-/**
  * Send a password reset email to the specified email address.
  */
 export const sendPasswordReset = async (
