@@ -13,7 +13,7 @@ import type { TouchableOpacityProps } from "react-native";
 import { fontSize } from "../../theme/fontStyles";
 import { colors } from "../../theme";
 
-type MainButtonProps = {
+type PrimaryButtonProps = {
   title: string;
   textStyle?: TextStyle;
   style?: ViewStyle;
@@ -21,7 +21,9 @@ type MainButtonProps = {
   size?: "sm" | "md" | "lg";
 } & TouchableOpacityProps;
 
-const MainButton: React.FC<MainButtonProps> = (props: MainButtonProps) => {
+const PrimaryButton: React.FC<PrimaryButtonProps> = (
+  props: PrimaryButtonProps
+) => {
   const {
     title,
     style,
@@ -64,7 +66,7 @@ const MainButton: React.FC<MainButtonProps> = (props: MainButtonProps) => {
   );
 };
 
-export default MainButton;
+export default PrimaryButton;
 
 const styles = StyleSheet.create({
   button: {

@@ -8,7 +8,7 @@ import {
 } from "@react-navigation/native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
-import MainButton from "../../components/MainButton/MainButton";
+import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 import { translate } from "../../translation";
 import { colors } from "../../theme";
@@ -32,7 +32,7 @@ const ReportBusiness = () => {
         </Text>
 
         <View style={styles.buttonContainer}>
-          <MainButton
+          <PrimaryButton
             title={translate("reportBusiness.cta")}
             onPress={() => navigation.navigate("ReportBusinessMap")}
           />

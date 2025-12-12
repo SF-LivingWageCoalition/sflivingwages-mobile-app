@@ -24,8 +24,8 @@ import {
 } from "@react-navigation/native";
 
 import FloatingActionButton from "../../components/FloatingActionButton/FloatingActionButton";
+import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
 import PlatformMap from "../../components/PlatformMap/PlatformMap";
-import MainButton from "../../components/MainButton/MainButton";
 import { fontSize } from "../../theme/fontStyles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { reportSchema } from "./validationSchemas";
@@ -289,7 +289,7 @@ const ReportBusinessMap = () => {
                 </Text>
 
                 <View style={styles.submitButtonContainer}>
-                  <MainButton
+                  <PrimaryButton
                     title="Submit"
                     onPress={() => {
                       Keyboard.dismiss();
