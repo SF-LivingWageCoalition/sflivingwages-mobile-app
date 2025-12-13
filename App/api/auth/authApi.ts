@@ -27,7 +27,6 @@ import { store } from "../../redux/store/store";
 import type {
   TokenData,
   ValidationData,
-  UserRegistrationData,
   CustomerRegistrationData,
   PasswordResetData,
   ApiResult,

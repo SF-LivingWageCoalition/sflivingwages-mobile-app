@@ -54,31 +54,6 @@ export type ValidationData = {
   success: boolean;
 };
 
-// Define the structure of the newly registered user data returned by the API
-export type UserRegistrationData = {
-  success: boolean;
-  id?: string;
-  message?: string;
-  user?: {
-    ID: string;
-    user_login: string;
-    user_nicename: string;
-    user_email: string;
-    user_url: string;
-    user_registered: string;
-    user_activation_key: string;
-    user_status: string;
-    display_name: string;
-    user_level: number;
-  };
-  roles?: string[];
-  jwt?: string;
-  data?: {
-    errorCode: number;
-    message: string;
-  };
-};
-
 // Define the structure of the newly created WooCommerce customer data returned by the API
 export type CustomerRegistrationData = {
   id?: number;
