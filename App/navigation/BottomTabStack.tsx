@@ -10,6 +10,7 @@ import NewHome from "../screens/HomeScreen/NewHome";
 import LivingWageCalculator from "../screens/LivingWageCalculator/LivingWageCalculator";
 import ReportViolation from "../screens/ReportViolation/ReportViolation";
 import WageRights from "../screens/WageRights/WageRights";
+import AccountScreen from "../screens/AccountScreen/AccountScreen";
 import { colors } from "../theme";
 import { BottomTabParamList } from "../types/types";
 
@@ -101,6 +102,18 @@ const BottomTabStack: React.FC = () => {
           tabBarLabel: "Assist",
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name={"hands-helping"} color={color} size={20} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Account"
+        component={AccountScreen}
+        options={{
+          headerShown: false,
+          tabBarLabel: "Account",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name={"user-circle"} color={color} size={20} />
           ),
         }}
       />
