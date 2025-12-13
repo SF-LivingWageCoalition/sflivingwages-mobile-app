@@ -14,7 +14,7 @@ import { selectIsLoggedIn } from "../../redux/features/userSlice/userSlice";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
-import Button from "../../components/Button";
+import MainButton from "../../components/MainButton";
 import AccountScreenHeader from "./components/AccountScreenHeader";
 import AccountScreenMenu from "./components/AccountScreenMenu";
 import LoadingOverlay from "../../components/LoadingOverlay";
@@ -92,7 +92,7 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   // Login Button
   const LoginButton: React.FC = () => {
     return (
-      <Button
+      <MainButton
         variant="primary"
         title={translate("buttons.login")}
         onPress={onLogin}
@@ -129,11 +129,11 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   const LogoutButton: React.FC = () => {
     return (
       <View style={styles.authButtonsContainer}>
-        <Button
+        <MainButton
           variant="primary"
           title={translate("buttons.logout")}
           onPress={onLogout}
-          disabled={loggingOut}
+          isDisabled={loggingOut}
         />
       </View>
     );

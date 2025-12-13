@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Button from "../../components/Button";
+import MainButton from "../../components/MainButton";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { colors } from "../../theme";
@@ -154,11 +154,11 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
             </View>
 
             <View style={styles.buttonContainer}>
-              <Button
+              <MainButton
                 variant="primary"
                 title={translate("buttons.submit")}
                 onPress={onSubmit}
-                disabled={loading}
+                isDisabled={loading}
               />
             </View>
 

@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Button from "../../components/Button";
+import MainButton from "../../components/MainButton";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
@@ -98,11 +98,11 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
             </View>
 
             <View style={styles.buttonContainer}>
-              <Button
+              <MainButton
                 variant="primary"
                 title={translate("buttons.submit")}
                 onPress={onSubmit}
-                disabled={loading}
+                isDisabled={loading}
               />
             </View>
 
