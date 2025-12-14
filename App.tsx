@@ -26,6 +26,8 @@ import { colors } from "./App/theme";
 import { fontFamily } from "./App/theme/fontStyles";
 import { translate } from "./App/translation/i18n";
 import { RootStackParamList } from "./App/types/types";
+import AssistStack from "./App/navigation/AssistStack";
+import { UpdateChecker } from "./App/components/UpdateChecker/UpdateChecker";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -98,8 +100,16 @@ const App: React.FC = () => {
                 options={{ title: translate("whoWeAreScreen.title") }}
                 component={WhoWeAre}
               />
+              <Stack.Screen
+                options={{
+                  headerShown: false,
+                }}
+                name="Assistance"
+                component={AssistStack}
+              />
             </Stack.Navigator>
           </NavigationContainer>
+          <UpdateChecker />
         </PersistGate>
       </Provider>
     </SafeAreaProvider>

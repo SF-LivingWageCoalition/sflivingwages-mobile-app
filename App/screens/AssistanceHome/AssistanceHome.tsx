@@ -7,12 +7,11 @@ import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { AssistanceTabParamList } from "../../types/types";
+import { useNavigation } from "@react-navigation/native";
 
-interface AssistanceHomeProps {
-  navigation: NativeStackNavigationProp<AssistanceTabParamList>;
-}
-
-const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
+const AssistanceHome: React.FC = () => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<AssistanceTabParamList>>();
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -31,25 +30,42 @@ const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
             <MainButton
               variant="primary"
               title={translate("assistHomeScreen.getAssistance")}
-              onPress={() => navigation.navigate("ReportViolation")}
+              onPress={() =>
+                navigation.navigate("Assistance", { screen: "ReportViolation" })
+              }
             />
 
             <MainButton
               variant="primary"
               title={translate("assistHomeScreen.wageRights")}
-              onPress={() => navigation.navigate("WageRights")}
+              onPress={() =>
+                navigation.navigate("Assistance", { screen: "WageRights" })
+              }
             />
 
             <MainButton
               variant="primary"
               title={translate("assistHomeScreen.beReadyForICE")}
-              onPress={() => navigation.navigate("BeReadyForICE")}
+              onPress={() =>
+                navigation.navigate("Assistance", { screen: "BeReadyForICE" })
+              }
             />
 
             <MainButton
               variant="primary"
               title="Living Wage Calculator"
-              onPress={() => navigation.navigate("LivingWageCalculator")}
+              onPress={() =>
+                navigation.navigate("Assistance", {
+                  screen: "LivingWageCalculator",
+                })
+              }
+            />
+            <MainButton
+              variant="primary"
+              title={translate("assistHomeScreen.reportBusiness")}
+              onPress={() =>
+                navigation.navigate("Assistance", { screen: "ReportBusiness" })
+              }
             />
           </View>
         </View>
