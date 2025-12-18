@@ -26,6 +26,8 @@ import { colors } from "./App/theme";
 import { fontFamily } from "./App/theme/fontStyles";
 import { translate } from "./App/translation/i18n";
 import { RootStackParamList } from "./App/types/types";
+import AssistStack from "./App/navigation/AssistStack";
+import { UpdateChecker } from "./App/components/UpdateChecker/UpdateChecker";
 import AuthNavigator from "./App/navigation/AuthNav";
 import AccountNavigator from "./App/navigation/AccountNav";
 
@@ -101,6 +103,13 @@ const App: React.FC = () => {
                 component={WhoWeAre}
               />
               <Stack.Screen
+                options={{
+                  headerShown: false,
+                }}
+                name="Assistance"
+                component={AssistStack}
+              />
+              <Stack.Screen
                 name="AuthNavigator"
                 options={{
                   title: translate("loginScreen.title"),
@@ -118,6 +127,7 @@ const App: React.FC = () => {
               />
             </Stack.Navigator>
           </NavigationContainer>
+          <UpdateChecker />
         </PersistGate>
       </Provider>
     </SafeAreaProvider>

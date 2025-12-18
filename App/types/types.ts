@@ -1,4 +1,5 @@
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import { Violation } from "../screens/ListReportScreen/ListReportScreen";
 
 export type RootStackParamList = {
   TabStack: undefined;
@@ -7,6 +8,7 @@ export type RootStackParamList = {
   WhoWeAre: undefined;
   AuthNavigator: undefined;
   AccountNavigator: undefined;
+  Assistance: { screen?: keyof AssistanceTabParamList };
 };
 
 export type BottomTabParamList = {
@@ -23,6 +25,11 @@ export type AssistanceTabParamList = {
   WageRights: undefined;
   BeReadyForICE: undefined;
   LivingWageCalculator: undefined;
+  ReportBusiness: undefined;
+  ReportBusinessMap: undefined;
+  ListReportScreen: undefined;
+  ReportDetailScreen: { report: Violation };
+  Assistance: { screen?: keyof AssistanceTabParamList };
 };
 
 export type WebBrowserResult = {
