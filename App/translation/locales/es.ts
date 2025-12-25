@@ -306,7 +306,7 @@ const es: Translations = {
   },
   accountScreen: {
     title: "Cuenta",
-    isLoggedIn: "Bienvenido, ¡has iniciado sesión!",
+    isLoggedIn: "¡Bienvenido, %{name}!",
     isLoggedOut: "No has iniciado sesión.",
     profile: "Perfil",
     logoutAlert: {

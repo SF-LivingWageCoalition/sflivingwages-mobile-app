@@ -38,25 +38,18 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
    * Logout confirmation alert calls logoutUser from authApi (immediate logout, no navigation)
    */
 
-  // Login Handler
   const onLogin = () => {
-    // Navigate to Login Screen
     navigation.navigate("AuthNavigator", { screen: "Login" });
   };
 
-  // Register Handler
   const onRegister = () => {
-    // Navigate to Register Screen
     navigation.navigate("AuthNavigator", { screen: "Register" });
   };
 
-  // Forgot Password Handler
   const onForgotPassword = () => {
-    // Navigate to Forgot Password Screen
     navigation.navigate("AuthNavigator", { screen: "ForgotPassword" });
   };
 
-  // Logout Handler
   const onLogout = () => {
     Alert.alert(
       translate("accountScreen.logoutAlert.title"),
@@ -72,7 +65,7 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
           onPress: () => {
             // Start the in-app overlay and kick off logout.
             setLoggingOut(true);
-            // Call logoutUser(); it will dispatch clearUser() in its finally block.
+            // Calling logoutUser() will dispatch clearUser() in its finally block.
             // We don't await here because Alert buttons expect a sync callback,
             // but setLoggingOut(true) gives immediate UI feedback.
             void logoutUser();
@@ -89,7 +82,6 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
    * Auth buttons container to group buttons together (login, register, forgot password)
    */
 
-  // Login Button
   const LoginButton: React.FC = () => {
     return (
       <MainButton
@@ -100,7 +92,6 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
     );
   };
 
-  // Forgot Password Button
   const ForgotPasswordButton: React.FC = () => {
     return (
       <TouchableOpacity
@@ -114,7 +105,6 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
     );
   };
 
-  // Register Button
   const RegisterButton: React.FC = () => {
     return (
       <TouchableOpacity style={styles.textOnlyButton} onPress={onRegister}>
@@ -125,7 +115,6 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
     );
   };
 
-  // Logout Button
   const LogoutButton: React.FC = () => {
     return (
       <View style={styles.authButtonsContainer}>
@@ -139,7 +128,6 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
     );
   };
 
-  // Auth Buttons Container (Login, Register, Forgot Password)
   const AuthButtons: React.FC = () => {
     return (
       <View style={styles.authButtonsContainer}>
@@ -178,7 +166,6 @@ const styles = StyleSheet.create({
   },
   authButtonsContainer: {
     marginTop: 10,
-    // marginHorizontal: 22,
     gap: 16,
   },
   textOnlyButtonContainer: {

@@ -10,7 +10,6 @@ import {
   REGISTER,
 } from "redux-persist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import dataSlice from "../features/dataSlice/dataSlice";
 import userSlice from "../features/userSlice/userSlice";
 
 const persistConfig = {

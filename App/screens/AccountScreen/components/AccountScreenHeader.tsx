@@ -18,10 +18,9 @@ const AccountScreenHeader: React.FC = () => {
       <Text style={styles.title}>{translate("accountScreen.title")}</Text>
       {isLoggedIn && user ? (
         <View>
-          {/* <Text style={styles.subtitle}>
-              {translate("accountScreen.isLoggedIn")}
-            </Text> */}
-          <Text style={styles.subtitle}>Welcome, {user.display_name}!</Text>
+          <Text style={styles.subtitle}>
+            {translate("accountScreen.isLoggedIn", { name: user.display_name })}
+          </Text>
         </View>
       ) : (
         <View>

@@ -299,7 +299,7 @@ const en = {
   },
   accountScreen: {
     title: "Account",
-    isLoggedIn: "Welcome, you are logged in!",
+    isLoggedIn: "Welcome, %{name}!",
     isLoggedOut: "You are not logged in.",
     profile: "Profile",
     logoutAlert: {
