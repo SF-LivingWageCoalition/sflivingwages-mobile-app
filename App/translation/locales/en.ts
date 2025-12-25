@@ -1,3 +1,7 @@
+import { ok } from "assert";
+import simpleJwt from "./simpleJwt.en";
+import wooCommerce from "./wooCommerce.en";
+
 const en = {
   assistHomeScreen: {
     title: "Assistance Center",
@@ -292,6 +296,75 @@ const en = {
   },
   eventsDetails: {
     title: "Event Details",
+  },
+  accountScreen: {
+    title: "Account",
+    isLoggedIn: "Welcome, %{name}!",
+    isLoggedOut: "You are not logged in.",
+    profile: "Profile",
+    logoutAlert: {
+      title: "Logout",
+      message: "Are you sure you want to logout?",
+    },
+  },
+  loginScreen: {
+    title: "Login",
+  },
+  registerScreen: {
+    title: "Register",
+    registerAlert: {
+      title: "Registration successful",
+      message: "You may now log in.",
+    },
+    passwordRequirements:
+      "Hint: Password must be at least 10 characters and include uppercase, lowercase, number, and special character.",
+  },
+  forgotPasswordScreen: {
+    title: "Forgot Password",
+    forgotPasswordAlert: {
+      title: "Password reset email sent",
+      message: "Please check your email to complete your password reset.",
+    },
+  },
+  inputs: {
+    emailAddress: "Email Address",
+    password: "Password",
+  },
+  buttons: {
+    submit: "Submit",
+    clear: "Clear",
+    login: "Login",
+    register: "Register",
+    forgotPassword: "Forgot Password",
+    logout: "Logout",
+    cancel: "Cancel",
+    ok: "OK",
+  },
+  validation: {
+    emailRequired: "Email is required",
+    emailInvalid: "Invalid email address",
+    passwordRequired: "Password is required",
+    passwordTooShort: "Password must be at least 10 characters",
+    passwordLowercase: "Password must contain a lowercase letter",
+    passwordUppercase: "Password must contain an uppercase letter",
+    passwordNumber: "Password must contain a number",
+    passwordSpecial: "Password must contain a special character",
+    passwordInvalidChars: "Password contains invalid characters",
+    passwordNoSpaces: "Password must not contain spaces",
+  },
+  errors: {
+    networkError: "Network error. Please try again later.",
+    serverError: "Server error. Please try again later.",
+    unexpectedError: "An unknown error occurred. Please try again.",
+    loginFailed: "Login failed. Please check your credentials.",
+    passwordResetFailed: "Password reset failed. Please try again later.",
+    registrationFailed: "Registration failed. Please try again.",
+    requestTimedOut:
+      "The request timed out. Please check your connection and try again.",
+    // Simple JWT Login plugin error code messages (split into a separate file)
+    simpleJwt: simpleJwt,
+    // WooCommerce REST API string error codes
+    woocommerce: wooCommerce,
   },
 };
 
