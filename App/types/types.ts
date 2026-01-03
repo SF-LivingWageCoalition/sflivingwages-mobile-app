@@ -1,11 +1,12 @@
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import { Violation } from "../screens/ListReportScreen/ListReportScreen";
 
 export type RootStackParamList = {
   TabStack: undefined;
   Preview: { image: string };
   EventsNavigator: undefined;
   WhoWeAre: undefined;
-  CampaignScreen: undefined;
+  Assistance: { screen?: keyof AssistanceTabParamList };
 };
 
 export type BottomTabParamList = {
@@ -21,6 +22,11 @@ export type AssistanceTabParamList = {
   WageRights: undefined;
   BeReadyForICE: undefined;
   LivingWageCalculator: undefined;
+  ReportBusiness: undefined;
+  ReportBusinessMap: undefined;
+  ListReportScreen: undefined;
+  ReportDetailScreen: { report: Violation };
+  Assistance: { screen?: keyof AssistanceTabParamList };
 };
 
 export type WebBrowserResult = {
@@ -55,7 +61,11 @@ export type CampaignTitleProps = {
   navigation?: NavigationProp<ParamListBase>;
 };
 
-export type AuctionCardProps = {
+export type PreviewScreenParams = {
+  image: string;
+};
+
+export type CardProps = {
   categoryId?: number;
   name: string;
   description: string;
@@ -63,20 +73,12 @@ export type AuctionCardProps = {
   link: string;
   image: string;
   previewImage: string;
+  buttonText?: string;
+  showDescriptionModal?: boolean;
 };
 
-export type PreviewScreenParams = {
-  image: string;
-};
-
-export type CardProps = {
-  name: string;
-  description: string;
-  price: number;
-  link: string;
-  image: string;
-  previewImage: string;
-};
+// Alias for backwards compatibility
+export type AuctionCardProps = CardProps;
 
 export type ItemModalProps = {
   description: string;
@@ -140,7 +142,8 @@ export type PhotoItem = {
 };
 
 export type PhotosProps = {
-  photos: PhotoItem[];
+  photos: ProductItem[];
+  isLoading: boolean;
 };
 
 export type CardData = {
@@ -170,7 +173,6 @@ export type ViewProps = {
 export type AuctionNavState = {
   arts: ProductItem[];
   books: ProductItem[];
-  photos: PhotoItem[];
   cds: ProductItem[];
   dvds: ProductItem[];
   lps: ProductItem[];
@@ -185,6 +187,7 @@ export type AuctionTabParamList = {
   Cds: undefined;
   Dvds: undefined;
   LPs: undefined;
+  Photos: undefined;
 };
 
 export type DonateSection = { title: string; content: React.ReactNode };

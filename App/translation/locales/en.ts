@@ -7,6 +7,7 @@ const en = {
     getAssistance: "Report Violation",
     wageRights: "Know Your Wage Rights",
     beReadyForICE: "Be Ready for ICE",
+    reportBusiness: "Report Businesses Violating Workers’ Rights",
   },
   assistScreen: {
     title: `We can assist you.`,
@@ -20,6 +21,7 @@ const en = {
       unpaidOvertime: "Unpaid Overtime",
       noBreaks: "No Breaks",
       discrimination: "Discrimination",
+      immigrationStatus: "Immigration Status",
     },
     require: "Fields marked with an * are required",
     close: "Close",
@@ -35,6 +37,11 @@ const en = {
       userPhoneLength: "Phone number must be at least 10 digits",
       list: "Select at least one situation",
     },
+  },
+  reportBusiness: {
+    title: "Report Abusive Employers on the Map",
+    body: "Empower workers by allowing them to anonymously report businesses that  violate workers’ rights. This map-based feature helps expose wage theft, unsafe conditions, and other abuses — making it easier for the community to stay informed and take action.",
+    cta: "Continue",
   },
   wageRightsScreen: {
     title: "Know Your Wage Rights",

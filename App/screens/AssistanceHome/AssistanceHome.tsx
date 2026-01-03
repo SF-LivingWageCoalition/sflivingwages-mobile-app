@@ -1,24 +1,17 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import appIcon from "../../../assets/icon.png";
+import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { AssistanceTabParamList } from "../../types/types";
+import { useNavigation } from "@react-navigation/native";
 
-interface AssistanceHomeProps {
-  navigation: NativeStackNavigationProp<AssistanceTabParamList>;
-}
-
-const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
+const AssistanceHome: React.FC = () => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<AssistanceTabParamList>>();
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -34,39 +27,46 @@ const AssistanceHome: React.FC<AssistanceHomeProps> = ({ navigation }) => {
           </Text>
 
           <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigation.navigate("ReportViolation")}
-            >
-              <Text style={styles.buttonText}>
-                {translate("assistHomeScreen.getAssistance")}
-              </Text>
-            </TouchableOpacity>
+            <MainButton
+              variant="primary"
+              title={translate("assistHomeScreen.getAssistance")}
+              onPress={() =>
+                navigation.navigate("Assistance", { screen: "ReportViolation" })
+              }
+            />
 
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigation.navigate("WageRights")}
-            >
-              <Text style={styles.buttonText}>
-                {translate("assistHomeScreen.wageRights")}
-              </Text>
-            </TouchableOpacity>
+            <MainButton
+              variant="primary"
+              title={translate("assistHomeScreen.wageRights")}
+              onPress={() =>
+                navigation.navigate("Assistance", { screen: "WageRights" })
+              }
+            />
 
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigation.navigate("BeReadyForICE")}
-            >
-              <Text style={styles.buttonText}>
-                {translate("assistHomeScreen.beReadyForICE")}
-              </Text>
-            </TouchableOpacity>
+            <MainButton
+              variant="primary"
+              title={translate("assistHomeScreen.beReadyForICE")}
+              onPress={() =>
+                navigation.navigate("Assistance", { screen: "BeReadyForICE" })
+              }
+            />
 
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigation.navigate("LivingWageCalculator")}
-            >
-              <Text style={styles.buttonText}>Living Wage Calculator</Text>
-            </TouchableOpacity>
+            <MainButton
+              variant="primary"
+              title="Living Wage Calculator"
+              onPress={() =>
+                navigation.navigate("Assistance", {
+                  screen: "LivingWageCalculator",
+                })
+              }
+            />
+            <MainButton
+              variant="primary"
+              title={translate("assistHomeScreen.reportBusiness")}
+              onPress={() =>
+                navigation.navigate("Assistance", { screen: "ReportBusiness" })
+              }
+            />
           </View>
         </View>
       </View>
@@ -114,22 +114,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 20,
     gap: 20,
-  },
-  button: {
-    backgroundColor: colors.light.primary,
-    borderRadius: 30,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    elevation: 6,
-    shadowColor: colors.light.primary,
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: { width: 1, height: 1 },
-  },
-  buttonText: {
-    ...textStyles.button,
-    color: colors.light.textOnPrimary,
-    textAlign: "center",
   },
 });
 

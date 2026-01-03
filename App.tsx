@@ -29,6 +29,8 @@ import { translate } from "./App/translation/i18n";
 import { RootStackParamList } from "./App/types/types";
 import PerCampaignScreen from "./App/screens/PerCampaignScreen/PerCampaignScreen";
 
+import AssistStack from "./App/navigation/AssistStack";
+import { UpdateChecker } from "./App/components/UpdateChecker/UpdateChecker";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -51,11 +53,8 @@ const App: React.FC = () => {
         // Hide splash screen once fonts are loaded
         await SplashScreen.hideAsync();
 
-        // Debug: Log font loading status
         if (fontError) {
           console.error("Font loading error:", fontError);
-        } else {
-          console.log("Fonts loaded successfully!");
         }
       }
     }
@@ -113,9 +112,15 @@ const App: React.FC = () => {
                 name="PerCampaignScreen"
                 options={{ title: translate("PerCampaignScreen.title") }}
                 component={PerCampaignScreen}
+                options={{
+                  headerShown: false,
+                }}
+                name="Assistance"
+                component={AssistStack}
               />
             </Stack.Navigator>
           </NavigationContainer>
+          <UpdateChecker />
         </PersistGate>
       </Provider>
     </SafeAreaProvider>

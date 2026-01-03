@@ -66,44 +66,44 @@ export const textStyles = {
   },
   bodyLarge: {
     fontFamily: fontFamily.body, // Roboto Regular
-    fontSize: fontSize.md,
+    fontSize: fontSize.md, // 18
   },
   bodyLargeBold: {
     fontFamily: fontFamily.bodyBold, // Roboto Bold
-    fontSize: fontSize.md,
+    fontSize: fontSize.md, // 18
   },
   bodyLargeMedium: {
     fontFamily: fontFamily.robotoMedium, // Roboto Medium
-    fontSize: fontSize.md,
+    fontSize: fontSize.md, // 18
   },
   bodySmall: {
     fontFamily: fontFamily.body, // Roboto Regular
-    fontSize: fontSize.xs,
+    fontSize: fontSize.xs, // 14
   },
   bodySmallBold: {
     fontFamily: fontFamily.bodyBold, // Roboto Bold
-    fontSize: fontSize.xs,
+    fontSize: fontSize.xs, // 14
   },
   // Button text (uses bold Roboto)
   button: {
     fontFamily: fontFamily.bodyBold, // Roboto Bold
-    fontSize: fontSize.md,
+    fontSize: fontSize.md, // 18
   },
   buttonSmall: {
     fontFamily: fontFamily.bodyBold, // Roboto Bold
-    fontSize: fontSize.sm,
+    fontSize: fontSize.xs, // 16
   },
   // Labels and captions
   label: {
     fontFamily: fontFamily.robotoMedium, // Roboto Medium
-    fontSize: fontSize.sm,
+    fontSize: fontSize.sm, // 16
   },
   labelBold: {
     fontFamily: fontFamily.bodyBold, // Roboto Bold
-    fontSize: fontSize.sm,
+    fontSize: fontSize.sm, // 16
   },
   caption: {
     fontFamily: fontFamily.body, // Roboto Regular
-    fontSize: fontSize.xs,
+    fontSize: fontSize.xs, // 14
   },
 } as const;

@@ -1,13 +1,7 @@
 import React, { useState } from "react";
-import {
-  Linking,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Linking, ScrollView, StyleSheet, Text, View } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
+import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { DonateSection } from "../../types/types";
@@ -39,17 +33,16 @@ const DonateScreen: React.FC = () => {
             or bank account to donate through PayPal.{"\n\n"}Click on the button
             below to be taken to our PayPal site.
           </Text>
-          <View style={styles.buttonStyle}>
-            <TouchableOpacity
-              style={styles.donationButton}
+          <View style={styles.buttonContainer}>
+            <MainButton
+              variant="primary"
+              title="Donate Online"
               onPress={() =>
                 handleOpenURL(
                   "https://www.livingwage-sf.org/online-donation-form/"
                 )
               }
-            >
-              <Text style={styles.donationButtonText}>{"Donate Online"}</Text>
-            </TouchableOpacity>
+            />
           </View>
         </View>
       ),
@@ -125,23 +118,9 @@ const styles = StyleSheet.create({
   dropDownItem: {
     marginTop: 30,
   },
-  donationButton: {
-    backgroundColor: colors.light.primary,
-    padding: 10,
-    width: 200,
-    height: 40,
+  buttonContainer: {
     marginTop: 20,
-    borderRadius: 30,
-  },
-  buttonStyle: {
-    padding: 5,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  donationButtonText: {
-    ...textStyles.button,
-    color: colors.light.textOnPrimary,
-    textAlign: "center",
+    gap: 20,
   },
 });
 

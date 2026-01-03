@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import MainButton from "../../../../components/MainButton";
 import { colors } from "../../../../theme";
 import { textStyles } from "../../../../theme/fontStyles";
 import { CardProps, PreviewScreenParams } from "../../../../types/types";
@@ -23,6 +24,8 @@ const Card: React.FC<CardProps> = ({
   link,
   image,
   previewImage,
+  buttonText = "Shop",
+  showDescriptionModal = true,
 }) => {
   const navigate = useNavigation<NavigationProp<ParamListBase>>();
 
@@ -51,19 +54,22 @@ const Card: React.FC<CardProps> = ({
         <Text style={textStyles.caption}>tap picture to enlarge</Text>
         <View style={styles.horizontalLine} />
         <View>
-          <ItemModal title={name} description={cleanDescription} />
+          {showDescriptionModal ? (
+            <ItemModal title={name} description={cleanDescription} />
+          ) : (
+            <Text style={textStyles.body}>{cleanDescription}</Text>
+          )}
           <Text style={textStyles.body}>${itemPrice}</Text>
         </View>
         {/* Product Individual page link */}
-        <View style={styles.submitButtonContainer}>
-          <TouchableOpacity
-            style={styles.submitButton}
+        <View style={styles.buttonContainer}>
+          <MainButton
+            variant="primary"
+            title={buttonText}
             onPress={() => {
               Linking.openURL(link);
             }}
-          >
-            <Text style={styles.submitButtonText}>Shop</Text>
-          </TouchableOpacity>
+          />
         </View>
       </View>
     </View>
@@ -106,22 +112,10 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.light.textPrimary,
     borderBottomWidth: 1,
   },
-  submitButtonContainer: {
+  buttonContainer: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  submitButton: {
-    justifyContent: "center",
-    backgroundColor: colors.light.primary,
-    width: 100,
-    height: 40,
-    borderRadius: 30,
-  },
-  submitButtonText: {
-    ...textStyles.button,
-    color: colors.light.textOnPrimary,
-    textAlign: "center",
   },
 });
 

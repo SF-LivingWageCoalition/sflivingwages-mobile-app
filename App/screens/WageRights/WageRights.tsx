@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import Collapsible from "react-native-collapsible";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import MainButton from "../../components/MainButton";
 import appIcon from "../../../assets/icon.png";
 import BulletItem from "../../components/lists/BulletItem";
 import SubBulletItem from "../../components/lists/SubBulletItem";
@@ -35,16 +36,20 @@ const WageRights: React.FC = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.circleBackButton}
+        <MainButton
+          variant="circle"
+          position="absolute"
+          positionTop={27}
+          positionLeft={27}
           onPress={() => navigation.goBack()}
-        >
-          <FontAwesome5
-            name="chevron-left"
-            size={20}
-            color={colors.light.chevronLight}
-          />
-        </TouchableOpacity>
+          icon={
+            <FontAwesome5
+              name="chevron-left"
+              size={20}
+              color={colors.light.chevronLight}
+            />
+          }
+        />
         <View style={styles.card}>
           <View style={styles.logoContainer}>
             <Image style={styles.logo} source={appIcon} />
@@ -362,23 +367,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: colors.light.backgroundSecondary,
-  },
-  circleBackButton: {
-    position: "absolute",
-    top: 27,
-    left: 27,
-    backgroundColor: colors.light.primary,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 10,
-    elevation: 5,
-    shadowColor: colors.light.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
   },
   card: {
     backgroundColor: colors.light.surface,
