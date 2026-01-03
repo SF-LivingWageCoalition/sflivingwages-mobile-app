@@ -112,6 +112,8 @@ const App: React.FC = () => {
                 name="PerCampaignScreen"
                 options={{ title: translate("PerCampaignScreen.title") }}
                 component={PerCampaignScreen}
+              />
+              <Stack.Screen
                 options={{
                   headerShown: false,
                 }}

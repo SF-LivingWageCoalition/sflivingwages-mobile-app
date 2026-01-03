@@ -6,6 +6,8 @@ export type RootStackParamList = {
   Preview: { image: string };
   EventsNavigator: undefined;
   WhoWeAre: undefined;
+  CampaignScreen: undefined;
+  PerCampaignScreen: { id: number };
   Assistance: { screen?: keyof AssistanceTabParamList };
 };
 

@@ -76,8 +76,6 @@ const CarouselImageSmall: React.FC<CarouselImageProps> = ({
  * New Home Screen component
  */
 const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
-  const [isLoading, setIsLoading] = useState(false);
-
   const mainSliderImages = [
     {
       id: 1,
