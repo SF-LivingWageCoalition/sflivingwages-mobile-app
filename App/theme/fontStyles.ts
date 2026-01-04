@@ -55,6 +55,18 @@ export const textStyles = {
     fontFamily: fontFamily.heading, // Nunito Bold
     fontSize: fontSize.lg,
   },
+  h4: {
+    fontFamily: fontFamily.heading, // Nunito Bold
+    fontSize: fontSize.md,
+  },
+  h5: {
+    fontFamily: fontFamily.heading, // Nunito Bold
+    fontSize: fontSize.sm,
+  },
+  h6: {
+    fontFamily: fontFamily.heading, // Nunito Bold
+    fontSize: fontSize.xs,
+  },
   // Body text using Roboto
   body: {
     fontFamily: fontFamily.body, // Roboto Regular

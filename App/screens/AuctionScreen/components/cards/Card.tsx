@@ -4,7 +4,6 @@ import {
   useNavigation,
 } from "@react-navigation/native";
 import {
-  Image,
   Linking,
   StyleSheet,
   Text,
@@ -16,6 +15,9 @@ import { colors } from "../../../../theme";
 import { textStyles } from "../../../../theme/fontStyles";
 import { CardProps, PreviewScreenParams } from "../../../../types/types";
 import ItemModal from "../modalComponent/ItemModal";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { Image } from "expo-image";
 
 const Card: React.FC<CardProps> = ({
   name,
@@ -44,32 +46,56 @@ const Card: React.FC<CardProps> = ({
         <Text style={styles.cardTitle}>{cleanName}</Text>
         <TouchableOpacity
           onPress={() => {
-            navigate.navigate("Preview", {
+            navigate.navigate("PreviewImage", {
               image: previewImage,
             } as PreviewScreenParams);
           }}
         >
-          <Image style={styles.imageStyle} source={{ uri: image }} />
-        </TouchableOpacity>
-        <Text style={textStyles.caption}>tap picture to enlarge</Text>
-        <View style={styles.horizontalLine} />
-        <View>
-          {showDescriptionModal ? (
-            <ItemModal title={name} description={cleanDescription} />
-          ) : (
-            <Text style={textStyles.body}>{cleanDescription}</Text>
-          )}
-          <Text style={textStyles.body}>${itemPrice}</Text>
-        </View>
-        {/* Product Individual page link */}
-        <View style={styles.buttonContainer}>
-          <MainButton
-            variant="primary"
-            title={buttonText}
-            onPress={() => {
-              Linking.openURL(link);
-            }}
+          <Image
+            style={styles.imageStyle}
+            source={{ uri: image }}
+            cachePolicy="memory-disk"
+            priority="high"
           />
+          <View style={styles.tapIconContainer}>
+            <MaterialCommunityIcons
+              name="gesture-double-tap"
+              size={40}
+              color={colors.light.primaryLight}
+            />
+          </View>
+        </TouchableOpacity>
+        <View style={styles.footerContainer}>
+          <View style={{ marginVertical: 10 }}>
+            {showDescriptionModal ? (
+              <ItemModal title={name} description={cleanDescription} />
+            ) : (
+              <Text style={[textStyles.body, { marginHorizontal: 16 }]}>
+                {cleanDescription}
+              </Text>
+            )}
+            <Text style={[textStyles.body, { marginHorizontal: 16 }]}>
+              ${itemPrice}
+            </Text>
+          </View>
+          {/* Product Individual page link */}
+          <View style={styles.buttonContainer}>
+            <MainButton
+              variant="outlined"
+              title={buttonText}
+              size="small"
+              icon={
+                <FontAwesome5
+                  name={"donate"}
+                  color={colors.light.secondary}
+                  size={20}
+                />
+              }
+              onPress={() => {
+                Linking.openURL(link);
+              }}
+            />
+          </View>
         </View>
       </View>
     </View>
@@ -77,45 +103,40 @@ const Card: React.FC<CardProps> = ({
 };
 
 const styles = StyleSheet.create({
+  footerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  tapIconContainer: {
+    backgroundColor: colors.light.primaryContainer,
+    position: "absolute",
+    top: 10,
+    right: 10,
+    borderRadius: 25,
+    padding: 5,
+  },
   container: {
     flex: 1,
+    backgroundColor: colors.light.background,
   },
   cardTitle: {
-    ...textStyles.h3,
-    textAlign: "center", // <-- the magic
-    margin: 5,
+    ...textStyles.h5,
+    marginHorizontal: 16,
+    marginVertical: 10,
   },
   cardImage: {
     backgroundColor: colors.light.background,
-    margin: 10,
-    padding: 20,
     flex: 1,
-    shadowColor: colors.light.shadow,
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.34,
-    shadowRadius: 6.27,
-    elevation: 10,
+    marginBottom: 16,
   },
   imageStyle: {
-    width: 250,
-    height: 250,
-    marginLeft: 30,
-    marginRight: 15,
-    marginBottom: 10,
+    width: "100%",
+    height: 300,
   },
-  horizontalLine: {
-    marginTop: 10,
-    marginBottom: 10,
-    borderBottomColor: colors.light.textPrimary,
-    borderBottomWidth: 1,
-  },
+
   buttonContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    marginHorizontal: 16,
+    marginTop: 10,
   },
 });
 
