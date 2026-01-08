@@ -1,32 +1,23 @@
 import React from "react";
-import {
-  Dimensions,
-  FlatList,
-  StyleSheet,
-  View,
-} from "react-native";
-import { colors } from "../../theme";
+import { Dimensions, FlatList, StyleSheet, View } from "react-native";
 import richCampaignsData from "../../assets/richCampaignsData";
+import { colors } from "../../theme";
 import CampaignCard from "./components/CampaignCard";
 
 const { height } = Dimensions.get("window");
 
 /**
- * Campaign Screen component
- // Displays a list of campaigns
+ * Displays a list of campaigns
  */
 const CampaignScreen: React.FC = () => {
-
   return (
     <View style={styles.container}>
-              <FlatList
-                data={richCampaignsData}
-                renderItem={({item}) => <CampaignCard 
-                  title={item.title}
-                  text={item.text}
-                  id={item.id} />
-              }
-              />
+      <FlatList
+        data={richCampaignsData}
+        renderItem={({ item }) => (
+          <CampaignCard title={item.title} text={item.text} id={item.id} />
+        )}
+      />
     </View>
   );
 };

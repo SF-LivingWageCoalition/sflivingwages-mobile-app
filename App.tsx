@@ -17,20 +17,19 @@ import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import { UpdateChecker } from "./App/components/UpdateChecker/UpdateChecker";
+import AssistStack from "./App/navigation/AssistStack";
 import BottomTabStack from "./App/navigation/BottomTabStack";
 import { persistor, store } from "./App/redux/store/store";
-import CampaignScreen from "./App/screens/CampaignScreen/CampaignScreen";
 import ModalScreen from "./App/screens/AuctionScreen/ModalScreen";
+import CampaignScreen from "./App/screens/CampaignScreen/CampaignScreen";
 import EventsNavigator from "./App/screens/EventsScreen/components/EventsNav";
+import PerCampaignScreen from "./App/screens/PerCampaignScreen/PerCampaignScreen";
 import WhoWeAre from "./App/screens/WhoWeAreScreen/WhoWeAreScreen";
 import { colors } from "./App/theme";
 import { fontFamily } from "./App/theme/fontStyles";
 import { translate } from "./App/translation/i18n";
 import { RootStackParamList } from "./App/types/types";
-import PerCampaignScreen from "./App/screens/PerCampaignScreen/PerCampaignScreen";
-
-import AssistStack from "./App/navigation/AssistStack";
-import { UpdateChecker } from "./App/components/UpdateChecker/UpdateChecker";
 
 const Stack = createStackNavigator<RootStackParamList>();
 

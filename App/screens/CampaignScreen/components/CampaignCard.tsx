@@ -1,16 +1,12 @@
-import { NavigationProp, ParamListBase, useNavigation } from "@react-navigation/native";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Linking, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { colors } from "../../../theme";
 import { textStyles } from "../../../theme/fontStyles";
 import { CampaignItem } from "../../../types/types";
 
 //create a campaign card that uses campaign item as its properties
-const CampaignCard: React.FC<CampaignItem> = ({
-  id,
-  title,
-  text,
-}) => {
+const CampaignCard: React.FC<CampaignItem> = ({ id, title, text }) => {
   const navigation = useNavigation<NavigationProp<any>>();
   return (
     <ScrollView style={styles.container}>
@@ -18,11 +14,11 @@ const CampaignCard: React.FC<CampaignItem> = ({
         <Text
           style={styles.homeNavText}
           onPress={() => {
-            navigation.navigate("PerCampaignScreen", {id})
+            navigation.navigate("PerCampaignScreen", { id });
           }}
         >
           {/* display item title */}
-          {title} 
+          {title}
         </Text>
       </View>
     </ScrollView>
