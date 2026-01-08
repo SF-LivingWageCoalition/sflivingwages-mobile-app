@@ -102,10 +102,12 @@ const styles = StyleSheet.create({
   },
   title: {
     ...textStyles.h3,
+    ...textStyles.h3,
     textAlign: "center",
     marginBottom: 10,
   },
   subtitle: {
+    ...textStyles.body,
     ...textStyles.body,
     textAlign: "center",
     marginBottom: 30,

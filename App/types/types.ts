@@ -8,6 +8,8 @@ export type RootStackParamList = {
   WhoWeAre: undefined;
   CampaignScreen: undefined;
   PerCampaignScreen: { id: number };
+  AuthNavigator: undefined;
+  AccountNavigator: undefined;
   Assistance: { screen?: keyof AssistanceTabParamList };
 };
 
@@ -16,6 +18,7 @@ export type BottomTabParamList = {
   Auction: undefined;
   Donate: undefined;
   Assist: undefined;
+  Account: undefined;
 };
 
 export type AssistanceTabParamList = {
@@ -300,4 +303,34 @@ export type CampaignItem = {
   id: number;
   text: string;
   title: string;
+};
+
+export type AuthStackParamList = {
+  Login: any;
+  Register: any;
+  ForgotPassword: any;
+};
+
+export type AccountScreenProps = {
+  navigation: NavigationProp<ParamListBase>;
+};
+
+export type LoginScreenProps = {
+  navigation: NavigationProp<ParamListBase>;
+};
+
+export type RegisterScreenProps = {
+  navigation: NavigationProp<ParamListBase>;
+};
+
+export type ForgotPasswordScreenProps = {
+  navigation: NavigationProp<ParamListBase>;
+};
+
+export type AccountStackParamList = {
+  Profile: any;
+};
+
+export type ProfileScreenProps = {
+  navigation: NavigationProp<ParamListBase>;
 };

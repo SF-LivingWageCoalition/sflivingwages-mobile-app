@@ -1255,13 +1255,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/code-signing-certificates@npm:0.0.5, @expo/code-signing-certificates@npm:^0.0.5":
+"@expo/code-signing-certificates@npm:^0.0.5":
   version: 0.0.5
   resolution: "@expo/code-signing-certificates@npm:0.0.5"
   dependencies:
     node-forge: "npm:^1.2.1"
     nullthrows: "npm:^1.1.1"
   checksum: 10c0/98c908c54f92d6782ae01fef47dd858140dc6013e5376ee3faf9b243327f2b16279441fec171cbde45d0e3ebd0bf72db57b4d4c2a0c4f952285b0b377b2b356b
+  languageName: node
+  linkType: hard
+
+"@expo/code-signing-certificates@npm:^0.0.6":
+  version: 0.0.6
+  resolution: "@expo/code-signing-certificates@npm:0.0.6"
+  dependencies:
+    node-forge: "npm:^1.3.3"
+  checksum: 10c0/3c60be55fb056ccebf7355c1dbe959cee191eaa1c33c6ff5a7331c1ffe1cfa66edc6b62e8005b4a9023bbd40462d81d35284e79eaa8893facb2493801685bbea
   languageName: node
   linkType: hard
 
@@ -1294,7 +1303,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/config@npm:~12.0.10, @expo/config@npm:~12.0.11, @expo/config@npm:~12.0.12, @expo/config@npm:~12.0.13":
+"@expo/config@npm:~12.0.10, @expo/config@npm:~12.0.11, @expo/config@npm:~12.0.13":
   version: 12.0.13
   resolution: "@expo/config@npm:12.0.13"
   dependencies:
@@ -1455,8 +1464,8 @@ __metadata:
   linkType: hard
 
 "@expo/metro-config@npm:~54.0.9":
-  version: 54.0.12
-  resolution: "@expo/metro-config@npm:54.0.12"
+  version: 54.0.13
+  resolution: "@expo/metro-config@npm:54.0.13"
   dependencies:
     "@babel/code-frame": "npm:^7.20.0"
     "@babel/core": "npm:^7.20.0"
@@ -1484,7 +1493,7 @@ __metadata:
   peerDependenciesMeta:
     expo:
       optional: true
-  checksum: 10c0/95a40d3835505be331104b548c57d841703e24470eb597e49dc28f2febed63406d6829e8c9d5a356916c847e1920bb03c15a0468f32f21bb114a3d1d56af880d
+  checksum: 10c0/9876b9ef40742c879e94e80386d5238e9f4954d752d72251ade4e9bdf944ae5afdcc5ce877bffdf461ebec8775faed7b04d084ac1ac52283e64f86a122780d4e
   languageName: node
   linkType: hard
 
@@ -3288,11 +3297,11 @@ __metadata:
   linkType: hard
 
 "baseline-browser-mapping@npm:^2.9.0":
-  version: 2.9.11
-  resolution: "baseline-browser-mapping@npm:2.9.11"
+  version: 2.9.13
+  resolution: "baseline-browser-mapping@npm:2.9.13"
   bin:
     baseline-browser-mapping: dist/cli.js
-  checksum: 10c0/eba49fcc1b33ab994aeeb73a4848f2670e06a0886dd5b903689ae6f60d47e7f1bea9262dbb2548c48179e858f7eda2b82ddf941ae783b862f4dcc51085a246f2
+  checksum: 10c0/0881e813472865ae5f7f19d48c9525fabf358acb43547d57b294b9b62e28821562877627f5c7818595fa583b76e01967c1395ff9525164e5905e1d8be2c71318
   languageName: node
   linkType: hard
 
@@ -3524,9 +3533,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001759":
-  version: 1.0.30001762
-  resolution: "caniuse-lite@npm:1.0.30001762"
-  checksum: 10c0/93707eac5b0240af3f2ce6e2d7ab504a6fefcf9c2f9cd8fb9d488e496a333c61e557dab0472c1b00c17bc386a5dbb792aa4c778cda2d768e17f986617d7aec53
+  version: 1.0.30001763
+  resolution: "caniuse-lite@npm:1.0.30001763"
+  checksum: 10c0/4524f6ae15a18c8510849e43baed01441940c50cab29687cba62dde6354a49549d5bcb7f79b864dadf3f0c8c342038c63131cdb64af382a501593106b1d0028b
   languageName: node
   linkType: hard
 
@@ -4450,15 +4459,15 @@ __metadata:
   linkType: hard
 
 "expo-constants@npm:~18.0.10, expo-constants@npm:~18.0.12, expo-constants@npm:~18.0.9":
-  version: 18.0.12
-  resolution: "expo-constants@npm:18.0.12"
+  version: 18.0.13
+  resolution: "expo-constants@npm:18.0.13"
   dependencies:
-    "@expo/config": "npm:~12.0.12"
+    "@expo/config": "npm:~12.0.13"
     "@expo/env": "npm:~2.0.8"
   peerDependencies:
     expo: "*"
     react-native: "*"
-  checksum: 10c0/9dab3f1d685b17c25ae4179823162b763a7edeea8b976f96f25e37fabbfbc190f05cd774431664e5145196f3982e34303ebf5a1f5a82a1409218ae93187f710f
+  checksum: 10c0/bbe33c0611b8085ecd965434d71d27f065427146fe23f3162d170812f8c917b032604c79e0cd129f39147f58f7dc581ee3c6b64a84bf865dd325595289dc77e6
   languageName: node
   linkType: hard
 
@@ -4687,10 +4696,10 @@ __metadata:
   linkType: hard
 
 "expo-updates@npm:~29.0.12":
-  version: 29.0.15
-  resolution: "expo-updates@npm:29.0.15"
+  version: 29.0.16
+  resolution: "expo-updates@npm:29.0.16"
   dependencies:
-    "@expo/code-signing-certificates": "npm:0.0.5"
+    "@expo/code-signing-certificates": "npm:^0.0.6"
     "@expo/plist": "npm:^0.4.8"
     "@expo/spawn-async": "npm:^1.7.2"
     arg: "npm:4.1.0"
@@ -4710,7 +4719,7 @@ __metadata:
     react-native: "*"
   bin:
     expo-updates: bin/cli.js
-  checksum: 10c0/3a2752027b75e569444180c41925bf6683288d0b651f745635062de194dda3cd78b21f93369b995a0f57a7e4eda1bb38dcc230bbfa8eb790616d70221b32c989
+  checksum: 10c0/2dfadc04df7a6e37c1162a4d1eca76f6249e2c3fb8f8e6ac0ccd6f55cce34acf6867c2dfbd75c2d0a37c0578386d19d1a2fbc97a2b5efba0b5217f2a83e3a85d
   languageName: node
   linkType: hard
 
@@ -7073,7 +7082,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-forge@npm:^1.2.1, node-forge@npm:^1.3.1":
+"node-forge@npm:^1.2.1, node-forge@npm:^1.3.1, node-forge@npm:^1.3.3":
   version: 1.3.3
   resolution: "node-forge@npm:1.3.3"
   checksum: 10c0/9c6f53b0ebb34865872cf62a35b0aef8fb337e2efc766626c2e3a0040f4c02933bf29a62ba999eb44a2aca73bd512c4eda22705a47b94654b9fb8ed53db9a1db
@@ -8446,9 +8455,9 @@ __metadata:
   linkType: hard
 
 "resolve-workspace-root@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "resolve-workspace-root@npm:2.0.0"
-  checksum: 10c0/658e6fbc199c51f4903867ab371f03122d9865b4fb4fd3a2069c39b429132d91535e5112f5c6c561fa0852cb8393505b7f94b58c3e2566bab610a48172f38e3f
+  version: 2.0.1
+  resolution: "resolve-workspace-root@npm:2.0.1"
+  checksum: 10c0/83104ea8476ba451a4bac32db42cf1dc79a7b98810764e507830a2f63af20cfb00fe7da5b0c324d77d4fcfda7a24e9e17895690d6f6a498735b633fd7fc372ca
   languageName: node
   linkType: hard
 
@@ -8576,9 +8585,9 @@ __metadata:
   linkType: hard
 
 "sax@npm:>=0.6.0":
-  version: 1.4.3
-  resolution: "sax@npm:1.4.3"
-  checksum: 10c0/45bba07561d93f184a8686e1a543418ced8c844b994fbe45cc49d5cd2fc8ac7ec949dae38565e35e388ad0cca2b75997a29b6857c927bf6553da3f80ed0e4e62
+  version: 1.4.4
+  resolution: "sax@npm:1.4.4"
+  checksum: 10c0/acb642f2de02ad6ae157cbf91fb026acea80cdf92e88c0aec2aa350c7db3479f62a7365c34a58e3b70a72ce11fa856a02c38cfd27f49e83c18c9c7e1d52aee55
   languageName: node
   linkType: hard
 
@@ -9415,9 +9424,9 @@ __metadata:
   linkType: hard
 
 "undici@npm:^6.18.2":
-  version: 6.22.0
-  resolution: "undici@npm:6.22.0"
-  checksum: 10c0/47903c489d73e26bd47960cf2f04d63282ed050818b672cb05f8dfb6403381b850cf1b1751832654fd3af22aacd9d780e5e61aff563cd97943f5c4f10d5b3e23
+  version: 6.23.0
+  resolution: "undici@npm:6.23.0"
+  checksum: 10c0/d846b3fdfd05aa6081ba1eab5db6bbc21b283042c7a43722b86d1ee2bf749d7c990ceac0c809f9a07ffd88b1b0f4c0f548a8362c035088cb1997d63abdda499c
   languageName: node
   linkType: hard
 
@@ -9729,8 +9738,8 @@ __metadata:
   linkType: hard
 
 "ws@npm:^8.12.1, ws@npm:^8.18.3":
-  version: 8.18.3
-  resolution: "ws@npm:8.18.3"
+  version: 8.19.0
+  resolution: "ws@npm:8.19.0"
   peerDependencies:
     bufferutil: ^4.0.1
     utf-8-validate: ">=5.0.2"
@@ -9739,7 +9748,7 @@ __metadata:
       optional: true
     utf-8-validate:
       optional: true
-  checksum: 10c0/eac918213de265ef7cb3d4ca348b891a51a520d839aa51cdb8ca93d4fa7ff9f6ccb339ccee89e4075324097f0a55157c89fa3f7147bde9d8d7e90335dc087b53
+  checksum: 10c0/4741d9b9bc3f9c791880882414f96e36b8b254e34d4b503279d6400d9a4b87a033834856dbdd94ee4b637944df17ea8afc4bce0ff4a1560d2166be8855da5b04
   languageName: node
   linkType: hard
 

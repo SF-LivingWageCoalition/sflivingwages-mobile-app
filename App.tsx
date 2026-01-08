@@ -17,8 +17,6 @@ import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { UpdateChecker } from "./App/components/UpdateChecker/UpdateChecker";
-import AssistStack from "./App/navigation/AssistStack";
 import BottomTabStack from "./App/navigation/BottomTabStack";
 import { persistor, store } from "./App/redux/store/store";
 import ModalScreen from "./App/screens/AuctionScreen/ModalScreen";
@@ -30,6 +28,10 @@ import { colors } from "./App/theme";
 import { fontFamily } from "./App/theme/fontStyles";
 import { translate } from "./App/translation/i18n";
 import { RootStackParamList } from "./App/types/types";
+import AssistStack from "./App/navigation/AssistStack";
+import { UpdateChecker } from "./App/components/UpdateChecker/UpdateChecker";
+import AuthNavigator from "./App/navigation/AuthNav";
+import AccountNavigator from "./App/navigation/AccountNav";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -118,6 +120,22 @@ const App: React.FC = () => {
                 }}
                 name="Assistance"
                 component={AssistStack}
+              />
+              <Stack.Screen
+                name="AuthNavigator"
+                options={{
+                  title: translate("loginScreen.title"),
+                  headerShown: false,
+                }}
+                component={AuthNavigator}
+              />
+              <Stack.Screen
+                name="AccountNavigator"
+                options={{
+                  title: translate("accountScreen.profile"),
+                  headerShown: false,
+                }}
+                component={AccountNavigator}
               />
             </Stack.Navigator>
           </NavigationContainer>
