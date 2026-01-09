@@ -303,6 +303,7 @@ const en = {
   },
   PerCampaignScreen: {
     title: "Campaign",
+  },
   accountScreen: {
     title: "Account",
     isLoggedIn: "Welcome, %{name}!",

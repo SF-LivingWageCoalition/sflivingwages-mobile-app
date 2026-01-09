@@ -309,6 +309,7 @@ const es: Translations = {
   },
   PerCampaignScreen: {
     title: "Campaña",
+  },
   accountScreen: {
     title: "Cuenta",
     isLoggedIn: "¡Bienvenido, %{name}!",
