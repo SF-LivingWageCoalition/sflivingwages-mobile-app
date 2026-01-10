@@ -49,21 +49,9 @@ export type RecaptchaRef = {
   close: () => void;
 };
 
-export type CampaignActionProps = {
-  stepText?: string;
-  url?: string;
-  navigation?: NavigationProp<any>;
-};
-
 export type CampaignCardProps = {
   navigate?: (screen: string, params?: any) => void;
   title?: string;
-};
-
-export type CampaignTitleProps = {
-  title?: string;
-  url?: string;
-  navigation?: NavigationProp<ParamListBase>;
 };
 
 export type PreviewScreenParams = {
