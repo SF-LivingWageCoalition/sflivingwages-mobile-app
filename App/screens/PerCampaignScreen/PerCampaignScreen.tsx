@@ -2,7 +2,7 @@ import React from "react";
 import { useRoute } from "@react-navigation/native";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 import Markdown from "react-native-markdown-display";
-import { colors } from "../../theme";
+import { colors, textStyles } from "../../theme";
 import richCampaignsData from "../../assets/richCampaignsData";
 
 const PerCampaignScreen: React.FC = () => {
@@ -30,10 +30,9 @@ const PerCampaignScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, backgroundColor: colors.light.background },
   title: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 10,
+    ...textStyles.h3,
     color: colors.light.primaryDark,
+    textAlign: "left",
   },
 });
 

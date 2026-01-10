@@ -6,7 +6,7 @@ import { textStyles } from "../../../theme/fontStyles";
 import { CampaignItem } from "../../../types/types";
 
 //create a campaign card that uses campaign item as its properties
-const CampaignCard: React.FC<CampaignItem> = ({ id, title, text }) => {
+const CampaignCard: React.FC<CampaignItem> = ({ id, title }) => {
   const navigation = useNavigation<NavigationProp<any>>();
   return (
     <ScrollView style={styles.container}>
@@ -17,7 +17,6 @@ const CampaignCard: React.FC<CampaignItem> = ({ id, title, text }) => {
             navigation.navigate("PerCampaignScreen", { id });
           }}
         >
-          {/* display item title */}
           {title}
         </Text>
       </View>
@@ -30,8 +29,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   homeNavText: {
-    ...textStyles.h3,
-    color: colors.light.primaryDark,
+    ...textStyles.bodyLargeMedium,
+    color: colors.light.secondaryDark,
     textAlign: "left",
     padding: 10,
   },

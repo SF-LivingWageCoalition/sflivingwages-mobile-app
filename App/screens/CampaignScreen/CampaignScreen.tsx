@@ -1,7 +1,7 @@
 import React from "react";
-import { Dimensions, FlatList, StyleSheet, View } from "react-native";
+import { Dimensions, FlatList, StyleSheet, View, Text } from "react-native";
 import richCampaignsData from "../../assets/richCampaignsData";
-import { colors } from "../../theme";
+import { colors, textStyles } from "../../theme";
 import CampaignCard from "./components/CampaignCard";
 
 const { height } = Dimensions.get("window");
@@ -12,6 +12,7 @@ const { height } = Dimensions.get("window");
 const CampaignScreen: React.FC = () => {
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>OUR CAMPAIGNS</Text>
       <FlatList
         data={richCampaignsData}
         renderItem={({ item }) => (
@@ -25,6 +26,12 @@ const CampaignScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  title: {
+    ...textStyles.h3,
+    color: colors.light.onSurface,
+    textAlign: "center",
+    padding: 16,
   },
   spinner: {
     height: height / 2,
