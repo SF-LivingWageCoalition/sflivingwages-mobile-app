@@ -1,73 +1,115 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import appIcon from "../../../assets/icon.png";
-import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { AssistanceTabParamList } from "../../types/types";
 import { useNavigation } from "@react-navigation/native";
+import { Entypo, FontAwesome5 } from "@expo/vector-icons";
 
 const AssistanceHome: React.FC = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<AssistanceTabParamList>>();
+
+  // added: button definitions
+  const buttons: {
+    title: string;
+    screen: keyof AssistanceTabParamList;
+    icon: string;
+  }[] = [
+    {
+      title: translate("assistHomeScreen.getAssistance"),
+      screen: "ReportViolation",
+      icon: "hands-helping",
+    },
+    {
+      title: translate("assistHomeScreen.wageRights"),
+      screen: "WageRights",
+      icon: "gavel",
+    },
+    {
+      title: translate("assistHomeScreen.beReadyForICE"),
+      screen: "BeReadyForICE",
+      icon: "shield-alt",
+    },
+    {
+      title: "Living Wage Calculator",
+      screen: "LivingWageCalculator",
+      icon: "calculator",
+    },
+    {
+      title: translate("assistHomeScreen.reportBusiness"),
+      screen: "ReportBusiness",
+      icon: "building",
+    },
+  ];
+
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <View style={styles.card}>
           <View style={styles.logoContainer}>
             <Image style={styles.logo} source={appIcon} />
           </View>
-          <Text style={styles.title}>
-            {translate("assistHomeScreen.title")}
-          </Text>
-          <Text style={styles.subtitle}>
-            {translate("assistHomeScreen.subtitle")}
-          </Text>
-
-          <View style={styles.buttonContainer}>
-            <MainButton
-              variant="primary"
-              title={translate("assistHomeScreen.getAssistance")}
-              onPress={() =>
-                navigation.navigate("Assistance", { screen: "ReportViolation" })
-              }
-            />
-
-            <MainButton
-              variant="primary"
-              title={translate("assistHomeScreen.wageRights")}
-              onPress={() =>
-                navigation.navigate("Assistance", { screen: "WageRights" })
-              }
-            />
-
-            <MainButton
-              variant="primary"
-              title={translate("assistHomeScreen.beReadyForICE")}
-              onPress={() =>
-                navigation.navigate("Assistance", { screen: "BeReadyForICE" })
-              }
-            />
-
-            <MainButton
-              variant="primary"
-              title="Living Wage Calculator"
-              onPress={() =>
-                navigation.navigate("Assistance", {
-                  screen: "LivingWageCalculator",
-                })
-              }
-            />
-            <MainButton
-              variant="primary"
-              title={translate("assistHomeScreen.reportBusiness")}
-              onPress={() =>
-                navigation.navigate("Assistance", { screen: "ReportBusiness" })
-              }
-            />
+          <View style={{ paddingHorizontal: 12 }}>
+            <Text style={styles.title}>
+              {translate("assistHomeScreen.title")}
+            </Text>
+            <Text style={styles.subtitle}>
+              {translate("assistHomeScreen.subtitle")}
+            </Text>
           </View>
+
+          <FlatList
+            data={buttons}
+            keyExtractor={(item) => item.title}
+            numColumns={2}
+            scrollEnabled={false}
+            columnWrapperStyle={styles.columnWrapper}
+            contentContainerStyle={styles.listContent}
+            renderItem={({ item }) => (
+              <View style={styles.item}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("Assistance", { screen: item.screen })
+                  }
+                  activeOpacity={0.85}
+                  accessibilityRole="button"
+                  accessibilityLabel={item.title}
+                  style={styles.tile}
+                >
+                  <View style={styles.tileHeader}>
+                    <View style={styles.iconWrap}>
+                      <FontAwesome5
+                        name={item.icon}
+                        size={22}
+                        color={colors.light.primary}
+                      />
+                    </View>
+                    <Entypo
+                      name="chevron-right"
+                      size={22}
+                      color={colors.light.textSecondary}
+                    />
+                  </View>
+
+                  <Text style={styles.tileTitle} numberOfLines={2}>
+                    {item.title}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          />
         </View>
       </View>
     </ScrollView>
@@ -81,41 +123,76 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light.surfaceVariant,
   },
   card: {
-    backgroundColor: colors.light.background,
-    borderRadius: 10,
-    padding: 20,
+    borderRadius: 12,
     shadowColor: colors.light.shadow,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 4,
   },
   logoContainer: {
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 18,
   },
   logo: {
-    width: 100,
-    height: 100,
+    width: 84,
+    height: 84,
     resizeMode: "contain",
     borderRadius: 10,
   },
   title: {
-    ...textStyles.h3,
-    ...textStyles.h3,
-    textAlign: "center",
-    marginBottom: 10,
+    ...textStyles.h1,
+    marginBottom: 6,
   },
   subtitle: {
     ...textStyles.body,
-    ...textStyles.body,
-    textAlign: "center",
-    marginBottom: 30,
+    marginBottom: 18,
     color: colors.light.textSecondary,
   },
-  buttonContainer: {
-    marginTop: 20,
-    gap: 20,
+  listContent: {
+    marginTop: 6,
+    paddingBottom: 10,
+  },
+  columnWrapper: {
+    justifyContent: "space-between",
+    paddingHorizontal: 6,
+  },
+  item: {
+    flex: 0.5,
+    marginBottom: 16,
+    paddingHorizontal: 6,
+  },
+  tile: {
+    backgroundColor: colors.light.surface,
+    borderRadius: 12,
+    padding: 14,
+    minHeight: 140,
+    aspectRatio: 1.08,
+    justifyContent: "space-between",
+    borderWidth: 1,
+    borderColor: colors.light.surfaceVariant,
+    shadowColor: colors.light.shadow,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  tileHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  iconWrap: {
+    backgroundColor: colors.light.primaryContainer || "#E8F0FF",
+    width: 44,
+    height: 44,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  tileTitle: {
+    ...textStyles.bodyBold,
+    color: colors.light.textPrimary,
+    marginTop: 6,
   },
 });
 

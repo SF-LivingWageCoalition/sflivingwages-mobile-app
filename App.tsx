@@ -19,7 +19,6 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import BottomTabStack from "./App/navigation/BottomTabStack";
 import { persistor, store } from "./App/redux/store/store";
-import ModalScreen from "./App/screens/AuctionScreen/ModalScreen";
 import CampaignScreen from "./App/screens/CampaignScreen/CampaignScreen";
 import EventsNavigator from "./App/screens/EventsScreen/components/EventsNav";
 import PerCampaignScreen from "./App/screens/PerCampaignScreen/PerCampaignScreen";
@@ -32,6 +31,7 @@ import AssistStack from "./App/navigation/AssistStack";
 import { UpdateChecker } from "./App/components/UpdateChecker/UpdateChecker";
 import AuthNavigator from "./App/navigation/AuthNav";
 import AccountNavigator from "./App/navigation/AccountNav";
+import PreviewImage from "./App/screens/AuctionScreen/PreviewImage";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -87,9 +87,10 @@ const App: React.FC = () => {
                 options={{ title: "San Francisco Living Wage Coalition" }}
               />
               <Stack.Screen
-                name="Preview"
-                component={ModalScreen}
+                name="PreviewImage"
+                component={PreviewImage}
                 initialParams={{ image: "" }}
+                options={{ headerShown: false }}
               />
               <Stack.Screen
                 name="EventsNavigator"

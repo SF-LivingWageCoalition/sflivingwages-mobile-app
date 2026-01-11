@@ -3,7 +3,7 @@ import { Violation } from "../screens/ListReportScreen/ListReportScreen";
 
 export type RootStackParamList = {
   TabStack: undefined;
-  Preview: { image: string };
+  PreviewImage: { image: string };
   EventsNavigator: undefined;
   WhoWeAre: undefined;
   CampaignScreen: undefined;

@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
   textStyleOpen: {
     ...textStyles.buttonSmall,
     color: colors.light.textPrimary,
+    marginHorizontal: 16,
   },
   modalText: {
     ...textStyles.bodyLarge,
