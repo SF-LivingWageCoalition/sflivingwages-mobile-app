@@ -128,7 +128,7 @@ This rapid expansion of incarceration in the U.S. has origins in the 1970s, duri
   },
   {
     id: 4,
-    title: "Fix a Broken Immigration Reform",
+    title: "Fix a Broken Immigration System",
     text: `
 
 A broken immigration system is pushing undocumented workers into the shadows, leaving workers vulnerable to violations of their workplace rights, forcing them to accept lower pay, and creating guest worker programs in which employers can have workers deported for speaking out for better conditions. Immigration reform is needed.

@@ -41,10 +41,10 @@ const CampaignScreen: React.FC = () => {
         numColumns={2}
         scrollEnabled={false}
         columnWrapperStyle={styles.columnWrapper}
+        contentContainerStyle={styles.listContent}
         renderItem={({ item }) => (
           <CampaignCard title={item.title} text={item.text} id={item.id} />
         )}
-        contentContainerStyle={styles.listContent}
       />
     </View>
   );
@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
   heroContent: {
     flex: 1,
     justifyContent: "flex-end",
-    margin: "auto",
     paddingBottom: 12,
+    margin: "auto",
   },
   heroTitle: {
     ...textStyles.h1,
@@ -75,6 +75,8 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   listContent: {
+    marginTop: 6,
+    paddingBottom: 10,
     paddingTop: 16,
   },
   spinner: {

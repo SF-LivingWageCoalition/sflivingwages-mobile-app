@@ -124,7 +124,6 @@ const AssistanceHome: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.light.surfaceVariant,
   },
   card: {
     borderRadius: 12,
@@ -138,7 +137,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     margin: "auto",
-    paddingHorizontal: 12,
   },
   logoContainer: {
     alignItems: "center",
@@ -152,12 +150,12 @@ const styles = StyleSheet.create({
   },
   title: {
     ...textStyles.h1,
-    // marginBottom: 6,
+    marginBottom: 4,
     color: colors.light.surface,
     textTransform: "uppercase",
   },
   subtitle: {
-    ...textStyles.h5,
+    ...textStyles.bodySmall,
     marginBottom: 8,
     color: colors.light.surface,
   },
@@ -168,6 +166,7 @@ const styles = StyleSheet.create({
   listContent: {
     marginTop: 6,
     paddingBottom: 10,
+    paddingTop: 16,
   },
   columnWrapper: {
     justifyContent: "space-between",
@@ -175,8 +174,8 @@ const styles = StyleSheet.create({
   },
   item: {
     flex: 0.5,
-    marginBottom: 16,
-    paddingHorizontal: 6,
+    marginBottom: 32,
+    paddingHorizontal: 12,
   },
   imageBackground: {
     width: "100%",
