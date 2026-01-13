@@ -37,6 +37,10 @@ const CampaignScreen: React.FC = () => {
       {/* Campaign list */}
       <FlatList
         data={richCampaignsData}
+        keyExtractor={(item) => item.id.toString()}
+        numColumns={2}
+        scrollEnabled={false}
+        columnWrapperStyle={styles.columnWrapper}
         renderItem={({ item }) => (
           <CampaignCard title={item.title} text={item.text} id={item.id} />
         )}
@@ -57,7 +61,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    backgroundColor: "rgba(0, 0, 0, 0.35)",
   },
   heroContent: {
     flex: 1,
@@ -93,6 +97,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: colors.light.textSecondary,
     fontStyle: "italic",
+  },
+  columnWrapper: {
+    justifyContent: "space-between",
+    paddingHorizontal: 6,
   },
 });
 
