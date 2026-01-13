@@ -136,6 +136,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     flex: 1,
     justifyContent: "flex-end",
+    paddingBottom: 6,
     margin: "auto",
   },
   logoContainer: {
@@ -150,7 +151,6 @@ const styles = StyleSheet.create({
   },
   title: {
     ...textStyles.h1,
-    marginBottom: 4,
     color: colors.light.surface,
     textTransform: "uppercase",
   },

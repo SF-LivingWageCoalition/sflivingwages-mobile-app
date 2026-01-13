@@ -26,10 +26,10 @@ const CampaignScreen: React.FC = () => {
         style={styles.heroImage}
         resizeMode="cover"
       >
-        {/* Text overlay */}
         <View style={styles.overlay}>
           <View style={styles.heroContent}>
-            <Text style={styles.heroTitle}>OUR CAMPAIGNS</Text>
+            <Text style={styles.heroTitle}>Our Campaigns</Text>
+            <Text style={styles.heroSubtitle}>Stand up for your rights</Text>
           </View>
         </View>
       </ImageBackground>
@@ -66,13 +66,20 @@ const styles = StyleSheet.create({
   heroContent: {
     flex: 1,
     justifyContent: "flex-end",
-    paddingBottom: 12,
+    paddingBottom: 6,
     margin: "auto",
   },
   heroTitle: {
     ...textStyles.h1,
     color: colors.light.surface,
     textTransform: "uppercase",
+    marginHorizontal: "auto",
+  },
+  heroSubtitle: {
+    ...textStyles.h5,
+    color: colors.light.surface,
+    marginBottom: 8,
+    marginHorizontal: "auto",
   },
   listContent: {
     marginTop: 6,

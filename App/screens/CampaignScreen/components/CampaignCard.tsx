@@ -10,6 +10,7 @@ import {
 import { colors } from "../../../theme";
 import { textStyles } from "../../../theme/fontStyles";
 import { CampaignItem } from "../../../types/types";
+import { Entypo } from "@expo/vector-icons";
 
 const CampaignCard: React.FC<CampaignItem> = ({ id, title }) => {
   const navigation = useNavigation<NavigationProp<any>>();
@@ -26,6 +27,12 @@ const CampaignCard: React.FC<CampaignItem> = ({ id, title }) => {
           activeOpacity={0.85}
         >
           <Text style={styles.homeNavText}>{title}</Text>
+          <Entypo
+            name="chevron-right"
+            size={24}
+            color={colors.light.textSecondary}
+            style={styles.chevron}
+          />
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -58,6 +65,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.06,
     shadowRadius: 4,
     elevation: 2,
+  },
+  chevron: {
+    position: "absolute",
+    right: 12,
+    bottom: 12,
   },
 });
 
