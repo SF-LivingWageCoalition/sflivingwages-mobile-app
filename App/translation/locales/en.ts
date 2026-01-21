@@ -1,5 +1,3 @@
-import PerCampaignScreen from "../../screens/PerCampaignScreen/PerCampaignScreen";
-import { ok } from "assert";
 import simpleJwt from "./simpleJwt.en";
 import wooCommerce from "./wooCommerce.en";
 

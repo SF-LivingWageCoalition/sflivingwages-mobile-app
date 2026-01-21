@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Dimensions,
   FlatList,
   StyleSheet,
   View,
@@ -11,8 +10,6 @@ import richCampaignsData from "../../assets/richCampaignsData";
 import { colors, textStyles } from "../../theme";
 import CampaignCard from "./components/CampaignCard";
 import goldenGateBridge from "../../assets/images/golden-gate-bridge.png";
-
-const { height } = Dimensions.get("window");
 
 /**
  * Displays a list of campaigns
@@ -39,7 +36,6 @@ const CampaignScreen: React.FC = () => {
         data={richCampaignsData}
         keyExtractor={(item) => item.id.toString()}
         numColumns={2}
-        scrollEnabled={false}
         columnWrapperStyle={styles.columnWrapper}
         contentContainerStyle={styles.listContent}
         renderItem={({ item }) => (
@@ -67,45 +63,24 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     paddingBottom: 6,
-    margin: "auto",
+    alignItems: "center",
   },
   heroTitle: {
     ...textStyles.h1,
     color: colors.light.surface,
     textTransform: "uppercase",
-    marginHorizontal: "auto",
+    textAlign: "center",
   },
   heroSubtitle: {
     ...textStyles.h5,
     color: colors.light.surface,
     marginBottom: 8,
-    marginHorizontal: "auto",
+    textAlign: "center",
   },
   listContent: {
     marginTop: 6,
     paddingBottom: 10,
     paddingTop: 16,
-  },
-  spinner: {
-    height: height / 2,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  loadMoreSpinner: {
-    height: 80,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  emptyListFooter: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    height: 80,
-  },
-  noMoreEventsText: {
-    textAlign: "center",
-    color: colors.light.textSecondary,
-    fontStyle: "italic",
   },
   columnWrapper: {
     justifyContent: "space-between",

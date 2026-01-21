@@ -1,12 +1,6 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import React from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { colors } from "../../../theme";
 import { textStyles } from "../../../theme/fontStyles";
 import { CampaignItem } from "../../../types/types";
@@ -15,27 +9,25 @@ import { Entypo } from "@expo/vector-icons";
 const CampaignCard: React.FC<CampaignItem> = ({ id, title }) => {
   const navigation = useNavigation<NavigationProp<any>>();
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.tile}
-          onPress={() => {
-            navigation.navigate("PerCampaignScreen", { id });
-          }}
-          accessibilityRole="button"
-          accessibilityLabel={title}
-          activeOpacity={0.85}
-        >
-          <Text style={styles.homeNavText}>{title}</Text>
-          <Entypo
-            name="chevron-right"
-            size={24}
-            color={colors.light.textSecondary}
-            style={styles.chevron}
-          />
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+    <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.tile}
+        onPress={() => {
+          navigation.navigate("PerCampaignScreen", { id });
+        }}
+        accessibilityRole="button"
+        accessibilityLabel={title}
+        activeOpacity={0.85}
+      >
+        <Text style={styles.homeNavText}>{title}</Text>
+        <Entypo
+          name="chevron-right"
+          size={24}
+          color={colors.light.textSecondary}
+          style={styles.chevron}
+        />
+      </TouchableOpacity>
+    </View>
   );
 };
 

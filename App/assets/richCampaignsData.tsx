@@ -16,7 +16,7 @@ To pass this model legislation, we are organizing welfare-to-work program partic
 
 ### c. Building a National Network of Welfare-to-Work Program Participants
 
-We are sharing strategies on building a national movement to change welfare as we know it, from dead end programs to real job training and career opportunities. The current welfare to work programs do note provide read job traingin, but rather forces desperate parents into low-wage, menial labor positions. [Read more](https://www.livingwage-sf.org/transform-welfare-to-work-programs/welfare-reform-act-of-1996/)
+We are sharing strategies on building a national movement to change welfare as we know it, from dead end programs to real job training and career opportunities. The current welfare to work programs do not provide real job training, but rather forces desperate parents into low-wage, menial labor positions. [Read more](https://www.livingwage-sf.org/transform-welfare-to-work-programs/welfare-reform-act-of-1996/)
       `,
   },
   {
@@ -32,7 +32,7 @@ When there are more union worksites, even non-union employers pay more in compet
 
 ### a. Starbucks Workers stage a Red Cup Rebellion
 
-On November 13, of 2025, over 1,000 baristas in more than 40 cities and 65 stores, walked off the job starting an open ended Unfair Labor Practice strike calling it “Red Cup Rebellion.”
+On November 13, 2025, over 1,000 baristas in more than 40 cities and 65 stores, walked off the job starting an open ended Unfair Labor Practice strike calling it “Red Cup Rebellion.”
 [Read more](https://www.livingwage-sf.org/protect-public-sector-jobs/starbucks-baristas-stage-red-cup-rebellion/)
 
 
