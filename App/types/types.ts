@@ -6,6 +6,8 @@ export type RootStackParamList = {
   PreviewImage: { image: string };
   EventsNavigator: undefined;
   WhoWeAre: undefined;
+  CampaignScreen: undefined;
+  PerCampaignScreen: { id: number };
   AuthNavigator: undefined;
   AccountNavigator: undefined;
   Assistance: { screen?: keyof AssistanceTabParamList };
@@ -47,21 +49,9 @@ export type RecaptchaRef = {
   close: () => void;
 };
 
-export type CampaignActionProps = {
-  stepText?: string;
-  url?: string;
-  navigation?: NavigationProp<any>;
-};
-
 export type CampaignCardProps = {
   navigate?: (screen: string, params?: any) => void;
   title?: string;
-};
-
-export type CampaignTitleProps = {
-  title?: string;
-  url?: string;
-  navigation?: NavigationProp<ParamListBase>;
 };
 
 export type PreviewScreenParams = {
@@ -297,6 +287,11 @@ export interface WageData {
   adult1: Household;
   adult2: Household;
 }
+export type CampaignItem = {
+  id: number;
+  text: string;
+  title: string;
+};
 
 export type AuthStackParamList = {
   Login: any;

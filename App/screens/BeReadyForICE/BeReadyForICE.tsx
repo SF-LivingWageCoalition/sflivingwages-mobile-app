@@ -36,20 +36,6 @@ const BeReadyForICE: React.FC = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <MainButton
-          variant="circle"
-          position="absolute"
-          positionTop={27}
-          positionLeft={27}
-          onPress={() => navigation.goBack()}
-          icon={
-            <FontAwesome5
-              name="chevron-left"
-              size={20}
-              color={colors.light.chevronLight}
-            />
-          }
-        />
         <View style={styles.card}>
           <View style={styles.logoContainer}>
             <Image style={styles.logo} source={appIcon} />

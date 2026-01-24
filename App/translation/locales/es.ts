@@ -304,6 +304,12 @@ const es: Translations = {
   eventsDetails: {
     title: "Detalles del Evento",
   },
+  campaignScreen: {
+    title: "Campañas",
+  },
+  PerCampaignScreen: {
+    title: "Campaña",
+  },
   accountScreen: {
     title: "Cuenta",
     isLoggedIn: "¡Bienvenido, %{name}!",

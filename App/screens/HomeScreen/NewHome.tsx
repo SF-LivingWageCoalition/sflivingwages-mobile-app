@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Dimensions,
   ImageBackground,
@@ -76,8 +76,6 @@ const CarouselImageSmall: React.FC<CarouselImageProps> = ({
  * New Home Screen component
  */
 const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
-  const [isLoading, setIsLoading] = useState(false);
-
   const mainSliderImages = [
     {
       id: 1,
@@ -93,7 +91,6 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
       destinationScreen: "Events",
     },
   ];
-
   const campaignImages = [
     {
       id: 1,
@@ -188,7 +185,6 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
               </Swiper>
             </View>
           </View>
-
           {/* Campaigns section */}
           <View style={styles.containerBody}>
             <Text style={styles.campaignsTitle}>Campaigns</Text>
@@ -204,7 +200,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                   key={image.id}
                   image={image}
                   onPress={() => {
-                    Linking.openURL(image.destination);
+                    navigation.navigate("CampaignScreen");
                   }}
                 />
               ))}

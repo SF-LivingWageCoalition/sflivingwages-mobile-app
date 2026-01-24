@@ -1,4 +1,3 @@
-import { ok } from "assert";
 import simpleJwt from "./simpleJwt.en";
 import wooCommerce from "./wooCommerce.en";
 
@@ -296,6 +295,12 @@ const en = {
   },
   eventsDetails: {
     title: "Event Details",
+  },
+  campaignScreen: {
+    title: "Campaigns",
+  },
+  PerCampaignScreen: {
+    title: "Campaign",
   },
   accountScreen: {
     title: "Account",

@@ -1,46 +1,67 @@
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { colors } from "../../../theme";
 import { textStyles } from "../../../theme/fontStyles";
-import { CampaignCardProps } from "../../../types/types";
+import { CampaignItem } from "../../../types/types";
+import { Entypo } from "@expo/vector-icons";
 
-const CampaignCard: React.FC<CampaignCardProps> = (props) => {
-  const navigation = useNavigation<StackNavigationProp<any>>();
-
-  // Use props.navigate if provided, otherwise use the navigation hook
-  const navigateToScreen = (screen: string, params?: any) => {
-    if (props.navigate) {
-      props.navigate(screen, params);
-    } else if (navigation) {
-      navigation.navigate(screen, params);
-    }
-  };
-
+const CampaignCard: React.FC<CampaignItem> = ({ id, title }) => {
+  const navigation = useNavigation<NavigationProp<any>>();
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.container}>
-        <Text
-          style={styles.homeNavText}
-          onPress={() => navigateToScreen("CampaignDetailpage")}
-        >
-          Raise Wage
-        </Text>
-      </View>
-    </ScrollView>
+    <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.tile}
+        onPress={() => {
+          navigation.navigate("PerCampaignScreen", { id });
+        }}
+        accessibilityRole="button"
+        accessibilityLabel={title}
+        activeOpacity={0.85}
+      >
+        <Text style={styles.homeNavText}>{title}</Text>
+        <Entypo
+          name="chevron-right"
+          size={24}
+          color={colors.light.textSecondary}
+          style={styles.chevron}
+        />
+      </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0.5,
+    marginBottom: 32,
+    paddingHorizontal: 12,
   },
   homeNavText: {
-    ...textStyles.h3,
-    color: colors.light.primaryDark,
-    textAlign: "center",
+    ...textStyles.h5,
+    color: colors.light.secondaryDark,
+    textAlign: "left",
     padding: 10,
+  },
+  tile: {
+    backgroundColor: colors.light.surface,
+    borderRadius: 12,
+    padding: 14,
+    minHeight: 140,
+    aspectRatio: 1.08,
+    justifyContent: "space-between",
+    borderWidth: 1,
+    borderColor: colors.light.surfaceVariant,
+    shadowColor: colors.light.shadow,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  chevron: {
+    position: "absolute",
+    right: 12,
+    bottom: 12,
   },
 });
 

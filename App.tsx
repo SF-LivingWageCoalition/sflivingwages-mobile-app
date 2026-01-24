@@ -19,7 +19,9 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import BottomTabStack from "./App/navigation/BottomTabStack";
 import { persistor, store } from "./App/redux/store/store";
+import CampaignScreen from "./App/screens/CampaignScreen/CampaignScreen";
 import EventsNavigator from "./App/screens/EventsScreen/components/EventsNav";
+import PerCampaignScreen from "./App/screens/PerCampaignScreen/PerCampaignScreen";
 import WhoWeAre from "./App/screens/WhoWeAreScreen/WhoWeAreScreen";
 import { colors } from "./App/theme";
 import { fontFamily } from "./App/theme/fontStyles";
@@ -102,6 +104,16 @@ const App: React.FC = () => {
                 name="WhoWeAre"
                 options={{ title: translate("whoWeAreScreen.title") }}
                 component={WhoWeAre}
+              />
+              <Stack.Screen
+                name="CampaignScreen"
+                options={{ title: translate("campaignScreen.title") }}
+                component={CampaignScreen}
+              />
+              <Stack.Screen
+                name="PerCampaignScreen"
+                options={{ title: translate("PerCampaignScreen.title") }}
+                component={PerCampaignScreen}
               />
               <Stack.Screen
                 options={{

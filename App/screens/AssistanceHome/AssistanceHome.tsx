@@ -1,7 +1,7 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
 import {
-  Image,
+  ImageBackground,
   ScrollView,
   StyleSheet,
   Text,
@@ -9,13 +9,13 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import appIcon from "../../../assets/icon.png";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { AssistanceTabParamList } from "../../types/types";
 import { useNavigation } from "@react-navigation/native";
 import { Entypo, FontAwesome5 } from "@expo/vector-icons";
+import goldenGateBridge from "../../assets/images/golden-gate-bridge.png";
 
 const AssistanceHome: React.FC = () => {
   const navigation =
@@ -58,17 +58,22 @@ const AssistanceHome: React.FC = () => {
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <View style={styles.card}>
-          <View style={styles.logoContainer}>
-            <Image style={styles.logo} source={appIcon} />
-          </View>
-          <View style={{ paddingHorizontal: 12 }}>
-            <Text style={styles.title}>
-              {translate("assistHomeScreen.title")}
-            </Text>
-            <Text style={styles.subtitle}>
-              {translate("assistHomeScreen.subtitle")}
-            </Text>
-          </View>
+          <ImageBackground
+            source={goldenGateBridge}
+            style={styles.imageBackground}
+            resizeMode="cover"
+          >
+            <View style={styles.overlay}>
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>
+                  {translate("assistHomeScreen.title")}
+                </Text>
+                <Text style={styles.subtitle}>
+                  {translate("assistHomeScreen.subtitle")}
+                </Text>
+              </View>
+            </View>
+          </ImageBackground>
 
           <FlatList
             data={buttons}
@@ -119,8 +124,6 @@ const AssistanceHome: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    backgroundColor: colors.light.surfaceVariant,
   },
   card: {
     borderRadius: 12,
@@ -129,6 +132,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowRadius: 6,
     elevation: 4,
+  },
+  titleContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    paddingBottom: 6,
+    margin: "auto",
   },
   logoContainer: {
     alignItems: "center",
@@ -142,16 +151,22 @@ const styles = StyleSheet.create({
   },
   title: {
     ...textStyles.h1,
-    marginBottom: 6,
+    color: colors.light.surface,
+    textTransform: "uppercase",
   },
   subtitle: {
-    ...textStyles.body,
-    marginBottom: 18,
-    color: colors.light.textSecondary,
+    ...textStyles.bodySmall,
+    marginBottom: 8,
+    color: colors.light.surface,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.35)",
   },
   listContent: {
     marginTop: 6,
     paddingBottom: 10,
+    paddingTop: 16,
   },
   columnWrapper: {
     justifyContent: "space-between",
@@ -159,8 +174,13 @@ const styles = StyleSheet.create({
   },
   item: {
     flex: 0.5,
-    marginBottom: 16,
-    paddingHorizontal: 6,
+    marginBottom: 32,
+    paddingHorizontal: 12,
+  },
+  imageBackground: {
+    width: "100%",
+    height: 250,
+    justifyContent: "flex-end",
   },
   tile: {
     backgroundColor: colors.light.surface,
