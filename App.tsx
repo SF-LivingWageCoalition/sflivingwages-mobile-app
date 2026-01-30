@@ -13,8 +13,10 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect } from "react";
+import { Platform } from "react-native";
 import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import * as SystemUI from "expo-system-ui";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import BottomTabStack from "./App/navigation/BottomTabStack";
@@ -56,6 +58,11 @@ const App: React.FC = () => {
 
         if (fontError) {
           console.error("Font loading error:", fontError);
+        }
+
+        // On Android, set the root view background so outer margins match the content area
+        if (Platform.OS === "android") {
+          await SystemUI.setBackgroundColorAsync(colors.light.background);
         }
       }
     }

@@ -55,7 +55,11 @@ const AssistanceHome: React.FC = () => {
   ];
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      style={styles.scrollView}
+      contentContainerStyle={styles.scrollContent}
+      showsVerticalScrollIndicator={false}
+    >
       <View style={styles.container}>
         <View style={styles.card}>
           <ImageBackground
@@ -122,6 +126,13 @@ const AssistanceHome: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+    backgroundColor: colors.light.background,
+  },
+  scrollContent: {
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
   },
