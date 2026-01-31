@@ -1,35 +1,34 @@
-import React, { useRef, useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  TextInput,
-  Modal,
-  TouchableOpacity,
-  Text,
-} from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import GooglePlacesTextInput, {
-  GooglePlacesTextInputRef,
-  Place,
-} from "react-native-google-places-textinput";
-import { Dropdown } from "react-native-element-dropdown";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   NavigationProp,
   ParamListBase,
   useNavigation,
 } from "@react-navigation/native";
-
-import FloatingActionButton from "../../components/FloatingActionButton/FloatingActionButton";
-import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
-import PlatformMap from "../../components/PlatformMap/PlatformMap";
-import { fontSize } from "../../theme/fontStyles";
+import React, { useRef, useState } from "react";
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Dropdown } from "react-native-element-dropdown";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import GooglePlacesTextInput, {
+  GooglePlacesTextInputRef,
+  Place,
+} from "react-native-google-places-textinput";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { reportSchema } from "./validationSchemas";
+import FloatingActionButton from "../../components/FloatingActionButton/FloatingActionButton";
+import MainButton from "../../components/MainButton";
+import PlatformMap from "../../components/PlatformMap/PlatformMap";
 import { colors } from "../../theme";
+import { fontSize } from "../../theme/fontStyles";
+import { reportSchema } from "./validationSchemas";
 
 // Use state for markers
 const initialAndroidMarker = {
@@ -289,7 +288,8 @@ const ReportBusinessMap = () => {
                 </Text>
 
                 <View style={styles.submitButtonContainer}>
-                  <PrimaryButton
+                  <MainButton
+                    variant="primary"
                     title="Submit"
                     onPress={() => {
                       Keyboard.dismiss();

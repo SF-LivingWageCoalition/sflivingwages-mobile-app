@@ -1,17 +1,16 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import {
   NavigationProp,
   ParamListBase,
   useNavigation,
 } from "@react-navigation/native";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-
-import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
+import React from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import MainButton from "../../components/MainButton";
+import { colors } from "../../theme";
 import { fontSize, fontWeight } from "../../theme/fontStyles";
 import { translate } from "../../translation";
-import { colors } from "../../theme";
 
 const ReportBusiness = () => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
@@ -32,7 +31,8 @@ const ReportBusiness = () => {
         </Text>
 
         <View style={styles.buttonContainer}>
-          <PrimaryButton
+          <MainButton
+            variant="primary"
             title={translate("reportBusiness.cta")}
             onPress={() => navigation.navigate("ReportBusinessMap")}
           />
