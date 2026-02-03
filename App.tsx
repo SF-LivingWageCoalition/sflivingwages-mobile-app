@@ -119,7 +119,10 @@ const App: React.FC = () => {
               />
               <Stack.Screen
                 name="PerCampaignScreen"
-                options={{ title: translate("PerCampaignScreen.title") }}
+                options={{
+                  title: translate("PerCampaignScreen.title"),
+                  headerBackTitle: "Back",
+                }}
                 component={PerCampaignScreen}
               />
               <Stack.Screen
