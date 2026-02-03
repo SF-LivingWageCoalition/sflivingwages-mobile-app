@@ -29,6 +29,7 @@ import PlatformMap from "../../components/PlatformMap/PlatformMap";
 import { colors } from "../../theme";
 import { fontSize } from "../../theme/fontStyles";
 import { reportSchema } from "./validationSchemas";
+import FontAwesome5 from "@expo/vector-icons/build/FontAwesome5";
 
 // Use state for markers
 const initialAndroidMarker = {
@@ -178,18 +179,23 @@ const ReportBusinessMap = () => {
           markers={Platform.OS === "ios" ? markersIOS : markersAndroid}
         />
 
-        <TouchableOpacity
-          style={styles.backButton}
+        <MainButton
+          variant="circle"
+          position="absolute"
+          positionTop={50}
+          positionLeft={24}
           onPress={() => navigation.goBack()}
-        >
-          <Ionicons
-            name="arrow-back"
-            size={30}
-            color={colors.palette.gray600}
-          />
-        </TouchableOpacity>
+          icon={
+            <FontAwesome5
+              name="chevron-left"
+              size={20}
+              color={colors.light.chevronLight}
+            />
+          }
+        />
 
         <FloatingActionButton onPress={() => setIsModalVisible(true)} />
+
         <FloatingActionButton
           style={styles.listViewBtn}
           icon={renderIcon()}
@@ -218,7 +224,7 @@ const ReportBusinessMap = () => {
                 >
                   <Ionicons
                     name="close"
-                    size={30}
+                    size={50}
                     color={colors.palette.gray600}
                   />
                 </TouchableOpacity>
@@ -309,25 +315,6 @@ const ReportBusinessMap = () => {
 export default ReportBusinessMap;
 
 const styles = StyleSheet.create({
-  backButton: {
-    position: "absolute",
-    top: 50,
-    left: 20,
-    zIndex: 1,
-    backgroundColor: "white",
-    padding: 8,
-    elevation: 3,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    width: 50,
-    height: 50,
-    borderRadius: 50 / 2,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
   listViewBtn: { backgroundColor: colors.palette.gray800, bottom: 120 },
 
   header: {

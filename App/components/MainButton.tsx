@@ -39,8 +39,8 @@ const paddingSizes = {
 // The circle button will only have one size option, but this is here in case we need to add more sizes in the future
 const circleSizes = {
   small: 40,
-  medium: 40,
-  large: 40,
+  medium: 50,
+  large: 60,
 } as const;
 
 const fontSizes = {
