@@ -28,6 +28,7 @@ export interface ButtonProps {
   position?: "absolute"; // For circle back button positioning
   positionTop?: number;
   positionLeft?: number;
+  backgroundColor?: string;
 }
 
 const paddingSizes = {
@@ -63,6 +64,7 @@ const MainButton: React.FC<ButtonProps> = ({
   position,
   positionTop,
   positionLeft,
+  backgroundColor,
 }) => {
   const getButtonStyle = (): ViewStyle[] => {
     const baseStyle: ViewStyle = {};
@@ -132,6 +134,9 @@ const MainButton: React.FC<ButtonProps> = ({
         variantStyles.shadowRadius = 3;
         variantStyles.shadowOffset = { width: 1, height: 1 };
         break;
+    }
+    if (backgroundColor !== undefined) {
+      variantStyles.backgroundColor = backgroundColor;
     }
     return [baseStyle, variantStyles];
   };

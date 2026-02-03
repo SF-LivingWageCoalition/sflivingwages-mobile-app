@@ -23,7 +23,6 @@ import GooglePlacesTextInput, {
   Place,
 } from "react-native-google-places-textinput";
 import { SafeAreaView } from "react-native-safe-area-context";
-import FloatingActionButton from "../../components/FloatingActionButton/FloatingActionButton";
 import MainButton from "../../components/MainButton";
 import PlatformMap from "../../components/PlatformMap/PlatformMap";
 import { colors } from "../../theme";
@@ -166,10 +165,6 @@ const ReportBusinessMap = () => {
     }
   };
 
-  const renderIcon = () => {
-    return <Ionicons name="list" size={30} color={colors.palette.red400} />;
-  };
-
   return (
     <GestureHandlerRootView style={styles.containerBS}>
       <View style={styles.flex1}>
@@ -194,12 +189,28 @@ const ReportBusinessMap = () => {
           }
         />
 
-        <FloatingActionButton onPress={() => setIsModalVisible(true)} />
+        <MainButton
+          variant="circle"
+          position="absolute"
+          onPress={() => setIsModalVisible(true)}
+          icon={
+            <FontAwesome5 name="plus" size={20} color={colors.palette.red100} />
+          }
+          style={{ bottom: 40, left: 24 }}
+        />
 
-        <FloatingActionButton
-          style={styles.listViewBtn}
-          icon={renderIcon()}
+        <MainButton
+          variant="circle"
+          position="absolute"
           onPress={() => navigation.navigate("ListReportScreen")}
+          icon={
+            <FontAwesome5 name="list" size={23} color={colors.palette.red400} />
+          }
+          backgroundColor={colors.palette.gray800}
+          style={{
+            bottom: 120,
+            left: 24,
+          }}
         />
 
         <Modal
@@ -315,8 +326,6 @@ const ReportBusinessMap = () => {
 export default ReportBusinessMap;
 
 const styles = StyleSheet.create({
-  listViewBtn: { backgroundColor: colors.palette.gray800, bottom: 120 },
-
   header: {
     position: "absolute",
     top: 50,
