@@ -1,3 +1,4 @@
+import FontAwesome5 from "@expo/vector-icons/build/FontAwesome5";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   NavigationProp,
@@ -13,7 +14,6 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
@@ -28,7 +28,6 @@ import PlatformMap from "../../components/PlatformMap/PlatformMap";
 import { colors } from "../../theme";
 import { fontSize } from "../../theme/fontStyles";
 import { reportSchema } from "./validationSchemas";
-import FontAwesome5 from "@expo/vector-icons/build/FontAwesome5";
 
 // Use state for markers
 const initialAndroidMarker = {
@@ -226,19 +225,22 @@ const ReportBusinessMap = () => {
             >
               <View style={styles.modalHeader}>
                 <Text style={styles.header2}>Report a Business Violation</Text>
-                <TouchableOpacity
-                  style={styles.closeButton}
+                <MainButton
+                  variant="text"
                   onPress={() => {
                     resetForm();
                     setIsModalVisible(false);
                   }}
-                >
-                  <Ionicons
-                    name="close"
-                    size={50}
-                    color={colors.palette.gray600}
-                  />
-                </TouchableOpacity>
+                  icon={
+                    <Ionicons
+                      name="close"
+                      size={32}
+                      color={colors.palette.gray600}
+                    />
+                  }
+                  style={styles.closeButton}
+                  textStyle={{ color: colors.palette.gray600 }}
+                />
               </View>
               <View style={styles.contentContainer}>
                 <Dropdown

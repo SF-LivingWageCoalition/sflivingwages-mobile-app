@@ -1,14 +1,9 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ActivityIndicator,
-} from "react-native";
-import * as Updates from "expo-updates";
 import * as Device from "expo-device";
+import * as Updates from "expo-updates";
 import { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../../theme";
+import MainButton from "../MainButton";
 
 export const UpdateChecker = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -63,17 +58,14 @@ export const UpdateChecker = () => {
         </Text>
         {/* Buttons */}
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.updateButton}
+          <MainButton
+            variant="primary"
+            title="Update Now"
             onPress={handleUpdate}
-            disabled={loading}
-          >
-            {loading ? (
-              <ActivityIndicator color="white" />
-            ) : (
-              <Text style={styles.updateButtonText}>Update Now</Text>
-            )}
-          </TouchableOpacity>
+            isLoading={loading}
+            isDisabled={loading}
+            style={styles.updateButton}
+          />
         </View>
       </View>
     </View>
@@ -136,17 +128,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   updateButton: {
-    backgroundColor: colors.palette.red800,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 30,
     flex: 1,
     marginHorizontal: 8,
-    alignItems: "center",
-  },
-  updateButtonText: {
-    fontFamily: "noto-sans-bold",
-    color: "white",
-    fontSize: 18,
   },
 });

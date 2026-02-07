@@ -1,11 +1,11 @@
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import FontAwesome5 from "@expo/vector-icons/build/FontAwesome5";
 import {
   NavigationProp,
   ParamListBase,
   useNavigation,
 } from "@react-navigation/native";
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";
@@ -17,9 +17,17 @@ const ReportBusiness = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <MaterialIcons name="arrow-back-ios" size={30} color="black" />
-        </TouchableOpacity>
+        <MainButton
+          variant="circle"
+          onPress={() => navigation.goBack()}
+          icon={
+            <FontAwesome5
+              name="chevron-left"
+              size={20}
+              color={colors.light.chevronLight}
+            />
+          }
+        />
         <Image
           style={styles.image}
           resizeMode="contain"
