@@ -319,57 +319,65 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
             <Divider style={styles.divider} />
             <Text style={styles.follow}>Follow Us</Text>
             <View style={styles.socialMediaView}>
-              <TouchableOpacity
+              <MainButton
+                variant="text"
                 onPress={() =>
                   Linking.openURL(
                     "https://www.facebook.com/san.francisco.living.wage/"
                   )
                 }
+                icon={
+                  <FontAwesome
+                    name="facebook-square"
+                    size={46}
+                    color={colors.light.secondary}
+                  />
+                }
                 style={styles.buttonMargin}
-              >
-                <FontAwesome
-                  name="facebook-square"
-                  size={46}
-                  color={colors.light.secondary}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
+              />
+              <MainButton
+                variant="text"
                 onPress={() =>
                   Linking.openURL(
                     "https://www.instagram.com/sflivingwage/?hl=en"
                   )
                 }
+                icon={
+                  <FontAwesome
+                    name="instagram"
+                    size={46}
+                    color={colors.light.primary}
+                  />
+                }
                 style={styles.buttonMargin}
-              >
-                <FontAwesome
-                  name="instagram"
-                  size={46}
-                  color={colors.light.primary}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
+              />
+              <MainButton
+                variant="text"
                 onPress={() =>
                   Linking.openURL("https://twitter.com/sflivingwage?lang=en/")
                 }
+                icon={
+                  <FontAwesome
+                    name="twitter"
+                    size={46}
+                    color={colors.light.secondary}
+                  />
+                }
                 style={styles.buttonMargin}
-              >
-                <FontAwesome
-                  name="twitter"
-                  size={46}
-                  color={colors.light.secondary}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
+              />
+              <MainButton
+                variant="text"
                 onPress={() =>
                   Linking.openURL("https://www.youtube.com/user/sflivingwage")
                 }
-              >
-                <FontAwesome
-                  name="youtube"
-                  size={42}
-                  color={colors.light.primary}
-                />
-              </TouchableOpacity>
+                icon={
+                  <FontAwesome
+                    name="youtube"
+                    size={42}
+                    color={colors.light.primary}
+                  />
+                }
+              />
             </View>
           </View>
         </View>
