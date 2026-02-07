@@ -11,7 +11,7 @@ import {
 import { colors } from "../theme/colors";
 import { textStyles, fontSize } from "../theme/fontStyles";
 
-export type ButtonVariant = "primary" | "clear" | "outlined" | "circle";
+export type ButtonVariant = "primary" | "clear" | "outlined" | "circle" | "text";
 export type ButtonSize = "small" | "medium" | "large";
 
 export interface ButtonProps {
@@ -134,6 +134,12 @@ const MainButton: React.FC<ButtonProps> = ({
         variantStyles.shadowRadius = 3;
         variantStyles.shadowOffset = { width: 1, height: 1 };
         break;
+
+      case "text":
+        variantStyles.backgroundColor = "transparent";
+        variantStyles.paddingVertical = sizePadding.vertical;
+        variantStyles.paddingHorizontal = sizePadding.horizontal;
+        break;
     }
     if (backgroundColor !== undefined) {
       variantStyles.backgroundColor = backgroundColor;
@@ -170,6 +176,13 @@ const MainButton: React.FC<ButtonProps> = ({
       case "circle":
         // Circle buttons don't have text, only icons
         break;
+
+      case "text":
+        variantTextStyles.fontFamily = textStyles.buttonSmall.fontFamily;
+        variantTextStyles.fontSize = selectedFontSize;
+        variantTextStyles.color = colors.light.secondary;
+        variantTextStyles.textAlign = "center";
+        break;
     }
     return [variantTextStyles];
   };
@@ -188,6 +201,8 @@ const MainButton: React.FC<ButtonProps> = ({
     activityIndicatorColor = colors.light.secondary;
   } else if (variant === "circle") {
     activityIndicatorColor = colors.light.textOnPrimary;
+  } else if (variant === "text") {
+    activityIndicatorColor = colors.light.secondary;
   }
 
   const loadingIcon = isLoading ? (

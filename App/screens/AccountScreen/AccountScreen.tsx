@@ -1,18 +1,10 @@
 import React, { useEffect, useState } from "react";
-import {
-  Alert,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { AccountScreenProps } from "../../types/types";
 import { useSelector } from "react-redux";
 import { logoutUser } from "../../api/auth/authApi";
 import { selectIsLoggedIn } from "../../redux/features/userSlice/userSlice";
 import { colors } from "../../theme";
-import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
 import MainButton from "../../components/MainButton";
 import AccountScreenHeader from "./components/AccountScreenHeader";
@@ -76,69 +68,38 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
     );
   };
 
-  /**
-   * Button Components
-   * Reusable button components for login, register, forgot password, and logout actions
-   * Auth buttons container to group buttons together (login, register, forgot password)
-   */
-
-  const LoginButton: React.FC = () => {
-    return (
+  const AuthButtons: React.FC = () => (
+    <View style={styles.authButtonsContainer}>
       <MainButton
         variant="primary"
         title={translate("buttons.login")}
         onPress={onLogin}
       />
-    );
-  };
-
-  const ForgotPasswordButton: React.FC = () => {
-    return (
-      <TouchableOpacity
-        style={styles.textOnlyButton}
-        onPress={onForgotPassword}
-      >
-        <Text style={styles.textOnlyButtonText}>
-          {translate("buttons.forgotPassword")}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
-
-  const RegisterButton: React.FC = () => {
-    return (
-      <TouchableOpacity style={styles.textOnlyButton} onPress={onRegister}>
-        <Text style={styles.textOnlyButtonText}>
-          {translate("buttons.register")}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
-
-  const LogoutButton: React.FC = () => {
-    return (
-      <View style={styles.authButtonsContainer}>
+      <View style={styles.textOnlyButtonContainer}>
         <MainButton
-          variant="primary"
-          title={translate("buttons.logout")}
-          onPress={onLogout}
-          isDisabled={loggingOut}
+          variant="text"
+          title={translate("buttons.forgotPassword")}
+          onPress={onForgotPassword}
+        />
+        <MainButton
+          variant="text"
+          title={translate("buttons.register")}
+          onPress={onRegister}
         />
       </View>
-    );
-  };
+    </View>
+  );
 
-  const AuthButtons: React.FC = () => {
-    return (
-      <View style={styles.authButtonsContainer}>
-        <LoginButton />
-        <View style={styles.textOnlyButtonContainer}>
-          <ForgotPasswordButton />
-          <RegisterButton />
-        </View>
-      </View>
-    );
-  };
+  const LogoutButton: React.FC = () => (
+    <View style={styles.authButtonsContainer}>
+      <MainButton
+        variant="primary"
+        title={translate("buttons.logout")}
+        onPress={onLogout}
+        isDisabled={loggingOut}
+      />
+    </View>
+  );
 
   return (
     <View style={{ flex: 1 }}>
@@ -171,14 +132,6 @@ const styles = StyleSheet.create({
   textOnlyButtonContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-  },
-  textOnlyButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-  },
-  textOnlyButtonText: {
-    ...textStyles.buttonSmall,
-    color: colors.light.secondary,
   },
 });
 
