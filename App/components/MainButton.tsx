@@ -231,7 +231,11 @@ const MainButton: React.FC<ButtonProps> = ({
       ) : (
         <View style={styles.content}>
           {loadingIcon && (
-            <View style={styles.iconContainer}>{loadingIcon}</View>
+            <View
+              style={displayText ? styles.iconContainer : undefined}
+            >
+              {loadingIcon}
+            </View>
           )}
           {displayText && (
             <Text
