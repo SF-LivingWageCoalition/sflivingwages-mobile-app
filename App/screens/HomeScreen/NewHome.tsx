@@ -1,3 +1,4 @@
+import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
 import {
   Dimensions,
@@ -12,7 +13,6 @@ import {
 import { Divider } from "react-native-elements";
 import { Card } from "react-native-paper";
 import Swiper from "react-native-swiper/src";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { WebView } from "react-native-webview";
 import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";

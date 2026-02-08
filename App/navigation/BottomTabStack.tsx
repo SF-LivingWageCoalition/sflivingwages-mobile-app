@@ -1,9 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import { FontAwesome5 } from "@expo/vector-icons";
 import AssistanceHome from "../screens/AssistanceHome/AssistanceHome";
-import BeReadyForICE from "../screens/BeReadyForICE/BeReadyForICE";
 import AuctionNav from "../screens/AuctionScreen/AuctionNav";
 import DonateScreen from "../screens/DonateScreen/DonateScreen";
 import NewHome from "../screens/HomeScreen/NewHome";

@@ -1,5 +1,5 @@
-import FontAwesome5 from "@expo/vector-icons/build/FontAwesome5";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import {
   NavigationProp,
   ParamListBase,
