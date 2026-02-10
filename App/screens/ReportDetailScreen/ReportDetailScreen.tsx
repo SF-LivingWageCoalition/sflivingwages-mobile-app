@@ -1,24 +1,18 @@
-import React, { useMemo } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  Pressable,
-  Platform,
-} from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import {
   NavigationProp,
   ParamListBase,
   useNavigation,
   useRoute,
 } from "@react-navigation/native";
+import React, { useMemo } from "react";
+import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { Violation } from "../ListReportScreen/ListReportScreen";
-import { fontSize } from "../../theme/fontStyles";
+import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";
+import { fontSize } from "../../theme/fontStyles";
+import { Violation } from "../ListReportScreen/ListReportScreen";
 
 const ReportDetailScreen = () => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
@@ -33,17 +27,22 @@ const ReportDetailScreen = () => {
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
-        <Pressable hitSlop={10} onPress={() => navigation.goBack()}>
-          <MaterialIcons
-            name="arrow-back-ios"
-            size={22}
-            color={colors.palette.gray900}
-          />
-        </Pressable>
+        <MainButton
+          variant="circle"
+          size="small"
+          onPress={() => navigation.goBack()}
+          icon={
+            <FontAwesome5
+              name="chevron-left"
+              size={20}
+              color={colors.light.chevronLight}
+            />
+          }
+        />
         <Text style={styles.headerTitle} numberOfLines={1}>
           Report Details
         </Text>
-        <View style={{ width: 22 }} />
+        <View style={{ width: 40 }} />
       </View>
       <ScrollView contentContainerStyle={styles.content}>
         <View>

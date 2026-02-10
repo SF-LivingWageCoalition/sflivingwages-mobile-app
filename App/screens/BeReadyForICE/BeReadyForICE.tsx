@@ -1,3 +1,4 @@
+import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
@@ -9,13 +10,11 @@ import {
   View,
 } from "react-native";
 import Collapsible from "react-native-collapsible";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import MainButton from "../../components/MainButton";
+import appIcon from "../../../assets/icon.png";
 import BulletItem from "../../components/lists/BulletItem";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
-import appIcon from "../../../assets/icon.png";
 
 const BeReadyForICE: React.FC = () => {
   const navigation = useNavigation();

@@ -1,3 +1,4 @@
+import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
 import {
   Dimensions,
@@ -12,7 +13,6 @@ import {
 import { Divider } from "react-native-elements";
 import { Card } from "react-native-paper";
 import Swiper from "react-native-swiper/src";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { WebView } from "react-native-webview";
 import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";
@@ -235,7 +235,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                     style={styles.actionText}
                     onPress={() =>
                       Linking.openURL(
-                        "https://www.youtube.com/playlist?list=PLcuBfm3dxksyN__WaZR1pN1hoUcivSMPU"
+                        "https://www.youtube.com/playlist?list=PLcuBfm3dxksyN__WaZR1pN1hoUcivSMPU",
                       )
                     }
                   >
@@ -269,7 +269,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                     style={styles.actionText}
                     onPress={() =>
                       Linking.openURL(
-                        "https://www.youtube.com/playlist?list=PLcuBfm3dxkszAbt58VCPehuEoi3VjzH2g"
+                        "https://www.youtube.com/playlist?list=PLcuBfm3dxkszAbt58VCPehuEoi3VjzH2g",
                       )
                     }
                   >
@@ -303,7 +303,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                     style={styles.actionText}
                     onPress={() =>
                       Linking.openURL(
-                        "https://www.youtube.com/playlist?list=PLcuBfm3dxksz54i7-7QN1XaJbT23m6Pg3"
+                        "https://www.youtube.com/playlist?list=PLcuBfm3dxksz54i7-7QN1XaJbT23m6Pg3",
                       )
                     }
                   >
@@ -319,57 +319,62 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
             <Divider style={styles.divider} />
             <Text style={styles.follow}>Follow Us</Text>
             <View style={styles.socialMediaView}>
-              <TouchableOpacity
+              <MainButton
+                variant="text"
                 onPress={() =>
                   Linking.openURL(
-                    "https://www.facebook.com/san.francisco.living.wage/"
+                    "https://www.facebook.com/san.francisco.living.wage/",
                   )
                 }
-                style={styles.buttonMargin}
-              >
-                <FontAwesome
-                  name="facebook-square"
-                  size={46}
-                  color={colors.light.secondary}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
+                icon={
+                  <FontAwesome
+                    name="facebook-square"
+                    size={46}
+                    color={colors.light.secondary}
+                  />
+                }
+              />
+              <MainButton
+                variant="text"
                 onPress={() =>
                   Linking.openURL(
-                    "https://www.instagram.com/sflivingwage/?hl=en"
+                    "https://www.instagram.com/sflivingwage/?hl=en",
                   )
                 }
-                style={styles.buttonMargin}
-              >
-                <FontAwesome
-                  name="instagram"
-                  size={46}
-                  color={colors.light.primary}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
+                icon={
+                  <FontAwesome
+                    name="instagram"
+                    size={46}
+                    color={colors.light.primary}
+                  />
+                }
+              />
+              <MainButton
+                variant="text"
                 onPress={() =>
                   Linking.openURL("https://twitter.com/sflivingwage?lang=en/")
                 }
-                style={styles.buttonMargin}
-              >
-                <FontAwesome
-                  name="twitter"
-                  size={46}
-                  color={colors.light.secondary}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
+                icon={
+                  <FontAwesome
+                    name="twitter"
+                    size={46}
+                    color={colors.light.secondary}
+                  />
+                }
+              />
+              <MainButton
+                variant="text"
                 onPress={() =>
                   Linking.openURL("https://www.youtube.com/user/sflivingwage")
                 }
-              >
-                <FontAwesome
-                  name="youtube"
-                  size={42}
-                  color={colors.light.primary}
-                />
-              </TouchableOpacity>
+                icon={
+                  <FontAwesome
+                    name="youtube"
+                    size={42}
+                    color={colors.light.primary}
+                  />
+                }
+              />
             </View>
           </View>
         </View>
@@ -446,9 +451,6 @@ const styles = StyleSheet.create({
     marginLeft: 23,
     marginTop: 28,
     flexDirection: "row",
-  },
-  buttonMargin: {
-    marginRight: 27,
   },
   bodyPage: {
     flexDirection: "column",

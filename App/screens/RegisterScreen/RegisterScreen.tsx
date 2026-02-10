@@ -1,5 +1,6 @@
 // See `App/api/auth/README.md` for examples and error handling patterns.
-import React, { useState, useRef } from "react";
+import { FontAwesome5 } from "@expo/vector-icons";
+import React, { useRef, useState } from "react";
 import {
   Alert,
   ScrollView,
@@ -9,15 +10,14 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import MainButton from "../../components/MainButton";
+import { registerCustomer } from "../../api/auth/authApi";
+import { mapApiErrorToMessage } from "../../api/auth/errorHelpers";
+import { unwrapOrThrow } from "../../api/auth/utils";
 import LoadingOverlay from "../../components/LoadingOverlay";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
-import { registerCustomer } from "../../api/auth/authApi";
-import { unwrapOrThrow } from "../../api/auth/utils";
-import { mapApiErrorToMessage } from "../../api/auth/errorHelpers";
 import { RegisterScreenProps } from "../../types/types";
 import {
   registerSchema,
@@ -52,7 +52,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
 
     if (!parsed.success) {
       const { fieldErrors, generalError: gen } = mapZodErrorToFormErrors(
-        parsed.error
+        parsed.error,
       );
       setErrors(fieldErrors);
       if (gen) setGeneralError(gen);
@@ -64,13 +64,13 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
     setLoading(true);
     try {
       const registrationData = unwrapOrThrow(
-        await registerCustomer(email, password)
+        await registerCustomer(email, password),
       );
       Alert.alert(
         translate("registerScreen.registerAlert.title"),
         translate("registerScreen.registerAlert.message"),
         [{ text: translate("buttons.ok"), onPress: () => navigation.goBack() }],
-        { cancelable: true, onDismiss: () => navigation.goBack() }
+        { cancelable: true, onDismiss: () => navigation.goBack() },
       );
     } catch (error: unknown) {
       const message = mapApiErrorToMessage(error, "errors.registrationFailed");

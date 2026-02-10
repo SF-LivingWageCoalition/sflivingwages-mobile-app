@@ -1,12 +1,5 @@
 import { useState } from "react";
-import {
-  Modal,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Modal, ScrollView, StyleSheet, Text, View } from "react-native";
 import MainButton from "../../../../components/MainButton";
 import { colors } from "../../../../theme";
 import { textStyles } from "../../../../theme/fontStyles";
@@ -40,9 +33,13 @@ const ItemModal: React.FC<ItemModalProps> = ({ description, title }) => {
           </View>
         </View>
       </Modal>
-      <TouchableOpacity onPress={() => setModalVisible(true)}>
-        <Text style={styles.textStyleOpen}>Read More</Text>
-      </TouchableOpacity>
+      <MainButton
+        variant="text"
+        title="Read More"
+        onPress={() => setModalVisible(true)}
+        style={styles.textStyleOpen}
+        textStyle={{ color: colors.light.textPrimary }}
+      />
     </View>
   );
 };
@@ -77,8 +74,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   textStyleOpen: {
-    ...textStyles.buttonSmall,
-    color: colors.light.textPrimary,
     marginHorizontal: 16,
   },
   modalText: {

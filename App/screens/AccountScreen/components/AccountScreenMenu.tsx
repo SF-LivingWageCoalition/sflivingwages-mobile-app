@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { colors } from "../../../theme";
 import { textStyles } from "../../../theme/fontStyles";
 import { translate } from "../../../translation";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import { FontAwesome5 } from "@expo/vector-icons";
 import HorizontalDivider from "./HorizontalDivider";
 import { AccountScreenProps } from "../../../types/types";
 

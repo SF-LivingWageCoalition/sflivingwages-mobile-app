@@ -1,3 +1,4 @@
+import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
@@ -9,8 +10,6 @@ import {
   View,
 } from "react-native";
 import Collapsible from "react-native-collapsible";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import MainButton from "../../components/MainButton";
 import appIcon from "../../../assets/icon.png";
 import BulletItem from "../../components/lists/BulletItem";
 import SubBulletItem from "../../components/lists/SubBulletItem";
@@ -105,17 +104,17 @@ const WageRights: React.FC = () => {
               <View style={styles.bulletMargin}>
                 <SubBulletItem
                   text={translate(
-                    "wageRightsScreen.minimumCompensation.subPoint1"
+                    "wageRightsScreen.minimumCompensation.subPoint1",
                   )}
                 />
                 <SubBulletItem
                   text={translate(
-                    "wageRightsScreen.minimumCompensation.subPoint2"
+                    "wageRightsScreen.minimumCompensation.subPoint2",
                   )}
                 />
                 <SubBulletItem
                   text={translate(
-                    "wageRightsScreen.minimumCompensation.subPoint3"
+                    "wageRightsScreen.minimumCompensation.subPoint3",
                   )}
                 />
               </View>
@@ -189,27 +188,27 @@ const WageRights: React.FC = () => {
               <View style={styles.bulletMargin}>
                 <SubBulletItem
                   text={translate(
-                    "wageRightsScreen.healthCareSecurity.subPoint1"
+                    "wageRightsScreen.healthCareSecurity.subPoint1",
                   )}
                 />
                 <SubBulletItem
                   text={translate(
-                    "wageRightsScreen.healthCareSecurity.subPoint2"
+                    "wageRightsScreen.healthCareSecurity.subPoint2",
                   )}
                 />
                 <SubBulletItem
                   text={translate(
-                    "wageRightsScreen.healthCareSecurity.subPoint3"
+                    "wageRightsScreen.healthCareSecurity.subPoint3",
                   )}
                 />
                 <SubBulletItem
                   text={translate(
-                    "wageRightsScreen.healthCareSecurity.subPoint4"
+                    "wageRightsScreen.healthCareSecurity.subPoint4",
                   )}
                 />
                 <SubBulletItem
                   text={translate(
-                    "wageRightsScreen.healthCareSecurity.subPoint5"
+                    "wageRightsScreen.healthCareSecurity.subPoint5",
                   )}
                 />
               </View>
@@ -245,31 +244,31 @@ const WageRights: React.FC = () => {
               {/* Top-level bullet 1 with nested sub-list */}
               <BulletItem
                 text={translate(
-                  "wageRightsScreen.healthCareAccountability.point1"
+                  "wageRightsScreen.healthCareAccountability.point1",
                 )}
               />
               <View style={styles.bulletMargin}>
                 <SubBulletItem
                   text={translate(
-                    "wageRightsScreen.healthCareAccountability.subPoint1"
+                    "wageRightsScreen.healthCareAccountability.subPoint1",
                   )}
                 />
                 <SubBulletItem
                   text={translate(
-                    "wageRightsScreen.healthCareAccountability.subPoint2"
+                    "wageRightsScreen.healthCareAccountability.subPoint2",
                   )}
                 />
               </View>
               {/* Top-level bullet 2 */}
               <BulletItem
                 text={translate(
-                  "wageRightsScreen.healthCareAccountability.point2"
+                  "wageRightsScreen.healthCareAccountability.point2",
                 )}
               />
               {/* Top-level bullet 3 */}
               <BulletItem
                 text={translate(
-                  "wageRightsScreen.healthCareAccountability.point3"
+                  "wageRightsScreen.healthCareAccountability.point3",
                 )}
               />
             </View>
@@ -295,49 +294,49 @@ const WageRights: React.FC = () => {
             <View style={styles.bulletList}>
               <BulletItem
                 text={translate(
-                  "wageRightsScreen.protectionsForWorkers.point1"
+                  "wageRightsScreen.protectionsForWorkers.point1",
                 )}
               />
               <BulletItem
                 text={translate(
-                  "wageRightsScreen.protectionsForWorkers.point2"
+                  "wageRightsScreen.protectionsForWorkers.point2",
                 )}
               />
               <View style={styles.bulletMargin}>
                 <SubBulletItem
                   text={translate(
-                    "wageRightsScreen.protectionsForWorkers.subPoint1"
+                    "wageRightsScreen.protectionsForWorkers.subPoint1",
                   )}
                 />
                 <SubBulletItem
                   text={translate(
-                    "wageRightsScreen.protectionsForWorkers.subPoint2"
+                    "wageRightsScreen.protectionsForWorkers.subPoint2",
                   )}
                 />
                 <SubBulletItem
                   text={translate(
-                    "wageRightsScreen.protectionsForWorkers.subPoint3"
+                    "wageRightsScreen.protectionsForWorkers.subPoint3",
                   )}
                 />
                 <SubBulletItem
                   text={translate(
-                    "wageRightsScreen.protectionsForWorkers.subPoint4"
+                    "wageRightsScreen.protectionsForWorkers.subPoint4",
                   )}
                 />
                 <SubBulletItem
                   text={translate(
-                    "wageRightsScreen.protectionsForWorkers.subPoint5"
+                    "wageRightsScreen.protectionsForWorkers.subPoint5",
                   )}
                 />
                 <SubBulletItem
                   text={translate(
-                    "wageRightsScreen.protectionsForWorkers.subPoint6"
+                    "wageRightsScreen.protectionsForWorkers.subPoint6",
                   )}
                 />
               </View>
               <BulletItem
                 text={translate(
-                  "wageRightsScreen.protectionsForWorkers.point3"
+                  "wageRightsScreen.protectionsForWorkers.point3",
                 )}
               />
             </View>

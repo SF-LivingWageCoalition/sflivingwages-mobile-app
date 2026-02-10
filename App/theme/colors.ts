@@ -65,8 +65,8 @@ const lightTheme = {
   onSecondary: palette.white,
   onSecondaryContainer: palette.blue800,
 
-  // Background colors
-  background: palette.white,
+  // Background colors (use gray100 app-wide so content matches Android outer margins)
+  background: palette.gray100,
   backgroundSecondary: palette.gray100,
   surface: palette.white,
   surfaceVariant: palette.gray50,

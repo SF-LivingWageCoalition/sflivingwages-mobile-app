@@ -11,7 +11,7 @@ import {
 import { colors } from "../theme/colors";
 import { textStyles, fontSize } from "../theme/fontStyles";
 
-export type ButtonVariant = "primary" | "clear" | "outlined" | "circle";
+export type ButtonVariant = "primary" | "clear" | "outlined" | "circle" | "text";
 export type ButtonSize = "small" | "medium" | "large";
 
 export interface ButtonProps {
@@ -28,6 +28,7 @@ export interface ButtonProps {
   position?: "absolute"; // For circle back button positioning
   positionTop?: number;
   positionLeft?: number;
+  backgroundColor?: string;
 }
 
 const paddingSizes = {
@@ -39,8 +40,8 @@ const paddingSizes = {
 // The circle button will only have one size option, but this is here in case we need to add more sizes in the future
 const circleSizes = {
   small: 40,
-  medium: 40,
-  large: 40,
+  medium: 50,
+  large: 60,
 } as const;
 
 const fontSizes = {
@@ -63,6 +64,7 @@ const MainButton: React.FC<ButtonProps> = ({
   position,
   positionTop,
   positionLeft,
+  backgroundColor,
 }) => {
   const getButtonStyle = (): ViewStyle[] => {
     const baseStyle: ViewStyle = {};
@@ -132,6 +134,15 @@ const MainButton: React.FC<ButtonProps> = ({
         variantStyles.shadowRadius = 3;
         variantStyles.shadowOffset = { width: 1, height: 1 };
         break;
+
+      case "text":
+        variantStyles.backgroundColor = "transparent";
+        variantStyles.paddingVertical = sizePadding.vertical;
+        variantStyles.paddingHorizontal = sizePadding.horizontal;
+        break;
+    }
+    if (backgroundColor !== undefined) {
+      variantStyles.backgroundColor = backgroundColor;
     }
     return [baseStyle, variantStyles];
   };
@@ -165,6 +176,13 @@ const MainButton: React.FC<ButtonProps> = ({
       case "circle":
         // Circle buttons don't have text, only icons
         break;
+
+      case "text":
+        variantTextStyles.fontFamily = textStyles.buttonSmall.fontFamily;
+        variantTextStyles.fontSize = selectedFontSize;
+        variantTextStyles.color = colors.light.secondary;
+        variantTextStyles.textAlign = "center";
+        break;
     }
     return [variantTextStyles];
   };
@@ -183,6 +201,8 @@ const MainButton: React.FC<ButtonProps> = ({
     activityIndicatorColor = colors.light.secondary;
   } else if (variant === "circle") {
     activityIndicatorColor = colors.light.textOnPrimary;
+  } else if (variant === "text") {
+    activityIndicatorColor = colors.light.secondary;
   }
 
   const loadingIcon = isLoading ? (
@@ -211,7 +231,11 @@ const MainButton: React.FC<ButtonProps> = ({
       ) : (
         <View style={styles.content}>
           {loadingIcon && (
-            <View style={styles.iconContainer}>{loadingIcon}</View>
+            <View
+              style={displayText ? styles.iconContainer : undefined}
+            >
+              {loadingIcon}
+            </View>
           )}
           {displayText && (
             <Text

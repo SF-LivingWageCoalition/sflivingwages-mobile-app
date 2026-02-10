@@ -1,35 +1,33 @@
-import React, { useRef, useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  TextInput,
-  Modal,
-  TouchableOpacity,
-  Text,
-} from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import GooglePlacesTextInput, {
-  GooglePlacesTextInputRef,
-  Place,
-} from "react-native-google-places-textinput";
-import { Dropdown } from "react-native-element-dropdown";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import {
   NavigationProp,
   ParamListBase,
   useNavigation,
 } from "@react-navigation/native";
-
-import FloatingActionButton from "../../components/FloatingActionButton/FloatingActionButton";
-import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
-import PlatformMap from "../../components/PlatformMap/PlatformMap";
-import { fontSize } from "../../theme/fontStyles";
+import React, { useRef, useState } from "react";
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+import { Dropdown } from "react-native-element-dropdown";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import GooglePlacesTextInput, {
+  GooglePlacesTextInputRef,
+  Place,
+} from "react-native-google-places-textinput";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { reportSchema } from "./validationSchemas";
+import MainButton from "../../components/MainButton";
+import PlatformMap from "../../components/PlatformMap/PlatformMap";
 import { colors } from "../../theme";
+import { fontSize } from "../../theme/fontStyles";
+import { reportSchema } from "./validationSchemas";
 
 // Use state for markers
 const initialAndroidMarker = {
@@ -166,10 +164,6 @@ const ReportBusinessMap = () => {
     }
   };
 
-  const renderIcon = () => {
-    return <Ionicons name="list" size={30} color={colors.palette.red400} />;
-  };
-
   return (
     <GestureHandlerRootView style={styles.containerBS}>
       <View style={styles.flex1}>
@@ -179,22 +173,43 @@ const ReportBusinessMap = () => {
           markers={Platform.OS === "ios" ? markersIOS : markersAndroid}
         />
 
-        <TouchableOpacity
-          style={styles.backButton}
+        <MainButton
+          variant="circle"
+          position="absolute"
+          positionTop={50}
+          positionLeft={24}
           onPress={() => navigation.goBack()}
-        >
-          <Ionicons
-            name="arrow-back"
-            size={30}
-            color={colors.palette.gray600}
-          />
-        </TouchableOpacity>
+          icon={
+            <FontAwesome5
+              name="chevron-left"
+              size={20}
+              color={colors.light.chevronLight}
+            />
+          }
+        />
 
-        <FloatingActionButton onPress={() => setIsModalVisible(true)} />
-        <FloatingActionButton
-          style={styles.listViewBtn}
-          icon={renderIcon()}
+        <MainButton
+          variant="circle"
+          position="absolute"
+          onPress={() => setIsModalVisible(true)}
+          icon={
+            <FontAwesome5 name="plus" size={20} color={colors.palette.red100} />
+          }
+          style={{ bottom: 40, left: 24 }}
+        />
+
+        <MainButton
+          variant="circle"
+          position="absolute"
           onPress={() => navigation.navigate("ListReportScreen")}
+          icon={
+            <FontAwesome5 name="list" size={23} color={colors.palette.red400} />
+          }
+          backgroundColor={colors.palette.gray800}
+          style={{
+            bottom: 120,
+            left: 24,
+          }}
         />
 
         <Modal
@@ -210,19 +225,22 @@ const ReportBusinessMap = () => {
             >
               <View style={styles.modalHeader}>
                 <Text style={styles.header2}>Report a Business Violation</Text>
-                <TouchableOpacity
-                  style={styles.closeButton}
+                <MainButton
+                  variant="text"
                   onPress={() => {
                     resetForm();
                     setIsModalVisible(false);
                   }}
-                >
-                  <Ionicons
-                    name="close"
-                    size={30}
-                    color={colors.palette.gray600}
-                  />
-                </TouchableOpacity>
+                  icon={
+                    <Ionicons
+                      name="close"
+                      size={32}
+                      color={colors.palette.gray600}
+                    />
+                  }
+                  style={styles.closeButton}
+                  textStyle={{ color: colors.palette.gray600 }}
+                />
               </View>
               <View style={styles.contentContainer}>
                 <Dropdown
@@ -289,7 +307,8 @@ const ReportBusinessMap = () => {
                 </Text>
 
                 <View style={styles.submitButtonContainer}>
-                  <PrimaryButton
+                  <MainButton
+                    variant="primary"
                     title="Submit"
                     onPress={() => {
                       Keyboard.dismiss();
@@ -309,27 +328,6 @@ const ReportBusinessMap = () => {
 export default ReportBusinessMap;
 
 const styles = StyleSheet.create({
-  backButton: {
-    position: "absolute",
-    top: 50,
-    left: 20,
-    zIndex: 1,
-    backgroundColor: "white",
-    padding: 8,
-    elevation: 3,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    width: 50,
-    height: 50,
-    borderRadius: 50 / 2,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  listViewBtn: { backgroundColor: colors.palette.gray800, bottom: 120 },
-
   header: {
     position: "absolute",
     top: 50,

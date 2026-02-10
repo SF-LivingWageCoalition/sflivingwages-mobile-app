@@ -1,21 +1,23 @@
-import React, { useEffect, useMemo, useState, useCallback } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-  Pressable,
-  RefreshControl,
-  Platform,
-} from "react-native";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import {
   NavigationProp,
   ParamListBase,
   useNavigation,
 } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import LottieView from "lottie-react-native";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  FlatList,
+  Platform,
+  Pressable,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";
 import { fontSize } from "../../theme/fontStyles";
 
@@ -46,7 +48,7 @@ const ListReportScreen = () => {
   const fetchReports = useCallback(async () => {
     try {
       const res = await fetch(
-        "https://www.wpmockup.xyz/wp-json/wp/v2/violations"
+        "https://www.wpmockup.xyz/wp-json/wp/v2/violations",
       );
       const data: Violation[] = await res.json();
       setReports(Array.isArray(data) ? data : []);
@@ -69,15 +71,15 @@ const ListReportScreen = () => {
 
   const headerTitle = useMemo(
     () => `Reports ${reports.length ? `(${reports.length})` : ""}`,
-    [reports.length]
+    [reports.length],
   );
 
   const renderItem = ({ item }: { item: Violation }) => {
     const dt = item.acf?.timestamp
       ? new Date(item.acf.timestamp)
       : item.acf?.date_time
-      ? new Date(item.acf.date_time)
-      : null;
+        ? new Date(item.acf.date_time)
+        : null;
 
     return (
       <Pressable
@@ -129,15 +131,20 @@ const ListReportScreen = () => {
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
-        <Pressable hitSlop={10} onPress={() => navigation.goBack()}>
-          <MaterialIcons
-            name="arrow-back-ios"
-            size={22}
-            color={colors.palette.gray900}
-          />
-        </Pressable>
+        <MainButton
+          variant="circle"
+          size="small"
+          onPress={() => navigation.goBack()}
+          icon={
+            <FontAwesome5
+              name="chevron-left"
+              size={20}
+              color={colors.light.chevronLight}
+            />
+          }
+        />
         <Text style={styles.headerTitle}>{headerTitle}</Text>
-        <View style={{ width: 22 }} />
+        <View style={{ width: 40 }} />
       </View>
 
       {loading ? (

@@ -15,7 +15,6 @@ import {
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import Recaptcha from "react-native-recaptcha-that-works";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import appIcon from "../../../assets/icon.png";
 import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";
@@ -297,7 +296,7 @@ const ReportViolation: React.FC = () => {
               variant="primary"
               title={translate("assistScreen.submit")}
               onPress={onSubmitData}
-              style={styles.primaryButtonStyle}
+              style={styles.submitButtonStyle}
             />
 
             <MainButton
@@ -319,7 +318,7 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: colors.light.backgroundSecondary,
   },
-  primaryButtonStyle: {
+  submitButtonStyle: {
     width: 100,
     marginTop: 20,
   },

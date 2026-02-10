@@ -1,7 +1,6 @@
 // See `App/api/auth/README.md` for examples and error handling patterns.
-import React, { useState, useRef } from "react";
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../../redux/store/store";
+import { FontAwesome5 } from "@expo/vector-icons";
+import React, { useRef, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -10,18 +9,19 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import MainButton from "../../components/MainButton";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../api/auth/authApi";
+import { mapApiErrorToMessage } from "../../api/auth/errorHelpers";
+import { unwrapOrThrow } from "../../api/auth/utils";
 import LoadingOverlay from "../../components/LoadingOverlay";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import MainButton from "../../components/MainButton";
+import type { AppDispatch } from "../../redux/store/store";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
+import { LoginScreenProps } from "../../types/types";
 import { loginSchema, type LoginFormValues } from "../../validation/authSchema";
 import { mapZodErrorToFormErrors } from "../../validation/mapZodError";
-import { LoginScreenProps } from "../../types/types";
-import { loginUser } from "../../api/auth/authApi";
-import { unwrapOrThrow } from "../../api/auth/utils";
-import { mapApiErrorToMessage } from "../../api/auth/errorHelpers";
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -51,7 +51,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
     if (!parsed.success) {
       const { fieldErrors, generalError: gen } = mapZodErrorToFormErrors(
-        parsed.error
+        parsed.error,
       );
       setErrors(fieldErrors);
       if (gen) setGeneralError(gen);
@@ -70,7 +70,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     */
     try {
       const validatedData = unwrapOrThrow(
-        await loginUser(email, password, dispatch)
+        await loginUser(email, password, dispatch),
       );
       navigation.goBack();
     } catch (error: unknown) {
