@@ -8,26 +8,22 @@
 
 In the app, users will be able to share pieces of art (paintings, drawings and digital), photographs and books. Moreover, users will be notified about new events such as art auctions and events that the organization hosts. In the future, users will be able to donate money to the organization, upload events such as rallies or marches, have a wage-rights toolkit, and an interactive real-time map where users can search categories such as legal aid, or find businesses known for wage-theft, unsafe working conditions, and other violations.
 
-### App is distributed for both Android and iOS
-
-- [Google Play Store](https://play.google.com/store/apps/details?id=com.sfLiving.sflivingwagecoalition&hl=en)
-- [Apple Store](https://apps.apple.com/us/app/id1510663811)
-
 ## Technologies
 
-- Back End:
+- **Mobile app** (this repo):
 
-  - Node
-  - Express
-  - MySQL
-  - Knexjs
-  - npm
+  - [Expo](https://expo.dev/)
+  - [React Native](https://reactnative.dev/)
+  - [TypeScript](https://www.typescriptlang.org/)
+  - [React](https://react.dev/) & React Hooks
+  - [React Navigation](https://reactnavigation.org/)
+  - [Redux Toolkit](https://redux-toolkit.js.org/)
+  - [Yarn](https://yarnpkg.com/) (package manager)
 
-- Front End:
-  - Typescript
-  - React Native
-  - React Hooks
-  - Navigation
+- **Backend** (external):
+
+  - [WordPress](https://wordpress.org/) with [WooCommerce](https://woocommerce.com/) REST API
+  - Simple JWT Login plugin for authentication
 
 ## Views
 
@@ -49,10 +45,10 @@ Users can get assistance by describing their situation and sending it to the org
 
 ## Resources
 
+- [Expo](https://expo.dev/)
 - [React Native](https://reactnative.dev/)
-- [Express](https://expressjs.com/)
-- [Knexjs](http://knexjs.org/)
-- [npm](https://www.npmjs.com/)
+- [React Navigation](https://reactnavigation.org/)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
 
 ## What is next?
 
