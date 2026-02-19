@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowRadius: 6,
     elevation: 4,
+    backgroundColor: colors.light.background,
   },
   titleContainer: {
     flex: 1,

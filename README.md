@@ -1,33 +1,43 @@
-[Origin repository](https://github.com/jmejiamu/sflivingwages-mobil-app)
-
 # San Francisco Living Wage Coalition
 
 [SF Living Wage Coalition](https://www.livingwage-sf.org/) is a non-profit organization engaged in transformative thinking of the economy for a more livable, healthy, and prosperous community.
 
-## Mobile App
+## Description
 
-In the app, users will be able to share pieces of art (paintings, drawings and digital), photographs and books. Moreover, users will be notified about new events such as art auctions and events that the organization hosts. In the future, users will be able to donate money to the organization, upload events such as rallies or marches, have a wage-rights toolkit, and an interactive real-time map where users can search categories such as legal aid, or find businesses known for wage-theft, unsafe working conditions, and other violations.
+This app currently provides the following features:
 
-### App is distributed for both Android and iOS
+- **Home** — Organization overview (“Who We Are”), campaign carousel with links to petition sites, event and donation links, embedded YouTube playlists (TV shows, documentaries, vintage videos), and social media links.
 
-- [Google Play Store](https://play.google.com/store/apps/details?id=com.sfLiving.sflivingwagecoalition&hl=en)
-- [Apple Store](https://apps.apple.com/us/app/id1510663811)
+- **Campaigns** — Browse the coalition’s campaigns and goals with links to petition websites and detailed campaign information.
+
+- **Events** — View upcoming organization events and event details.
+
+- **Auction** — Browse and bid on auction items across categories (art, books, CDs, DVDs, LPs) to support the organization.
+
+- **Donate** — Get donation information (mail-in checks, PayPal/online donations).
+
+- **Assist** — Wage-rights and assistance tools:
+  - Report a violation: Submit wage-theft, unpaid overtime, discrimination, and other workplace issues to the organization (English/Spanish).
+  - Wage Rights: Wage-rights toolkit.
+  - Be Ready for ICE: Immigration and ICE preparedness information.
+  - Living Wage Calculator: Calculate living wages.
+  - Report Business: Interactive map to report businesses violating workers’ rights and view reported violations.
+
+- **Account** — User registration, login, and profile (WordPress/WooCommerce authentication).
 
 ## Technologies
 
-- Back End:
+- **Mobile app** (this repo):
+  - [Expo](https://expo.dev/)
+  - [React Native](https://reactnative.dev/)
+  - [TypeScript](https://www.typescriptlang.org/)
+  - [React Navigation](https://reactnavigation.org/)
+  - [Redux Toolkit](https://redux-toolkit.js.org/)
+  - [Yarn](https://yarnpkg.com/)
 
-  - Node
-  - Express
-  - MySQL
-  - Knexjs
-  - npm
-
-- Front End:
-  - Typescript
-  - React Native
-  - React Hooks
-  - Navigation
+- **Backend** (external):
+  - [WordPress](https://wordpress.org/) with [WooCommerce](https://woocommerce.com/) REST API
+  - Simple JWT Login plugin for authentication
 
 ## Views
 
@@ -49,13 +59,11 @@ Users can get assistance by describing their situation and sending it to the org
 
 ## Resources
 
+- [Expo](https://expo.dev/)
 - [React Native](https://reactnative.dev/)
-- [Express](https://expressjs.com/)
-- [Knexjs](http://knexjs.org/)
-- [npm](https://www.npmjs.com/)
+- [React Navigation](https://reactnavigation.org/)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
 
-## What is next?
+## Project History
 
-- [Mobile app new feature](https://github.com/jmejiamu/sflivingwagenewfeature)
-- [Build a CMS with ReactJS](https://github.com/jmejiamu/mobile-sf-admin)
-- **NOTE:** These new features are under development
+[Origin repository](https://github.com/jmejiamu/sflivingwages-mobil-app)
