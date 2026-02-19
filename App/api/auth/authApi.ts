@@ -54,6 +54,7 @@ import {
   apiFailureWithServerCode,
 } from "./utils";
 import { normalizeJwt } from "./utils";
+import { makeBaseFromEmail, generateCandidate } from "./usernameUtils";
 import type { JwtItem } from "./types";
 
 /**
@@ -66,7 +67,7 @@ import type { JwtItem } from "./types";
  */
 export const fetchToken = async (
   email: string,
-  password: string
+  password: string,
 ): Promise<ApiResult<TokenData>> => {
   try {
     const response = await fetchWithTimeout(`${BASE_URL}${JWT_ROUTE}/auth`, {
@@ -105,7 +106,7 @@ export const fetchToken = async (
  * Validate a JWT token via the Simple JWT Login plugin.
  */
 export const validateToken = async (
-  jwtToken: string
+  jwtToken: string,
 ): Promise<ApiResult<ValidationData>> => {
   try {
     const response = await fetchWithTimeout(
@@ -120,7 +121,7 @@ export const validateToken = async (
         body: JSON.stringify({
           AUTH_KEY: JWT_AUTH_KEY,
         }),
-      }
+      },
     );
 
     const validationData = await parseJsonSafe<ValidationData>(response);
@@ -135,7 +136,7 @@ export const validateToken = async (
       // Token validation failed
       return apiFailureWithServerCode<ValidationData>(
         validationData,
-        response.status
+        response.status,
       );
     }
   } catch (error: unknown) {
@@ -148,7 +149,7 @@ export const validateToken = async (
  * Refresh a JWT token via the Simple JWT Login plugin.
  */
 export const refreshToken = async (
-  jwtToken: string
+  jwtToken: string,
 ): Promise<ApiResult<TokenData>> => {
   try {
     const response = await fetchWithTimeout(
@@ -163,7 +164,7 @@ export const refreshToken = async (
         body: JSON.stringify({
           AUTH_KEY: JWT_AUTH_KEY,
         }),
-      }
+      },
     );
 
     const tokenData = await parseJsonSafe<TokenData>(response);
@@ -188,7 +189,7 @@ export const refreshToken = async (
  * Revoke a JWT token via the Simple JWT Login plugin.
  */
 export const revokeToken = async (
-  jwtToken: string
+  jwtToken: string,
 ): Promise<ApiResult<TokenData>> => {
   try {
     const response = await fetchWithTimeout(
@@ -203,7 +204,7 @@ export const revokeToken = async (
         body: JSON.stringify({
           AUTH_KEY: JWT_AUTH_KEY,
         }),
-      }
+      },
     );
 
     const responseData = await parseJsonSafe<TokenData>(response);
@@ -230,7 +231,7 @@ export const revokeToken = async (
 export const loginUser = async (
   email: string,
   password: string,
-  dispatch: AppDispatch
+  dispatch: AppDispatch,
 ): Promise<ApiResult<ValidationData["data"]>> => {
   try {
     // First, fetch the JWT token
@@ -265,7 +266,7 @@ export const loginUser = async (
           const payload = validationResult.data?.data ?? validationResult.data;
           return apiFailureWithServerCode<ValidationData["data"]>(
             payload,
-            validationResult.status
+            validationResult.status,
           );
         }
       } catch (error: unknown) {
@@ -277,7 +278,7 @@ export const loginUser = async (
       const payload = tokenResult.data?.data ?? tokenResult.data;
       return apiFailureWithServerCode<ValidationData["data"]>(
         payload,
-        tokenResult.status
+        tokenResult.status,
       );
     }
   } catch (error: unknown) {
@@ -291,45 +292,106 @@ export const loginUser = async (
  */
 export const registerCustomer = async (
   email: string,
-  password: string
+  password: string,
 ): Promise<ApiResult<CustomerRegistrationData>> => {
-  try {
-    const response = await fetchWithTimeout(
-      `${BASE_URL}${WC_ROUTE}/customers`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Basic " + base64Credentials,
-          "cache-control": "no-cache",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-          username: email, // Unique username required. Use email, generate unique, or add field to form.
-        }),
-      }
-    );
+  // username generation utilities moved to ./utils
 
-    const registrationData = await parseJsonSafe<CustomerRegistrationData>(
-      response
-    );
-    if (response.ok) {
-      // Registration was successful
-      return {
-        success: true,
-        data: registrationData as CustomerRegistrationData,
-        status: response.status,
-      };
-    } else {
-      // Registration failed
-      return apiFailureWithServerCode<CustomerRegistrationData>(
-        registrationData,
-        response.status
+  const attemptRegister = async (
+    usernameCandidate: string,
+  ): Promise<{
+    success: boolean;
+    result?: ApiResult<CustomerRegistrationData>;
+    serverCode?: unknown;
+  }> => {
+    try {
+      const response = await fetchWithTimeout(
+        `${BASE_URL}${WC_ROUTE}/customers`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Basic " + base64Credentials,
+            "cache-control": "no-cache",
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+            username: usernameCandidate,
+          }),
+        },
       );
+
+      const registrationData =
+        await parseJsonSafe<CustomerRegistrationData>(response);
+      if (response.ok) {
+        return {
+          success: true,
+          result: {
+            success: true,
+            data: registrationData as CustomerRegistrationData,
+            status: response.status,
+          },
+        };
+      }
+
+      // extract server error code if present
+      const serverCode =
+        (registrationData && (registrationData as any).code) ??
+        ((registrationData as any)?.data &&
+          (registrationData as any).data.code) ??
+        (registrationData as any)?.status;
+
+      return {
+        success: false,
+        result: apiFailureWithServerCode<CustomerRegistrationData>(
+          registrationData,
+          response.status,
+        ),
+        serverCode,
+      };
+    } catch (err: unknown) {
+      return {
+        success: false,
+        result: apiFailureFromException<CustomerRegistrationData>(err),
+      };
     }
+  };
+
+  try {
+    // First attempt: try using a concise username derived from email local-part
+    const base = makeBaseFromEmail(email);
+    const maxAttempts = 12;
+
+    for (let i = 0; i < maxAttempts; i++) {
+      const candidate = generateCandidate(base, i, email);
+      const attempt = await attemptRegister(candidate);
+      if (attempt.success && attempt.result) {
+        return attempt.result;
+      }
+
+      // If server explicitly says "user already exists" (SimpleJWT code 38), continue trying
+      const sc = attempt.serverCode;
+      if (
+        sc === 38 ||
+        sc === "38" ||
+        (attempt.result &&
+          (attempt.result as any).data &&
+          (attempt.result as any).data.code === 38)
+      ) {
+        // try next candidate
+        continue;
+      }
+
+      // Other failures: return the server's failure immediately
+      return attempt.result as ApiResult<CustomerRegistrationData>;
+    }
+
+    // Exhausted attempts — return a final failure indicating username generation exhausted
+    return apiFailureWithServerCode<CustomerRegistrationData>(
+      { message: "Could not generate unique username" } as any,
+      409,
+    );
   } catch (error: unknown) {
-    // General error during registration process - return failed ApiResult
     return apiFailureFromException<CustomerRegistrationData>(error);
   }
 };
@@ -338,7 +400,7 @@ export const registerCustomer = async (
  * Send a password reset email to the specified email address.
  */
 export const sendPasswordReset = async (
-  email: string
+  email: string,
 ): Promise<ApiResult<PasswordResetData>> => {
   try {
     const response = await fetchWithTimeout(
@@ -346,7 +408,7 @@ export const sendPasswordReset = async (
       {
         method: "POST",
         headers: { "cache-control": "no-cache" },
-      }
+      },
     );
 
     const passwordResetData = await parseJsonSafe<PasswordResetData>(response);
@@ -361,7 +423,7 @@ export const sendPasswordReset = async (
       // Password reset failed
       return apiFailureWithServerCode<PasswordResetData>(
         passwordResetData,
-        response.status
+        response.status,
       );
     }
   } catch (error: unknown) {
@@ -402,7 +464,7 @@ export const logoutUser = async (): Promise<LogoutResult> => {
 
     return apiFailureWithServerCode<{ revoked: false }>(
       revokeResult.data ?? { message: "revoke failed" },
-      revokeResult.status
+      revokeResult.status,
     );
   } catch (err: unknown) {
     return apiFailureFromException<{ revoked: false }>(err);
