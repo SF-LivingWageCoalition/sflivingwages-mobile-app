@@ -369,14 +369,20 @@ export const registerCustomer = async (
         return attempt.result;
       }
 
-      // If server explicitly says "user already exists" (SimpleJWT code 38), continue trying
+      // If server explicitly says username exists (WooCommerce or SimpleJWT code), continue trying
       const sc = attempt.serverCode;
       if (
         sc === 38 ||
         sc === "38" ||
+        sc === "registration-error-username-exists" ||
         (attempt.result &&
           (attempt.result as any).data &&
-          (attempt.result as any).data.code === 38)
+          ((attempt.result as any).data.code === 38 ||
+            (attempt.result as any).data.code === "38" ||
+            (attempt.result as any).data.code ===
+              "registration-error-username-exists" ||
+            (attempt.result as any).data.error ===
+              "registration-error-username-exists"))
       ) {
         // try next candidate
         continue;
