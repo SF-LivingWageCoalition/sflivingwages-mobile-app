@@ -1,5 +1,4 @@
 /**
- * Username utilities extracted from auth utils.
  * Pure helpers for generating and sanitizing username candidates.
  */
 export const makeBaseFromEmail = (email: string, maxLen = 15): string => {

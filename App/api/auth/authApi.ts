@@ -294,8 +294,6 @@ export const registerCustomer = async (
   email: string,
   password: string,
 ): Promise<ApiResult<CustomerRegistrationData>> => {
-  // username generation utilities moved to ./utils
-
   const attemptRegister = async (
     usernameCandidate: string,
   ): Promise<{
