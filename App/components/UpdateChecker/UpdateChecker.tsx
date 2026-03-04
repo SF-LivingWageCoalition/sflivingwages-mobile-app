@@ -10,16 +10,8 @@ export const UpdateChecker = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const checkForUpdates = async () => {
-      if (!Device.isDevice) {
-        return;
-      }
-      await onFetchUpdateAsync();
-    };
-    const interval = setInterval(() => {
-      checkForUpdates();
-    }, 15000);
-    return () => clearInterval(interval);
+    if (__DEV__ || !Device.isDevice) return;
+    onFetchUpdateAsync();
   }, []);
 
   async function onFetchUpdateAsync() {
