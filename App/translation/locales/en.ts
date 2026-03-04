@@ -40,7 +40,7 @@ const en = {
     },
   },
   reportBusiness: {
-    title: "Report Abusive Employers on the Map",
+    title: "Workplace Violation Map",
     body: "Empower workers by allowing them to anonymously report businesses that  violate workers’ rights. This map-based feature helps expose wage theft, unsafe conditions, and other abuses — making it easier for the community to stay informed and take action.",
     cta: "Continue",
   },
