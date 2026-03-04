@@ -290,6 +290,9 @@ const en = {
   donateScreen: {
     title: "Donate",
   },
+  contributeScreen: {
+    title: "Contribute",
+  },
   eventsScreen: {
     title: "Events",
   },

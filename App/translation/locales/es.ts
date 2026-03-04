@@ -298,6 +298,9 @@ const es: Translations = {
   donateScreen: {
     title: "Donar",
   },
+  contributeScreen: {
+    title: "Contribuir",
+  },
   eventsScreen: {
     title: "Eventos",
   },
