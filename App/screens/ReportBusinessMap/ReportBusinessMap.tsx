@@ -1,54 +1,34 @@
 import { FontAwesome5 } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
 import {
   NavigationProp,
   ParamListBase,
   useNavigation,
 } from "@react-navigation/native";
-import React, { useRef, useState } from "react";
-import {
-  Keyboard,
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-import { Dropdown } from "react-native-element-dropdown";
+import React, { useCallback, useEffect, useState } from "react";
+import { Platform, StyleSheet, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import GooglePlacesTextInput, {
-  GooglePlacesTextInputRef,
-  Place,
-} from "react-native-google-places-textinput";
-import { SafeAreaView } from "react-native-safe-area-context";
 import MainButton from "../../components/MainButton";
 import PlatformMap from "../../components/PlatformMap/PlatformMap";
 import { colors } from "../../theme";
 import { fontSize } from "../../theme/fontStyles";
-import { reportSchema } from "./validationSchemas";
 
-// Use state for markers
-const initialAndroidMarker = {
-  coordinates: {
-    latitude: 37.773972,
-    longitude: -122.431297,
-  },
-  title: "Test Marker",
-  snippet: "This is a test marker",
-  draggable: false,
-};
+interface ViolationAcf {
+  business_name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  violation_type: string;
+  description: string;
+  anonymous: boolean;
+  date_time: string;
+  timestamp: string;
+}
 
-const initialIOSMarker = {
-  coordinates: {
-    latitude: 37.773972,
-    longitude: -122.431297,
-  },
-  title: "Test Marker",
-  tintColor: colors.palette.red400,
-  systemImageName: "mappin.circle.fill",
-};
+export interface Violation {
+  id: number;
+  title: { rendered: string };
+  acf: ViolationAcf;
+}
 
 const ReportBusinessMap = () => {
   const DEFAULT_LATITUDE = 37.773972;
@@ -63,106 +43,29 @@ const ReportBusinessMap = () => {
     zoom: DEFAULT_ZOOM,
   };
 
-  const violationData = [
-    { label: "Discrimination", value: "discrimination" },
-    { label: "Harassment", value: "harassment" },
-    { label: "Unfair Treatment", value: "unfair_treatment" },
-    { label: "Retaliation", value: "retaliation" },
-    { label: "Unequal Pay", value: "unequal_pay" },
-    { label: "Other", value: "other" },
-  ];
-
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
-  const placesRef = useRef<GooglePlacesTextInputRef | null>(null);
+  const [reports, setReports] = useState<Violation[]>([]);
 
-  const [violationType, setViolationType] = useState<string | null>(null);
-  const [description, setDescription] = useState("");
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const [markersAndroid, setMarkersAndroid] = useState([initialAndroidMarker]);
-  const [markersIOS, setMarkersIOS] = useState([initialIOSMarker]);
-
-  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
-
-  const [errors, setErrors] = useState({
-    violationType: null as string | null,
-    description: null as string | null,
-    selectedPlace: null as string | null,
-  });
-
-  const handlePlaceSelect = (place: Place) => {
-    setSelectedPlace(place);
-  };
-
-  const resetForm = () => {
-    setViolationType(null);
-    setDescription("");
-    setSelectedPlace(null);
-    setErrors({ violationType: null, description: null, selectedPlace: null });
-    placesRef.current?.clear();
-  };
-
-  const handleSubmit = () => {
-    const formData = {
-      violationType,
-      description,
-      selectedPlace,
-    };
-
-    const validation = reportSchema.safeParse(formData);
-    if (!validation.success) {
-      const newErrors = {
-        violationType: null as string | null,
-        description: null as string | null,
-        selectedPlace: null as string | null,
-      };
-      validation.error.errors.forEach((err) => {
-        if (err.path[0] === "violationType")
-          newErrors.violationType = err.message;
-        if (err.path[0] === "description") newErrors.description = err.message;
-        if (err.path[0] === "selectedPlace")
-          newErrors.selectedPlace = err.message;
-      });
-      setErrors(newErrors);
-      return;
+  const fetchReports = useCallback(async () => {
+    try {
+      const res = await fetch(
+        "https://www.wpmockup.xyz/wp-json/wp/v2/violations",
+      );
+      if (!res.ok) {
+        throw new Error(
+          `Failed to fetch reports: ${res.status} ${res.statusText}`,
+        );
+      }
+      const data: Violation[] = await res.json();
+      setReports(Array.isArray(data) ? data : []);
+    } catch (e) {
+      console.error("Error fetching reports:", e);
     }
+  }, []);
 
-    setErrors({ violationType: null, description: null, selectedPlace: null });
-
-    // Proceed with submission
-    if (selectedPlace) {
-      // Extract data from selected place safely
-      const latitude =
-        selectedPlace.details?.location?.latitude ?? DEFAULT_LATITUDE;
-      const longitude =
-        selectedPlace.details?.location?.longitude ?? DEFAULT_LONGITUDE;
-      const title =
-        selectedPlace.structuredFormat?.mainText?.text ||
-        selectedPlace.structuredFormat?.secondaryText?.text ||
-        "Selected Place";
-      const address = `Violation Type: ${violationType} - ${description}`;
-
-      const newAndroidMarker = {
-        coordinates: { latitude, longitude },
-        title,
-        snippet: address,
-        draggable: false,
-      };
-
-      const newIOSMarker = {
-        coordinates: { latitude, longitude },
-        title,
-        tintColor: colors.palette.red400,
-        systemImageName: "mappin.circle.fill",
-      };
-
-      setMarkersAndroid((prev) => [...prev, newAndroidMarker]);
-      setMarkersIOS((prev) => [...prev, newIOSMarker]);
-
-      resetForm();
-      setIsModalVisible(false);
-    }
-  };
+  useEffect(() => {
+    fetchReports();
+  }, [fetchReports]);
 
   return (
     <GestureHandlerRootView style={styles.containerBS}>
@@ -170,7 +73,19 @@ const ReportBusinessMap = () => {
         <PlatformMap
           style={styles.flex1}
           cameraPosition={initialCamera}
-          markers={Platform.OS === "ios" ? markersIOS : markersAndroid}
+          markers={reports.map((report) => ({
+            coordinates: {
+              latitude: report.acf.latitude,
+              longitude: report.acf.longitude,
+            },
+            title: report.acf.business_name,
+            snippet: report.acf.violation_type,
+            draggable: false,
+            tintColor:
+              Platform.OS === "ios" ? colors.palette.red400 : undefined,
+            systemImageName:
+              Platform.OS === "ios" ? "mappin.circle.fill" : undefined,
+          }))}
         />
 
         <MainButton
@@ -191,135 +106,13 @@ const ReportBusinessMap = () => {
         <MainButton
           variant="circle"
           position="absolute"
-          onPress={() => setIsModalVisible(true)}
-          icon={
-            <FontAwesome5 name="plus" size={20} color={colors.palette.red100} />
-          }
-          style={{ bottom: 40, left: 24 }}
-        />
-
-        <MainButton
-          variant="circle"
-          position="absolute"
           onPress={() => navigation.navigate("ListReportScreen")}
           icon={
             <FontAwesome5 name="list" size={23} color={colors.palette.red400} />
           }
           backgroundColor={colors.palette.gray800}
-          style={{
-            bottom: 120,
-            left: 24,
-          }}
+          style={{ bottom: 40, left: 24 }}
         />
-
-        <Modal
-          visible={isModalVisible}
-          animationType="slide"
-          transparent={false}
-          onRequestClose={() => setIsModalVisible(false)}
-        >
-          <SafeAreaView style={styles.modalContainer}>
-            <KeyboardAvoidingView
-              style={styles.modalContainer}
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
-            >
-              <View style={styles.modalHeader}>
-                <Text style={styles.header2}>Report a Business Violation</Text>
-                <MainButton
-                  variant="text"
-                  onPress={() => {
-                    resetForm();
-                    setIsModalVisible(false);
-                  }}
-                  icon={
-                    <Ionicons
-                      name="close"
-                      size={32}
-                      color={colors.palette.gray600}
-                    />
-                  }
-                  style={styles.closeButton}
-                  textStyle={{ color: colors.palette.gray600 }}
-                />
-              </View>
-              <View style={styles.contentContainer}>
-                <Dropdown
-                  style={styles.dropdown}
-                  placeholder="Select violation type"
-                  placeholderStyle={styles.dropdownPlaceholder}
-                  data={violationData}
-                  labelField="label"
-                  valueField="value"
-                  value={violationType}
-                  onChange={(item: any) => {
-                    setViolationType(item.value);
-                    setErrors((prev) => ({ ...prev, violationType: null }));
-                  }}
-                />
-                {errors.violationType && (
-                  <Text style={styles.errorText}>{errors.violationType}</Text>
-                )}
-
-                <TextInput
-                  value={description}
-                  onChangeText={(text) => {
-                    setDescription(text);
-                    setErrors((prev) => ({ ...prev, description: null }));
-                  }}
-                  placeholder="Description"
-                  style={styles.textArea}
-                  multiline
-                  numberOfLines={4}
-                />
-                {errors.description && (
-                  <Text style={styles.errorText}>{errors.description}</Text>
-                )}
-
-                <GooglePlacesTextInput
-                  ref={placesRef}
-                  apiKey={process.env.EXPO_PUBLIC_GOOGLE_AUTOCOMPLETE_API_KEY}
-                  onPlaceSelect={(places: Place) => {
-                    handlePlaceSelect(places);
-                    setErrors((prev) => ({ ...prev, selectedPlace: null }));
-                  }}
-                  fetchDetails={true}
-                  detailsFields={[
-                    "formattedAddress",
-                    "location",
-                    "viewport",
-                    "photos",
-                  ]}
-                  placeHolderText="Business name"
-                  style={{
-                    container: styles.placesContainer,
-                    input: styles.placesInput,
-                    suggestionsContainer: styles.placesSuggestions,
-                    placeholder: styles.placesPlaceholder,
-                  }}
-                />
-                {errors.selectedPlace && (
-                  <Text style={styles.errorText}>{errors.selectedPlace}</Text>
-                )}
-
-                <Text style={styles.disclaimerText}>
-                  All information provided is kept confidential and will not be
-                  shared with anybody.
-                </Text>
-
-                <View style={styles.submitButtonContainer}>
-                  <MainButton
-                    variant="primary"
-                    title="Submit"
-                    onPress={() => {
-                      Keyboard.dismiss();
-                      handleSubmit();
-                    }}
-                  />
-                </View>
-              </View>
-            </KeyboardAvoidingView>
-          </SafeAreaView>
-        </Modal>
       </View>
     </GestureHandlerRootView>
   );
