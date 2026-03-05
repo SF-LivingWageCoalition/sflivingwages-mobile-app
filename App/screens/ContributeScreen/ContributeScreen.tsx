@@ -1,6 +1,7 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
+  Alert,
   Linking,
   Modal,
   Pressable,
@@ -20,8 +21,17 @@ const ContributeScreen: React.FC = () => {
   const [donateModalVisible, setDonateModalVisible] = useState(false);
   const [activeSections, setActiveSections] = useState<number[]>([]);
 
-  const handleOpenURL = (url: string): void => {
-    Linking.openURL(url);
+  const handleOpenURL = async (url: string): Promise<void> => {
+    const supported = await Linking.canOpenURL(url);
+    if (!supported) {
+      Alert.alert("Unable to open link", "This URL isn't supported on your device.");
+      return;
+    }
+    try {
+      await Linking.openURL(url);
+    } catch {
+      Alert.alert("Unable to open link", "Something went wrong. Please try again.");
+    }
   };
 
   const DONATE_SECTIONS: DonateSection[] = [
