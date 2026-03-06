@@ -24,13 +24,19 @@ const ContributeScreen: React.FC = () => {
   const handleOpenURL = async (url: string): Promise<void> => {
     const supported = await Linking.canOpenURL(url);
     if (!supported) {
-      Alert.alert("Unable to open link", "This URL isn't supported on your device.");
+      Alert.alert(
+        "Unable to open link",
+        "This URL isn't supported on your device.",
+      );
       return;
     }
     try {
       await Linking.openURL(url);
     } catch {
-      Alert.alert("Unable to open link", "Something went wrong. Please try again.");
+      Alert.alert(
+        "Unable to open link",
+        "Something went wrong. Please try again.",
+      );
     }
   };
 
@@ -60,7 +66,7 @@ const ContributeScreen: React.FC = () => {
               title="Donate Online"
               onPress={() =>
                 handleOpenURL(
-                  "https://www.livingwage-sf.org/online-donation-form/"
+                  "https://www.livingwage-sf.org/online-donation-form/",
                 )
               }
             />
@@ -88,6 +94,8 @@ const ContributeScreen: React.FC = () => {
           pressed && styles.donateBannerPressed,
         ]}
         onPress={() => setDonateModalVisible(true)}
+        accessibilityRole="button"
+        accessibilityLabel="Open donate options"
       >
         <FontAwesome5
           name="hand-holding-heart"
