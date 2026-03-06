@@ -8,7 +8,7 @@ const en = {
     getAssistance: "Report Violation",
     wageRights: "Know Your Wage Rights",
     beReadyForICE: "Be Ready for ICE",
-    reportBusiness: "Report Businesses Violating Workers’ Rights",
+    reportBusiness: "Workplace Violation Map",
   },
   assistScreen: {
     title: `We can assist you.`,
