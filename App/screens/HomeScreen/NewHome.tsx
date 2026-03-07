@@ -79,9 +79,9 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
   const mainSliderImages = [
     {
       id: 1,
-      title: translate("donateScreen.title"),
+      title: translate("contributeScreen.title"),
       src: campaign2Background,
-      destination: "Donate",
+      destination: "Contribute",
     },
     {
       id: 2,

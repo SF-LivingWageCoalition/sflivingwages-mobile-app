@@ -2,17 +2,12 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import AssistanceHome from "../screens/AssistanceHome/AssistanceHome";
-import AuctionNav from "../screens/AuctionScreen/AuctionNav";
-import DonateScreen from "../screens/DonateScreen/DonateScreen";
+import ContributeScreen from "../screens/ContributeScreen/ContributeScreen";
 import NewHome from "../screens/HomeScreen/NewHome";
 import AccountScreen from "../screens/AccountScreen/AccountScreen";
 import { colors } from "../theme";
 import { BottomTabParamList } from "../types/types";
 
-/**
- * Bottom Tab Navigator
- * Provides navigation between the main screens of the app
- */
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const BottomTabStack: React.FC = () => {
@@ -38,25 +33,13 @@ const BottomTabStack: React.FC = () => {
       />
 
       <Tab.Screen
-        name="Auction"
-        component={AuctionNav}
+        name="Contribute"
+        component={ContributeScreen}
         options={{
           headerShown: false,
-          tabBarLabel: "Auction",
+          tabBarLabel: "Contribute",
           tabBarIcon: ({ color }) => (
-            <FontAwesome5 name={"gavel"} color={color} size={20} />
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="Donate"
-        component={DonateScreen}
-        options={{
-          headerShown: false,
-          tabBarLabel: "Donate",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome5 name={"donate"} color={color} size={20} />
+            <FontAwesome5 name={"hand-holding-heart"} color={color} size={20} />
           ),
         }}
       />
