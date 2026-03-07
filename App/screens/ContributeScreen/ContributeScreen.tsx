@@ -14,6 +14,7 @@ import Accordion from "react-native-collapsible/Accordion";
 import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
+import { translate } from "../../translation/i18n";
 import { DonateSection } from "../../types/types";
 import AuctionNav from "../AuctionScreen/AuctionNav";
 
@@ -42,28 +43,24 @@ const ContributeScreen: React.FC = () => {
 
   const DONATE_SECTIONS: DonateSection[] = [
     {
-      title: "Checks",
+      title: translate("donateScreen.checks.title"),
       content: (
         <Text style={styles.bodyText}>
-          Mail to:{"\n\n"}
-          San Francisco Living Wage Coalition, 2940 16th Street, #301 San
-          Francisco, California, 94103
+          {translate("donateScreen.checks.body")}
         </Text>
       ),
     },
     {
-      title: "PayPal",
+      title: translate("donateScreen.paypal.title"),
       content: (
         <View style={styles.paypalContent}>
           <Text style={styles.bodyText}>
-            A PayPal account is not required. You can also use your credit card
-            or bank account to donate through PayPal.{"\n\n"}Click on the button
-            below to be taken to our PayPal site.
+            {translate("donateScreen.paypal.body")}
           </Text>
           <View style={styles.donateButtonContainer}>
             <MainButton
               variant="primary"
-              title="Donate Online"
+              title={translate("donateScreen.paypal.button")}
               onPress={() =>
                 handleOpenURL(
                   "https://www.livingwage-sf.org/online-donation-form/",
@@ -97,12 +94,7 @@ const ContributeScreen: React.FC = () => {
         accessibilityRole="button"
         accessibilityLabel="Open donate options"
       >
-        <FontAwesome5
-          name="hand-holding-heart"
-          size={18}
-          color={colors.light.textOnPrimary}
-        />
-        <Text style={styles.donateBannerText}>Donate</Text>
+        <Text style={styles.donateBannerText}>{translate("donateScreen.title")}</Text>
         <FontAwesome5
           name="chevron-right"
           size={14}
@@ -121,7 +113,7 @@ const ContributeScreen: React.FC = () => {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Donate</Text>
+              <Text style={styles.modalTitle}>{translate("donateScreen.title")}</Text>
               <Pressable
                 onPress={() => setDonateModalVisible(false)}
                 hitSlop={12}
