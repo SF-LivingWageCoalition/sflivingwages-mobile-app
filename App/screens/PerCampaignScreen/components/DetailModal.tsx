@@ -29,7 +29,8 @@ function DetailModal({ detailId, onClose }: DetailModalProps) {
   const content2 =
     typeof content2Raw === "string" &&
     content2Raw.length > 0 &&
-    !content2Raw.startsWith("campaigns.")
+    !content2Raw.startsWith("campaigns.") &&
+    !content2Raw.startsWith("[missing")
       ? content2Raw
       : undefined;
 
@@ -43,7 +44,7 @@ function DetailModal({ detailId, onClose }: DetailModalProps) {
       onRequestClose={onClose}
     >
       <Pressable style={styles.modalOverlay} onPress={onClose}>
-        <Pressable
+        <View
           style={[
             styles.modalContent,
             {
@@ -51,7 +52,7 @@ function DetailModal({ detailId, onClose }: DetailModalProps) {
               height: modalMaxHeight,
             },
           ]}
-          onPress={(e) => e.stopPropagation()}
+          onStartShouldSetResponder={() => true}
         >
           <View style={styles.modalContentInner}>
             <ScrollView
@@ -78,7 +79,7 @@ function DetailModal({ detailId, onClose }: DetailModalProps) {
               <Text style={styles.modalCloseText}>Close</Text>
             </Pressable>
           </View>
-        </Pressable>
+        </View>
       </Pressable>
     </Modal>
   );
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: colors.light.surface,
     borderRadius: 12,
-    overflow: "scroll",
+    overflow: "hidden",
   },
   /** View inside Pressable so flex layout applies; Pressable can break flex. */
   modalContentInner: {
