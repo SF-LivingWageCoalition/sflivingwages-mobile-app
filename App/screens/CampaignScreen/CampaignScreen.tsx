@@ -31,7 +31,12 @@ const CampaignScreen: React.FC = () => {
         </View>
       </ImageBackground>
 
-      {/* Campaign list */}
+      {/* Campaign list:
+       * CAMPAIGN_IDS is [1, 2, 3, 4, 5, 6] — the set of campaign ids that have content in both campaignStructure.ts and the i18n campaigns namespace.
+       * FlatList gets data={CAMPAIGN_IDS}, so each item is a number (an id).
+       * keyExtractor uses that id: (id) => id.toString().
+       * renderItem receives { item } where item is the id and passes it to the card: <CampaignCard id={item} />.
+       */}
       <FlatList
         data={CAMPAIGN_IDS}
         keyExtractor={(id) => id.toString()}

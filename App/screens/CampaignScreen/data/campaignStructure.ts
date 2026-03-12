@@ -1,7 +1,11 @@
 /**
  * Campaign structure: ids and block arrays. All copy lives in i18n (campaigns.en / campaigns.es).
  * Keys reference translate('campaigns.byId.<id>....').
+ *
+ * This file exports getCampaignBlocks(campaignId: number): CampaignContentBlock[] | undefined
+ * which is used in PerCampaignScreen.tsx to get the blocks for a given campaign id.
  */
+
 import type { CampaignContentBlock } from "../../../types/campaigns";
 
 export const CAMPAIGN_IDS: number[] = [1, 2, 3, 4, 5, 6];
@@ -98,7 +102,11 @@ const campaign2Blocks: CampaignContentBlock[] = [
     url: "https://actionnetwork.org/letters/pass-the-protecting-the-right-to-organize-pro-act?source=direct_link&",
     labelKey: "campaigns.byId.2.actionStepsLinkLabels.0",
   },
-  { type: "heading", level: 2, key: "campaigns.byId.2.additionalMaterialsTitle" },
+  {
+    type: "heading",
+    level: 2,
+    key: "campaigns.byId.2.additionalMaterialsTitle",
+  },
   {
     type: "orderedList",
     itemKeys: [
@@ -179,7 +187,11 @@ const campaign3Blocks: CampaignContentBlock[] = [
     url: "https://livingwage-sf.org/file-fco-complaint/",
     labelKey: "campaigns.byId.3.actionStepsLinkLabels.1",
   },
-  { type: "heading", level: 2, key: "campaigns.byId.3.additionalMaterialsTitle" },
+  {
+    type: "heading",
+    level: 2,
+    key: "campaigns.byId.3.additionalMaterialsTitle",
+  },
   {
     type: "orderedList",
     itemKeys: [
@@ -334,7 +346,11 @@ const campaign5Blocks: CampaignContentBlock[] = [
     url: "https://www.paypal.com/donate/?hosted_button_id=5ARPDJWFF5YZJ",
     labelKey: "campaigns.byId.5.actionStepsLinkLabels.1",
   },
-  { type: "heading", level: 2, key: "campaigns.byId.5.additionalMaterialsTitle" },
+  {
+    type: "heading",
+    level: 2,
+    key: "campaigns.byId.5.additionalMaterialsTitle",
+  },
   {
     type: "orderedList",
     itemKeys: [
@@ -410,7 +426,11 @@ const campaign6Blocks: CampaignContentBlock[] = [
     url: "https://actionnetwork.org/petitions/raise-wages-to-protect-and-serve-our-communities?source=direct_link&",
     labelKey: "campaigns.byId.6.actionStepsLinkLabels.0",
   },
-  { type: "heading", level: 2, key: "campaigns.byId.6.additionalMaterialsTitle" },
+  {
+    type: "heading",
+    level: 2,
+    key: "campaigns.byId.6.additionalMaterialsTitle",
+  },
   {
     type: "orderedList",
     itemKeys: [
@@ -451,6 +471,8 @@ const CAMPAIGN_BLOCKS: Record<number, CampaignContentBlock[]> = {
   6: campaign6Blocks,
 };
 
-export function getCampaignBlocks(campaignId: number): CampaignContentBlock[] | undefined {
+export function getCampaignBlocks(
+  campaignId: number,
+): CampaignContentBlock[] | undefined {
   return CAMPAIGN_BLOCKS[campaignId];
 }
