@@ -1,8 +1,10 @@
 import type { Translations } from "./en";
 import simpleJwt from "./simpleJwt.es";
 import wooCommerce from "./wooCommerce.es";
+import campaigns from "./campaigns.es";
 
 const es: Translations = {
+  campaigns,
   assistHomeScreen: {
     title: "Centro de Asistencia",
     subtitle:

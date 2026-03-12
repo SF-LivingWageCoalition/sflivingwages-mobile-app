@@ -6,10 +6,10 @@ import {
   Text,
   ImageBackground,
 } from "react-native";
-import richCampaignsData from "../../assets/richCampaignsData";
 import { colors, textStyles } from "../../theme";
 import CampaignCard from "./components/CampaignCard";
 import goldenGateBridge from "../../assets/images/golden-gate-bridge.png";
+import { CAMPAIGN_IDS } from "./data/campaignStructure";
 
 /**
  * Displays a list of campaigns
@@ -33,14 +33,12 @@ const CampaignScreen: React.FC = () => {
 
       {/* Campaign list */}
       <FlatList
-        data={richCampaignsData}
-        keyExtractor={(item) => item.id.toString()}
+        data={CAMPAIGN_IDS}
+        keyExtractor={(id) => id.toString()}
         numColumns={2}
         columnWrapperStyle={styles.columnWrapper}
         contentContainerStyle={styles.listContent}
-        renderItem={({ item }) => (
-          <CampaignCard title={item.title} text={item.text} id={item.id} />
-        )}
+        renderItem={({ item }) => <CampaignCard id={item} />}
       />
     </View>
   );

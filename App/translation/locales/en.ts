@@ -1,7 +1,9 @@
 import simpleJwt from "./simpleJwt.en";
 import wooCommerce from "./wooCommerce.en";
+import campaigns from "./campaigns.en";
 
 const en = {
+  campaigns,
   assistHomeScreen: {
     title: "Assistance Center",
     subtitle: "Choose an option below to get help or learn about your rights",
