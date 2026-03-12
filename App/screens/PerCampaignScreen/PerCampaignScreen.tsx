@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
 import { useRoute } from "@react-navigation/native";
+import React, { useCallback, useState } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { colors, textStyles } from "../../theme";
 import { translate } from "../../translation";
-import { getCampaignBlocks } from "../CampaignScreen/data/campaignStructure";
 import type { CampaignDetailId } from "../../types/campaigns";
+import { getCampaignBlocks } from "../CampaignScreen/data/campaignStructure";
 import BlockRenderer from "./components/BlockRenderer";
 import DetailModal from "./components/DetailModal";
 
@@ -12,7 +12,7 @@ const PerCampaignScreen: React.FC = () => {
   const route = useRoute();
   const { id } = route.params as { id: number };
   const [detailModalId, setDetailModalId] = useState<CampaignDetailId | null>(
-    null
+    null,
   );
 
   const blocks = getCampaignBlocks(id);

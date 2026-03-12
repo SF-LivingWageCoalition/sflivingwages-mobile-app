@@ -1,14 +1,11 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  Pressable,
-  Linking,
-} from "react-native";
+import { Linking, Pressable, StyleSheet, Text, View } from "react-native";
 import { colors, textStyles } from "../../../theme";
 import { translate } from "../../../translation";
-import type { CampaignContentBlock, CampaignDetailId } from "../../../types/campaigns";
+import type {
+  CampaignContentBlock,
+  CampaignDetailId,
+} from "../../../types/campaigns";
 
 export type BlockRendererProps = {
   block: CampaignContentBlock;
@@ -37,10 +34,14 @@ function BlockRenderer({ block, onInternalLinkPress }: BlockRendererProps) {
     case "linkInternal":
       return (
         <Pressable
-          onPress={() => onInternalLinkPress(block.detailId as CampaignDetailId)}
+          onPress={() =>
+            onInternalLinkPress(block.detailId as CampaignDetailId)
+          }
           style={({ pressed }) => [styles.link, pressed && styles.linkPressed]}
         >
-          <Text style={styles.linkText}>{translate(block.labelKey as never)}</Text>
+          <Text style={styles.linkText}>
+            {translate(block.labelKey as never)}
+          </Text>
         </Pressable>
       );
     case "linkExternal":
@@ -49,7 +50,9 @@ function BlockRenderer({ block, onInternalLinkPress }: BlockRendererProps) {
           onPress={() => Linking.openURL(block.url)}
           style={({ pressed }) => [styles.link, pressed && styles.linkPressed]}
         >
-          <Text style={styles.linkText}>{translate(block.labelKey as never)}</Text>
+          <Text style={styles.linkText}>
+            {translate(block.labelKey as never)}
+          </Text>
         </Pressable>
       );
     case "hr":

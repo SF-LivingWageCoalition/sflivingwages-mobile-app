@@ -1,11 +1,11 @@
 import React from "react";
 import {
-  View,
+  Modal,
+  Pressable,
+  ScrollView,
   StyleSheet,
   Text,
-  ScrollView,
-  Pressable,
-  Modal,
+  View,
   useWindowDimensions,
 } from "react-native";
 import { colors, textStyles } from "../../../theme";
@@ -18,7 +18,7 @@ export type DetailModalProps = {
 };
 
 function DetailModal({ detailId, onClose }: DetailModalProps) {
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
   if (!detailId) return null;
 
   const nameKey = `campaigns.details.${detailId}.name` as never;
@@ -33,6 +33,8 @@ function DetailModal({ detailId, onClose }: DetailModalProps) {
       ? content2Raw
       : undefined;
 
+  const modalMaxHeight = height * 0.85;
+
   return (
     <Modal
       visible={true}
@@ -42,31 +44,40 @@ function DetailModal({ detailId, onClose }: DetailModalProps) {
     >
       <Pressable style={styles.modalOverlay} onPress={onClose}>
         <Pressable
-          style={[styles.modalContent, { width: Math.min(width - 32, 480) }]}
+          style={[
+            styles.modalContent,
+            {
+              width: Math.min(width - 32, 480),
+              height: modalMaxHeight,
+            },
+          ]}
           onPress={(e) => e.stopPropagation()}
         >
-          <ScrollView
-            style={styles.modalScroll}
-            contentContainerStyle={styles.modalScrollContent}
-            showsVerticalScrollIndicator={true}
-          >
-            <Text style={styles.detailTitle}>{translate(nameKey)}</Text>
-            <Text style={styles.detailBody}>{translate(contentKey)}</Text>
-            {content2 ? (
-              <Text style={[styles.detailBody, styles.detailBodySecond]}>
-                {content2}
-              </Text>
-            ) : null}
-          </ScrollView>
-          <Pressable
-            onPress={onClose}
-            style={({ pressed }) => [
-              styles.modalCloseButton,
-              pressed && styles.pressed,
-            ]}
-          >
-            <Text style={styles.modalCloseText}>Close</Text>
-          </Pressable>
+          <View style={styles.modalContentInner}>
+            <ScrollView
+              style={styles.modalScroll}
+              contentContainerStyle={styles.modalScrollContent}
+              showsVerticalScrollIndicator={true}
+              bounces={true}
+            >
+              <Text style={styles.detailTitle}>{translate(nameKey)}</Text>
+              <Text style={styles.detailBody}>{translate(contentKey)}</Text>
+              {content2 ? (
+                <Text style={[styles.detailBody, styles.detailBodySecond]}>
+                  {content2}
+                </Text>
+              ) : null}
+            </ScrollView>
+            <Pressable
+              onPress={onClose}
+              style={({ pressed }) => [
+                styles.modalCloseButton,
+                pressed && styles.pressed,
+              ]}
+            >
+              <Text style={styles.modalCloseText}>Close</Text>
+            </Pressable>
+          </View>
         </Pressable>
       </Pressable>
     </Modal>
@@ -84,10 +95,16 @@ const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: colors.light.surface,
     borderRadius: 12,
-    maxHeight: "85%",
-    overflow: "hidden",
+    overflow: "scroll",
   },
-  modalScroll: { maxHeight: "100%" },
+  /** View inside Pressable so flex layout applies; Pressable can break flex. */
+  modalContentInner: {
+    flex: 1,
+    flexDirection: "column",
+  },
+  modalScroll: {
+    flex: 1,
+  },
   modalScrollContent: { padding: 20, paddingBottom: 16 },
   detailTitle: {
     ...textStyles.h4,
@@ -99,6 +116,7 @@ const styles = StyleSheet.create({
     color: colors.light.textPrimary,
     lineHeight: 22,
   },
+  /** Spacing between first content block and optional content2 (used when a detail has both) */
   detailBodySecond: { marginTop: 12 },
   modalCloseButton: {
     padding: 14,
