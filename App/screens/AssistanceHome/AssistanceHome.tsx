@@ -28,19 +28,9 @@ const AssistanceHome: React.FC = () => {
     icon: string;
   }[] = [
     {
-      title: translate("assistHomeScreen.getAssistance"),
-      screen: "ReportViolation",
+      title: "Complaints / Action",
+      screen: "ComplaintsAction",
       icon: "hands-helping",
-    },
-    {
-      title: translate("assistHomeScreen.wageRights"),
-      screen: "WageRights",
-      icon: "gavel",
-    },
-    {
-      title: translate("assistHomeScreen.beReadyForICE"),
-      screen: "BeReadyForICE",
-      icon: "shield-alt",
     },
     {
       title: "Living Wage Calculator",
@@ -48,9 +38,9 @@ const AssistanceHome: React.FC = () => {
       icon: "calculator",
     },
     {
-      title: translate("assistHomeScreen.reportBusiness"),
-      screen: "ReportBusiness",
-      icon: "building",
+      title: "Information / Rights",
+      screen: "InformationRights",
+      icon: "info-circle",
     },
   ];
 

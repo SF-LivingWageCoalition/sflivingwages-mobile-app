@@ -11,6 +11,9 @@ import ListReportScreen from "../screens/ListReportScreen/ListReportScreen";
 import ReportDetailScreen from "../screens/ReportDetailScreen/ReportDetailScreen";
 import { colors, fontFamily } from "../theme";
 import { translate } from "../translation/i18n";
+import ComplaintsAction from "../screens/ComplaintsAction";
+import InformationRights from "../screens/InformationRights";
+// ...existing code...
 
 // Create a stack navigator for the Assistance section
 const AssistanceStack = createStackNavigator<AssistanceTabParamList>();
@@ -46,6 +49,16 @@ const AssistStack = () => {
         name="LivingWageCalculator"
         component={LivingWageCalculator}
         options={{ title: "Living Wage Calculator" }}
+      />
+      <AssistanceStack.Screen
+        name="ComplaintsAction"
+        component={ComplaintsAction}
+        options={{ title: "Complaints / Action" }}
+      />
+      <AssistanceStack.Screen
+        name="InformationRights"
+        component={InformationRights}
+        options={{ title: "Information / Rights" }}
       />
       <AssistanceStack.Screen
         name="ReportBusiness"

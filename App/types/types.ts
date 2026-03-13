@@ -29,6 +29,8 @@ export type AssistanceTabParamList = {
   ReportBusiness: undefined;
   ReportBusinessMap: undefined;
   ListReportScreen: undefined;
+  ComplaintsAction: undefined;
+  InformationRights: undefined;
   ReportDetailScreen: { report: Violation };
   Assistance: { screen?: keyof AssistanceTabParamList };
 };
