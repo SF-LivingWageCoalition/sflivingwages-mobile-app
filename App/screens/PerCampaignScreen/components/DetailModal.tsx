@@ -43,7 +43,8 @@ function DetailModal({ detailId, onClose }: DetailModalProps) {
       animationType="fade"
       onRequestClose={onClose}
     >
-      <Pressable style={styles.modalOverlay} onPress={onClose}>
+      <View style={styles.modalOverlay}>
+        <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
         <View
           style={[
             styles.modalContent,
@@ -52,35 +53,32 @@ function DetailModal({ detailId, onClose }: DetailModalProps) {
               height: modalMaxHeight,
             },
           ]}
-          onStartShouldSetResponder={() => true}
         >
-          <View style={styles.modalContentInner}>
-            <ScrollView
-              style={styles.modalScroll}
-              contentContainerStyle={styles.modalScrollContent}
-              showsVerticalScrollIndicator={true}
-              bounces={true}
-            >
-              <Text style={styles.detailTitle}>{translate(nameKey)}</Text>
-              <Text style={styles.detailBody}>{translate(contentKey)}</Text>
-              {content2 ? (
-                <Text style={[styles.detailBody, styles.detailBodySecond]}>
-                  {content2}
-                </Text>
-              ) : null}
-            </ScrollView>
-            <Pressable
-              onPress={onClose}
-              style={({ pressed }) => [
-                styles.modalCloseButton,
-                pressed && styles.pressed,
-              ]}
-            >
-              <Text style={styles.modalCloseText}>Close</Text>
-            </Pressable>
-          </View>
+          <ScrollView
+            style={styles.modalScroll}
+            contentContainerStyle={styles.modalScrollContent}
+            showsVerticalScrollIndicator={true}
+            bounces={true}
+          >
+            <Text style={styles.detailTitle}>{translate(nameKey)}</Text>
+            <Text style={styles.detailBody}>{translate(contentKey)}</Text>
+            {content2 ? (
+              <Text style={[styles.detailBody, styles.detailBodySecond]}>
+                {content2}
+              </Text>
+            ) : null}
+          </ScrollView>
+          <Pressable
+            onPress={onClose}
+            style={({ pressed }) => [
+              styles.modalCloseButton,
+              pressed && styles.pressed,
+            ]}
+          >
+            <Text style={styles.modalCloseText}>Close</Text>
+          </Pressable>
         </View>
-      </Pressable>
+      </View>
     </Modal>
   );
 }
@@ -97,11 +95,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light.surface,
     borderRadius: 12,
     overflow: "hidden",
-  },
-  /** View inside Pressable so flex layout applies; Pressable can break flex. */
-  modalContentInner: {
-    flex: 1,
-    flexDirection: "column",
   },
   modalScroll: {
     flex: 1,
