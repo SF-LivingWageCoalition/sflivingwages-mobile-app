@@ -366,6 +366,7 @@ const es: Translations = {
     forgotPassword: "Olvidé Mi Contraseña",
     logout: "Cerrar Sesión",
     cancel: "Cancelar",
+    close: "Cerrar",
     ok: "Aceptar",
   },
   validation: {

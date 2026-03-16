@@ -75,7 +75,7 @@ function DetailModal({ detailId, onClose }: DetailModalProps) {
               pressed && styles.pressed,
             ]}
           >
-            <Text style={styles.modalCloseText}>Close</Text>
+            <Text style={styles.modalCloseText}>{translate("buttons.close")}</Text>
           </Pressable>
         </View>
       </View>

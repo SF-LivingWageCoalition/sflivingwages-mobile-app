@@ -357,6 +357,7 @@ const en = {
     forgotPassword: "Forgot Password",
     logout: "Logout",
     cancel: "Cancel",
+    close: "Close",
     ok: "OK",
   },
   validation: {
