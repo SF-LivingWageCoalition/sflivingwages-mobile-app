@@ -34,9 +34,7 @@ function BlockRenderer({ block, onInternalLinkPress }: BlockRendererProps) {
     case "linkInternal":
       return (
         <Pressable
-          onPress={() =>
-            onInternalLinkPress(block.detailId as CampaignDetailId)
-          }
+          onPress={() => onInternalLinkPress(block.detailId)}
           style={({ pressed }) => [styles.link, pressed && styles.linkPressed]}
         >
           <Text style={styles.linkText}>
