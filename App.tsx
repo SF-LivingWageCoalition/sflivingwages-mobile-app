@@ -14,7 +14,8 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import * as SystemUI from "expo-system-ui";
 import React, { useEffect } from "react";
-import { Platform } from "react-native";
+import { Platform, TouchableOpacity } from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
 import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
@@ -91,7 +92,17 @@ const App: React.FC = () => {
               <Stack.Screen
                 name="TabStack"
                 component={BottomTabStack}
-                options={{ title: "San Francisco Living Wage Coalition" }}
+                options={({ navigation }) => ({
+                  title: "San Francisco Living Wage Coalition",
+                  headerRight: () => (
+                    <TouchableOpacity
+                    onPress={() => navigation.navigate("AccountNavigator")}
+                    style={{ marginRight: 12 }}
+                  >
+                    <FontAwesome5 name="bars" size={20} color={colors.light.textOnPrimary} />
+                  </TouchableOpacity>
+                ),
+              })}
               />
               <Stack.Screen
                 name="PreviewImage"

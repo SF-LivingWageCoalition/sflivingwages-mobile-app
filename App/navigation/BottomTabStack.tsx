@@ -1,27 +1,21 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
-import AssistanceHome from "../screens/AssistanceHome/AssistanceHome";
-import AuctionNav from "../screens/AuctionScreen/AuctionNav";
-import DonateScreen from "../screens/DonateScreen/DonateScreen";
 import NewHome from "../screens/HomeScreen/NewHome";
-import AccountScreen from "../screens/AccountScreen/AccountScreen";
+import LivingWageCalculator from "../screens/LivingWageCalculator/LivingWageCalculator";
+import ComplaintsAction from "../screens/ComplaintsAction";
+import InformationRights from "../screens/InformationRights";
+import ContributeStack from "./ContributeStack";
 import { colors } from "../theme";
 import { BottomTabParamList } from "../types/types";
 
-/**
- * Bottom Tab Navigator
- * Provides navigation between the main screens of the app
- */
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const BottomTabStack: React.FC = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarStyle: {
-          backgroundColor: colors.light.primary,
-        },
+        tabBarStyle: { backgroundColor: colors.light.primary },
         tabBarActiveTintColor: colors.light.textOnPrimary,
         tabBarInactiveTintColor: colors.light.textPrimary,
       }}
@@ -31,57 +25,43 @@ const BottomTabStack: React.FC = () => {
         component={NewHome}
         options={{
           headerShown: false,
-          tabBarIcon: ({ color }) => (
-            <FontAwesome5 name={"home"} color={color} size={20} />
-          ),
+          tabBarIcon: ({ color }) => <FontAwesome5 name="home" color={color} size={20} />,
         }}
       />
 
       <Tab.Screen
-        name="Auction"
-        component={AuctionNav}
+        name="Contribute"
+        component={ContributeStack}
         options={{
           headerShown: false,
-          tabBarLabel: "Auction",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome5 name={"gavel"} color={color} size={20} />
-          ),
+          tabBarIcon: ({ color }) => <FontAwesome5 name="hands-helping" color={color} size={20} />,
         }}
       />
 
       <Tab.Screen
-        name="Donate"
-        component={DonateScreen}
+        name="Calculator"
+        component={LivingWageCalculator}
         options={{
           headerShown: false,
-          tabBarLabel: "Donate",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome5 name={"donate"} color={color} size={20} />
-          ),
+          tabBarIcon: ({ color }) => <FontAwesome5 name="calculator" color={color} size={20} />,
         }}
       />
 
       <Tab.Screen
-        name="Assist"
-        component={AssistanceHome}
+        name="Complaints"
+        component={ComplaintsAction}
         options={{
           headerShown: false,
-          tabBarLabel: "Assist",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome5 name={"hands-helping"} color={color} size={20} />
-          ),
+          tabBarIcon: ({ color }) => <FontAwesome5 name="exclamation-circle" color={color} size={20} />,
         }}
       />
 
       <Tab.Screen
-        name="Account"
-        component={AccountScreen}
+        name="Rights"
+        component={InformationRights}
         options={{
           headerShown: false,
-          tabBarLabel: "Account",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome5 name={"user-circle"} color={color} size={20} />
-          ),
+          tabBarIcon: ({ color }) => <FontAwesome5 name="info-circle" color={color} size={20} />,
         }}
       />
     </Tab.Navigator>

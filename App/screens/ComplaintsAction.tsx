@@ -2,32 +2,37 @@ import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { AssistanceTabParamList } from "../types/types";
+import { RootStackParamList } from "../types/types";
 import { colors } from "../theme";
 import { textStyles } from "../theme/fontStyles";
 
 const ComplaintsAction: React.FC = () => {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<AssistanceTabParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.item}
-        onPress={() => navigation.navigate("ReportViolation")}
+        onPress={() =>
+          navigation.navigate("Assistance", { screen: "ReportViolation" })
+        }
       >
         <Text style={styles.label}>Report Violation</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.item}
-        onPress={() => navigation.navigate("ReportBusiness")}
+        onPress={() =>
+          navigation.navigate("Assistance", { screen: "ReportBusiness" })
+        }
       >
         <Text style={styles.label}>Workplace Violation Map</Text>
       </TouchableOpacity>
     </View>
   );
 };
+
+// ...existing code...
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.light.background, padding: 16 },

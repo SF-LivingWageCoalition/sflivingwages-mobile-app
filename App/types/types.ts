@@ -15,10 +15,10 @@ export type RootStackParamList = {
 
 export type BottomTabParamList = {
   Home: undefined;
-  Auction: undefined;
-  Donate: undefined;
-  Assist: undefined;
-  Account: undefined;
+  Contribute: undefined;
+  Calculator: undefined;
+  Complaints: undefined;
+  Rights: undefined;
 };
 
 export type AssistanceTabParamList = {
