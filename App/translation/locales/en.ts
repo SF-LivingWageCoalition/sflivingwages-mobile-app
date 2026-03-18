@@ -8,7 +8,7 @@ const en = {
     getAssistance: "Report Violation",
     wageRights: "Know Your Wage Rights",
     beReadyForICE: "Be Ready for ICE",
-    reportBusiness: "Report Businesses Violating Workers’ Rights",
+    reportBusiness: "Workplace Violation Map",
   },
   assistScreen: {
     title: `We can assist you.`,
@@ -40,7 +40,7 @@ const en = {
     },
   },
   reportBusiness: {
-    title: "Report Abusive Employers on the Map",
+    title: "Workplace Violation Map",
     body: "Empower workers by allowing them to anonymously report businesses that  violate workers’ rights. This map-based feature helps expose wage theft, unsafe conditions, and other abuses — making it easier for the community to stay informed and take action.",
     cta: "Continue",
   },
@@ -289,6 +289,18 @@ const en = {
   },
   donateScreen: {
     title: "Donate",
+    checks: {
+      title: "Checks",
+      body: "Mail to:\n\nSan Francisco Living Wage Coalition, 2940 16th Street, #301 San Francisco, California, 94103",
+    },
+    paypal: {
+      title: "PayPal",
+      body: "A PayPal account is not required. You can also use your credit card or bank account to donate through PayPal.\n\nClick on the button below to be taken to our PayPal site.",
+      button: "Donate Online",
+    },
+  },
+  contributeScreen: {
+    title: "Contribute",
   },
   eventsScreen: {
     title: "Events",

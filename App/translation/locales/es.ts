@@ -297,6 +297,18 @@ const es: Translations = {
   },
   donateScreen: {
     title: "Donar",
+    checks: {
+      title: "Cheques",
+      body: "Enviar por correo a:\n\nSan Francisco Living Wage Coalition, 2940 16th Street, #301 San Francisco, California, 94103",
+    },
+    paypal: {
+      title: "PayPal",
+      body: "No se requiere una cuenta de PayPal. También puede usar su tarjeta de crédito o cuenta bancaria para donar a través de PayPal.\n\nHaga clic en el botón de abajo para ir a nuestro sitio de PayPal.",
+      button: "Donar en Línea",
+    },
+  },
+  contributeScreen: {
+    title: "Contribuir",
   },
   eventsScreen: {
     title: "Eventos",

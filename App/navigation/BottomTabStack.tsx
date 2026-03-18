@@ -1,11 +1,11 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
+import ContributeScreen from "../screens/ContributeScreen/ContributeScreen";
 import NewHome from "../screens/HomeScreen/NewHome";
 import LivingWageCalculator from "../screens/LivingWageCalculator/LivingWageCalculator";
 import ComplaintsAction from "../screens/ComplaintsAction";
 import InformationRights from "../screens/InformationRights";
-import ContributeStack from "./ContributeStack";
 import { colors } from "../theme";
 import { BottomTabParamList } from "../types/types";
 
@@ -31,10 +31,13 @@ const BottomTabStack: React.FC = () => {
 
       <Tab.Screen
         name="Contribute"
-        component={ContributeStack}
+        component={ContributeScreen}
         options={{
           headerShown: false,
-          tabBarIcon: ({ color }) => <FontAwesome5 name="hands-helping" color={color} size={20} />,
+          tabBarLabel: "Contribute",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name="hand-holding-heart" color={color} size={20} />
+          ),
         }}
       />
 

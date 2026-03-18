@@ -21,6 +21,8 @@ export type BottomTabParamList = {
   Rights: undefined;
 };
 
+
+
 export type AssistanceTabParamList = {
   AssistanceHome: undefined;
   ReportViolation: undefined;
