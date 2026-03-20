@@ -3,11 +3,13 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { colors } from "../../../theme";
 import { textStyles } from "../../../theme/fontStyles";
+import { translate } from "../../../translation";
 import { CampaignItem } from "../../../types/types";
 import { Entypo } from "@expo/vector-icons";
 
-const CampaignCard: React.FC<CampaignItem> = ({ id, title }) => {
+const CampaignCard: React.FC<CampaignItem> = ({ id }) => {
   const navigation = useNavigation<NavigationProp<any>>();
+  const title = translate(`campaigns.byId.${id}.title` as never);
   return (
     <View style={styles.container}>
       <TouchableOpacity

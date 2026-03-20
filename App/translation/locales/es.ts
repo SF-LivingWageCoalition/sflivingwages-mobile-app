@@ -1,8 +1,10 @@
 import type { Translations } from "./en";
 import simpleJwt from "./simpleJwt.es";
 import wooCommerce from "./wooCommerce.es";
+import campaigns from "./campaigns.es";
 
 const es: Translations = {
+  campaigns,
   assistHomeScreen: {
     title: "Centro de Asistencia",
     subtitle:
@@ -364,6 +366,7 @@ const es: Translations = {
     forgotPassword: "Olvidé Mi Contraseña",
     logout: "Cerrar Sesión",
     cancel: "Cancelar",
+    close: "Cerrar",
     ok: "Aceptar",
   },
   validation: {

@@ -6,10 +6,10 @@ import {
   Text,
   ImageBackground,
 } from "react-native";
-import richCampaignsData from "../../assets/richCampaignsData";
 import { colors, textStyles } from "../../theme";
 import CampaignCard from "./components/CampaignCard";
 import goldenGateBridge from "../../assets/images/golden-gate-bridge.png";
+import { CAMPAIGN_IDS } from "./data/campaignStructure";
 
 /**
  * Displays a list of campaigns
@@ -31,16 +31,19 @@ const CampaignScreen: React.FC = () => {
         </View>
       </ImageBackground>
 
-      {/* Campaign list */}
+      {/* Campaign list:
+       * CAMPAIGN_IDS is [1, 2, 3, 4, 5, 6] — the set of campaign ids that have content in both campaignStructure.ts and the i18n campaigns namespace.
+       * FlatList gets data={CAMPAIGN_IDS}, so each item is a number (an id).
+       * keyExtractor uses that id: (id) => id.toString().
+       * renderItem receives { item } where item is the id and passes it to the card: <CampaignCard id={item} />.
+       */}
       <FlatList
-        data={richCampaignsData}
-        keyExtractor={(item) => item.id.toString()}
+        data={CAMPAIGN_IDS}
+        keyExtractor={(id) => id.toString()}
         numColumns={2}
         columnWrapperStyle={styles.columnWrapper}
         contentContainerStyle={styles.listContent}
-        renderItem={({ item }) => (
-          <CampaignCard title={item.title} text={item.text} id={item.id} />
-        )}
+        renderItem={({ item }) => <CampaignCard id={item} />}
       />
     </View>
   );
