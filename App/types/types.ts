@@ -291,10 +291,9 @@ export interface WageData {
   adult1: Household;
   adult2: Household;
 }
+/** List item for campaign list; title is resolved via translate('campaigns.byId.<id>.title') at render time */
 export type CampaignItem = {
   id: number;
-  text: string;
-  title: string;
 };
 
 export type AuthStackParamList = {
