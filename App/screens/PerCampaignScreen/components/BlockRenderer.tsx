@@ -5,12 +5,47 @@ import { translate } from "../../../translation";
 import type {
   CampaignContentBlock,
   CampaignDetailId,
+  OrderedListWithLinksItem,
 } from "../../../types/campaigns";
 
 export type BlockRendererProps = {
   block: CampaignContentBlock;
   onInternalLinkPress: (detailId: CampaignDetailId) => void;
 };
+
+function OrderedListLinkRow({
+  index,
+  item,
+  onInternalLinkPress,
+}: {
+  index: number;
+  item: OrderedListWithLinksItem;
+  onInternalLinkPress: (detailId: CampaignDetailId) => void;
+}) {
+  const onLinkPress = () => {
+    if (item.link.kind === "external") {
+      void Linking.openURL(item.link.url);
+    } else {
+      onInternalLinkPress(item.link.detailId);
+    }
+  };
+
+  return (
+    <View style={styles.listItem}>
+      <Text style={styles.listNumber}>{index + 1}.</Text>
+      <Text style={styles.listItemText}>
+        {translate(item.textKey as never)}{" "}
+        <Text
+          accessibilityRole="link"
+          style={styles.linkText}
+          onPress={onLinkPress}
+        >
+          {translate(item.link.labelKey as never)}
+        </Text>
+      </Text>
+    </View>
+  );
+}
 
 function BlockRenderer({ block, onInternalLinkPress }: BlockRendererProps) {
   switch (block.type) {
@@ -68,6 +103,19 @@ function BlockRenderer({ block, onInternalLinkPress }: BlockRendererProps) {
           ))}
         </View>
       );
+    case "orderedListWithLinks":
+      return (
+        <View style={styles.listContainer}>
+          {block.items.map((item, index) => (
+            <OrderedListLinkRow
+              key={item.textKey}
+              index={index}
+              item={item}
+              onInternalLinkPress={onInternalLinkPress}
+            />
+          ))}
+        </View>
+      );
     default: {
       const _: never = block;
       return null;
@@ -110,6 +158,7 @@ const styles = StyleSheet.create({
   listContainer: { marginBottom: 12 },
   listItem: {
     flexDirection: "row",
+    alignItems: "flex-start",
     marginBottom: 6,
     paddingLeft: 4,
   },
