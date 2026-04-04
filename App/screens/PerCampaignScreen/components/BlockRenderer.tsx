@@ -1,5 +1,12 @@
 import React from "react";
-import { Linking, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  Linking,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { colors, textStyles } from "../../../theme";
 import { translate } from "../../../translation";
 import type {
@@ -7,6 +14,26 @@ import type {
   CampaignDetailId,
   OrderedListWithLinksItem,
 } from "../../../types/campaigns";
+
+/** Same pattern as ContributeScreen.handleOpenURL */
+async function openExternalUrl(url: string): Promise<void> {
+  const supported = await Linking.canOpenURL(url);
+  if (!supported) {
+    Alert.alert(
+      "Unable to open link",
+      "This URL isn't supported on your device.",
+    );
+    return;
+  }
+  try {
+    await Linking.openURL(url);
+  } catch {
+    Alert.alert(
+      "Unable to open link",
+      "Something went wrong. Please try again.",
+    );
+  }
+}
 
 export type BlockRendererProps = {
   block: CampaignContentBlock;
@@ -24,7 +51,7 @@ function OrderedListLinkRow({
 }) {
   const onLinkPress = () => {
     if (item.link.kind === "external") {
-      void Linking.openURL(item.link.url);
+      void openExternalUrl(item.link.url);
     } else {
       onInternalLinkPress(item.link.detailId);
     }
@@ -80,7 +107,7 @@ function BlockRenderer({ block, onInternalLinkPress }: BlockRendererProps) {
     case "linkExternal":
       return (
         <Pressable
-          onPress={() => Linking.openURL(block.url)}
+          onPress={() => void openExternalUrl(block.url)}
           style={({ pressed }) => [styles.link, pressed && styles.linkPressed]}
         >
           <Text style={styles.linkText}>
