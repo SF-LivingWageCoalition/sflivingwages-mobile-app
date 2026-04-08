@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Text,
   View,
-  FlatList,
   TouchableOpacity,
 } from "react-native";
 import { colors } from "../../theme";
@@ -21,8 +20,17 @@ const AssistanceHome: React.FC = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<AssistanceTabParamList>>();
 
-  // added: button definitions
-  const buttons: {
+  const calculatorButton: {
+    title: string;
+    screen: keyof AssistanceTabParamList;
+    icon: string;
+  } = {
+    title: "Living Wage Calculator",
+    screen: "LivingWageCalculator",
+    icon: "calculator",
+  };
+
+  const complaintButtons: {
     title: string;
     screen: keyof AssistanceTabParamList;
     icon: string;
@@ -33,6 +41,18 @@ const AssistanceHome: React.FC = () => {
       icon: "hands-helping",
     },
     {
+      title: translate("assistHomeScreen.reportBusiness"),
+      screen: "ReportBusiness",
+      icon: "building",
+    },
+  ];
+
+  const rightsButtons: {
+    title: string;
+    screen: keyof AssistanceTabParamList;
+    icon: string;
+  }[] = [
+    {
       title: translate("assistHomeScreen.wageRights"),
       screen: "WageRights",
       icon: "gavel",
@@ -42,17 +62,42 @@ const AssistanceHome: React.FC = () => {
       screen: "BeReadyForICE",
       icon: "shield-alt",
     },
-    {
-      title: "Living Wage Calculator",
-      screen: "LivingWageCalculator",
-      icon: "calculator",
-    },
-    {
-      title: translate("assistHomeScreen.reportBusiness"),
-      screen: "ReportBusiness",
-      icon: "building",
-    },
   ];
+
+  const renderTile = (item: {
+    title: string;
+    screen: keyof AssistanceTabParamList;
+    icon: string;
+  }) => (
+    <View key={item.title} style={styles.item}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Assistance", { screen: item.screen })}
+        activeOpacity={0.85}
+        accessibilityRole="button"
+        accessibilityLabel={item.title}
+        style={styles.tile}
+      >
+        <View style={styles.tileHeader}>
+          <View style={styles.iconWrap}>
+            <FontAwesome5
+              name={item.icon}
+              size={22}
+              color={colors.light.primary}
+            />
+          </View>
+          <Entypo
+            name="chevron-right"
+            size={22}
+            color={colors.light.textSecondary}
+          />
+        </View>
+
+        <Text style={styles.tileTitle} numberOfLines={2}>
+          {item.title}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <ScrollView
@@ -79,46 +124,15 @@ const AssistanceHome: React.FC = () => {
             </View>
           </ImageBackground>
 
-          <FlatList
-            data={buttons}
-            keyExtractor={(item) => item.title}
-            numColumns={2}
-            scrollEnabled={false}
-            columnWrapperStyle={styles.columnWrapper}
-            contentContainerStyle={styles.listContent}
-            renderItem={({ item }) => (
-              <View style={styles.item}>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate("Assistance", { screen: item.screen })
-                  }
-                  activeOpacity={0.85}
-                  accessibilityRole="button"
-                  accessibilityLabel={item.title}
-                  style={styles.tile}
-                >
-                  <View style={styles.tileHeader}>
-                    <View style={styles.iconWrap}>
-                      <FontAwesome5
-                        name={item.icon}
-                        size={22}
-                        color={colors.light.primary}
-                      />
-                    </View>
-                    <Entypo
-                      name="chevron-right"
-                      size={22}
-                      color={colors.light.textSecondary}
-                    />
-                  </View>
+          <View style={styles.listContent}>
+            <View style={styles.singleTileRow}>{renderTile(calculatorButton)}</View>
 
-                  <Text style={styles.tileTitle} numberOfLines={2}>
-                    {item.title}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          />
+            <Text style={styles.sectionTitle}>Complaints</Text>
+            <View style={styles.row}>{complaintButtons.map(renderTile)}</View>
+
+            <Text style={styles.sectionTitle}>Rights</Text>
+            <View style={styles.row}>{rightsButtons.map(renderTile)}</View>
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -179,14 +193,19 @@ const styles = StyleSheet.create({
     marginTop: 6,
     paddingBottom: 10,
     paddingTop: 16,
-  },
-  columnWrapper: {
-    justifyContent: "space-between",
     paddingHorizontal: 6,
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  singleTileRow: {
+    width: "50%",
+    marginBottom: 14,
   },
   item: {
     flex: 0.5,
-    marginBottom: 32,
+    marginBottom: 20,
     paddingHorizontal: 12,
   },
   imageBackground: {
@@ -225,6 +244,12 @@ const styles = StyleSheet.create({
     ...textStyles.bodyBold,
     color: colors.light.textPrimary,
     marginTop: 6,
+  },
+  sectionTitle: {
+    ...textStyles.h3,
+    color: colors.light.textPrimary,
+    marginBottom: 8,
+    paddingHorizontal: 12,
   },
 });
 
