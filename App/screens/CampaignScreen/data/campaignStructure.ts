@@ -91,16 +91,25 @@ const campaign2Blocks: CampaignContentBlock[] = [
   { type: "hr" },
   { type: "heading", level: 2, key: "campaigns.byId.2.actionStepsTitle" },
   {
-    type: "orderedList",
-    itemKeys: [
-      "campaigns.byId.2.actionStepsItems.0",
-      "campaigns.byId.2.actionStepsItems.1",
+    type: "orderedListWithLinks",
+    items: [
+      {
+        textKey: "campaigns.byId.2.actionStepsItems.0",
+        link: {
+          kind: "external",
+          url: "https://actionnetwork.org/letters/pass-the-protecting-the-right-to-organize-pro-act?source=direct_link&",
+          labelKey: "campaigns.byId.2.actionStepsLinkLabels.0",
+        },
+      },
+      {
+        textKey: "campaigns.byId.2.actionStepsItems.1",
+        link: {
+          kind: "external",
+          url: "https://www.livingwage-sf.org/protect-public-sector-jobs/campaign-to-save-the-u-s-postal-service/",
+          labelKey: "campaigns.byId.2.actionStepsLinkLabels.1",
+        },
+      },
     ],
-  },
-  {
-    type: "linkExternal",
-    url: "https://actionnetwork.org/letters/pass-the-protecting-the-right-to-organize-pro-act?source=direct_link&",
-    labelKey: "campaigns.byId.2.actionStepsLinkLabels.0",
   },
   {
     type: "heading",
@@ -108,39 +117,49 @@ const campaign2Blocks: CampaignContentBlock[] = [
     key: "campaigns.byId.2.additionalMaterialsTitle",
   },
   {
-    type: "orderedList",
-    itemKeys: [
-      "campaigns.byId.2.additionalMaterialsItems.0",
-      "campaigns.byId.2.additionalMaterialsItems.1",
-      "campaigns.byId.2.additionalMaterialsItems.2",
-      "campaigns.byId.2.additionalMaterialsItems.3",
-      "campaigns.byId.2.additionalMaterialsItems.4",
+    type: "orderedListWithLinks",
+    items: [
+      {
+        textKey: "campaigns.byId.2.additionalMaterialsItems.0",
+        link: {
+          kind: "external",
+          url: "https://www.livingwage-sf.org/protect-public-sector-jobs/starbucks-workers-organize/",
+          labelKey: "campaigns.byId.2.additionalMaterialsLinkLabels.0",
+        },
+      },
+      {
+        textKey: "campaigns.byId.2.additionalMaterialsItems.1",
+        link: {
+          kind: "external",
+          url: "https://livingwage-sf.org/put-pressure-on-senators-to-pass-the-pro-act/",
+          labelKey: "campaigns.byId.2.additionalMaterialsLinkLabels.1",
+        },
+      },
+      {
+        textKey: "campaigns.byId.2.additionalMaterialsItems.2",
+        link: {
+          kind: "external",
+          url: "https://www.livingwage-sf.org/protect-public-sector-jobs/campaign-to-save-the-u-s-postal-service/",
+          labelKey: "campaigns.byId.2.additionalMaterialsLinkLabels.2",
+        },
+      },
+      {
+        textKey: "campaigns.byId.2.additionalMaterialsItems.3",
+        link: {
+          kind: "external",
+          url: "https://www.livingwage-sf.org/save-the-us-postal-service/",
+          labelKey: "campaigns.byId.2.additionalMaterialsLinkLabels.3",
+        },
+      },
+      {
+        textKey: "campaigns.byId.2.additionalMaterialsItems.4",
+        link: {
+          kind: "external",
+          url: "https://www.livingwage-sf.org/dock-workers-strike/",
+          labelKey: "campaigns.byId.2.additionalMaterialsLinkLabels.4",
+        },
+      },
     ],
-  },
-  {
-    type: "linkExternal",
-    url: "https://www.livingwage-sf.org/protect-public-sector-jobs/starbucks-workers-organize/",
-    labelKey: "campaigns.byId.2.additionalMaterialsLinkLabels.0",
-  },
-  {
-    type: "linkExternal",
-    url: "https://livingwage-sf.org/put-pressure-on-senators-to-pass-the-pro-act/",
-    labelKey: "campaigns.byId.2.additionalMaterialsLinkLabels.1",
-  },
-  {
-    type: "linkExternal",
-    url: "https://www.livingwage-sf.org/protect-public-sector-jobs/campaign-to-save-the-u-s-postal-service/",
-    labelKey: "campaigns.byId.2.additionalMaterialsLinkLabels.2",
-  },
-  {
-    type: "linkExternal",
-    url: "https://www.livingwage-sf.org/save-the-us-postal-service/",
-    labelKey: "campaigns.byId.2.additionalMaterialsLinkLabels.3",
-  },
-  {
-    type: "linkExternal",
-    url: "https://www.livingwage-sf.org/dock-workers-strike/",
-    labelKey: "campaigns.byId.2.additionalMaterialsLinkLabels.4",
   },
 ];
 
@@ -330,21 +349,25 @@ const campaign5Blocks: CampaignContentBlock[] = [
   { type: "hr" },
   { type: "heading", level: 2, key: "campaigns.byId.5.actionStepsTitle" },
   {
-    type: "orderedList",
-    itemKeys: [
-      "campaigns.byId.5.actionStepsItems.0",
-      "campaigns.byId.5.actionStepsItems.1",
+    type: "orderedListWithLinks",
+    items: [
+      {
+        textKey: "campaigns.byId.5.actionStepsItems.0",
+        link: {
+          kind: "external",
+          url: "https://actionnetwork.org/petitions/we-demand-stronger-protections-for-workerss-rights-in-the-us-mexico-canada-agreement?source=direct_link&",
+          labelKey: "campaigns.byId.5.actionStepsLinkLabels.0",
+        },
+      },
+      {
+        textKey: "campaigns.byId.5.actionStepsItems.1",
+        link: {
+          kind: "external",
+          url: "https://www.paypal.com/donate/?hosted_button_id=5ARPDJWFF5YZJ",
+          labelKey: "campaigns.byId.5.actionStepsLinkLabels.1",
+        },
+      },
     ],
-  },
-  {
-    type: "linkExternal",
-    url: "https://actionnetwork.org/petitions/we-demand-stronger-protections-for-workerss-rights-in-the-us-mexico-canada-agreement?source=direct_link&",
-    labelKey: "campaigns.byId.5.actionStepsLinkLabels.0",
-  },
-  {
-    type: "linkExternal",
-    url: "https://www.paypal.com/donate/?hosted_button_id=5ARPDJWFF5YZJ",
-    labelKey: "campaigns.byId.5.actionStepsLinkLabels.1",
   },
   {
     type: "heading",
@@ -352,51 +375,65 @@ const campaign5Blocks: CampaignContentBlock[] = [
     key: "campaigns.byId.5.additionalMaterialsTitle",
   },
   {
-    type: "orderedList",
-    itemKeys: [
-      "campaigns.byId.5.additionalMaterialsItems.0",
-      "campaigns.byId.5.additionalMaterialsItems.1",
-      "campaigns.byId.5.additionalMaterialsItems.2",
-      "campaigns.byId.5.additionalMaterialsItems.3",
-      "campaigns.byId.5.additionalMaterialsItems.4",
-      "campaigns.byId.5.additionalMaterialsItems.5",
-      "campaigns.byId.5.additionalMaterialsItems.6",
+    type: "orderedListWithLinks",
+    items: [
+      {
+        textKey: "campaigns.byId.5.additionalMaterialsItems.0",
+        link: {
+          kind: "external",
+          url: "https://www.livingwage-sf.org/fair-trade/imleb-report-on-labor-law-reform-in-mexico/",
+          labelKey: "campaigns.byId.5.additionalMaterialsLinkLabels.0",
+        },
+      },
+      {
+        textKey: "campaigns.byId.5.additionalMaterialsItems.1",
+        link: {
+          kind: "external",
+          url: "http://www.youtube.com/watch?v=WEkifI20Sek",
+          labelKey: "campaigns.byId.5.additionalMaterialsLinkLabels.1",
+        },
+      },
+      {
+        textKey: "campaigns.byId.5.additionalMaterialsItems.2",
+        link: {
+          kind: "external",
+          url: "https://www.livingwage-sf.org/fair-trade/conditions-of-maquiladora-workers/",
+          labelKey: "campaigns.byId.5.additionalMaterialsLinkLabels.2",
+        },
+      },
+      {
+        textKey: "campaigns.byId.5.additionalMaterialsItems.3",
+        link: {
+          kind: "external",
+          url: "https://www.livingwage-sf.org/fair-trade/free-trade-disproportionately-harms-black-and-brown-workers/",
+          labelKey: "campaigns.byId.5.additionalMaterialsLinkLabels.3",
+        },
+      },
+      {
+        textKey: "campaigns.byId.5.additionalMaterialsItems.4",
+        link: {
+          kind: "external",
+          url: "https://www.livingwage-sf.org/fair-trade/rethink-trade/",
+          labelKey: "campaigns.byId.5.additionalMaterialsLinkLabels.4",
+        },
+      },
+      {
+        textKey: "campaigns.byId.5.additionalMaterialsItems.5",
+        link: {
+          kind: "external",
+          url: "https://www.livingwage-sf.org/new-tariffs-put-three-decade-trade-partnership-at-risk/",
+          labelKey: "campaigns.byId.5.additionalMaterialsLinkLabels.5",
+        },
+      },
+      {
+        textKey: "campaigns.byId.5.additionalMaterialsItems.6",
+        link: {
+          kind: "external",
+          url: "https://www.livingwage-sf.org/say-goodbye-to-our-neoliberal-era/",
+          labelKey: "campaigns.byId.5.additionalMaterialsLinkLabels.6",
+        },
+      },
     ],
-  },
-  {
-    type: "linkExternal",
-    url: "https://www.livingwage-sf.org/fair-trade/imleb-report-on-labor-law-reform-in-mexico/",
-    labelKey: "campaigns.byId.5.additionalMaterialsLinkLabels.0",
-  },
-  {
-    type: "linkExternal",
-    url: "http://www.youtube.com/watch?v=WEkifI20Sek",
-    labelKey: "campaigns.byId.5.additionalMaterialsLinkLabels.1",
-  },
-  {
-    type: "linkExternal",
-    url: "https://www.livingwage-sf.org/fair-trade/conditions-of-maquiladora-workers/",
-    labelKey: "campaigns.byId.5.additionalMaterialsLinkLabels.2",
-  },
-  {
-    type: "linkExternal",
-    url: "https://www.livingwage-sf.org/fair-trade/free-trade-disproportionately-harms-black-and-brown-workers/",
-    labelKey: "campaigns.byId.5.additionalMaterialsLinkLabels.3",
-  },
-  {
-    type: "linkExternal",
-    url: "https://www.livingwage-sf.org/fair-trade/rethink-trade/",
-    labelKey: "campaigns.byId.5.additionalMaterialsLinkLabels.4",
-  },
-  {
-    type: "linkExternal",
-    url: "https://www.livingwage-sf.org/new-tariffs-put-three-decade-trade-partnership-at-risk/",
-    labelKey: "campaigns.byId.5.additionalMaterialsLinkLabels.5",
-  },
-  {
-    type: "linkExternal",
-    url: "https://www.livingwage-sf.org/say-goodbye-to-our-neoliberal-era/",
-    labelKey: "campaigns.byId.5.additionalMaterialsLinkLabels.6",
   },
 ];
 

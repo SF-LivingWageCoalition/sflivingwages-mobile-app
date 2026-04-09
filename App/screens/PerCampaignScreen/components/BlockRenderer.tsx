@@ -1,16 +1,78 @@
 import React from "react";
-import { Linking, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  Linking,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { colors, textStyles } from "../../../theme";
 import { translate } from "../../../translation";
 import type {
   CampaignContentBlock,
   CampaignDetailId,
+  OrderedListWithLinksItem,
 } from "../../../types/campaigns";
+
+/** Same pattern as ContributeScreen.handleOpenURL */
+async function openExternalUrl(url: string): Promise<void> {
+  const supported = await Linking.canOpenURL(url);
+  if (!supported) {
+    Alert.alert(
+      "Unable to open link",
+      "This URL isn't supported on your device.",
+    );
+    return;
+  }
+  try {
+    await Linking.openURL(url);
+  } catch {
+    Alert.alert(
+      "Unable to open link",
+      "Something went wrong. Please try again.",
+    );
+  }
+}
 
 export type BlockRendererProps = {
   block: CampaignContentBlock;
   onInternalLinkPress: (detailId: CampaignDetailId) => void;
 };
+
+function OrderedListLinkRow({
+  index,
+  item,
+  onInternalLinkPress,
+}: {
+  index: number;
+  item: OrderedListWithLinksItem;
+  onInternalLinkPress: (detailId: CampaignDetailId) => void;
+}) {
+  const onLinkPress = () => {
+    if (item.link.kind === "external") {
+      void openExternalUrl(item.link.url);
+    } else {
+      onInternalLinkPress(item.link.detailId);
+    }
+  };
+
+  return (
+    <View style={styles.listItem}>
+      <Text style={styles.listNumber}>{index + 1}.</Text>
+      <Text style={styles.listItemText}>
+        {translate(item.textKey as never)}{" "}
+        <Text
+          accessibilityRole="link"
+          style={styles.linkText}
+          onPress={onLinkPress}
+        >
+          {translate(item.link.labelKey as never)}
+        </Text>
+      </Text>
+    </View>
+  );
+}
 
 function BlockRenderer({ block, onInternalLinkPress }: BlockRendererProps) {
   switch (block.type) {
@@ -45,7 +107,7 @@ function BlockRenderer({ block, onInternalLinkPress }: BlockRendererProps) {
     case "linkExternal":
       return (
         <Pressable
-          onPress={() => Linking.openURL(block.url)}
+          onPress={() => void openExternalUrl(block.url)}
           style={({ pressed }) => [styles.link, pressed && styles.linkPressed]}
         >
           <Text style={styles.linkText}>
@@ -65,6 +127,19 @@ function BlockRenderer({ block, onInternalLinkPress }: BlockRendererProps) {
                 {translate(itemKey as never)}
               </Text>
             </View>
+          ))}
+        </View>
+      );
+    case "orderedListWithLinks":
+      return (
+        <View style={styles.listContainer}>
+          {block.items.map((item, index) => (
+            <OrderedListLinkRow
+              key={item.textKey}
+              index={index}
+              item={item}
+              onInternalLinkPress={onInternalLinkPress}
+            />
           ))}
         </View>
       );
@@ -110,6 +185,7 @@ const styles = StyleSheet.create({
   listContainer: { marginBottom: 12 },
   listItem: {
     flexDirection: "row",
+    alignItems: "flex-start",
     marginBottom: 6,
     paddingLeft: 4,
   },

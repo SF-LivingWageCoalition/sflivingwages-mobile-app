@@ -22,13 +22,22 @@ export const CAMPAIGN_DETAIL_IDS = [
 
 export type CampaignDetailId = (typeof CAMPAIGN_DETAIL_IDS)[number];
 
+/** One numbered row: body text plus an inline link (same row, wraps naturally). */
+export type OrderedListWithLinksItem = {
+  textKey: string;
+  link:
+    | { kind: "external"; url: string; labelKey: string }
+    | { kind: "internal"; detailId: CampaignDetailId; labelKey: string };
+};
+
 export type CampaignContentBlock =
   | { type: "heading"; level: 2 | 3; key: string }
   | { type: "paragraph"; key: string }
   | { type: "linkInternal"; detailId: CampaignDetailId; labelKey: string }
   | { type: "linkExternal"; url: string; labelKey: string }
   | { type: "hr" }
-  | { type: "orderedList"; itemKeys: string[] };
+  | { type: "orderedList"; itemKeys: string[] }
+  | { type: "orderedListWithLinks"; items: OrderedListWithLinksItem[] };
 
 export type CampaignStructure = {
   id: number;
