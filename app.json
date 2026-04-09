@@ -4,12 +4,10 @@
     "slug": "sflivingwages",
     "version": "11.0.4",
     "orientation": "portrait",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "icon": "./assets/icon.png",
       "bundleIdentifier": "com.sfLiving.sflivingwages",
-
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -56,7 +54,8 @@
       ],
       "expo-asset",
       "expo-font",
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-image"
     ],
     "extra": {
       "eas": {
