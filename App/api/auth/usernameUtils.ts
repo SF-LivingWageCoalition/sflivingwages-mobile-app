@@ -8,7 +8,8 @@ export const makeBaseFromEmail = (email: string, maxLen = 15): string => {
   sanitized = sanitized.replace(/[._-]{2,}/g, "_");
   sanitized = sanitized.replace(/^[_.-]+|[_.-]+$/g, "");
   if (sanitized.length === 0) return "user";
-  return sanitized.slice(0, maxLen);
+  // return sanitized.slice(0, maxLen); // enforce max length after sanitization.
+  return sanitized; // no max length enforcement.
 };
 
 export const shortHash = (input: string, len = 4): string => {
