@@ -4,6 +4,7 @@
  * - Exports environment-backed constants used by the auth API layer
  * - Keep types permissive (string | undefined) so consumers can handle missing env
  */
+import { Buffer } from "buffer";
 
 // Base URLs for the API
 export const BASE_URL: string | undefined = process.env.EXPO_PUBLIC_BASE_URL; // Base URL for WordPress APIs
