@@ -23,7 +23,7 @@ import { getFriendlyErrorInfo } from "./errorCodeMap";
 export const fetchWithTimeout = async (
   input: RequestInfo,
   init?: RequestInit,
-  timeoutMs: number = FETCH_TIMEOUT_MS
+  timeoutMs: number = FETCH_TIMEOUT_MS,
 ): Promise<Response> => {
   const controller = new AbortController();
   const signal = controller.signal;
@@ -55,7 +55,7 @@ export const fetchWithTimeout = async (
  */
 export const unwrapOrThrow = <T>(
   result: ApiResult<T>,
-  fallbackMessage?: string
+  fallbackMessage?: string,
 ): T => {
   if (result.success) return result.data;
   const msg = result.errorMessage ?? fallbackMessage ?? "API request failed";
@@ -70,14 +70,14 @@ export const unwrapOrThrow = <T>(
 export const apiFailure = <T = unknown>(
   errorMessage?: string,
   status?: number,
-  data?: T
+  data?: T,
 ): ApiResult<T> => ({ success: false, errorMessage, status, data });
 
 /**
  * Maps runtime exceptions to ApiResult failures, converting timeouts to status 408.
  */
 export const apiFailureFromException = <T = unknown>(
-  err: unknown
+  err: unknown,
 ): ApiResult<T> => {
   const message = err instanceof Error ? err.message : String(err ?? "");
   if (err instanceof TimeoutError || message === "Request timed out") {
@@ -93,7 +93,7 @@ export const apiFailureFromException = <T = unknown>(
  */
 export const apiFailureWithServerCode = <T = unknown>(
   payload: unknown,
-  status?: number
+  status?: number,
 ): ApiResult<T> => {
   try {
     // If the payload itself looks like an ApiResult (wrapped by other helpers
@@ -105,7 +105,7 @@ export const apiFailureWithServerCode = <T = unknown>(
       payload &&
       typeof payload === "object" &&
       typeof (payload as Record<string, unknown>)["success"] === "boolean"
-        ? (payload as Record<string, unknown>)["data"] ?? payload
+        ? ((payload as Record<string, unknown>)["data"] ?? payload)
         : payload;
 
     const info = getFriendlyErrorInfo(serverPayload as ApiErrorPayload);
@@ -126,7 +126,7 @@ export const apiFailureWithServerCode = <T = unknown>(
  * If reading text also fails, returns `{ __parseError: true, text: null }`.
  */
 export const parseJsonSafe = async <T = unknown>(
-  response: Response
+  response: Response,
 ): Promise<ParseJsonSafeResult<T>> => {
   try {
     return (await response.json()) as T;
@@ -146,7 +146,7 @@ export const parseJsonSafe = async <T = unknown>(
  * Used to validate data received from the auth API.
  */
 export const isValidValidationData = (
-  d: unknown
+  d: unknown,
 ): d is ValidationData["data"] => {
   if (!d || typeof d !== "object") return false;
   const x = d as Record<string, unknown>;
