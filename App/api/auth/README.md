@@ -786,15 +786,28 @@ See `App/api/auth/usernameUtils.ts` for function definitions.
 
 Create a username based on the local part (username) of the provided email address.
 
+- Normalizes to lowercase and NFKC Unicode form.
+- Removes diacritics, leaving only ASCII characters.
+- Replaces sequences of invalid characters with a single underscore.
+- Trims leading/trailing separators and enforces a minimum fallback.
+- Example: "Jöhn.Döe@example.com" -> "john_doe"
+
 Usage: makeBaseFromEmail(\<email>)
 
 - email - The input email address
 
 Returns: A string derived from the input email address.
 
+Note: To enforce a maximum length on the username base, create a `maxLen` parameter and return `sanitized.slice(0, maxLen)`.
+
 ### `shortHash`
 
 Create a short hash to facilitate unique username generation.
+
+- Uses a simple polynomial rolling hash and base36 encoding.
+- Not cryptographically secure, but sufficient for generating short identifiers.
+- The `len` parameter controls the length of the output string (default 4).
+- Example: shortHash("some-unique-seed") -> "1a2b"
 
 Usage: shortHash(\<input>)
 
