@@ -28,10 +28,6 @@ const en = {
       discrimination: "Discrimination",
       immigrationStatus: "Immigration Status",
     },
-    require: "Fields marked with an * are required",
-    close: "Close",
-    recaptcha: "Recaptcha",
-    complete: "Please complete recaptcha before submit",
     review:
       "Please review your information before you submit. Your personal information will be kept confidential and will not be shared with any third parties.",
     submit: "Submit",
