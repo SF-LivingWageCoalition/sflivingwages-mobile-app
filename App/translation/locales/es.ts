@@ -33,7 +33,8 @@ const es: Translations = {
     close: "Cerrar",
     recaptcha: "Recaptcha",
     complete: "Por favor completa el recaptcha antes de enviar",
-    review: "Por favor revisa tu información antes de enviar",
+    review:
+      "Por favor revisa tu información antes de enviarla. Tu información personal se mantendrá confidencial y no se compartirá con terceros.",
     submit: "Enviar",
     clear: "Limpiar",
     validation: {

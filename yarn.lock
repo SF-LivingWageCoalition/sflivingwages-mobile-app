@@ -7951,17 +7951,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-recaptcha-that-works@npm:^1.3.2":
-  version: 1.3.2
-  resolution: "react-native-recaptcha-that-works@npm:1.3.2"
-  peerDependencies:
-    react: ">=16.9.0"
-    react-native: ">=0.60.0"
-    react-native-webview: ">=10.0.0"
-  checksum: 10c0/4ba673a2bb6d8fd67d64ab68097fa4f32ecc9fee574195ea682e3dcaaefeaa9bcd79aa5e560919c67a6db0ade46f6c7a4aa08ace066f2c84bb2051de0637fb3d
-  languageName: node
-  linkType: hard
-
 "react-native-render-html@npm:^6.3.4":
   version: 6.3.4
   resolution: "react-native-render-html@npm:6.3.4"
@@ -8674,7 +8663,6 @@ __metadata:
     react-native-paper: "npm:^4.9.1"
     react-native-picker-select: "npm:^9.3.1"
     react-native-reanimated: "npm:~4.1.1"
-    react-native-recaptcha-that-works: "npm:^1.3.2"
     react-native-render-html: "npm:^6.3.4"
     react-native-safe-area-context: "npm:~5.6.0"
     react-native-screens: "npm:~4.16.0"

@@ -1,5 +1,6 @@
 import { SEND_TO } from "@env";
 import { useNavigation } from "@react-navigation/native";
+import { CheckBox } from "@rneui/themed";
 import qs from "querystring";
 import React, { useState } from "react";
 import {
@@ -11,7 +12,6 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { CheckBox } from "@rneui/themed";
 import appIcon from "../../../assets/icon.png";
 import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";
@@ -24,7 +24,7 @@ const sendEmail = async (
   to: string,
   subject: string,
   body: string,
-  options: EmailOptions = {}
+  options: EmailOptions = {},
 ): Promise<void> => {
   const { cc, bcc } = options;
   let url = `mailto:${to}`;
@@ -65,7 +65,7 @@ const ReportViolation: React.FC = () => {
     translate("assistScreen.assistList.immigrationStatus"),
   ];
   const [isChecked, setCheckState] = useState<boolean[]>(
-    new Array(assistList.length).fill(false)
+    new Array(assistList.length).fill(false),
   );
   const [list, setAssistList] = useState<string[]>([]);
 
@@ -73,7 +73,7 @@ const ReportViolation: React.FC = () => {
 
   const handledState = (position: any, option: string): void => {
     const update = isChecked.map((item, index) =>
-      index === position ? !item : item
+      index === position ? !item : item,
     );
     setCheckState(update);
 
@@ -105,13 +105,13 @@ const ReportViolation: React.FC = () => {
     setErrors({});
     const strBodyFormat = `
             \nSan Francisco Living Wage Coalition Assist\n\n\nName :\t\t${fullName}\n\nEmail :\t\t${userEmail}\n\nPhone :\t\t${userPhone}\n\nSituation :\t\t${list.join(
-      ", "
-    )}
+              ", ",
+            )}
             `;
     sendEmail(
       SEND_TO, // San Francisco Living Wage Coalition Email.
       "ASSIST",
-      strBodyFormat
+      strBodyFormat,
     ).then(() => {
       resetAll();
     });
@@ -179,7 +179,7 @@ const ReportViolation: React.FC = () => {
               keyboardType="numeric"
               onChangeText={(userPhoneInput) =>
                 setUserPhone(
-                  userPhoneInput.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3")
+                  userPhoneInput.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3"),
                 )
               }
               value={userPhone}
