@@ -18,7 +18,9 @@ const es: Translations = {
   assistScreen: {
     title: `Podemos ayudarte.`,
     subTitle: "Completa el formulario a continuación.",
-    fullName: "Nombre completo",
+    businessName: "Nombre del negocio",
+    businessAddress: "Dirección del negocio",
+    fullName: "Tu nombre completo",
     email: "Correo electrónico",
     phone: "Teléfono",
     options: "Seleccione una o más opciones",
@@ -38,6 +40,8 @@ const es: Translations = {
     submit: "Enviar",
     clear: "Limpiar",
     validation: {
+      businessName: "Se requiere el nombre del negocio",
+      businessAddress: "Se requiere la dirección del negocio",
       fullName: "Se requiere nombre completo",
       userEmail: "Dirección de correo electrónico no válida",
       userPhone: "Se requiere número de teléfono",

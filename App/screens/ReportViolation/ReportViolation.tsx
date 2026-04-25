@@ -1,5 +1,4 @@
 import { SEND_TO } from "@env";
-import { useNavigation } from "@react-navigation/native";
 import { CheckBox } from "@rneui/themed";
 import qs from "querystring";
 import React, { useState } from "react";
@@ -51,7 +50,8 @@ const sendEmail = async (
 };
 
 const ReportViolation: React.FC = () => {
-  const navigation = useNavigation();
+  const [businessName, setBusinessName] = useState<string>("");
+  const [businessAddress, setBusinessAddress] = useState<string>("");
   const [fullName, setFullName] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
   const [userPhone, setUserPhone] = useState<string>("");
@@ -89,6 +89,8 @@ const ReportViolation: React.FC = () => {
   const onSubmitData = (): void => {
     // Zod validation
     const result = assistanceSchema.safeParse({
+      businessName,
+      businessAddress,
       fullName,
       userEmail,
       userPhone: userPhone.replace(/\D/g, ""), // Only digits
@@ -104,7 +106,7 @@ const ReportViolation: React.FC = () => {
     }
     setErrors({});
     const strBodyFormat = `
-            \nSan Francisco Living Wage Coalition Assist\n\n\nName :\t\t${fullName}\n\nEmail :\t\t${userEmail}\n\nPhone :\t\t${userPhone}\n\nSituation :\t\t${list.join(
+            \nSan Francisco Living Wage Coalition Assist\n\n\nBusiness Name :\t\t${businessName}\n\nBusiness Address :\t\t${businessAddress}\n\nName :\t\t${fullName}\n\nEmail :\t\t${userEmail}\n\nPhone :\t\t${userPhone}\n\nSituation :\t\t${list.join(
               ", ",
             )}
             `;
@@ -118,6 +120,8 @@ const ReportViolation: React.FC = () => {
   };
 
   const resetAll = (): void => {
+    setBusinessName("");
+    setBusinessAddress("");
     setFullName("");
     setUserEmail("");
     setUserPhone("");
@@ -137,6 +141,43 @@ const ReportViolation: React.FC = () => {
           <Text style={styles.instruction}>
             {translate("assistScreen.subTitle")}
           </Text>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputName}>
+              {translate("assistScreen.businessName")}
+              <Text style={styles.requiredField}>*</Text>
+            </Text>
+            <TextInput
+              style={styles.textInput}
+              onChangeText={(businessNameInput) =>
+                setBusinessName(businessNameInput)
+              }
+              value={businessName}
+            />
+            {errors.businessName && (
+              <Text style={styles.inputError}>{errors.businessName}</Text>
+            )}
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputName}>
+              {translate("assistScreen.businessAddress")}
+              <Text style={styles.requiredField}>*</Text>
+            </Text>
+            <TextInput
+              style={styles.addressTextInput}
+              multiline
+              numberOfLines={3}
+              textAlignVertical="top"
+              onChangeText={(businessAddressInput) =>
+                setBusinessAddress(businessAddressInput)
+              }
+              value={businessAddress}
+            />
+            {errors.businessAddress && (
+              <Text style={styles.inputError}>{errors.businessAddress}</Text>
+            )}
+          </View>
 
           <View style={styles.inputContainer}>
             <Text style={styles.inputName}>
@@ -273,6 +314,15 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.light.primary,
     borderBottomWidth: 1,
     margin: 10,
+  },
+  addressTextInput: {
+    minHeight: 72,
+    borderColor: colors.light.primary,
+    borderWidth: 1,
+    margin: 10,
+    borderRadius: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
   },
   requiredField: {
     ...textStyles.bodyBold,

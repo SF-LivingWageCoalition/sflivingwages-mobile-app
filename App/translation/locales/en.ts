@@ -15,7 +15,9 @@ const en = {
   assistScreen: {
     title: `We can assist you.`,
     subTitle: "Complete the form below.",
-    fullName: "Full Name",
+    businessName: "Business Name",
+    businessAddress: "Business Address",
+    fullName: "Your Full Name",
     email: "E-mail",
     phone: "Phone",
     options: "Please select one or more option",
@@ -35,6 +37,8 @@ const en = {
     submit: "Submit",
     clear: "Clear",
     validation: {
+      businessName: "Business name is required",
+      businessAddress: "Business address is required",
       fullName: "Full name is required",
       userEmail: "Invalid email address",
       userPhone: "Phone number is required",

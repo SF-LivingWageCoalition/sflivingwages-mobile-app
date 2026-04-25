@@ -2,6 +2,12 @@ import { translate } from "../../translation/i18n";
 import { z } from "zod";
 
 export const assistanceSchema = z.object({
+  businessName: z
+    .string()
+    .min(1, translate("assistScreen.validation.businessName")),
+  businessAddress: z
+    .string()
+    .min(1, translate("assistScreen.validation.businessAddress")),
   fullName: z.string().min(1, translate("assistScreen.validation.fullName")),
   userEmail: z.string().email(translate("assistScreen.validation.userEmail")),
   userPhone: z
