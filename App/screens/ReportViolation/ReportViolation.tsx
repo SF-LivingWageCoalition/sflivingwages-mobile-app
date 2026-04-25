@@ -71,17 +71,17 @@ const ReportViolation: React.FC = () => {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const handledState = (position: any, option: string): void => {
+  const handledState = (position: number, option: string): void => {
     const update = isChecked.map((item, index) =>
       index === position ? !item : item,
     );
     setCheckState(update);
 
-    let updateList = [...list];
+    let updateList: string[] = [...list];
     if (!isChecked[position]) {
-      updateList = [...list, option];
+      updateList.push(option);
     } else {
-      updateList.splice(list.indexOf(position), 1);
+      updateList = list.filter((item) => item !== option);
     }
     setAssistList(updateList);
   };
