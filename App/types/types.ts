@@ -43,11 +43,6 @@ export type EmailOptions = {
   bcc?: string;
 };
 
-export type RecaptchaRef = {
-  open: () => void;
-  close: () => void;
-};
-
 export type CampaignCardProps = {
   navigate?: (screen: string, params?: any) => void;
   title?: string;

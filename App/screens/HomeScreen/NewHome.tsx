@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Divider } from "react-native-elements";
+import { Divider } from "@rneui/themed";
 import { Card } from "react-native-paper";
 import Swiper from "react-native-swiper/src";
 import { WebView } from "react-native-webview";
