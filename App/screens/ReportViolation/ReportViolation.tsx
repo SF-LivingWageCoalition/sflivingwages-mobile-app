@@ -55,7 +55,6 @@ const ReportViolation: React.FC = () => {
   const [fullName, setFullName] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
   const [userPhone, setUserPhone] = useState<string>("");
-  const [userNotes, setUserNotes] = useState<string>("");
 
   const assistList: string[] = [
     translate("assistScreen.assistList.wageTheft"),
@@ -125,7 +124,6 @@ const ReportViolation: React.FC = () => {
     setFullName("");
     setUserEmail("");
     setUserPhone("");
-    setUserNotes(""); // not used
     setCheckState(new Array(assistList.length).fill(false));
     setAssistList([]);
   };
