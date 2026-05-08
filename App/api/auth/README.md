@@ -607,6 +607,16 @@ Usage: mapApiErrorToMessage("\<error>", "\<defaultKey>")
 
 Returns: Localized user-facing message (never empty; falls back to a default).
 
+### `isUsernameExistsCode()`
+
+Predicate: whether a server error code indicates "username exists".
+
+Usage: isUsernameExistsCode("\<serverCode>")
+
+- serverCode: A number or string returned by `extractServerCode()`.
+
+Returns: Boolean that is true if the code indicates that the username already exists on the server, otherwise false.
+
 ---
 
 ## Error Code Map
@@ -729,6 +739,16 @@ Usage: apiFailureWithServerCode(\<payload>, \<status>)
 - status - Optional HTTP status code associated with the failure.
 
 Returns: An ApiResult representing the failure with friendly message.
+
+### `extractServerCode`
+
+Extract a machine-readable server code or key from a variety of server error payload shapes. Used when conditional logic depends on a specific code or key being returned from the server.
+
+Usage: extractServerCode(\<payload>)
+
+- payload - The server response payload (parsed JSON).
+
+Returns: Either a numeric code, a string key, or undefined when none is present.
 
 ### `parseJsonSafe`
 

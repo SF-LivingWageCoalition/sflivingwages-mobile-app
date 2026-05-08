@@ -52,8 +52,10 @@ import {
   parseJsonSafe,
   isValidValidationData,
   apiFailureWithServerCode,
+  extractServerCode,
+  normalizeJwt,
 } from "./utils";
-import { normalizeJwt } from "./utils";
+import { isUsernameExistsCode } from "./errorHelpers";
 import { makeBaseFromEmail, generateCandidate } from "./usernameUtils";
 import type { JwtItem } from "./types";
 
@@ -368,22 +370,11 @@ export const registerCustomer = async (
       }
 
       // If server explicitly says username exists (WooCommerce or SimpleJWT code), continue trying
-      const sc = attempt.serverCode;
-      if (
-        sc === 38 ||
-        sc === "38" ||
-        sc === "registration-error-username-exists" ||
-        (attempt.result &&
-          (attempt.result as any).data &&
-          ((attempt.result as any).data.code === 38 ||
-            (attempt.result as any).data.code === "38" ||
-            (attempt.result as any).data.code ===
-              "registration-error-username-exists" ||
-            (attempt.result as any).data.error ===
-              "registration-error-username-exists"))
-      ) {
-        // try next candidate
-        continue;
+      const sc =
+        attempt.serverCode ??
+        extractServerCode(attempt.result?.data ?? attempt.result);
+      if (isUsernameExistsCode(sc)) {
+        continue; // try next candidate
       }
 
       // Other failures: return the server's failure immediately

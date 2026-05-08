@@ -121,6 +121,24 @@ export const apiFailureWithServerCode = <T = unknown>(
 };
 
 /**
+ * Extract a machine-readable server code or key from a variety of
+ * server error payload shapes. Returns either a numeric code, a string
+ * key, or undefined when none is present.
+ */
+export const extractServerCode = (
+  payload: unknown,
+): number | string | undefined => {
+  if (!payload || typeof payload !== "object") return undefined;
+  const p = payload as ApiErrorPayload;
+  if (p.code !== undefined) return p.code as number | string;
+  if (p.errorCode !== undefined) return p.errorCode as number | string;
+  if (p.data?.code !== undefined) return p.data.code as number | string;
+  if (p.data?.error !== undefined) return p.data.error as number | string;
+  if (p.error !== undefined) return p.error as number | string;
+  return undefined;
+};
+
+/**
  * Safe JSON parser that handles invalid JSON gracefully.
  * If parsing fails, returns an object with `{ __parseError: true, text }`.
  * If reading text also fails, returns `{ __parseError: true, text: null }`.

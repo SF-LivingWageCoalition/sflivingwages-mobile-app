@@ -16,7 +16,7 @@ export const makeBaseFromEmail = (email: string): string => {
 };
 
 /**
- * Generate a short, deterministic hash from a string, suitable for creating unique suffixes.
+ * Generate a short hash from a string, suitable for creating unique suffixes.
  */
 export const shortHash = (input: string, len = 4): string => {
   const n = Math.abs(
