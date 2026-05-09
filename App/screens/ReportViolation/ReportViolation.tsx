@@ -1,33 +1,29 @@
-import { BASE_URL, SEND_TO, SITE_KEY_V3 } from "@env";
-import { useNavigation } from "@react-navigation/native";
+import { SEND_TO } from "@env";
+import { CheckBox } from "@rneui/themed";
 import qs from "querystring";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   Image,
   Linking,
-  LogBox,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from "react-native";
-import { CheckBox } from "react-native-elements";
-import Recaptcha from "react-native-recaptcha-that-works";
 import appIcon from "../../../assets/icon.png";
 import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
-import { EmailOptions, RecaptchaRef } from "../../types/types";
+import { EmailOptions } from "../../types/types";
 import { assistanceSchema } from "./assistanceSchema";
 
 const sendEmail = async (
   to: string,
   subject: string,
   body: string,
-  options: EmailOptions = {}
+  options: EmailOptions = {},
 ): Promise<void> => {
   const { cc, bcc } = options;
   let url = `mailto:${to}`;
@@ -54,14 +50,11 @@ const sendEmail = async (
 };
 
 const ReportViolation: React.FC = () => {
-  const navigation = useNavigation();
+  const [businessName, setBusinessName] = useState<string>("");
+  const [businessAddress, setBusinessAddress] = useState<string>("");
   const [fullName, setFullName] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
   const [userPhone, setUserPhone] = useState<string>("");
-  const [userNotes, setUserNotes] = useState<string>("");
-
-  const [valid, setIsValid] = useState<boolean>(false);
-  const [isEmpty, setEmpty] = useState<boolean>(false);
 
   const assistList: string[] = [
     translate("assistScreen.assistList.wageTheft"),
@@ -71,25 +64,23 @@ const ReportViolation: React.FC = () => {
     translate("assistScreen.assistList.immigrationStatus"),
   ];
   const [isChecked, setCheckState] = useState<boolean[]>(
-    new Array(assistList.length).fill(false)
+    new Array(assistList.length).fill(false),
   );
   const [list, setAssistList] = useState<string[]>([]);
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const recaptcha = useRef<RecaptchaRef>(null);
-
-  const handledState = (position: any, option: string): void => {
+  const handledState = (position: number, option: string): void => {
     const update = isChecked.map((item, index) =>
-      index === position ? !item : item
+      index === position ? !item : item,
     );
     setCheckState(update);
 
-    let updateList = [...list];
+    let updateList: string[] = [...list];
     if (!isChecked[position]) {
-      updateList = [...list, option];
+      updateList.push(option);
     } else {
-      updateList.splice(list.indexOf(position), 1);
+      updateList = list.filter((item) => item !== option);
     }
     setAssistList(updateList);
   };
@@ -97,6 +88,8 @@ const ReportViolation: React.FC = () => {
   const onSubmitData = (): void => {
     // Zod validation
     const result = assistanceSchema.safeParse({
+      businessName,
+      businessAddress,
       fullName,
       userEmail,
       userPhone: userPhone.replace(/\D/g, ""), // Only digits
@@ -108,66 +101,32 @@ const ReportViolation: React.FC = () => {
         if (err.path[0]) fieldErrors[err.path[0]] = err.message;
       });
       setErrors(fieldErrors);
-      setEmpty(true);
       return;
     }
     setErrors({});
-    if (!valid) {
-      setEmpty(true);
-      return;
-    }
-    setEmpty(false);
     const strBodyFormat = `
-            \nSan Francisco Living Wage Coalition Assist\n\n\nName :\t\t${fullName}\n\nEmail :\t\t${userEmail}\n\nPhone :\t\t${userPhone}\n\nSituation :\t\t${list.join(
-      ", "
-    )}
+            \nSan Francisco Living Wage Coalition Assist\n\n\nBusiness Name :\t\t${businessName}\n\nBusiness Address :\t\t${businessAddress}\n\nName :\t\t${fullName}\n\nEmail :\t\t${userEmail}\n\nPhone :\t\t${userPhone}\n\nSituation :\t\t${list.join(
+              ", ",
+            )}
             `;
     sendEmail(
       SEND_TO, // San Francisco Living Wage Coalition Email.
       "ASSIST",
-      strBodyFormat
+      strBodyFormat,
     ).then(() => {
       resetAll();
     });
   };
 
   const resetAll = (): void => {
+    setBusinessName("");
+    setBusinessAddress("");
     setFullName("");
     setUserEmail("");
     setUserPhone("");
-    setUserNotes(""); // not used
     setCheckState(new Array(assistList.length).fill(false));
     setAssistList([]);
-    setIsValid(false);
-    setEmpty(false);
   };
-
-  const send = useCallback((): void => {
-    recaptcha.current?.open();
-  }, []);
-
-  const close = useCallback((): void => {
-    recaptcha.current?.close();
-  }, []);
-
-  const onVerify = (token: string): void => {
-    if (token) {
-      setEmpty(false);
-      setIsValid(true);
-    } else {
-      setEmpty(true);
-      setIsValid(false);
-    }
-  };
-
-  // Ignore the warning about defaultProps - I left it in for now.
-  // We wont see this error in the app (production or dev), but it will show up in the console.
-  // This is a warning from react-native-elements about defaultProps.
-  // Probably we could change package, but I am not sure about the design.
-  // It will not break the app
-  LogBox.ignoreLogs([
-    "Support for defaultProps will be removed from function components",
-  ]);
 
   return (
     <ScrollView>
@@ -180,6 +139,43 @@ const ReportViolation: React.FC = () => {
           <Text style={styles.instruction}>
             {translate("assistScreen.subTitle")}
           </Text>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputName}>
+              {translate("assistScreen.businessName")}
+              <Text style={styles.requiredField}>*</Text>
+            </Text>
+            <TextInput
+              style={styles.textInput}
+              onChangeText={(businessNameInput) =>
+                setBusinessName(businessNameInput)
+              }
+              value={businessName}
+            />
+            {errors.businessName && (
+              <Text style={styles.inputError}>{errors.businessName}</Text>
+            )}
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputName}>
+              {translate("assistScreen.businessAddress")}
+              <Text style={styles.requiredField}>*</Text>
+            </Text>
+            <TextInput
+              style={styles.addressTextInput}
+              multiline
+              numberOfLines={3}
+              textAlignVertical="top"
+              onChangeText={(businessAddressInput) =>
+                setBusinessAddress(businessAddressInput)
+              }
+              value={businessAddress}
+            />
+            {errors.businessAddress && (
+              <Text style={styles.inputError}>{errors.businessAddress}</Text>
+            )}
+          </View>
 
           <View style={styles.inputContainer}>
             <Text style={styles.inputName}>
@@ -222,7 +218,7 @@ const ReportViolation: React.FC = () => {
               keyboardType="numeric"
               onChangeText={(userPhoneInput) =>
                 setUserPhone(
-                  userPhoneInput.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3")
+                  userPhoneInput.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3"),
                 )
               }
               value={userPhone}
@@ -249,45 +245,6 @@ const ReportViolation: React.FC = () => {
             );
           })}
           {errors.list && <Text style={styles.inputError}>{errors.list}</Text>}
-
-          {isEmpty ? (
-            <Text style={styles.recaptchaMessage}>
-              {translate("assistScreen.require")}
-            </Text>
-          ) : null}
-          <View style={styles.buttonStylesRecaptcha}>
-            <Recaptcha
-              headerComponent={
-                <View style={styles.headerComponentView}>
-                  <MainButton
-                    variant="outlined"
-                    title={translate("assistScreen.close")}
-                    onPress={close}
-                    style={styles.recaptchaButtonStyle}
-                  />
-                </View>
-              }
-              lang={"en"}
-              ref={recaptcha}
-              siteKey={SITE_KEY_V3} // site key
-              baseUrl={BASE_URL} // San Francisco Living Wage Coalition domain
-              onVerify={onVerify}
-              size={"invisible"} // change to 'normal' for version 2
-              theme={"light"}
-            />
-            <MainButton
-              variant="outlined"
-              title={translate("assistScreen.recaptcha")}
-              size="small"
-              onPress={send}
-              style={styles.recaptchaButtonStyle}
-            />
-          </View>
-          {isEmpty ? (
-            <Text style={styles.recaptchaMessage}>
-              {translate("assistScreen.complete")}
-            </Text>
-          ) : null}
           <Text style={styles.submitionInfo}>
             {translate("assistScreen.review")}
           </Text>
@@ -326,10 +283,6 @@ const styles = StyleSheet.create({
     width: 100,
     marginTop: 20,
   },
-  recaptchaButtonStyle: {
-    width: 100,
-    marginTop: 20,
-  },
   intro: {
     ...textStyles.h3,
     marginLeft: 20,
@@ -360,6 +313,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     margin: 10,
   },
+  addressTextInput: {
+    minHeight: 72,
+    borderColor: colors.light.primary,
+    borderWidth: 1,
+    margin: 10,
+    borderRadius: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+  },
   requiredField: {
     ...textStyles.bodyBold,
     color: colors.light.primary,
@@ -369,16 +331,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     padding: 5,
     paddingBottom: 20,
-  },
-  buttonStylesRecaptcha: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    padding: 5,
-  },
-  recaptchaMessage: {
-    ...textStyles.caption,
-    textAlign: "center",
-    color: colors.light.primary,
   },
   logo: {
     width: 100,
@@ -399,13 +351,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontStyle: "italic",
     color: colors.light.primary,
-  },
-  headerComponentView: {
-    marginTop: Platform.OS === "ios" ? 12 : 0,
-    padding: Platform.OS === "ios" ? 18 : 13,
-    alignContent: "center",
-    alignItems: "center",
-    backgroundColor: colors.light.primary,
   },
   inputError: {
     ...textStyles.caption,
