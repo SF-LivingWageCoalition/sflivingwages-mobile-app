@@ -107,3 +107,13 @@ export function mapApiErrorToMessage(
     fallback
   );
 }
+
+/**
+ * Predicate: whether a server error code indicates "username exists".
+ * Centralized here so error-to-message logic and registration flows
+ * can reuse the same interpretation.
+ */
+export const isUsernameExistsCode = (code: unknown): boolean => {
+  if (code === undefined || code === null) return false;
+  return code === 38 || code === "38" || code === "registration-error-username-exists";
+};
