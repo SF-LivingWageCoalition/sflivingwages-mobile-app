@@ -30,9 +30,10 @@ Notes on the implementation below:
 ```ts
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as authApi from "../../../api/auth/authApi";
-import { unwrapNewToken } from "../../../api/auth/utils"; // optional helper
-import { setUser } from "./userSlice";
-import { selectJwt } from "./userSlice";
+import { normalizeJwt, unwrapNewToken } from "../../../api/auth/utils"; // optional helper
+// `setUser` and `selectJwt` are defined later in this file's `userSlice.ts`.
+// Define this thunk *above* the `createSlice` call so the slice can reference
+// the thunk in `extraReducers` while still exposing `setUser` and selectors.
 import { selectUserUiIsValidating, setIsValidating } from "../userUiSlice";
 import type { RootState } from "../../store/store";
 
@@ -56,7 +57,7 @@ export const validateUser = createAsyncThunk<
     const v = await authApi.validateToken(token);
     if (v.success && v.data && v.data.data) {
       const validated = v.data.data;
-      const jwtNormalized = authApi.normalizeJwt(validated.jwt ?? token);
+      const jwtNormalized = normalizeJwt(validated.jwt ?? token);
       dispatch(
         setUser({
           user: validated.user,
