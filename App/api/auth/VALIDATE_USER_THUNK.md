@@ -24,7 +24,7 @@ Improved thunk (recommended placement: `App/redux/features/userSlice/userSlice.t
 Notes on the implementation below:
 
 - Use the `selectJwt` selector to find the current token.
-- Use an `isValidating` flag in the slice to prevent duplicate concurrent validations.
+  -- Use an `isValidating` flag in the non-persisted `userUi` slice to prevent duplicate concurrent validations.
 - Call `normalizeJwt` before dispatching `setUser`.
 
 ```ts
@@ -33,6 +33,7 @@ import * as authApi from "../../../api/auth/authApi";
 import { unwrapNewToken } from "../../../api/auth/utils"; // optional helper
 import { setUser } from "./userSlice";
 import { selectJwt } from "./userSlice";
+import { selectUserUiIsValidating, setIsValidating } from "../userUiSlice";
 import type { RootState } from "../../store/store";
 
 export const validateUser = createAsyncThunk<
@@ -41,31 +42,32 @@ export const validateUser = createAsyncThunk<
   { state: RootState }
 >("user/validateUser", async (_, { getState, dispatch }) => {
   const state = getState();
-  // Prevent concurrent validations — use a selector instead of ad-hoc state indexing
-  if (selectIsValidating(state)) return false;
+  // Prevent concurrent validations — use the non-persisted UI selector
+  if (selectUserUiIsValidating(state)) return false;
 
   const jwtArray = selectJwt(state);
   const token =
     Array.isArray(jwtArray) && jwtArray[0] ? jwtArray[0].token : undefined;
   if (!token) return false;
 
-  // 1) Validate current token
-  const v = await authApi.validateToken(token);
-  if (v.success && v.data && v.data.data) {
-    const validated = v.data.data;
-    const jwtNormalized = authApi.normalizeJwt(validated.jwt ?? token);
-    dispatch(
-      setUser({
-        user: validated.user,
-        roles: validated.roles,
-        jwt: jwtNormalized,
-      }),
-    );
-    return true;
-  }
-
-  // 2) Try refresh (recoverable path)
+  dispatch(setIsValidating(true));
   try {
+    // 1) Validate current token
+    const v = await authApi.validateToken(token);
+    if (v.success && v.data && v.data.data) {
+      const validated = v.data.data;
+      const jwtNormalized = authApi.normalizeJwt(validated.jwt ?? token);
+      dispatch(
+        setUser({
+          user: validated.user,
+          roles: validated.roles,
+          jwt: jwtNormalized,
+        }),
+      );
+      return true;
+    }
+
+    // 2) Try refresh (recoverable path)
     const r = await authApi.refreshToken(token);
     const newTokenStr = unwrapNewToken(r);
     if (newTokenStr) {
@@ -96,6 +98,8 @@ export const validateUser = createAsyncThunk<
   } catch (err) {
     // network/unexpected error: do not logout automatically — surface a retry UI instead
     return false;
+  } finally {
+    dispatch(setIsValidating(false));
   }
 });
 ```
@@ -116,53 +120,54 @@ try {
 }
 ```
 
-Slice concurrency guard (brief)
+Slice concurrency guard (option 2 — recommended)
 
-Add `isValidating: boolean` to the `user` slice state and toggle it via the thunk lifecycle actions (`pending`/`fulfilled`/`rejected`). This prevents duplicate validations and keeps UI state simple (spinner while validating).
+Instead of persisting `isValidating` on the `user` slice (transient UI state), move it into a small dedicated `userUi` slice that is not persisted. This keeps persistent auth data separate from ephemeral UI flags and avoids spinners or blocked logic after app rehydration.
 
-Example (add to `App/redux/features/userSlice/userSlice.ts`):
+Example `App/redux/features/userUiSlice/userUiSlice.ts` (non-persisted):
 
 ```ts
-// Add `isValidating` to your state
-type UserState = {
-  user?: any;
-  roles?: any[];
-  jwt?: any[];
-  isValidating: boolean;
-};
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: UserState = {
-  user: undefined,
-  roles: [],
-  jwt: [],
-  isValidating: false,
-};
+type UserUiState = { isValidating: boolean };
 
-const userSlice = createSlice({
-  name: "user",
+const initialState: UserUiState = { isValidating: false };
+
+const userUiSlice = createSlice({
+  name: "userUi",
   initialState,
   reducers: {
-    // setUser, clearUser, etc. (keep your existing reducers)
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(validateUser.pending, (state) => {
-        state.isValidating = true;
-      })
-      .addCase(validateUser.fulfilled, (state) => {
-        state.isValidating = false;
-      })
-      .addCase(validateUser.rejected, (state) => {
-        state.isValidating = false;
-      });
+    setIsValidating: (state, action: PayloadAction<boolean>) => {
+      state.isValidating = action.payload;
+    },
   },
 });
 
-// Selector to read the validating flag (add this to your slice file exports)
-import type { RootState } from "../../store/store"; // add to your slice file
-export const selectIsValidating = (state: RootState): boolean =>
-  (state as any).userData?.isValidating ?? false;
+export const { setIsValidating } = userUiSlice.actions;
+export default userUiSlice.reducer;
+
+// Selector (export from this file):
+import type { RootState } from "../../store/store"; // import in the slice file for typing
+export const selectUserUiIsValidating = (state: RootState): boolean =>
+  (state as any).userUi?.isValidating ?? false;
 ```
+
+Update your store configuration so `userUi` is not persisted (the app's current `persistConfig.whitelist` includes only `userData`, so `userUi` will be omitted automatically). See `App/redux/store/store.ts`.
+
+Updated thunk usage (import selector from the new slice):
+
+```ts
+import { selectUserUiIsValidating } from "../userUiSlice";
+
+// inside thunk payload:
+if (selectUserUiIsValidating(state)) return false;
+```
+
+Rationale:
+
+- Keeps persisted `userData` clean (only long-lived auth data).
+- Prevents showing a stale `isValidating` state after rehydrate.
+- Minimal change: add a tiny `userUi` slice and use its selector in the thunk.
 
 Why these changes?
 
@@ -173,9 +178,9 @@ Why these changes?
 Next steps (concrete)
 
 - Implement `unwrapNewToken(result: ApiResult<any>): string | undefined` in `App/api/auth/utils.ts`.
-- Add `isValidating: boolean` to the `user` slice state (`App/redux/features/userSlice/userSlice.ts`) and export `selectIsValidating`.
-- Place the `validateUser` thunk in `App/redux/features/userSlice/userSlice.ts` **above** the `createSlice` call so `extraReducers` can reference it.
-- In the thunk use `selectJwt(state)` and `selectIsValidating(state)` (the slice is mounted at `userData` in the store — see `App/redux/store/store.ts`) rather than ad-hoc `state.user` checks.
+- Create the small non-persisted `userUi` slice (`App/redux/features/userUiSlice/userUiSlice.ts`) that exposes `setIsValidating` and `selectUserUiIsValidating`.
+- Register the `userUi` reducer in the root reducer (`App/redux/store/store.ts`) so it is available at `state.userUi` and is not included in the persist `whitelist`.
+- Place the `validateUser` thunk in `App/redux/features/userSlice/userSlice.ts` **above** the `createSlice` call so `extraReducers` can reference it. In the thunk use `selectJwt(state)` and `selectUserUiIsValidating(state)`.
 - Ensure `validateUser` returns `boolean` and only calls `authApi.logoutUser()` on 401 status; keep network errors non-fatal.
 
 If you'd like, I can implement all of the above now and update the slice and utils files.
