@@ -4,7 +4,7 @@ This note describes an improved, minimal `validateUser` thunk to run when the ap
 
 Goals
 
-- Reuse existing helpers: `authApi.validateToken`, `authApi.refreshToken`, `authApi.logoutUser`, and `authApi.normalizeJwt`.
+- Reuse existing helpers: `authApi.validateToken`, `authApi.refreshToken`, `authApi.logoutUser`, and `normalizeJwt`.
 - Prefer Redux selectors (`selectJwt`) and `userSlice` actions (`setUser`, `clearUser`) instead of ad-hoc state indexing.
 - Keep network errors non-fatal (no automatic logout on non-401 errors).
 
@@ -75,9 +75,7 @@ export const validateUser = createAsyncThunk<
       const v2 = await authApi.validateToken(newTokenStr);
       if (v2.success && v2.data && v2.data.data) {
         const validated = v2.data.data;
-        const jwtNormalized = authApi.normalizeJwt(
-          validated.jwt ?? newTokenStr,
-        );
+        const jwtNormalized = normalizeJwt(validated.jwt ?? newTokenStr);
         dispatch(
           setUser({
             user: validated.user,
