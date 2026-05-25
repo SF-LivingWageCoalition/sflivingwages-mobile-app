@@ -19,6 +19,19 @@ Small helper to add (optional but recommended)
 
 - `unwrapNewToken(result: ApiResult<any>): string | undefined` in `App/api/auth/utils.ts`: centralizes the parsing logic that extracts a new token string from `refreshToken` responses (handles string, array, or object shapes). This keeps the thunk readable and consistent.
 
+Example `unwrapNewToken` implementation (add to `App/api/auth/utils.ts`):
+
+```ts
+// Return the first normalized token string when present, otherwise undefined
+export const unwrapNewToken = (res: ApiResult<any>): string | undefined => {
+  if (!res) return undefined;
+  const payload = res.data as any;
+  const maybe = payload?.data?.jwt ?? payload?.jwt ?? payload;
+  const arr = normalizeJwt(maybe);
+  return arr && arr.length > 0 ? arr[0].token : undefined;
+};
+```
+
 Improved thunk (recommended placement: `App/redux/features/userSlice/userSlice.ts`)
 
 Notes on the implementation below:
@@ -30,7 +43,11 @@ Notes on the implementation below:
 ```ts
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as authApi from "../../../api/auth/authApi";
-import { normalizeJwt, unwrapNewToken } from "../../../api/auth/utils"; // optional helper
+import {
+  normalizeJwt,
+  unwrapNewToken,
+  isValidValidationData,
+} from "../../../api/auth/utils"; // optional helper
 // `setUser` and `selectJwt` are defined later in this file's `userSlice.ts`.
 // Define this thunk *above* the `createSlice` call so the slice can reference
 // the thunk in `extraReducers` while still exposing `setUser` and selectors.
@@ -46,17 +63,15 @@ export const validateUser = createAsyncThunk<
   // Prevent concurrent validations — use the non-persisted UI selector
   if (selectUserUiIsValidating(state)) return false;
 
-  const jwtArray = selectJwt(state);
-  const token =
-    Array.isArray(jwtArray) && jwtArray[0] ? jwtArray[0].token : undefined;
+  const token = selectJwt(state)[0]?.token;
   if (!token) return false;
 
   dispatch(setIsValidating(true));
   try {
     // 1) Validate current token
     const v = await authApi.validateToken(token);
-    if (v.success && v.data && v.data.data) {
-      const validated = v.data.data;
+    const validated = v.data?.data;
+    if (v.success && isValidValidationData(validated)) {
       const jwtNormalized = normalizeJwt(validated.jwt ?? token);
       dispatch(
         setUser({
@@ -73,13 +88,13 @@ export const validateUser = createAsyncThunk<
     const newTokenStr = unwrapNewToken(r);
     if (newTokenStr) {
       const v2 = await authApi.validateToken(newTokenStr);
-      if (v2.success && v2.data && v2.data.data) {
-        const validated = v2.data.data;
-        const jwtNormalized = normalizeJwt(validated.jwt ?? newTokenStr);
+      const validated2 = v2.data?.data;
+      if (v2.success && isValidValidationData(validated2)) {
+        const jwtNormalized = normalizeJwt(validated2.jwt ?? newTokenStr);
         dispatch(
           setUser({
-            user: validated.user,
-            roles: validated.roles,
+            user: validated2.user,
+            roles: validated2.roles,
             jwt: jwtNormalized,
           }),
         );
@@ -88,6 +103,7 @@ export const validateUser = createAsyncThunk<
     }
 
     // 3) If API signaled 401, force logout; otherwise keep existing state
+    // Prefer explicit status checks from the validate/refresh results.
     const status = (v && (v as any).status) ?? (r && (r as any).status);
     if (status === 401) {
       await authApi.logoutUser();
