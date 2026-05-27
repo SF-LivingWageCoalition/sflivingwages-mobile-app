@@ -23,12 +23,17 @@ Example `unwrapNewToken` implementation (add to `App/api/auth/utils.ts`):
 
 ```ts
 // Return the first normalized token string when present, otherwise undefined
-export const unwrapNewToken = (res: ApiResult<any>): string | undefined => {
+export const unwrapNewToken = (res: ApiResult<unknown>): string | undefined => {
   if (!res) return undefined;
-  const payload = res.data as any;
-  const maybe = payload?.data?.jwt ?? payload?.jwt ?? payload;
+  const payload = (res as { data?: unknown }).data;
+  const p = payload as Record<string, unknown> | undefined;
+  const innerCandidate =
+    p && p.data && typeof p.data === "object"
+      ? (p.data as Record<string, unknown>).jwt
+      : undefined;
+  const maybe = innerCandidate ?? p?.jwt ?? payload;
   const arr = normalizeJwt(maybe);
-  return arr && arr.length > 0 ? arr[0].token : undefined;
+  return arr.length > 0 ? arr[0].token : undefined;
 };
 ```
 
@@ -82,7 +87,7 @@ export const validateUserThunk = createAsyncThunk<
           return v2.data!.data;
       }
 
-      const status = (v && (v as any).status) ?? (r && (r as any).status) ?? 0;
+      const status = v?.status ?? r?.status ?? 0;
       return rejectWithValue({ status });
     } catch (err) {
       return rejectWithValue({ status: 0 });
@@ -123,7 +128,11 @@ try {
   const validated = await dispatch(validateUserThunk()).unwrap();
   // success: `validated` is `ValidationData['data']`
 } catch (err) {
-  const status = (err as any)?.status;
+  // Use the shared helper to extract numeric status when present.
+  // The thunk rejects with `rejectWithValue({ status })` on failure, but
+  // callers may also see ApiError or other shapes — `getStatusFromError`
+  // centralized this logic in `App/api/auth/errorHelpers.ts`.
+  const status = getStatusFromError ? getStatusFromError(err) : (err as any)?.status;
   if (status === 401) {
     // forced logout — UI can navigate to login
   } else {
