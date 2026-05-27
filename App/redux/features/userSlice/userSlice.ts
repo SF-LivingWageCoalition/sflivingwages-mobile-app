@@ -7,6 +7,7 @@ import {
   loginUserThunk,
   logoutUserThunk,
 } from "./userThunks";
+import type { ValidateUserFulfilled, ValidateUserRejectValue } from "./types";
 
 /** Basic WordPress user info stored in Redux (subset of WP user object). */
 interface User {
@@ -86,26 +87,32 @@ const userSlice = createSlice({
         if (isValidValidationData(validated)) {
           state.user = validated.user;
           state.roles = validated.roles ?? [];
-          state.jwt = normalizeJwt(validated.jwt ?? "") as JwtItem[];
+          state.jwt = normalizeJwt(validated.jwt ?? "");
         }
       })
-      .addCase(validateUserThunk.fulfilled, (state, action) => {
-        const payload = action.payload as {
-          ok: boolean;
-          validated?: ValidationData["data"];
-          status?: number;
-        };
-        if (payload.ok && payload.validated) {
-          const v = payload.validated;
-          state.user = v.user;
-          state.roles = v.roles ?? [];
-          state.jwt = normalizeJwt(v.jwt ?? "") as JwtItem[];
-        } else if (!payload.ok && payload.status === 401) {
-          state.user = undefined;
-          state.roles = [];
-          state.jwt = [];
-        }
-      })
+      .addCase(
+        validateUserThunk.fulfilled,
+        (state, action: PayloadAction<ValidateUserFulfilled>) => {
+          const validated = action.payload;
+          if (!validated) return;
+          if (isValidValidationData(validated)) {
+            state.user = validated.user;
+            state.roles = validated.roles ?? [];
+            state.jwt = normalizeJwt(validated.jwt ?? "");
+          }
+        },
+      )
+      .addCase(
+        validateUserThunk.rejected,
+        (state, action: PayloadAction<ValidateUserRejectValue | undefined>) => {
+          const status = action.payload?.status;
+          if (status === 401) {
+            state.user = undefined;
+            state.roles = [];
+            state.jwt = [];
+          }
+        },
+      )
       .addCase(logoutUserThunk.fulfilled, (state) => {
         state.user = undefined;
         state.roles = [];
@@ -118,11 +125,9 @@ export const { setUser, clearUser } = userSlice.actions;
 export default userSlice.reducer;
 
 // Selectors
-export const selectUser = (state: RootState) =>
-  state.userData.user as User | undefined;
-export const selectRoles = (state: RootState) =>
-  state.userData.roles as string[];
-export const selectJwt = (state: RootState) => state.userData.jwt as JwtItem[];
+export const selectUser = (state: RootState) => state.userData.user;
+export const selectRoles = (state: RootState) => state.userData.roles;
+export const selectJwt = (state: RootState) => state.userData.jwt;
 
 /**
  * Returns true when the user is considered logged in.

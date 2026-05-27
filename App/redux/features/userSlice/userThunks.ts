@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import type { RootState } from "../../store/store";
 import type { ValidationData } from "../../../api/auth/types";
+import type { ValidateUserFulfilled, ValidateUserRejectValue } from "./types";
 import * as authApi from "../../../api/auth/authApi";
 import {
   unwrapNewToken,
@@ -32,26 +33,21 @@ export const loginUserThunk = createAsyncThunk<
  *   consume its lifecycle actions via `extraReducers`.
  */
 export const validateUserThunk = createAsyncThunk<
-  | { ok: true; validated: ValidationData["data"] }
-  | { ok: false; status?: number },
+  ValidateUserFulfilled,
   void,
-  { state: RootState }
+  { state: RootState; rejectValue: ValidateUserRejectValue }
 >(
   "user/validateUser",
-  async (_, { getState }) => {
+  async (_, { getState, rejectWithValue }) => {
     const state = getState() as RootState;
-    const token = (state as any).userData?.jwt?.[0]?.token as
-      | string
-      | undefined;
-    if (!token) return { ok: false, status: 0 };
+    const token = state.userData?.jwt?.[0]?.token as string | undefined;
+    if (!token) return rejectWithValue({ status: 0 });
 
     try {
       const v = await authApi.validateToken(token);
       if (v.success) {
         const validated = v.data?.data;
-        if (isValidValidationData(validated)) {
-          return { ok: true, validated: validated! };
-        }
+        if (isValidValidationData(validated)) return validated!;
       }
 
       const r = await authApi.refreshToken(token);
@@ -60,22 +56,20 @@ export const validateUserThunk = createAsyncThunk<
         const v2 = await authApi.validateToken(newTokenStr);
         if (v2.success) {
           const validated2 = v2.data?.data;
-          if (isValidValidationData(validated2)) {
-            return { ok: true, validated: validated2! };
-          }
+          if (isValidValidationData(validated2)) return validated2!;
         }
       }
 
-      const status = (v && (v as any).status) ?? (r && (r as any).status);
-      return { ok: false, status: status ?? 0 };
+      const status = (v && (v as any).status) ?? (r && (r as any).status) ?? 0;
+      return rejectWithValue({ status });
     } catch (err) {
-      return { ok: false, status: 0 };
+      return rejectWithValue({ status: 0 });
     }
   },
   {
     condition: (_, { getState }) => {
       const state = getState() as RootState;
-      return !(state as any).userUi?.isValidating;
+      return !state.userUi?.isValidating;
     },
   },
 );
@@ -91,6 +85,6 @@ export const logoutUserThunk = createAsyncThunk<
   { state: RootState }
 >("user/logoutUser", async (_, { getState }) => {
   const state = getState() as RootState;
-  const token = (state as any).userData?.jwt?.[0]?.token as string | undefined;
+  const token = state.userData?.jwt?.[0]?.token as string | undefined;
   await authApi.logoutUser(token);
 });

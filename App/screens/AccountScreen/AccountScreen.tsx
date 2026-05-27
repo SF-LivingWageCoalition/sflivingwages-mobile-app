@@ -38,12 +38,16 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
       let cancelled = false;
       void (async () => {
         try {
-          const ok = await dispatch(validateUserThunk()).unwrap();
-          if (!ok && !cancelled) {
-            // `validateUserThunk` will log out on 401; add UI handling here if desired
+          await dispatch(validateUserThunk()).unwrap();
+          // success: nothing to do here — extraReducers update the store
+        } catch (err) {
+          if (!cancelled) {
+            const status = (err as any)?.status;
+            if (status === 401) {
+              // `validateUserThunk` caused a 401; extraReducers clear user state.
+              // Add UI handling here if desired.
+            }
           }
-        } catch {
-          // ignore network/other errors
         }
       })();
       return () => {

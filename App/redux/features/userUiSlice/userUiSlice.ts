@@ -32,4 +32,4 @@ export const { setIsValidating } = userUiSlice.actions;
 export default userUiSlice.reducer;
 
 export const selectUserUiIsValidating = (state: RootState): boolean =>
-  (state as any).userUi?.isValidating ?? false;
+  state.userUi?.isValidating ?? false;

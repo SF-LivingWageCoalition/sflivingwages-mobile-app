@@ -37,8 +37,13 @@ Improved thunk (recommended placement: `App/redux/features/userSlice/userSlice.t
 Notes on the implementation below:
 
 - Use the `selectJwt` selector to find the current token.
-  -- Use an `isValidating` flag in the non-persisted `userUi` slice to prevent duplicate concurrent validations.
-- Call `normalizeJwt` before dispatching `setUser`.
+- Use an `isValidating` flag in the non-persisted `userUi` slice to prevent duplicate concurrent validations.
+- Keep the thunk pure: fulfill with the validated data on success and use `rejectWithValue({ status })` for failure cases.
+- Call `normalizeJwt` before writing tokens into the store.
+
+Recommended pattern (reject-with-value)
+
+This pattern is idiomatic with Redux Toolkit: the thunk fulfills with typed validated data on success, and rejects via `rejectWithValue` carrying a typed failure payload (for example `{ status?: number }`). Callers can use `unwrap()` inside a try/catch to receive the validated data on success or handle the failure payload in the catch branch.
 
 ```ts
 import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -47,102 +52,95 @@ import {
   normalizeJwt,
   unwrapNewToken,
   isValidValidationData,
-} from "../../../api/auth/utils"; // optional helper
-// `setUser` and `selectJwt` are defined later in this file's `userSlice.ts`.
-// Define this thunk *above* the `createSlice` call so the slice can reference
-// the thunk in `extraReducers` while still exposing `setUser` and selectors.
-import { selectUserUiIsValidating, setIsValidating } from "../userUiSlice";
+} from "../../../api/auth/utils";
+import { selectUserUiIsValidating } from "../userUiSlice";
+import { selectJwt } from "./userSlice"; // export selectors from the slice file
 import type { RootState } from "../../store/store";
 
 export const validateUserThunk = createAsyncThunk<
-  boolean,
+  ValidationData["data"],
   void,
-  { state: RootState }
->("user/validateUser", async (_, { getState, dispatch }) => {
-  const state = getState();
-  // Prevent concurrent validations — use the non-persisted UI selector
-  if (selectUserUiIsValidating(state)) return false;
+  { state: RootState; rejectValue: { status?: number } }
+>(
+  "user/validateUser",
+  async (_, { getState, rejectWithValue }) => {
+    const state = getState() as RootState;
+    const token = selectJwt(state)[0]?.token;
+    if (!token) return rejectWithValue({ status: 0 });
 
-  const token = selectJwt(state)[0]?.token;
-  if (!token) return false;
+    try {
+      // 1) Validate current token
+      const v = await authApi.validateToken(token);
+      if (v.success && isValidValidationData(v.data?.data)) return v.data!.data;
 
-  dispatch(setIsValidating(true));
-  try {
-    // 1) Validate current token
-    const v = await authApi.validateToken(token);
-    const validated = v.data?.data;
-    if (v.success && isValidValidationData(validated)) {
-      const jwtNormalized = normalizeJwt(validated.jwt ?? token);
-      dispatch(
-        setUser({
-          user: validated.user,
-          roles: validated.roles,
-          jwt: jwtNormalized,
-        }),
-      );
-      return true;
-    }
-
-    // 2) Try refresh (recoverable path)
-    const r = await authApi.refreshToken(token);
-    const newTokenStr = unwrapNewToken(r);
-    if (newTokenStr) {
-      const v2 = await authApi.validateToken(newTokenStr);
-      const validated2 = v2.data?.data;
-      if (v2.success && isValidValidationData(validated2)) {
-        const jwtNormalized = normalizeJwt(validated2.jwt ?? newTokenStr);
-        dispatch(
-          setUser({
-            user: validated2.user,
-            roles: validated2.roles,
-            jwt: jwtNormalized,
-          }),
-        );
-        return true;
+      // 2) Try refresh (recoverable path)
+      const r = await authApi.refreshToken(token);
+      const newTokenStr = unwrapNewToken(r);
+      if (newTokenStr) {
+        const v2 = await authApi.validateToken(newTokenStr);
+        if (v2.success && isValidValidationData(v2.data?.data))
+          return v2.data!.data;
       }
-    }
 
-    // 3) If API signaled 401, force logout; otherwise keep existing state
-    // Prefer explicit status checks from the validate/refresh results.
-    const status = (v && (v as any).status) ?? (r && (r as any).status);
-    if (status === 401) {
-      await authApi.logoutUser();
-      return false;
+      const status = (v && (v as any).status) ?? (r && (r as any).status) ?? 0;
+      return rejectWithValue({ status });
+    } catch (err) {
+      return rejectWithValue({ status: 0 });
     }
-    return false;
-  } catch (err) {
-    // network/unexpected error: do not logout automatically — surface a retry UI instead
-    return false;
-  } finally {
-    dispatch(setIsValidating(false));
+  },
+  {
+    condition: (_, { getState }) =>
+      !selectUserUiIsValidating(getState() as RootState),
+  },
+);
+```
+
+Slice example (handle fulfilled + rejected)
+
+```ts
+builder.addCase(validateUserThunk.fulfilled, (state, action) => {
+  const validated = action.payload; // typed `ValidationData['data']`
+  state.user = validated.user;
+  state.roles = validated.roles ?? [];
+  state.jwt = normalizeJwt(validated.jwt ?? "");
+});
+
+builder.addCase(validateUserThunk.rejected, (state, action) => {
+  const status = action.payload?.status; // typed rejectValue
+  if (status === 401) {
+    state.user = undefined;
+    state.roles = [];
+    state.jwt = [];
   }
 });
 ```
 
-Usage (components/thunks):
+Usage (components/thunks)
 
 ```ts
-// Prefer `.unwrap()` to get the thunk payload or throw on rejection
+// Use `unwrap()` inside try/catch: on success it returns the validated data; on failure it throws
 try {
-  const ok = await dispatch(validateUserThunk()).unwrap();
-  if (!ok) {
-    // validation failed — show login/abort
-    return;
-  }
-  // proceed with protected API call
+  const validated = await dispatch(validateUserThunk()).unwrap();
+  // success: `validated` is `ValidationData['data']`
 } catch (err) {
-  // thunk rejected or network error — surface retry UI
+  const status = (err as any)?.status;
+  if (status === 401) {
+    // forced logout — UI can navigate to login
+  } else {
+    // network/unexpected error — surface retry UI
+  }
 }
 ```
 
 Slice concurrency guard (option 2 — recommended)
 
-Instead of persisting `isValidating` on the `user` slice (transient UI state), move it into a small dedicated `userUi` slice that is not persisted. This keeps persistent auth data separate from ephemeral UI flags and avoids spinners or blocked logic after app rehydration.
+Use a small dedicated `userUi` slice that is not persisted to hold transient UI flags like `isValidating`.
 
 Example `App/redux/features/userUiSlice/userUiSlice.ts` (non-persisted):
 
 ```ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { RootState } from "../../store/store";
 
 type UserUiState = { isValidating: boolean };
 
@@ -161,33 +159,17 @@ const userUiSlice = createSlice({
 export const { setIsValidating } = userUiSlice.actions;
 export default userUiSlice.reducer;
 
-// Selector (export from this file):
-import type { RootState } from "../../store/store"; // import in the slice file for typing
 export const selectUserUiIsValidating = (state: RootState): boolean =>
-  (state as any).userUi?.isValidating ?? false;
+  state.userUi?.isValidating ?? false;
 ```
 
 Update your store configuration so `userUi` is not persisted (the app's current `persistConfig.whitelist` includes only `userData`, so `userUi` will be omitted automatically). See `App/redux/store/store.ts`.
-
-Updated thunk usage (import selector from the new slice):
-
-```ts
-import { selectUserUiIsValidating } from "../userUiSlice";
-
-// inside thunk payload:
-if (selectUserUiIsValidating(state)) return false;
-```
 
 Rationale:
 
 - Keeps persisted `userData` clean (only long-lived auth data).
 - Prevents showing a stale `isValidating` state after rehydrate.
 - Minimal change: add a tiny `userUi` slice and use its selector in the thunk.
-
-Why these changes?
-
-- Cleaner state access: `selectJwt` centralizes how tokens are read from the store.
-- Smaller thunk: `unwrapNewToken` moves messy response-shape parsing out of the thunk.
 - Safe behavior: non-401 network failures do not cause an automatic logout.
 
 Next steps (concrete)

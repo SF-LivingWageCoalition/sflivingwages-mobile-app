@@ -243,15 +243,9 @@ export const loginUser = async (
           ? validationResult.data?.data
           : undefined;
         if (validationResult.success && isValidValidationData(validatedData)) {
-          // Token validation success. Set user data in Redux store
-          // Normalize the payload to the DataState shape expected by the store.
-          // Normalize the JWT(s) returned by the validation endpoint into a
-          // canonical array shape so the Redux store always receives the same
-          // runtime shape (array of items with `.token`, optional header/payload).
-          const jwtArray = normalizeJwt(validatedData!.jwt ?? jwt);
-          // Return the validated payload to the caller; callers (thunks)
-          // should be responsible for writing to Redux state so this
-          // module remains free of Redux side-effects.
+          // Token validation success. Return the validated payload to the caller;
+          // callers (thunks) should be responsible for writing to Redux state
+          // so this module remains free of Redux side-effects.
           return { success: true, data: validatedData };
         } else {
           // Token validation failed.
