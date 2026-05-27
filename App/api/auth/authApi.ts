@@ -13,15 +13,9 @@
     examples and references (plugin/docs links).
 */
 
-// Import Redux actions and types for user state management
-import {
-  clearUser,
-  setUser,
-  selectJwt,
-} from "../../redux/features/userSlice/userSlice";
-import type { SetUserPayload } from "../../redux/features/userSlice/userSlice";
-import type { RootState, AppDispatch } from "../../redux/store/store";
-import { store } from "../../redux/store/store";
+// NOTE: This module is a pure API client. It must not import the Redux
+// store or slice action creators at module init time to avoid circular
+// require cycles with the Redux slice modules which import this file.
 
 // Import types used in the API functions
 import type {
@@ -233,7 +227,6 @@ export const revokeToken = async (
 export const loginUser = async (
   email: string,
   password: string,
-  dispatch: AppDispatch,
 ): Promise<ApiResult<ValidationData["data"]>> => {
   try {
     // First, fetch the JWT token
@@ -256,12 +249,9 @@ export const loginUser = async (
           // canonical array shape so the Redux store always receives the same
           // runtime shape (array of items with `.token`, optional header/payload).
           const jwtArray = normalizeJwt(validatedData!.jwt ?? jwt);
-          const payload: SetUserPayload = {
-            user: validatedData!.user,
-            roles: validatedData!.roles,
-            jwt: jwtArray as JwtItem[],
-          };
-          dispatch(setUser(payload)); // Set user data in Redux store
+          // Return the validated payload to the caller; callers (thunks)
+          // should be responsible for writing to Redux state so this
+          // module remains free of Redux side-effects.
           return { success: true, data: validatedData };
         } else {
           // Token validation failed.
@@ -430,23 +420,15 @@ export const sendPasswordReset = async (
 /**
  * Logout the current user.
  */
-export const logoutUser = async (): Promise<LogoutResult> => {
-  // Read the token(s) from the persisted store via selector.
-  const state = store.getState() as RootState;
-  const jwtItems = selectJwt(state);
-  const currentToken = jwtItems?.[0]?.token;
+export const logoutUser = async (jwtToken?: string): Promise<LogoutResult> => {
+  const currentToken = jwtToken;
 
-  // If there's no token to revoke on the server, clear local state and return early.
+  // If there's no token to revoke on the server, return early. Callers
+  // (thunks) should clear local Redux state after this call.
   if (!currentToken) {
-    try {
-      return { success: true, data: { revoked: false } };
-    } finally {
-      store.dispatch(clearUser());
-    }
+    return { success: true, data: { revoked: false } };
   }
 
-  // Attempt a best-effort revoke on the server.
-  // Errors are handled by the single catch below and we always clear local state in `finally`.
   try {
     const revokeResult = await revokeToken(currentToken);
     if (revokeResult.success) {
@@ -463,7 +445,5 @@ export const logoutUser = async (): Promise<LogoutResult> => {
     );
   } catch (err: unknown) {
     return apiFailureFromException<{ revoked: false }>(err);
-  } finally {
-    store.dispatch(clearUser());
   }
 };

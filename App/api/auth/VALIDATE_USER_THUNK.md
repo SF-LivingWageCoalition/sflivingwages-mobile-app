@@ -1,6 +1,6 @@
 # Validate User on App Resume / Critical Actions
 
-This note describes an improved, minimal `validateUser` thunk to run when the app resumes or before protected actions. It reuses existing `authApi` functions and `userSlice` state/selectors and recommends a small helper extraction to keep the thunk concise.
+This note describes an improved, minimal `validateUserThunk` thunk to run when the app resumes or before protected actions. It reuses existing `authApi` functions and `userSlice` state/selectors and recommends a small helper extraction to keep the thunk concise.
 
 Goals
 
@@ -54,7 +54,7 @@ import {
 import { selectUserUiIsValidating, setIsValidating } from "../userUiSlice";
 import type { RootState } from "../../store/store";
 
-export const validateUser = createAsyncThunk<
+export const validateUserThunk = createAsyncThunk<
   boolean,
   void,
   { state: RootState }
@@ -124,7 +124,7 @@ Usage (components/thunks):
 ```ts
 // Prefer `.unwrap()` to get the thunk payload or throw on rejection
 try {
-  const ok = await dispatch(validateUser()).unwrap();
+  const ok = await dispatch(validateUserThunk()).unwrap();
   if (!ok) {
     // validation failed — show login/abort
     return;
@@ -195,8 +195,8 @@ Next steps (concrete)
 - Implement `unwrapNewToken(result: ApiResult<any>): string | undefined` in `App/api/auth/utils.ts`.
 - Create the small non-persisted `userUi` slice (`App/redux/features/userUiSlice/userUiSlice.ts`) that exposes `setIsValidating` and `selectUserUiIsValidating`.
 - Register the `userUi` reducer in the root reducer (`App/redux/store/store.ts`) so it is available at `state.userUi` and is not included in the persist `whitelist`.
-- Place the `validateUser` thunk in `App/redux/features/userSlice/userSlice.ts` **above** the `createSlice` call so `extraReducers` can reference it. In the thunk use `selectJwt(state)` and `selectUserUiIsValidating(state)`.
-- Ensure `validateUser` returns `boolean` and only calls `authApi.logoutUser()` on 401 status; keep network errors non-fatal.
+- Place the `validateUserThunk` thunk in `App/redux/features/userSlice/userSlice.ts` **above** the `createSlice` call so `extraReducers` can reference it. In the thunk use `selectJwt(state)` and `selectUserUiIsValidating(state)`.
+- Ensure `validateUserThunk` returns `boolean` and only calls `authApi.logoutUser()` on 401 status; keep network errors non-fatal.
 
 If you'd like, I can implement all of the above now and update the slice and utils files.
 

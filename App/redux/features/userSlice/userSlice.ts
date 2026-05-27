@@ -1,6 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../store/store";
-import type { JwtItem } from "../../../api/auth/types";
+import type { JwtItem, ValidationData } from "../../../api/auth/types";
+import { normalizeJwt, isValidValidationData } from "../../../api/auth/utils";
+import {
+  validateUserThunk,
+  loginUserThunk,
+  logoutUserThunk,
+} from "./userThunks";
 
 /** Basic WordPress user info stored in Redux (subset of WP user object). */
 interface User {
@@ -42,6 +48,10 @@ const initialState: DataState = {
   jwt: [],
 };
 
+// Thunks moved to `userThunks.ts` to keep the slice focused on state and
+// to avoid circular imports. The slice updates state in response to the
+// thunks' lifecycle actions via `extraReducers` below.
+
 /**
  * Redux slice for managing user-related state.
  * Includes actions to set and clear user information.
@@ -67,6 +77,40 @@ const userSlice = createSlice({
       state.roles = [];
       state.jwt = [];
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginUserThunk.fulfilled, (state, action) => {
+        const validated = action.payload;
+        if (!validated) return;
+        if (isValidValidationData(validated)) {
+          state.user = validated.user;
+          state.roles = validated.roles ?? [];
+          state.jwt = normalizeJwt(validated.jwt ?? "") as JwtItem[];
+        }
+      })
+      .addCase(validateUserThunk.fulfilled, (state, action) => {
+        const payload = action.payload as {
+          ok: boolean;
+          validated?: ValidationData["data"];
+          status?: number;
+        };
+        if (payload.ok && payload.validated) {
+          const v = payload.validated;
+          state.user = v.user;
+          state.roles = v.roles ?? [];
+          state.jwt = normalizeJwt(v.jwt ?? "") as JwtItem[];
+        } else if (!payload.ok && payload.status === 401) {
+          state.user = undefined;
+          state.roles = [];
+          state.jwt = [];
+        }
+      })
+      .addCase(logoutUserThunk.fulfilled, (state) => {
+        state.user = undefined;
+        state.roles = [];
+        state.jwt = [];
+      });
   },
 });
 
