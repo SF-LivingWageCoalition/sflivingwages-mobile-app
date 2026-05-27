@@ -77,16 +77,16 @@ Implementation quick-reference: file paths and a one-line purpose to help you ju
 
 The primary exported functions from `App/api/auth/authApi.ts`, a short description of their purpose, and their return values:
 
-| Function                               | Purpose                                                                                                                                                | Returns                                        |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------- |
-| `fetchToken(email, password)`          | Request a JWT from the Simple JWT Login endpoint.                                                                                                      | `Promise<ApiResult<TokenData>>`                |
-| `validateToken(jwtToken)`              | Validate a JWT with the Simple JWT Login endpoint.                                                                                                     | `Promise<ApiResult<ValidationData>>`           |
-| `refreshToken(jwtToken)`               | Refresh a JWT via the Simple JWT Login endpoint (returns a new token).                                                                                 | `Promise<ApiResult<TokenData>>`                |
-| `revokeToken(jwtToken)`                | Revoke a JWT on the server using the Simple JWT Login revoke endpoint.                                                                                 | `Promise<ApiResult<TokenData>>`                |
-| `loginUser(email, password, dispatch)` | High-level login flow: fetches a token, validates it, and on success dispatches `setUser` to populate Redux user state.                                | `Promise<ApiResult<ValidationData['data']>>`   |
-| `registerCustomer(email, password)`    | Create a WooCommerce customer via the WooCommerce REST API.                                                                                            | `Promise<ApiResult<CustomerRegistrationData>>` |
-| `sendPasswordReset(email)`             | Request a password reset email via Simple JWT Login.                                                                                                   | `Promise<ApiResult<PasswordResetData>>`        |
-| `logoutUser()`                         | Clear local user auth state and attempt a best-effort revoke of the JWT on the server. Returns a `LogoutResult` so callers can inspect revoke outcome. | `Promise<LogoutResult>`                        |
+| Function                            | Purpose                                                                                                                                                             | Returns                                        |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| `fetchToken(email, password)`       | Request a JWT from the Simple JWT Login endpoint.                                                                                                                   | `Promise<ApiResult<TokenData>>`                |
+| `validateToken(jwtToken)`           | Validate a JWT with the Simple JWT Login endpoint.                                                                                                                  | `Promise<ApiResult<ValidationData>>`           |
+| `refreshToken(jwtToken)`            | Refresh a JWT via the Simple JWT Login endpoint (returns a new token).                                                                                              | `Promise<ApiResult<TokenData>>`                |
+| `revokeToken(jwtToken)`             | Revoke a JWT on the server using the Simple JWT Login revoke endpoint.                                                                                              | `Promise<ApiResult<TokenData>>`                |
+| `loginUser(email, password)`        | High-level login flow: fetches a token and validates it; returns the validated payload on success (callers should dispatch `setUser` to populate Redux user state). | `Promise<ApiResult<ValidationData['data']>>`   |
+| `registerCustomer(email, password)` | Create a WooCommerce customer via the WooCommerce REST API.                                                                                                         | `Promise<ApiResult<CustomerRegistrationData>>` |
+| `sendPasswordReset(email)`          | Request a password reset email via Simple JWT Login.                                                                                                                | `Promise<ApiResult<PasswordResetData>>`        |
+| `logoutUser()`                      | Clear local user auth state and attempt a best-effort revoke of the JWT on the server. Returns a `LogoutResult` so callers can inspect revoke outcome.              | `Promise<LogoutResult>`                        |
 
 ---
 
@@ -117,7 +117,7 @@ Note: these EXPO_PUBLIC environment variables are read and exported from `App/ap
 2. Call `fetchToken(email, password)` to obtain a raw JWT string.
 3. Call `validateToken(jwt)` to get decoded JWT(s) + user data.
 4. If your app supports token refresh, call `refreshToken(jwt)` to obtain a refreshed JWT before the current token expires, then re-run `validateToken` as needed.
-5. `loginUser` will dispatch `setUser(validatedData)` on success.
+5. `loginUser` returns the validated payload on success; callers should dispatch `setUser(validatedData)` to persist authenticated state into Redux.
 
 Example (exception style)
 
@@ -127,7 +127,7 @@ try {
   // fetchToken returns the token in tokenData.data?.jwt (shape: ApiResult<TokenData>)
   const jwt = tokenData.data?.jwt ?? (tokenData as any).jwt;
   const validated = unwrapOrThrow(await validateToken(jwt));
-  // loginUser already dispatches setUser(validated)
+  // Callers should dispatch `setUser(validated)` or otherwise persist the validated payload to Redux.
 } catch (err) {
   if (err instanceof ApiError) {
     // err.status and err.data are available for UX decisions
@@ -144,7 +144,7 @@ try {
   - Success: `{ success: true, data: T, status?: number }`
   - Failure: `{ success: false, errorMessage?: string, status?: number, data?: unknown }`
 - Optional throw-style helper: `unwrapOrThrow(result)` — returns `data` or throws `ApiError` (contains `status` and `data`).
-- Side-effects: `loginUser` dispatches `setUser(validatedData)` on success.
+- Side-effects: None — `loginUser` returns the validated payload; callers should dispatch `setUser(validatedData)` when they want to update Redux state.
 
 Implementation details (see `App/api/auth/authApi.ts` and `App/api/auth/types.ts`): exported types are defined in `types.ts` (for example `TokenData`, `ValidationData`, `PasswordResetData`, `ApiResult<T>`). `ApiError` is defined in `App/api/auth/errors.ts` and runtime helpers (for example `unwrapOrThrow`, `normalizeJwt`, `parseJsonSafe`) live in `App/api/auth/utils.ts`.
 
@@ -336,9 +336,9 @@ Failure (invalid/expired token or other error):
 
 Login a WP user via the Simple JWT Login plugin.
 
-Usage: loginUser("\<email>", "\<password>", dispatch)
+Usage: loginUser("\<email\>", "\<password\>")
 
-Returns: ApiResult\<ValidationData['data']> where `data` is the validated payload.
+Returns: ApiResult\<ValidationData['data']> where `data` is the validated payload. Callers are responsible for writing the validated payload into Redux (for example by dispatching `setUser(...)`).
 
 Success (login flow returns user, roles and jwt):
 
