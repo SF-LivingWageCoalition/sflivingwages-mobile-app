@@ -51,7 +51,7 @@ export const validateUserThunk = createAsyncThunk<
       }
 
       const r = await authApi.refreshToken(token);
-      const newTokenStr = unwrapNewToken(r as any);
+      const newTokenStr = unwrapNewToken(r);
       if (newTokenStr) {
         const v2 = await authApi.validateToken(newTokenStr);
         if (v2.success) {
@@ -60,7 +60,7 @@ export const validateUserThunk = createAsyncThunk<
         }
       }
 
-      const status = (v && (v as any).status) ?? (r && (r as any).status) ?? 0;
+      const status = v?.status ?? r?.status ?? 0;
       return rejectWithValue({ status });
     } catch (err) {
       return rejectWithValue({ status: 0 });

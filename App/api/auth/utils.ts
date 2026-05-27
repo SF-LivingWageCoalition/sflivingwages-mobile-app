@@ -212,10 +212,15 @@ export const normalizeJwt = (maybeJwt: unknown): JwtItem[] => {
  * Accepts a variety of shapes returned by refresh endpoints and uses
  * `normalizeJwt` to canonicalize values.
  */
-export const unwrapNewToken = (res: ApiResult<any>): string | undefined => {
+export const unwrapNewToken = (res: ApiResult<unknown>): string | undefined => {
   if (!res) return undefined;
-  const payload = res.data as any;
-  const maybe = payload?.data?.jwt ?? payload?.jwt ?? payload;
+  const payload = (res as { data?: unknown }).data;
+  const p = payload as Record<string, unknown> | undefined;
+  const innerCandidate =
+    p && p.data && typeof p.data === "object"
+      ? (p.data as Record<string, unknown>).jwt
+      : undefined;
+  const maybe = innerCandidate ?? p?.jwt ?? payload;
   const arr = normalizeJwt(maybe);
-  return arr && arr.length > 0 ? arr[0].token : undefined;
+  return arr.length > 0 ? arr[0].token : undefined;
 };

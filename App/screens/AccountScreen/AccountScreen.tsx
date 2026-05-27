@@ -12,6 +12,7 @@ import {
 import { selectUserUiIsValidating } from "../../redux/features/userUiSlice/userUiSlice";
 import { colors } from "../../theme";
 import { translate } from "../../translation";
+import { getStatusFromError } from "../../api/auth/errorHelpers";
 import MainButton from "../../components/MainButton";
 import AccountScreenHeader from "./components/AccountScreenHeader";
 import AccountScreenMenu from "./components/AccountScreenMenu";
@@ -24,6 +25,8 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
 
   // Local flag used to show an in-app overlay while logout is in progress.
   const [loggingOut, setLoggingOut] = useState(false);
+
+  // use shared `getStatusFromError` from auth error helpers
 
   // This ensures the overlay remains visible until `clearUser()` has been dispatched.
   useEffect(() => {
@@ -42,7 +45,7 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
           // success: nothing to do here — extraReducers update the store
         } catch (err) {
           if (!cancelled) {
-            const status = (err as any)?.status;
+            const status = getStatusFromError(err);
             if (status === 401) {
               // `validateUserThunk` caused a 401; extraReducers clear user state.
               // Add UI handling here if desired.
