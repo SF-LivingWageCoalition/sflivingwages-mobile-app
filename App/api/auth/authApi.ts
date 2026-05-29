@@ -47,11 +47,9 @@ import {
   isValidValidationData,
   apiFailureWithServerCode,
   extractServerCode,
-  normalizeJwt,
 } from "./utils";
 import { isUsernameExistsCode } from "./errorHelpers";
 import { makeBaseFromEmail, generateCandidate } from "./usernameUtils";
-import type { JwtItem } from "./types";
 
 /**
  * API helper functions for authentication.
