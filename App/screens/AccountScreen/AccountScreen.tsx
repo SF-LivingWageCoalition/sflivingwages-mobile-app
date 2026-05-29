@@ -89,13 +89,16 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
         },
         {
           text: translate("buttons.ok"),
-          onPress: () => {
-            // Start the in-app overlay and kick off logout.
+          onPress: async () => {
             setLoggingOut(true);
-            // Dispatch a thunk that revokes the token (best-effort) and clears user state.
-            // We don't await here because Alert buttons expect a sync callback,
-            // but setLoggingOut(true) gives immediate UI feedback.
-            void dispatch(logoutUserThunk());
+            try {
+              await dispatch(logoutUserThunk()).unwrap();
+              // optional: navigate or show success
+            } catch (err) {
+              // show localized error (mapApiErrorToMessage/getStatusFromError)
+            } finally {
+              setLoggingOut(false); // or check mountedRef.current before calling
+            }
           },
         },
       ],

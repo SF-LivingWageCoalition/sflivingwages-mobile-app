@@ -33,7 +33,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+    setShowPassword((v) => !v);
   };
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -62,9 +62,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
     setLoading(true);
     try {
-      const validatedData = await dispatch(
-        loginUserThunk({ email, password }),
-      ).unwrap();
+      await dispatch(loginUserThunk({ email, password })).unwrap();
       navigation.goBack();
     } catch (error: unknown) {
       const message = mapApiErrorToMessage(error, "errors.loginFailed");
