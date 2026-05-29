@@ -3,6 +3,8 @@ import type { RootState } from "../../store/store";
 import type { ValidationData } from "../../../api/auth/types";
 import type { ValidateUserFulfilled, ValidateUserRejectValue } from "./types";
 import * as authApi from "../../../api/auth/authApi";
+import { selectUserUiIsValidating } from "../userUiSlice/selectors";
+import { selectJwt } from "./selectors";
 import {
   unwrapNewToken,
   unwrapOrThrow,
@@ -40,7 +42,7 @@ export const validateUserThunk = createAsyncThunk<
   "user/validateUser",
   async (_, { getState, rejectWithValue }) => {
     const state = getState() as RootState;
-    const token = state.userData?.jwt?.[0]?.token as string | undefined;
+    const token = selectJwt(state)?.[0]?.token;
     if (!token) return rejectWithValue({ status: 0 });
 
     try {
@@ -51,16 +53,18 @@ export const validateUserThunk = createAsyncThunk<
       }
 
       const r = await authApi.refreshToken(token);
+      let v2Status: number | undefined;
       const newTokenStr = unwrapNewToken(r);
       if (newTokenStr) {
         const v2 = await authApi.validateToken(newTokenStr);
+        v2Status = v2?.status;
         if (v2.success) {
           const validated2 = v2.data?.data;
           if (isValidValidationData(validated2)) return validated2!;
         }
       }
 
-      const status = v?.status ?? r?.status ?? 0;
+      const status = v2Status ?? v?.status ?? r?.status ?? 0;
       return rejectWithValue({ status });
     } catch (err) {
       return rejectWithValue({ status: 0 });
@@ -69,7 +73,7 @@ export const validateUserThunk = createAsyncThunk<
   {
     condition: (_, { getState }) => {
       const state = getState() as RootState;
-      return !state.userUi?.isValidating;
+      return !selectUserUiIsValidating(state);
     },
   },
 );
@@ -85,6 +89,6 @@ export const logoutUserThunk = createAsyncThunk<
   { state: RootState }
 >("user/logoutUser", async (_, { getState }) => {
   const state = getState() as RootState;
-  const token = state.userData?.jwt?.[0]?.token as string | undefined;
+  const token = selectJwt(state)?.[0]?.token;
   await authApi.logoutUser(token);
 });

@@ -30,6 +30,4 @@ const userUiSlice = createSlice({
 
 export const { setIsValidating } = userUiSlice.actions;
 export default userUiSlice.reducer;
-
-export const selectUserUiIsValidating = (state: RootState): boolean =>
-  state.userUi?.isValidating ?? false;
+export { selectUserUiIsValidating } from "./selectors";
