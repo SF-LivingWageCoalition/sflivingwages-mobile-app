@@ -1,60 +1,45 @@
-import { SEND_TO } from "@env";
 import { CheckBox } from "@rneui/themed";
-import qs from "querystring";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Image,
-  Linking,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from "react-native";
+import { useSelector } from "react-redux";
 import appIcon from "../../../assets/icon.png";
+import { submitViolation } from "../../api/violations/violationsApi";
+import LoadingOverlay from "../../components/LoadingOverlay";
 import MainButton from "../../components/MainButton";
+import {
+  selectJwt,
+  selectUser,
+} from "../../redux/features/userSlice/userSlice";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
-import { EmailOptions } from "../../types/types";
 import { assistanceSchema } from "./assistanceSchema";
 
-const sendEmail = async (
-  to: string,
-  subject: string,
-  body: string,
-  options: EmailOptions = {},
-): Promise<void> => {
-  const { cc, bcc } = options;
-  let url = `mailto:${to}`;
-
-  // Create email link query
-  const query = qs.stringify({
-    subject,
-    body,
-    cc,
-    bcc,
-  });
-
-  if (query.length) {
-    url += `?${query}`;
-  }
-
-  // check if we can use this link
-  const canOpen = await Linking.canOpenURL(url);
-  if (!canOpen) {
-    throw new Error("Provided URL can not be handled");
-  }
-
-  return Linking.openURL(url);
-};
-
 const ReportViolation: React.FC = () => {
+  const user = useSelector(selectUser);
+  const jwtItems = useSelector(selectJwt);
+
   const [businessName, setBusinessName] = useState<string>("");
   const [businessAddress, setBusinessAddress] = useState<string>("");
   const [fullName, setFullName] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
   const [userPhone, setUserPhone] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (user) {
+      setFullName(user.display_name ?? "");
+      setUserEmail(user.user_email ?? "");
+    }
+  }, [user]);
 
   const assistList: string[] = [
     translate("assistScreen.assistList.wageTheft"),
@@ -85,7 +70,7 @@ const ReportViolation: React.FC = () => {
     setAssistList(updateList);
   };
 
-  const onSubmitData = (): void => {
+  const onSubmitData = async (): Promise<void> => {
     // Zod validation
     const result = assistanceSchema.safeParse({
       businessName,
@@ -104,168 +89,202 @@ const ReportViolation: React.FC = () => {
       return;
     }
     setErrors({});
-    const strBodyFormat = `
-            \nSan Francisco Living Wage Coalition Assist\n\n\nBusiness Name :\t\t${businessName}\n\nBusiness Address :\t\t${businessAddress}\n\nName :\t\t${fullName}\n\nEmail :\t\t${userEmail}\n\nPhone :\t\t${userPhone}\n\nSituation :\t\t${list.join(
-              ", ",
-            )}
-            `;
-    sendEmail(
-      SEND_TO, // San Francisco Living Wage Coalition Email.
-      "ASSIST",
-      strBodyFormat,
-    ).then(() => {
-      resetAll();
-    });
+
+    const jwt = jwtItems[0]?.token ?? "";
+    setLoading(true);
+    try {
+      const apiResult = await submitViolation(
+        {
+          businessName,
+          businessAddress,
+          fullName,
+          userEmail,
+          userPhone: userPhone.replace(/\D/g, ""),
+          violations: list,
+        },
+        jwt,
+      );
+      if (apiResult.success) {
+        Alert.alert(
+          translate("violationSubmit.successTitle"),
+          translate("violationSubmit.successMessage"),
+          [{ text: translate("buttons.ok"), onPress: resetAll }],
+          { cancelable: true, onDismiss: resetAll },
+        );
+      } else {
+        Alert.alert(
+          translate("violationSubmit.errorTitle"),
+          translate("violationSubmit.errorMessage"),
+        );
+      }
+    } catch {
+      Alert.alert(
+        translate("violationSubmit.errorTitle"),
+        translate("violationSubmit.errorMessage"),
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const resetAll = (): void => {
     setBusinessName("");
     setBusinessAddress("");
-    setFullName("");
-    setUserEmail("");
+    setFullName(user?.display_name ?? "");
+    setUserEmail(user?.user_email ?? "");
     setUserPhone("");
     setCheckState(new Array(assistList.length).fill(false));
     setAssistList([]);
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.card}>
-          <View style={styles.logoContainer}>
-            <Image style={styles.logo} source={appIcon} />
-          </View>
-          <Text style={styles.intro}>{translate("assistScreen.title")}</Text>
-          <Text style={styles.instruction}>
-            {translate("assistScreen.subTitle")}
-          </Text>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputName}>
-              {translate("assistScreen.businessName")}
-              <Text style={styles.requiredField}>*</Text>
+    <View style={{ flex: 1 }}>
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={styles.card}>
+            <View style={styles.logoContainer}>
+              <Image style={styles.logo} source={appIcon} />
+            </View>
+            <Text style={styles.intro}>{translate("assistScreen.title")}</Text>
+            <Text style={styles.instruction}>
+              {translate("assistScreen.subTitle")}
             </Text>
-            <TextInput
-              style={styles.textInput}
-              onChangeText={(businessNameInput) =>
-                setBusinessName(businessNameInput)
-              }
-              value={businessName}
-            />
-            {errors.businessName && (
-              <Text style={styles.inputError}>{errors.businessName}</Text>
-            )}
-          </View>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputName}>
-              {translate("assistScreen.businessAddress")}
-              <Text style={styles.requiredField}>*</Text>
-            </Text>
-            <TextInput
-              style={styles.addressTextInput}
-              multiline
-              numberOfLines={3}
-              textAlignVertical="top"
-              onChangeText={(businessAddressInput) =>
-                setBusinessAddress(businessAddressInput)
-              }
-              value={businessAddress}
-            />
-            {errors.businessAddress && (
-              <Text style={styles.inputError}>{errors.businessAddress}</Text>
-            )}
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputName}>
-              {translate("assistScreen.fullName")}
-              <Text style={styles.requiredField}>*</Text>
-            </Text>
-            <TextInput
-              style={styles.textInput}
-              onChangeText={(fullNameInput) => setFullName(fullNameInput)}
-              value={fullName}
-            />
-            {errors.fullName && (
-              <Text style={styles.inputError}>{errors.fullName}</Text>
-            )}
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputName}>
-              {translate("assistScreen.email")}
-              <Text style={styles.requiredField}>*</Text>
-            </Text>
-            <TextInput
-              style={styles.textInput}
-              keyboardType="email-address"
-              onChangeText={(userEmailInput) => setUserEmail(userEmailInput)}
-              value={userEmail}
-            />
-            {errors.userEmail && (
-              <Text style={styles.inputError}>{errors.userEmail}</Text>
-            )}
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputName}>
-              {translate("assistScreen.phone")}{" "}
-              <Text style={styles.requiredField}>*</Text>
-            </Text>
-            <TextInput
-              style={styles.textInput}
-              keyboardType="numeric"
-              onChangeText={(userPhoneInput) =>
-                setUserPhone(
-                  userPhoneInput.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3"),
-                )
-              }
-              value={userPhone}
-            />
-            {errors.userPhone && (
-              <Text style={styles.inputError}>{errors.userPhone}</Text>
-            )}
-          </View>
-          <Text style={styles.instruction}>
-            {translate("assistScreen.options")}
-            <Text style={styles.requiredField}> *</Text>
-          </Text>
-
-          {assistList.map((assist, index) => {
-            return (
-              <CheckBox
-                key={index}
-                title={assist}
-                textStyle={textStyles.body}
-                checkedColor={colors.light.primary} // or change to green
-                checked={isChecked[index]}
-                onPress={() => handledState(index, assist)}
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputName}>
+                {translate("assistScreen.businessName")}
+                <Text style={styles.requiredField}>*</Text>
+              </Text>
+              <TextInput
+                style={styles.textInput}
+                onChangeText={(businessNameInput) =>
+                  setBusinessName(businessNameInput)
+                }
+                value={businessName}
               />
-            );
-          })}
-          {errors.list && <Text style={styles.inputError}>{errors.list}</Text>}
-          <Text style={styles.submitionInfo}>
-            {translate("assistScreen.review")}
-          </Text>
-          <View style={styles.buttonStyles}>
-            <MainButton
-              variant="primary"
-              title={translate("assistScreen.submit")}
-              onPress={onSubmitData}
-              style={styles.submitButtonStyle}
-            />
+              {errors.businessName && (
+                <Text style={styles.inputError}>{errors.businessName}</Text>
+              )}
+            </View>
 
-            <MainButton
-              variant="clear"
-              title={translate("assistScreen.clear")}
-              onPress={resetAll}
-              style={styles.clearButtonStyle}
-            />
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputName}>
+                {translate("assistScreen.businessAddress")}
+                <Text style={styles.requiredField}>*</Text>
+              </Text>
+              <TextInput
+                style={styles.addressTextInput}
+                multiline
+                numberOfLines={3}
+                textAlignVertical="top"
+                onChangeText={(businessAddressInput) =>
+                  setBusinessAddress(businessAddressInput)
+                }
+                value={businessAddress}
+              />
+              {errors.businessAddress && (
+                <Text style={styles.inputError}>{errors.businessAddress}</Text>
+              )}
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputName}>
+                {translate("assistScreen.fullName")}
+                <Text style={styles.requiredField}>*</Text>
+              </Text>
+              <TextInput
+                style={styles.textInput}
+                onChangeText={(fullNameInput) => setFullName(fullNameInput)}
+                value={fullName}
+              />
+              {errors.fullName && (
+                <Text style={styles.inputError}>{errors.fullName}</Text>
+              )}
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputName}>
+                {translate("assistScreen.email")}
+                <Text style={styles.requiredField}>*</Text>
+              </Text>
+              <TextInput
+                style={styles.textInput}
+                keyboardType="email-address"
+                onChangeText={(userEmailInput) => setUserEmail(userEmailInput)}
+                value={userEmail}
+              />
+              {errors.userEmail && (
+                <Text style={styles.inputError}>{errors.userEmail}</Text>
+              )}
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputName}>
+                {translate("assistScreen.phone")}{" "}
+                <Text style={styles.requiredField}>*</Text>
+              </Text>
+              <TextInput
+                style={styles.textInput}
+                keyboardType="numeric"
+                onChangeText={(userPhoneInput) =>
+                  setUserPhone(
+                    userPhoneInput.replace(
+                      /(\d{3})(\d{3})(\d{4})/,
+                      "($1) $2-$3",
+                    ),
+                  )
+                }
+                value={userPhone}
+              />
+              {errors.userPhone && (
+                <Text style={styles.inputError}>{errors.userPhone}</Text>
+              )}
+            </View>
+            <Text style={styles.instruction}>
+              {translate("assistScreen.options")}
+              <Text style={styles.requiredField}> *</Text>
+            </Text>
+
+            {assistList.map((assist, index) => {
+              return (
+                <CheckBox
+                  key={index}
+                  title={assist}
+                  textStyle={textStyles.body}
+                  checkedColor={colors.light.primary} // or change to green
+                  checked={isChecked[index]}
+                  onPress={() => handledState(index, assist)}
+                />
+              );
+            })}
+            {errors.list && (
+              <Text style={styles.inputError}>{errors.list}</Text>
+            )}
+            <Text style={styles.submitionInfo}>
+              {translate("assistScreen.review")}
+            </Text>
+            <View style={styles.buttonStyles}>
+              <MainButton
+                variant="primary"
+                title={translate("assistScreen.submit")}
+                onPress={onSubmitData}
+                isDisabled={loading}
+                style={styles.submitButtonStyle}
+              />
+
+              <MainButton
+                variant="clear"
+                title={translate("assistScreen.clear")}
+                onPress={resetAll}
+                isDisabled={loading}
+                style={styles.clearButtonStyle}
+              />
+            </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+      {loading && <LoadingOverlay />}
+    </View>
   );
 };
 

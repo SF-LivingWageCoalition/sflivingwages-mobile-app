@@ -327,6 +327,19 @@ const en = {
       message: "Are you sure you want to logout?",
     },
   },
+  authModal: {
+    title: "Sign in to continue",
+    loginTab: "Log In",
+    registerTab: "Register",
+    forgotPassword: "Forgot password?",
+  },
+  violationSubmit: {
+    successTitle: "Report submitted",
+    successMessage:
+      "Your report has been received. We will follow up with you shortly.",
+    errorTitle: "Submission failed",
+    errorMessage: "Unable to submit your report. Please try again.",
+  },
   loginScreen: {
     title: "Login",
   },

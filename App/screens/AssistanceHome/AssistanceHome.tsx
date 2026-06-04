@@ -12,13 +12,37 @@ import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
 import { AssistanceTabParamList } from "../../types/types";
-import { useNavigation } from "@react-navigation/native";
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from "@react-navigation/native";
 import { Entypo, FontAwesome5 } from "@expo/vector-icons";
 import goldenGateBridge from "../../assets/images/golden-gate-bridge.png";
+import AuthModal from "../../components/AuthModal/AuthModal";
+import { useAuthGate } from "../../hooks/useAuthGate";
 
 const AssistanceHome: React.FC = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<AssistanceTabParamList>>();
+  const rootNavigation = useNavigation<NavigationProp<ParamListBase>>();
+
+  const authGate = useAuthGate({
+    onForgotPassword: () =>
+      rootNavigation.navigate("AuthNavigator", {
+        screen: "ForgotPassword",
+      } as never),
+  });
+
+  const handleTilePress = (screen: keyof AssistanceTabParamList) => {
+    if (screen === "ReportViolation") {
+      authGate.trigger(() =>
+        navigation.navigate("Assistance", { screen: "ReportViolation" }),
+      );
+    } else {
+      navigation.navigate("Assistance", { screen });
+    }
+  };
 
   const buttons: {
     title: string;
@@ -81,9 +105,7 @@ const AssistanceHome: React.FC = () => {
         renderItem={({ item }) => (
           <View style={styles.item}>
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("Assistance", { screen: item.screen })
-              }
+              onPress={() => handleTilePress(item.screen)}
               activeOpacity={0.85}
               accessibilityRole="button"
               accessibilityLabel={item.title}
@@ -111,6 +133,7 @@ const AssistanceHome: React.FC = () => {
           </View>
         )}
       />
+      <AuthModal {...authGate.modalProps} />
     </View>
   );
 };
