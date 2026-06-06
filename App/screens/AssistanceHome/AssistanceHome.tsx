@@ -1,26 +1,26 @@
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import React from "react";
-import {
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
-import { colors } from "../../theme";
-import { textStyles } from "../../theme/fontStyles";
-import { translate } from "../../translation/i18n";
-import { AssistanceTabParamList } from "../../types/types";
+import { Entypo, FontAwesome5 } from "@expo/vector-icons";
 import {
   NavigationProp,
   ParamListBase,
   useNavigation,
 } from "@react-navigation/native";
-import { Entypo, FontAwesome5 } from "@expo/vector-icons";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import React from "react";
+import {
+  FlatList,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import goldenGateBridge from "../../assets/images/golden-gate-bridge.png";
 import AuthModal from "../../components/AuthModal/AuthModal";
 import { useAuthGate } from "../../hooks/useAuthGate";
+import { colors } from "../../theme";
+import { textStyles } from "../../theme/fontStyles";
+import { translate } from "../../translation/i18n";
+import { AssistanceTabParamList } from "../../types/types";
 
 const AssistanceHome: React.FC = () => {
   const navigation =

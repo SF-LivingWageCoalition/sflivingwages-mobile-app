@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { loginUser, registerCustomer } from "../../api/auth/authApi";
 import { mapApiErrorToMessage } from "../../api/auth/errorHelpers";
 import { unwrapOrThrow } from "../../api/auth/utils";
+import type { AuthModalProps } from "../../hooks/useAuthGate";
 import type { AppDispatch } from "../../redux/store/store";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
@@ -30,7 +31,6 @@ import {
 import { mapZodErrorToFormErrors } from "../../validation/mapZodError";
 import LoadingOverlay from "../LoadingOverlay";
 import MainButton from "../MainButton";
-import type { AuthModalProps } from "../../hooks/useAuthGate";
 
 type Tab = "login" | "register";
 
