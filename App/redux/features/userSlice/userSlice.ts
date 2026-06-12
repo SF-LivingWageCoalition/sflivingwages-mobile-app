@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "../../store/store";
-import type { JwtItem, ValidationData } from "../../../api/auth/types";
+import type { JwtItem } from "../../../api/auth/types";
 import { normalizeJwt, isValidValidationData } from "../../../api/auth/utils";
 import {
   validateUserThunk,

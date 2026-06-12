@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "../../store/store";
 import { validateUserThunk } from "../userSlice/userThunks";
 
 type UserUiState = { isValidating: boolean };
