@@ -1,5 +1,3 @@
-<!-- Table of contents updated to match current headings -->
-
 # User Redux Slice - developer reference
 
 Maintainer: `@scottmotion` - Last updated: 2026-06-12
