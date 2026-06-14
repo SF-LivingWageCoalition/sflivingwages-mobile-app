@@ -1,16 +1,21 @@
 import { SEND_TO } from "@env";
 import { CheckBox } from "@rneui/themed";
 import qs from "querystring";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
+  FlatList,
   Image,
   Linking,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from "react-native";
+import GooglePlacesTextInput, {
+  GooglePlacesTextInputRef,
+  Place,
+} from "react-native-google-places-textinput";
+
 import appIcon from "../../../assets/icon.png";
 import MainButton from "../../components/MainButton";
 import { colors } from "../../theme";
@@ -49,12 +54,21 @@ const sendEmail = async (
   return Linking.openURL(url);
 };
 
+const FORM_LIST_DATA = [{ key: "report-violation-form" }];
+
 const ReportViolation: React.FC = () => {
+  const placesRef = useRef<GooglePlacesTextInputRef | null>(null);
+
   const [businessName, setBusinessName] = useState<string>("");
   const [businessAddress, setBusinessAddress] = useState<string>("");
   const [fullName, setFullName] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
   const [userPhone, setUserPhone] = useState<string>("");
+
+  const [latitude, setLatitude] = useState<number | null>(null);
+  console.log("🚀 ~ ReportViolation ~ latitude:", latitude);
+  const [longitude, setLongitude] = useState<number | null>(null);
+  console.log("🚀 ~ ReportViolation ~ longitude:", longitude);
 
   const assistList: string[] = [
     translate("assistScreen.assistList.wageTheft"),
@@ -126,146 +140,188 @@ const ReportViolation: React.FC = () => {
     setUserPhone("");
     setCheckState(new Array(assistList.length).fill(false));
     setAssistList([]);
+    setLatitude(null);
+    setLongitude(null);
+    placesRef.current?.clear();
+  };
+
+  const handlePlaceSelect = (place: Place) => {
+    const address = place?.details?.formattedAddress || "";
+
+    setBusinessAddress(address);
+    setErrors((prev) => {
+      const { businessAddress, ...rest } = prev;
+      return rest;
+    });
+
+    const location = place?.details?.location;
+    if (location) {
+      setLatitude(location.latitude);
+      setLongitude(location.longitude);
+    }
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.card}>
-          <View style={styles.logoContainer}>
-            <Image style={styles.logo} source={appIcon} />
-          </View>
-          <Text style={styles.intro}>{translate("assistScreen.title")}</Text>
-          <Text style={styles.instruction}>
-            {translate("assistScreen.subTitle")}
-          </Text>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputName}>
-              {translate("assistScreen.businessName")}
-              <Text style={styles.requiredField}>*</Text>
+    <FlatList
+      data={FORM_LIST_DATA}
+      keyExtractor={(item) => item.key}
+      showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
+      renderItem={() => (
+        <View style={styles.container}>
+          <View style={styles.card}>
+            <View style={styles.logoContainer}>
+              <Image style={styles.logo} source={appIcon} />
+            </View>
+            <Text style={styles.intro}>{translate("assistScreen.title")}</Text>
+            <Text style={styles.instruction}>
+              {translate("assistScreen.subTitle")}
             </Text>
-            <TextInput
-              style={styles.textInput}
-              onChangeText={(businessNameInput) =>
-                setBusinessName(businessNameInput)
-              }
-              value={businessName}
-            />
-            {errors.businessName && (
-              <Text style={styles.inputError}>{errors.businessName}</Text>
-            )}
-          </View>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputName}>
-              {translate("assistScreen.businessAddress")}
-              <Text style={styles.requiredField}>*</Text>
-            </Text>
-            <TextInput
-              style={styles.addressTextInput}
-              multiline
-              numberOfLines={3}
-              textAlignVertical="top"
-              onChangeText={(businessAddressInput) =>
-                setBusinessAddress(businessAddressInput)
-              }
-              value={businessAddress}
-            />
-            {errors.businessAddress && (
-              <Text style={styles.inputError}>{errors.businessAddress}</Text>
-            )}
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputName}>
-              {translate("assistScreen.fullName")}
-              <Text style={styles.requiredField}>*</Text>
-            </Text>
-            <TextInput
-              style={styles.textInput}
-              onChangeText={(fullNameInput) => setFullName(fullNameInput)}
-              value={fullName}
-            />
-            {errors.fullName && (
-              <Text style={styles.inputError}>{errors.fullName}</Text>
-            )}
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputName}>
-              {translate("assistScreen.email")}
-              <Text style={styles.requiredField}>*</Text>
-            </Text>
-            <TextInput
-              style={styles.textInput}
-              keyboardType="email-address"
-              onChangeText={(userEmailInput) => setUserEmail(userEmailInput)}
-              value={userEmail}
-            />
-            {errors.userEmail && (
-              <Text style={styles.inputError}>{errors.userEmail}</Text>
-            )}
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputName}>
-              {translate("assistScreen.phone")}{" "}
-              <Text style={styles.requiredField}>*</Text>
-            </Text>
-            <TextInput
-              style={styles.textInput}
-              keyboardType="numeric"
-              onChangeText={(userPhoneInput) =>
-                setUserPhone(
-                  userPhoneInput.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3"),
-                )
-              }
-              value={userPhone}
-            />
-            {errors.userPhone && (
-              <Text style={styles.inputError}>{errors.userPhone}</Text>
-            )}
-          </View>
-          <Text style={styles.instruction}>
-            {translate("assistScreen.options")}
-            <Text style={styles.requiredField}> *</Text>
-          </Text>
-
-          {assistList.map((assist, index) => {
-            return (
-              <CheckBox
-                key={index}
-                title={assist}
-                textStyle={textStyles.body}
-                checkedColor={colors.light.primary} // or change to green
-                checked={isChecked[index]}
-                onPress={() => handledState(index, assist)}
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputName}>
+                {translate("assistScreen.businessName")}
+                <Text style={styles.requiredField}>*</Text>
+              </Text>
+              <TextInput
+                style={styles.textInput}
+                onChangeText={(businessNameInput) =>
+                  setBusinessName(businessNameInput)
+                }
+                value={businessName}
               />
-            );
-          })}
-          {errors.list && <Text style={styles.inputError}>{errors.list}</Text>}
-          <Text style={styles.submitionInfo}>
-            {translate("assistScreen.review")}
-          </Text>
-          <View style={styles.buttonStyles}>
-            <MainButton
-              variant="primary"
-              title={translate("assistScreen.submit")}
-              onPress={onSubmitData}
-              style={styles.submitButtonStyle}
-            />
+              {errors.businessName && (
+                <Text style={styles.inputError}>{errors.businessName}</Text>
+              )}
+            </View>
 
-            <MainButton
-              variant="clear"
-              title={translate("assistScreen.clear")}
-              onPress={resetAll}
-              style={styles.clearButtonStyle}
-            />
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputName}>
+                {translate("assistScreen.businessAddress")}
+                <Text style={styles.requiredField}>*</Text>
+              </Text>
+
+              <GooglePlacesTextInput
+                ref={placesRef}
+                apiKey={process.env.EXPO_PUBLIC_GOOGLE_AUTOCOMPLETE_API_KEY}
+                onPlaceSelect={(places: Place) => {
+                  handlePlaceSelect(places);
+                }}
+                fetchDetails={true}
+                detailsFields={[
+                  "formattedAddress",
+                  "location",
+                  "viewport",
+                  "photos",
+                ]}
+                placeHolderText=""
+                style={{
+                  container: styles.placesContainer,
+                  input: styles.placesInput,
+                  suggestionsContainer: styles.placesSuggestions,
+                }}
+                nestedScrollEnabled={true}
+              />
+              {errors.businessAddress && (
+                <Text style={styles.inputError}>{errors.businessAddress}</Text>
+              )}
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputName}>
+                {translate("assistScreen.fullName")}
+                <Text style={styles.requiredField}>*</Text>
+              </Text>
+              <TextInput
+                style={styles.textInput}
+                onChangeText={(fullNameInput) => setFullName(fullNameInput)}
+                value={fullName}
+              />
+              {errors.fullName && (
+                <Text style={styles.inputError}>{errors.fullName}</Text>
+              )}
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputName}>
+                {translate("assistScreen.email")}
+                <Text style={styles.requiredField}>*</Text>
+              </Text>
+              <TextInput
+                style={styles.textInput}
+                keyboardType="email-address"
+                onChangeText={(userEmailInput) => setUserEmail(userEmailInput)}
+                value={userEmail}
+              />
+              {errors.userEmail && (
+                <Text style={styles.inputError}>{errors.userEmail}</Text>
+              )}
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputName}>
+                {translate("assistScreen.phone")}{" "}
+                <Text style={styles.requiredField}>*</Text>
+              </Text>
+              <TextInput
+                style={styles.textInput}
+                keyboardType="numeric"
+                onChangeText={(userPhoneInput) =>
+                  setUserPhone(
+                    userPhoneInput.replace(
+                      /(\d{3})(\d{3})(\d{4})/,
+                      "($1) $2-$3",
+                    ),
+                  )
+                }
+                value={userPhone}
+              />
+              {errors.userPhone && (
+                <Text style={styles.inputError}>{errors.userPhone}</Text>
+              )}
+            </View>
+            <Text style={styles.instruction}>
+              {translate("assistScreen.options")}
+              <Text style={styles.requiredField}> *</Text>
+            </Text>
+
+            {assistList.map((assist, index) => {
+              return (
+                <CheckBox
+                  key={index}
+                  title={assist}
+                  textStyle={textStyles.body}
+                  checkedColor={colors.light.primary}
+                  checked={isChecked[index]}
+                  onPress={() => handledState(index, assist)}
+                />
+              );
+            })}
+            {errors.list && (
+              <Text style={styles.inputError}>{errors.list}</Text>
+            )}
+            <Text style={styles.submitionInfo}>
+              {translate("assistScreen.review")}
+            </Text>
+            <View style={styles.buttonStyles}>
+              <MainButton
+                variant="primary"
+                title={translate("assistScreen.submit")}
+                onPress={onSubmitData}
+                style={styles.submitButtonStyle}
+              />
+
+              <MainButton
+                variant="clear"
+                title={translate("assistScreen.clear")}
+                onPress={resetAll}
+                style={styles.clearButtonStyle}
+              />
+            </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      )}
+    />
   );
 };
 
@@ -357,6 +413,28 @@ const styles = StyleSheet.create({
     color: colors.light.error,
     marginLeft: 10,
     marginTop: 2,
+  },
+
+  //google places styles
+  placesContainer: {
+    width: "100%",
+    marginTop: 8,
+    marginHorizontal: 10,
+  },
+
+  placesInput: {
+    borderWidth: 1,
+    borderRadius: 6,
+    paddingHorizontal: 12,
+    textAlignVertical: "center",
+    borderColor: colors.light.primary,
+    ...textStyles.caption,
+    height: 120,
+  },
+
+  placesSuggestions: {
+    borderRadius: 4,
+    elevation: 2,
   },
 });
 
