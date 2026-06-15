@@ -313,7 +313,10 @@ const AuthModal: React.FC<AuthModalProps> = ({
                   </View>
 
                   <TouchableOpacity
-                    onPress={onForgotPassword}
+                    onPress={() => {
+                      resetForms();
+                      onForgotPassword();
+                    }}
                     style={styles.forgotPasswordRow}
                   >
                     <Text style={styles.forgotPasswordText}>
@@ -431,6 +434,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   keyboardAvoid: {
+    flex: 1,
     justifyContent: "flex-end",
   },
   sheet: {
