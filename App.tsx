@@ -14,7 +14,9 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import * as SystemUI from "expo-system-ui";
 import React, { useEffect } from "react";
-import { Platform } from "react-native";
+import { LogBox, Platform } from "react-native";
+
+LogBox.ignoreLogs(['Warning: "react-native-vector-icons" has been deprecated']);
 import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";

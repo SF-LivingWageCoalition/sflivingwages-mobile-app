@@ -335,6 +335,19 @@ const es: Translations = {
       message: "¿Estás seguro de que deseas cerrar sesión?",
     },
   },
+  authModal: {
+    title: "Inicia sesión para continuar",
+    loginTab: "Iniciar Sesión",
+    registerTab: "Registrarse",
+    forgotPassword: "¿Olvidaste tu contraseña?",
+  },
+  violationSubmit: {
+    successTitle: "Reporte enviado",
+    successMessage: "Tu reporte ha sido recibido. Te contactaremos en breve.",
+    errorTitle: "Error al enviar",
+    errorMessage:
+      "No se pudo enviar tu reporte. Por favor, inténtalo de nuevo.",
+  },
   loginScreen: {
     title: "Iniciar Sesión",
   },
