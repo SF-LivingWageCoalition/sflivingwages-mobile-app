@@ -48,10 +48,6 @@ const initialState: DataState = {
   jwt: [],
 };
 
-// Thunks moved to `userThunks.ts` to keep the slice focused on state and
-// to avoid circular imports. The slice updates state in response to the
-// thunks' lifecycle actions via `extraReducers` below.
-
 /**
  * Redux slice for managing user-related state.
  * Includes actions to set and clear user information.
@@ -60,12 +56,6 @@ const userSlice = createSlice({
   name: "user",
   initialState: initialState,
   reducers: {
-    /**
-     * Update user-related state with a partial DataState.
-     *
-     * Merge strategy: fields omitted from the payload are left unchanged.
-     * Note: to clear the user/tokens, call `clearUser()` explicitly.
-     */
     setUser: (state, action: PayloadAction<SetUserPayload>) => {
       const p = action.payload;
       state.user = p.user ?? state.user;

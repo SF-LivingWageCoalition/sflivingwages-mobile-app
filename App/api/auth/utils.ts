@@ -59,8 +59,6 @@ export const unwrapOrThrow = <T>(
 ): T => {
   if (result.success) return result.data;
   const msg = result.errorMessage ?? fallbackMessage ?? "API request failed";
-  // Preserve the ApiResult's data type in the thrown ApiError so callers can
-  // benefit from typed `error.data` (ApiError<T>).
   throw new ApiError<T>(msg, result.status, result.data as T);
 };
 
@@ -188,9 +186,6 @@ export const isValidValidationData = (
  *
  * Always returns an array (possibly empty) so callers can safely index into
  * the result (`jwtArray[0]?.token`) and persist a consistent shape to Redux.
- *
- * Exported so code across the auth layer can standardize values before
- * storing or consuming JWTs.
  */
 export const normalizeJwt = (maybeJwt: unknown): JwtItem[] => {
   if (Array.isArray(maybeJwt)) return maybeJwt as JwtItem[];

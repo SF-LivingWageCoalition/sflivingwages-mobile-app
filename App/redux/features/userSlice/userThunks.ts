@@ -11,10 +11,7 @@ import {
   isValidValidationData,
 } from "../../../api/auth/utils";
 
-/**
- * Thunk: loginUserThunk
- * - Pure API client call: returns validated payload on success.
- */
+// Keep thunks as pure auth workflow wrappers; state changes belong in slice extraReducers.
 export const loginUserThunk = createAsyncThunk<
   ValidationData["data"],
   { email: string; password: string },
@@ -27,13 +24,6 @@ export const loginUserThunk = createAsyncThunk<
   return validated!;
 });
 
-/**
- * Thunk: validateUserThunk
- * - Validates the currently persisted JWT, attempts refresh on recoverable failures,
- *   and returns a payload describing the result so the slice can update state.
- * - Important: this thunk is pure (no direct slice imports) so the slice can
- *   consume its lifecycle actions via `extraReducers`.
- */
 export const validateUserThunk = createAsyncThunk<
   ValidateUserFulfilled,
   void,
@@ -78,11 +68,6 @@ export const validateUserThunk = createAsyncThunk<
   },
 );
 
-/**
- * Thunk: logoutUserThunk
- * - Calls pure `authApi.logoutUser(token)` and lets the slice clear local state
- *   in response to the fulfilled action.
- */
 export const logoutUserThunk = createAsyncThunk<
   void,
   void,
