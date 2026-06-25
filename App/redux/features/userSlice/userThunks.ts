@@ -17,11 +17,11 @@ export const loginUserThunk = createAsyncThunk<
   { email: string; password: string },
   { state: RootState }
 >("user/loginUser", async ({ email, password }) => {
-  const res = await authApi.loginUser(email, password);
-  const validated = unwrapOrThrow(res);
-  if (!isValidValidationData(validated))
+  const loginResponse = await authApi.loginUser(email, password);
+  const validatedUserData = unwrapOrThrow(loginResponse);
+  if (!isValidValidationData(validatedUserData))
     throw new Error("Invalid validation data");
-  return validated!;
+  return validatedUserData!;
 });
 
 export const validateUserThunk = createAsyncThunk<
@@ -31,39 +31,47 @@ export const validateUserThunk = createAsyncThunk<
 >(
   "user/validateUser",
   async (_, { getState, rejectWithValue }) => {
-    const state = getState() as RootState;
-    const token = selectJwt(state)?.[0]?.token;
+    const rootState = getState() as RootState;
+    const token = selectJwt(rootState)?.[0]?.token;
     if (!token) return rejectWithValue({ status: 0 });
 
     try {
-      const v = await authApi.validateToken(token);
-      if (v.success) {
-        const validated = v.data?.data;
-        if (isValidValidationData(validated)) return validated!;
+      const initialValidationResponse = await authApi.validateToken(token);
+      if (initialValidationResponse.success) {
+        const initialValidatedUserData = initialValidationResponse.data?.data;
+        if (isValidValidationData(initialValidatedUserData))
+          return initialValidatedUserData!;
       }
 
-      const r = await authApi.refreshToken(token);
-      let v2Status: number | undefined;
-      const newTokenStr = unwrapNewToken(r);
-      if (newTokenStr) {
-        const v2 = await authApi.validateToken(newTokenStr);
-        v2Status = v2?.status;
-        if (v2.success) {
-          const validated2 = v2.data?.data;
-          if (isValidValidationData(validated2)) return validated2!;
+      const refreshResponse = await authApi.refreshToken(token);
+      let postRefreshValidationStatus: number | undefined;
+      const refreshedToken = unwrapNewToken(refreshResponse);
+      if (refreshedToken) {
+        const postRefreshValidationResponse =
+          await authApi.validateToken(refreshedToken);
+        postRefreshValidationStatus = postRefreshValidationResponse?.status;
+        if (postRefreshValidationResponse.success) {
+          const postRefreshValidatedUserData =
+            postRefreshValidationResponse.data?.data;
+          if (isValidValidationData(postRefreshValidatedUserData))
+            return postRefreshValidatedUserData!;
         }
       }
 
-      const status = v2Status ?? v?.status ?? r?.status ?? 0;
+      const status =
+        postRefreshValidationStatus ??
+        initialValidationResponse?.status ??
+        refreshResponse?.status ??
+        0;
       return rejectWithValue({ status });
-    } catch (err) {
+    } catch (error) {
       return rejectWithValue({ status: 0 });
     }
   },
   {
     condition: (_, { getState }) => {
-      const state = getState() as RootState;
-      return !selectUserUiIsValidating(state);
+      const rootState = getState() as RootState;
+      return !selectUserUiIsValidating(rootState);
     },
   },
 );
@@ -73,7 +81,7 @@ export const logoutUserThunk = createAsyncThunk<
   void,
   { state: RootState }
 >("user/logoutUser", async (_, { getState }) => {
-  const state = getState() as RootState;
-  const token = selectJwt(state)?.[0]?.token;
+  const rootState = getState() as RootState;
+  const token = selectJwt(rootState)?.[0]?.token;
   await authApi.logoutUser(token);
 });

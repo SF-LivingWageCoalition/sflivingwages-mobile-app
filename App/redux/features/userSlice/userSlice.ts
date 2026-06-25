@@ -57,10 +57,10 @@ const userSlice = createSlice({
   initialState: initialState,
   reducers: {
     setUser: (state, action: PayloadAction<SetUserPayload>) => {
-      const p = action.payload;
-      state.user = p.user ?? state.user;
-      state.roles = p.roles ?? state.roles;
-      state.jwt = p.jwt ?? state.jwt;
+      const userUpdate = action.payload;
+      state.user = userUpdate.user ?? state.user;
+      state.roles = userUpdate.roles ?? state.roles;
+      state.jwt = userUpdate.jwt ?? state.jwt;
     },
     clearUser: (state) => {
       state.user = undefined;
@@ -71,23 +71,23 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loginUserThunk.fulfilled, (state, action) => {
-        const validated = action.payload;
-        if (!validated) return;
-        if (isValidValidationData(validated)) {
-          state.user = validated.user;
-          state.roles = validated.roles ?? [];
-          state.jwt = normalizeJwt(validated.jwt ?? "");
+        const validatedUserData = action.payload;
+        if (!validatedUserData) return;
+        if (isValidValidationData(validatedUserData)) {
+          state.user = validatedUserData.user;
+          state.roles = validatedUserData.roles ?? [];
+          state.jwt = normalizeJwt(validatedUserData.jwt ?? "");
         }
       })
       .addCase(
         validateUserThunk.fulfilled,
         (state, action: PayloadAction<ValidateUserFulfilled>) => {
-          const validated = action.payload;
-          if (!validated) return;
-          if (isValidValidationData(validated)) {
-            state.user = validated.user;
-            state.roles = validated.roles ?? [];
-            state.jwt = normalizeJwt(validated.jwt ?? "");
+          const validatedUserData = action.payload;
+          if (!validatedUserData) return;
+          if (isValidValidationData(validatedUserData)) {
+            state.user = validatedUserData.user;
+            state.roles = validatedUserData.roles ?? [];
+            state.jwt = normalizeJwt(validatedUserData.jwt ?? "");
           }
         },
       )

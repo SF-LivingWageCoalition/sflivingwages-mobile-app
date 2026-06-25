@@ -10,7 +10,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import userSlice from "../features/userSlice/userSlice";
+import userReducer from "../features/userSlice/userSlice";
 import userUiReducer from "../features/userUiSlice/userUiSlice";
 
 const persistConfig = {
@@ -19,7 +19,7 @@ const persistConfig = {
   whitelist: ["userData"],
 };
 const rootReducer = combineReducers({
-  userData: userSlice,
+  userData: userReducer,
   userUi: userUiReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);

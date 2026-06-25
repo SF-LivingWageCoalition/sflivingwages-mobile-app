@@ -9,6 +9,6 @@ export const selectJwt = (state: RootState) => state.userData.jwt;
  */
 export const selectIsLoggedIn = (state: RootState): boolean => {
   const user = selectUser(state);
-  const jwt = selectJwt(state);
-  return Boolean(user?.ID && jwt.length > 0 && jwt[0].token);
+  const jwtItems = selectJwt(state);
+  return Boolean(user?.ID && jwtItems.length > 0 && jwtItems[0].token);
 };
