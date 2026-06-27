@@ -9,9 +9,8 @@ import {
   ViewStyle,
 } from "react-native";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../../api/auth/authApi";
-import { unwrapOrThrow } from "../../api/auth/utils";
 import { useAuthForm } from "../../hooks/useAuthForm";
+import { loginUserThunk } from "../../redux/features/userSlice/userThunks";
 import type { AppDispatch } from "../../redux/store/store";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
@@ -44,7 +43,9 @@ const LoginForm: React.FC<LoginFormProps> = ({
       schema: loginSchema,
       fallbackErrorKey: "errors.loginFailed",
       onValid: async ({ userEmail, userPassword }) => {
-        unwrapOrThrow(await loginUser(userEmail, userPassword, dispatch));
+        await dispatch(
+          loginUserThunk({ email: userEmail, password: userPassword }),
+        ).unwrap();
         onSuccess();
       },
     });
