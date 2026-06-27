@@ -1,4 +1,3 @@
-// See `App/api/auth/README.md` for examples and error handling patterns.
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import ForgotPasswordForm from "../../components/auth/ForgotPasswordForm";

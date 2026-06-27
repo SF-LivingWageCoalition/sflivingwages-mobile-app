@@ -1,3 +1,4 @@
+// See `App/api/auth/README.md` for examples and error handling patterns.
 import React, { useRef } from "react";
 import {
   Alert,
