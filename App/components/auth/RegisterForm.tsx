@@ -11,6 +11,7 @@ import {
 import { registerCustomer } from "../../api/auth/authApi";
 import { unwrapOrThrow } from "../../api/auth/utils";
 import { useAuthForm } from "../../hooks/useAuthForm";
+import { formStyles } from "../../theme/formStyles";
 import { translate } from "../../translation";
 import {
   registerSchema,
@@ -20,7 +21,6 @@ import LoadingOverlay from "../LoadingOverlay";
 import MainButton from "../MainButton";
 import EmailField from "../forms/EmailField";
 import PasswordField from "../forms/PasswordField";
-import { formStyles } from "../forms/formStyles";
 
 interface RegisterFormProps {
   /** Called after the success alert is acknowledged or dismissed. */

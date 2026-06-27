@@ -8,7 +8,7 @@ import {
   ViewStyle,
 } from "react-native";
 import { translate } from "../../translation";
-import { formStyles } from "./formStyles";
+import { formStyles } from "../../theme/formStyles";
 
 interface EmailFieldProps {
   value: string;

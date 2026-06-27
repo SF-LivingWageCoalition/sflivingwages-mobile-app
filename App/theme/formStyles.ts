@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
-import { colors } from "../../theme";
-import { textStyles } from "../../theme/fontStyles";
+import { colors } from "./colors";
+import { textStyles } from "./fontStyles";
 
 /**
  * Shared styles for auth form fields. Based on the standalone auth screen

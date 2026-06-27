@@ -14,13 +14,13 @@ import { loginUserThunk } from "../../redux/features/userSlice/userThunks";
 import type { AppDispatch } from "../../redux/store/store";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
+import { formStyles } from "../../theme/formStyles";
 import { translate } from "../../translation";
 import { loginSchema, type LoginFormValues } from "../../validation/authSchema";
 import LoadingOverlay from "../LoadingOverlay";
 import MainButton from "../MainButton";
 import EmailField from "../forms/EmailField";
 import PasswordField from "../forms/PasswordField";
-import { formStyles } from "../forms/formStyles";
 
 interface LoginFormProps {
   onSuccess: () => void;
