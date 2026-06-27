@@ -1,5 +1,12 @@
 import React from "react";
-import { Alert, StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
+import {
+  Alert,
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from "react-native";
 import { sendPasswordReset } from "../../api/auth/authApi";
 import { unwrapOrThrow } from "../../api/auth/utils";
 import { useAuthForm } from "../../hooks/useAuthForm";

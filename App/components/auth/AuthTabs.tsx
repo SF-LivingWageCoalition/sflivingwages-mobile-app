@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from "react-native";
 import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation";
@@ -12,12 +19,18 @@ interface AuthTabsProps {
   style?: StyleProp<ViewStyle>;
 }
 
-const AuthTabs: React.FC<AuthTabsProps> = ({ activeTab, onTabChange, style }) => {
+const AuthTabs: React.FC<AuthTabsProps> = ({
+  activeTab,
+  onTabChange,
+  style,
+}) => {
   return (
     <View style={[styles.tabBar, style]}>
       <TouchableOpacity
         style={[styles.tab, activeTab === "login" && styles.tabActive]}
         onPress={() => onTabChange("login")}
+        accessibilityRole="tab"
+        accessibilityState={{ selected: activeTab === "login" }}
       >
         <Text
           style={[
@@ -31,6 +44,8 @@ const AuthTabs: React.FC<AuthTabsProps> = ({ activeTab, onTabChange, style }) =>
       <TouchableOpacity
         style={[styles.tab, activeTab === "register" && styles.tabActive]}
         onPress={() => onTabChange("register")}
+        accessibilityRole="tab"
+        accessibilityState={{ selected: activeTab === "register" }}
       >
         <Text
           style={[

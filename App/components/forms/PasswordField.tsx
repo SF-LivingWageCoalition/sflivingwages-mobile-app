@@ -52,7 +52,11 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
       <View style={formStyles.passwordInputContainer}>
         <TextInput
           ref={inputRef}
-          style={[formStyles.textInput, formStyles.textInputWithToggle, inputStyle]}
+          style={[
+            formStyles.textInput,
+            formStyles.textInputWithToggle,
+            inputStyle,
+          ]}
           keyboardType="default"
           autoComplete={autoComplete}
           autoCorrect={false}
@@ -67,6 +71,8 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
         <TouchableOpacity
           onPress={() => setShowPassword((prev) => !prev)}
           style={formStyles.passwordToggle}
+          accessibilityRole="button"
+          accessibilityLabel={showPassword ? "Hide password" : "Show password"}
         >
           <FontAwesome5
             name={showPassword ? "eye-slash" : "eye"}

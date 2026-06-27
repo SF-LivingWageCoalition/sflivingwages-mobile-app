@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { ZodTypeAny } from "zod";
+import type { ZodType } from "zod";
 import { mapApiErrorToMessage } from "../api/auth/errorHelpers";
 import { mapZodErrorToFormErrors } from "../validation/mapZodError";
 
@@ -11,7 +11,7 @@ interface UseAuthFormParams<T> {
    * Schema factory (e.g. `loginSchema`). Called at submit time so localized
    * validation messages are evaluated when used (see `authSchema.ts`).
    */
-  schema: () => ZodTypeAny;
+  schema: () => ZodType<T>;
   /** Runs only when validation passes. Throwing maps to a general error. */
   onValid: (values: T) => Promise<void> | void;
   /** Translation key used as the fallback error message. */
@@ -61,7 +61,7 @@ export function useAuthForm<T extends Record<string, unknown>>({
 
     setLoading(true);
     try {
-      await onValid(parsed.data as T);
+      await onValid(parsed.data);
     } catch (error: unknown) {
       setGeneralError(mapApiErrorToMessage(error, fallbackErrorKey));
     } finally {
