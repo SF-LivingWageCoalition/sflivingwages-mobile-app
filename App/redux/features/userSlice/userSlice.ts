@@ -1,6 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "../../store/store";
 import type { JwtItem } from "../../../api/auth/types";
+import { normalizeJwt, isValidValidationData } from "../../../api/auth/utils";
+import {
+  validateUserThunk,
+  loginUserThunk,
+  logoutUserThunk,
+} from "./userThunks";
+import type { ValidateUserFulfilled, ValidateUserRejectValue } from "./types";
 
 /** Basic WordPress user info stored in Redux (subset of WP user object). */
 interface User {
@@ -50,17 +56,11 @@ const userSlice = createSlice({
   name: "user",
   initialState: initialState,
   reducers: {
-    /**
-     * Update user-related state with a partial DataState.
-     *
-     * Merge strategy: fields omitted from the payload are left unchanged.
-     * Note: to clear the user/tokens, call `clearUser()` explicitly.
-     */
     setUser: (state, action: PayloadAction<SetUserPayload>) => {
-      const p = action.payload;
-      state.user = p.user ?? state.user;
-      state.roles = p.roles ?? state.roles;
-      state.jwt = p.jwt ?? state.jwt;
+      const userUpdate = action.payload;
+      state.user = userUpdate.user ?? state.user;
+      state.roles = userUpdate.roles ?? state.roles;
+      state.jwt = userUpdate.jwt ?? state.jwt;
     },
     clearUser: (state) => {
       state.user = undefined;
@@ -68,30 +68,53 @@ const userSlice = createSlice({
       state.jwt = [];
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginUserThunk.fulfilled, (state, action) => {
+        const validatedUserData = action.payload;
+        if (!validatedUserData) return;
+        if (isValidValidationData(validatedUserData)) {
+          state.user = validatedUserData.user;
+          state.roles = validatedUserData.roles ?? [];
+          state.jwt = normalizeJwt(validatedUserData.jwt ?? "");
+        }
+      })
+      .addCase(
+        validateUserThunk.fulfilled,
+        (state, action: PayloadAction<ValidateUserFulfilled>) => {
+          const validatedUserData = action.payload;
+          if (!validatedUserData) return;
+          if (isValidValidationData(validatedUserData)) {
+            state.user = validatedUserData.user;
+            state.roles = validatedUserData.roles ?? [];
+            state.jwt = normalizeJwt(validatedUserData.jwt ?? "");
+          }
+        },
+      )
+      .addCase(
+        validateUserThunk.rejected,
+        (state, action: PayloadAction<ValidateUserRejectValue | undefined>) => {
+          const status = action.payload?.status;
+          if (status === 401) {
+            state.user = undefined;
+            state.roles = [];
+            state.jwt = [];
+          }
+        },
+      )
+      .addCase(logoutUserThunk.fulfilled, (state) => {
+        state.user = undefined;
+        state.roles = [];
+        state.jwt = [];
+      });
+  },
 });
 
 export const { setUser, clearUser } = userSlice.actions;
 export default userSlice.reducer;
-
-// Selectors
-export const selectUser = (state: RootState) =>
-  state.userData.user as User | undefined;
-export const selectRoles = (state: RootState) =>
-  state.userData.roles as string[];
-export const selectJwt = (state: RootState) => state.userData.jwt as JwtItem[];
-
-/**
- * Returns true when the user is considered logged in.
- *
- * Criteria:
- * - `user?.ID` is truthy
- * - `jwt` is present and `jwt.length > 0`
- * - the first item has a non-empty `token` (`jwt[0].token`)
- *
- * Note: This selector assumes `jwt` is a normalized `JwtItem[]`.
- */
-export const selectIsLoggedIn = (state: RootState): boolean => {
-  const user = selectUser(state);
-  const jwt = selectJwt(state);
-  return Boolean(user?.ID && jwt.length > 0 && jwt[0].token);
-};
+export {
+  selectUser,
+  selectRoles,
+  selectJwt,
+  selectIsLoggedIn,
+} from "./selectors";

@@ -10,9 +10,8 @@ import {
   View,
 } from "react-native";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../../api/auth/authApi";
+import { loginUserThunk } from "../../redux/features/userSlice/userThunks";
 import { mapApiErrorToMessage } from "../../api/auth/errorHelpers";
-import { unwrapOrThrow } from "../../api/auth/utils";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import MainButton from "../../components/MainButton";
 import type { AppDispatch } from "../../redux/store/store";
@@ -34,7 +33,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+    setShowPassword((v) => !v);
   };
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -62,16 +61,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     const { userEmail: email, userPassword: password } = parsed.data;
 
     setLoading(true);
-    /*
-      Note: `loginUser(email, password, dispatch)` performs the full
-      login flow and will dispatch `setUser(...)` on success. That helper
-      normalizes JWT shapes before writing to the store (see
-      `App/api/auth/utils.normalizeJwt`).
-    */
     try {
-      const validatedData = unwrapOrThrow(
-        await loginUser(email, password, dispatch),
-      );
+      await dispatch(loginUserThunk({ email, password })).unwrap();
       navigation.goBack();
     } catch (error: unknown) {
       const message = mapApiErrorToMessage(error, "errors.loginFailed");

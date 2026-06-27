@@ -35,7 +35,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+    setShowPassword((v) => !v);
   };
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -63,9 +63,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
 
     setLoading(true);
     try {
-      const registrationData = unwrapOrThrow(
-        await registerCustomer(email, password),
-      );
+      unwrapOrThrow(await registerCustomer(email, password));
       Alert.alert(
         translate("registerScreen.registerAlert.title"),
         translate("registerScreen.registerAlert.message"),

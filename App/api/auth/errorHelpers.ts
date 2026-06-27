@@ -11,7 +11,7 @@ import { getFriendlyErrorInfo } from "./errorCodeMap";
  */
 export function mapApiErrorToMessage(
   error: unknown,
-  defaultKey?: string
+  defaultKey?: string,
 ): string {
   const fallback =
     translate((defaultKey ?? "errors.unexpectedError") as TxKeyPath) ||
@@ -109,11 +109,31 @@ export function mapApiErrorToMessage(
 }
 
 /**
+ * Extract a numeric HTTP status from a variety of error values we may
+ * receive from the auth layer or thunks. Returns `undefined` when no
+ * numeric status is available.
+ */
+export const getStatusFromError = (e: unknown): number | undefined => {
+  if (!e || typeof e !== "object") return undefined;
+  if (e instanceof ApiError) return e.status;
+  const obj = e as Record<string, unknown>;
+  const cand =
+    (obj.status as unknown) ??
+    (obj.data && (obj.data as Record<string, unknown>).status) ??
+    undefined;
+  return typeof cand === "number" ? cand : undefined;
+};
+
+/**
  * Predicate: whether a server error code indicates "username exists".
  * Centralized here so error-to-message logic and registration flows
  * can reuse the same interpretation.
  */
 export const isUsernameExistsCode = (code: unknown): boolean => {
   if (code === undefined || code === null) return false;
-  return code === 38 || code === "38" || code === "registration-error-username-exists";
+  return (
+    code === 38 ||
+    code === "38" ||
+    code === "registration-error-username-exists"
+  );
 };

@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { AccountScreenProps } from "../../types/types";
-import { useSelector } from "react-redux";
-import { logoutUser } from "../../api/auth/authApi";
+import { useSelector, useDispatch } from "react-redux";
+import { useFocusEffect } from "@react-navigation/native";
+import type { AppDispatch } from "../../redux/store/store";
 import { selectIsLoggedIn } from "../../redux/features/userSlice/userSlice";
+import {
+  validateUserThunk,
+  logoutUserThunk,
+} from "../../redux/features/userSlice/userThunks";
+import { selectUserUiIsValidating } from "../../redux/features/userUiSlice/userUiSlice";
 import { colors } from "../../theme";
 import { translate } from "../../translation";
+import { getStatusFromError } from "../../api/auth/errorHelpers";
 import MainButton from "../../components/MainButton";
 import AccountScreenHeader from "./components/AccountScreenHeader";
 import AccountScreenMenu from "./components/AccountScreenMenu";
@@ -13,9 +20,13 @@ import LoadingOverlay from "../../components/LoadingOverlay";
 
 const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const dispatch = useDispatch<AppDispatch>();
+  const isValidating = useSelector(selectUserUiIsValidating);
 
   // Local flag used to show an in-app overlay while logout is in progress.
   const [loggingOut, setLoggingOut] = useState(false);
+
+  // use shared `getStatusFromError` from auth error helpers
 
   // This ensures the overlay remains visible until `clearUser()` has been dispatched.
   useEffect(() => {
@@ -23,6 +34,30 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
       setLoggingOut(false);
     }
   }, [isLoggedIn, loggingOut]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (!isLoggedIn) return;
+      let cancelled = false;
+      void (async () => {
+        try {
+          await dispatch(validateUserThunk()).unwrap();
+          // success: nothing to do here — extraReducers update the store
+        } catch (err) {
+          if (!cancelled) {
+            const status = getStatusFromError(err);
+            if (status === 401) {
+              // `validateUserThunk` caused a 401; extraReducers clear user state.
+              // Add UI handling here if desired.
+            }
+          }
+        }
+      })();
+      return () => {
+        cancelled = true;
+      };
+    }, [isLoggedIn, dispatch]),
+  );
 
   /**
    * Navigation and Action Handlers
@@ -54,17 +89,20 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
         },
         {
           text: translate("buttons.ok"),
-          onPress: () => {
-            // Start the in-app overlay and kick off logout.
+          onPress: async () => {
             setLoggingOut(true);
-            // Calling logoutUser() will dispatch clearUser() in its finally block.
-            // We don't await here because Alert buttons expect a sync callback,
-            // but setLoggingOut(true) gives immediate UI feedback.
-            void logoutUser();
+            try {
+              await dispatch(logoutUserThunk()).unwrap();
+              // optional: navigate or show success
+            } catch (err) {
+              // show localized error (mapApiErrorToMessage/getStatusFromError)
+            } finally {
+              setLoggingOut(false); // or check mountedRef.current before calling
+            }
           },
         },
       ],
-      { cancelable: true }
+      { cancelable: true },
     );
   };
 
@@ -113,8 +151,8 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
         </View>
       </ScrollView>
 
-      {/* Overlay shown while logout is in progress. */}
-      {loggingOut && <LoadingOverlay />}
+      {/* Overlay shown while logout is in progress or token validation is running. */}
+      {(loggingOut || isValidating) && <LoadingOverlay />}
     </View>
   );
 };
