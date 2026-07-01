@@ -52,9 +52,16 @@ Implementation quick-reference: file paths and a one-line purpose to help you ju
 
 | File                                                        | Purpose                                                                            |
 | ----------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `App/screens/LoginScreen/LoginScreen.tsx`                   | Login screen UI                                                                    |
-| `App/screens/RegisterScreen/RegisterScreen.tsx`             | Registration screen UI                                                             |
-| `App/screens/ForgotPasswordScreen/ForgotPasswordScreen.tsx` | Password reset / forgot password screen UI                                         |
+| `App/screens/LoginScreen/LoginScreen.tsx`                   | Thin wrapper — renders `LoginForm` inside a scroll view                            |
+| `App/screens/RegisterScreen/RegisterScreen.tsx`             | Thin wrapper — renders `RegisterForm` inside a scroll view                         |
+| `App/screens/ForgotPasswordScreen/ForgotPasswordScreen.tsx` | Thin wrapper — renders `ForgotPasswordForm` inside a scroll view                   |
+| `App/components/auth/LoginForm.tsx`                         | Self-contained login form (fields, validation, submission via `loginUserThunk`)    |
+| `App/components/auth/RegisterForm.tsx`                      | Self-contained registration form (fields, validation, submission)                  |
+| `App/components/auth/ForgotPasswordForm.tsx`                | Self-contained forgot-password form (email field, validation, submission)          |
+| `App/components/auth/AuthTabs.tsx`                          | Tab bar for switching between login and register forms (used by `AuthModal`)       |
+| `App/components/forms/EmailField.tsx`                       | Reusable email input field with label, validation error display                    |
+| `App/components/forms/PasswordField.tsx`                    | Reusable password input field with visibility toggle, hint, error display          |
+| `App/hooks/useAuthForm.ts`                                  | Generic hook for form state, Zod validation, and submission logic                  |
 | `App/navigation/AuthNav.tsx`                                | Navigator that wires auth-related screens together                                 |
 | `App/api/auth/authApi.ts`                                   | Core auth client (fetchToken, validateToken, loginUser, etc.);                     |
 | `App/api/auth/types.ts`                                     | Type definitions and `ApiResult<T>` shapes used across helpers                     |
@@ -68,6 +75,8 @@ Implementation quick-reference: file paths and a one-line purpose to help you ju
 | `App/translation/locales/wooCommerce.*.ts`                  | Localization files for Woo Commerce responses                                      |
 | `App/validation/authSchema.ts`                              | Zod schema factories for auth form validation                                      |
 | `App/redux/features/userSlice/userSlice.ts`                 | Redux slice for user state: actions/reducers/selectors for authenticated user data |
+| `App/redux/features/userSlice/userThunks.ts`                | Redux thunks (`loginUserThunk`, `validateUserThunk`, `logoutUserThunk`)            |
+| `App/theme/formStyles.ts`                                   | Shared `StyleSheet` for auth form field styling                                    |
 
 ---
 
@@ -75,16 +84,16 @@ Implementation quick-reference: file paths and a one-line purpose to help you ju
 
 The primary exported functions from `App/api/auth/authApi.ts`, a short description of their purpose, and their return values:
 
-| Function                            | Purpose                                                                                                                                                                                | Returns                                        |
-| ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| `fetchToken(email, password)`       | Request a JWT from the Simple JWT Login endpoint.                                                                                                                                      | `Promise<ApiResult<TokenData>>`                |
-| `validateToken(jwtToken)`           | Validate a JWT with the Simple JWT Login endpoint.                                                                                                                                     | `Promise<ApiResult<ValidationData>>`           |
-| `refreshToken(jwtToken)`            | Refresh a JWT via the Simple JWT Login endpoint (returns a new token).                                                                                                                 | `Promise<ApiResult<TokenData>>`                |
-| `revokeToken(jwtToken)`             | Revoke a JWT on the server using the Simple JWT Login revoke endpoint.                                                                                                                 | `Promise<ApiResult<TokenData>>`                |
-| `loginUser(email, password)`        | High-level login flow: fetches a token and validates it; returns the validated payload on success (callers should dispatch `setUser` to populate Redux user state).                    | `Promise<ApiResult<ValidationData['data']>>`   |
-| `registerCustomer(email, password)` | Create a WooCommerce customer via the WooCommerce REST API.                                                                                                                            | `Promise<ApiResult<CustomerRegistrationData>>` |
-| `sendPasswordReset(email)`          | Request a password reset email via Simple JWT Login.                                                                                                                                   | `Promise<ApiResult<PasswordResetData>>`        |
-| `logoutUser(jwtToken?)`             | Attempt a best-effort revoke of the provided JWT on the server. Returns a `LogoutResult` so callers can inspect revoke outcome. Local state clearing is handled by Redux thunks/slice. | `Promise<LogoutResult>`                        |
+| Function                            | Purpose                                                                                                                                                                                     | Returns                                        |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| `fetchToken(email, password)`       | Request a JWT from the Simple JWT Login endpoint.                                                                                                                                           | `Promise<ApiResult<TokenData>>`                |
+| `validateToken(jwtToken)`           | Validate a JWT with the Simple JWT Login endpoint.                                                                                                                                          | `Promise<ApiResult<ValidationData>>`           |
+| `refreshToken(jwtToken)`            | Refresh a JWT via the Simple JWT Login endpoint (returns a new token).                                                                                                                      | `Promise<ApiResult<TokenData>>`                |
+| `revokeToken(jwtToken)`             | Revoke a JWT on the server using the Simple JWT Login revoke endpoint.                                                                                                                      | `Promise<ApiResult<TokenData>>`                |
+| `loginUser(email, password)`        | High-level login flow: fetches a token and validates it; returns the validated payload on success. Prefer `loginUserThunk` in UI code — it wraps this call and updates Redux automatically. | `Promise<ApiResult<ValidationData['data']>>`   |
+| `registerCustomer(email, password)` | Create a WooCommerce customer via the WooCommerce REST API.                                                                                                                                 | `Promise<ApiResult<CustomerRegistrationData>>` |
+| `sendPasswordReset(email)`          | Request a password reset email via Simple JWT Login.                                                                                                                                        | `Promise<ApiResult<PasswordResetData>>`        |
+| `logoutUser(jwtToken?)`             | Attempt a best-effort revoke of the provided JWT on the server. Returns a `LogoutResult` so callers can inspect revoke outcome. Local state clearing is handled by Redux thunks/slice.      | `Promise<LogoutResult>`                        |
 
 ---
 
@@ -855,10 +864,10 @@ Returns: A string derived from the base string, attempt integer, and (optional) 
 
 Example usernames (derived from \`bob@example.com`):
 
-bob  
-bob1  
-...  
-bob9  
+bob
+bob1
+...
+bob9
 bob-kvp2
 
 ---

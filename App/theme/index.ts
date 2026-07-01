@@ -37,6 +37,9 @@ export type { ColorPalette, ThemeColorsDark, ThemeColorsLight };
 export { fontFamily, fontSize, textStyles };
 export type { FontFamily, FontSize };
 
+// Export form styles for direct access
+export { formStyles } from "./formStyles";
+
 // Default theme (you can change this based on your app's default)
 export const defaultTheme = lightTheme;
 
