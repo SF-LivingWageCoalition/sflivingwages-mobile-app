@@ -1,4 +1,4 @@
-import { BASE_URL } from "@env";
+import { BASE_URL, VIOLATIONS_ROUTE, JWT_AUTH_KEY } from "./config";
 import type { ApiResult } from "../auth/types";
 import { apiFailureFromException, fetchWithTimeout } from "../auth/utils";
 
@@ -27,7 +27,7 @@ export const submitViolation = async (
   jwt: string,
 ): Promise<ApiResult<ViolationResponse>> => {
   try {
-    const endpoint = `${BASE_URL}/wp-json/sflivingwage/v1/violations`;
+    const endpoint = `${BASE_URL}${VIOLATIONS_ROUTE}`;
     const response = await fetchWithTimeout(endpoint, {
       method: "POST",
       headers: {
