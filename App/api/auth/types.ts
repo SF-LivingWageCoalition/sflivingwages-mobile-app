@@ -74,6 +74,18 @@ export type CustomerRegistrationData = {
   };
 };
 
+export type CustomerDeleteData = {
+  id?: number;
+  deleted?: boolean;
+  previous?: CustomerRegistrationData;
+  code?: string;
+  message?: string;
+  data?: {
+    status: number;
+    details?: object;
+  };
+};
+
 export type PasswordResetData = {
   success: boolean;
   message?: string;

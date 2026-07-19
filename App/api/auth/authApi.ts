@@ -22,6 +22,7 @@ import type {
   TokenData,
   ValidationData,
   CustomerRegistrationData,
+  CustomerDeleteData,
   PasswordResetData,
   ApiResult,
   LogoutResult,
@@ -370,6 +371,69 @@ export const registerCustomer = async (
     );
   } catch (error: unknown) {
     return apiFailureFromException<CustomerRegistrationData>(error);
+  }
+};
+
+/**
+ * Permanently delete a WooCommerce customer account.
+ * Re-validates user credentials before issuing the delete request.
+ */
+export const deleteCustomerAccount = async (
+  customerId: number,
+  email: string,
+  password: string,
+): Promise<ApiResult<CustomerDeleteData>> => {
+  if (!Number.isFinite(customerId) || customerId <= 0) {
+    return apiFailureWithServerCode<CustomerDeleteData>(
+      { message: "Invalid customer id" },
+      400,
+    );
+  }
+
+  if (!email || !password) {
+    return apiFailureWithServerCode<CustomerDeleteData>(
+      { message: "Missing email or password" },
+      400,
+    );
+  }
+
+  try {
+    // Require password confirmation before irreversible account deletion.
+    const authCheck = await fetchToken(email, password);
+    if (!authCheck.success) {
+      return apiFailureWithServerCode<CustomerDeleteData>(
+        authCheck.data ?? authCheck,
+        authCheck.status,
+      );
+    }
+
+    const response = await fetchWithTimeout(
+      `${BASE_URL}${WC_ROUTE}/customers/${customerId}?force=true`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Basic " + base64Credentials,
+          "cache-control": "no-cache",
+        },
+      },
+    );
+
+    const deleteData = await parseJsonSafe<CustomerDeleteData>(response);
+    if (response.ok) {
+      return {
+        success: true,
+        data: deleteData as CustomerDeleteData,
+        status: response.status,
+      };
+    }
+
+    return apiFailureWithServerCode<CustomerDeleteData>(
+      deleteData,
+      response.status,
+    );
+  } catch (error: unknown) {
+    return apiFailureFromException<CustomerDeleteData>(error);
   }
 };
 

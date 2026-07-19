@@ -334,6 +334,23 @@ const es: Translations = {
       title: "Cerrar Sesión",
       message: "¿Estás seguro de que deseas cerrar sesión?",
     },
+    deleteAccountAlert: {
+      title: "Eliminar Cuenta",
+      message:
+        "¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.",
+    },
+    deleteAccountPasswordPrompt: {
+      title: "Confirma tu contraseña",
+      message: "Ingresa tu contraseña para eliminar tu cuenta de forma permanente.",
+      placeholder: "Contraseña",
+    },
+    deleteAccountSuccess: {
+      title: "Cuenta eliminada",
+      message: "Tu cuenta ha sido eliminada permanentemente.",
+    },
+    deleteAccountError: {
+      title: "No se pudo eliminar la cuenta",
+    },
   },
   authModal: {
     title: "Inicia sesión para continuar",
@@ -379,6 +396,7 @@ const es: Translations = {
     register: "Registrarse",
     forgotPassword: "Olvidé Mi Contraseña",
     logout: "Cerrar Sesión",
+    deleteAccount: "Eliminar Cuenta",
     cancel: "Cancelar",
     close: "Cerrar",
     ok: "Aceptar",

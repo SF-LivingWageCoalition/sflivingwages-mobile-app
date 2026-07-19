@@ -4,7 +4,7 @@ import type { ValidationData } from "../../../api/auth/types";
 import type { ValidateUserFulfilled, ValidateUserRejectValue } from "./types";
 import * as authApi from "../../../api/auth/authApi";
 import { selectUserUiIsValidating } from "../userUiSlice/selectors";
-import { selectJwt } from "./selectors";
+import { selectJwt, selectUser } from "./selectors";
 import {
   unwrapNewToken,
   unwrapOrThrow,
@@ -84,4 +84,26 @@ export const logoutUserThunk = createAsyncThunk<
   const rootState = getState() as RootState;
   const token = selectJwt(rootState)?.[0]?.token;
   await authApi.logoutUser(token);
+});
+
+export const deleteAccountThunk = createAsyncThunk<
+  void,
+  { password: string },
+  { state: RootState }
+>("user/deleteAccount", async ({ password }, { getState }) => {
+  const rootState = getState() as RootState;
+  const user = selectUser(rootState);
+  const customerId = Number.parseInt(user?.ID ?? "", 10);
+  const email = user?.user_email;
+
+  if (!email || !Number.isFinite(customerId) || customerId <= 0) {
+    throw new Error("Missing account details for deletion");
+  }
+
+  const deleteResult = await authApi.deleteCustomerAccount(
+    customerId,
+    email,
+    password,
+  );
+  unwrapOrThrow(deleteResult, "Could not delete account");
 });
