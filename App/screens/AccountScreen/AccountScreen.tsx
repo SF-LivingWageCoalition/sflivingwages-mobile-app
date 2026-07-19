@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Alert,
-  Modal,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { AccountScreenProps } from "../../types/types";
 import { useSelector, useDispatch } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
@@ -20,7 +11,6 @@ import {
   deleteAccountThunk,
 } from "../../redux/features/userSlice/userThunks";
 import { selectUserUiIsValidating } from "../../redux/features/userUiSlice/userUiSlice";
-import { textStyles } from "../../theme/fontStyles";
 import { colors } from "../../theme";
 import { translate } from "../../translation";
 import {
@@ -29,6 +19,7 @@ import {
 } from "../../api/auth/errorHelpers";
 import MainButton from "../../components/MainButton";
 import AccountScreenHeader from "./components/AccountScreenHeader";
+import DeletePasswordModal from "./components/DeletePasswordModal";
 import AccountScreenMenu from "./components/AccountScreenMenu";
 import LoadingOverlay from "../../components/LoadingOverlay";
 
@@ -125,25 +116,8 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   };
 
   const onDeleteAccount = () => {
-    Alert.alert(
-      translate("accountScreen.deleteAccountAlert.title"),
-      translate("accountScreen.deleteAccountAlert.message"),
-      [
-        {
-          text: translate("buttons.cancel"),
-          onPress: () => {},
-          style: "cancel",
-        },
-        {
-          text: translate("buttons.ok"),
-          onPress: () => {
-            setDeletePassword("");
-            setIsDeletePasswordModalVisible(true);
-          },
-        },
-      ],
-      { cancelable: true },
-    );
+    setDeletePassword("");
+    setIsDeletePasswordModalVisible(true);
   };
 
   const closeDeletePasswordModal = () => {
@@ -246,57 +220,14 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
       {/* Overlay shown while logout is in progress or token validation is running. */}
       {(loggingOut || deletingAccount || isValidating) && <LoadingOverlay />}
 
-      <Modal
+      <DeletePasswordModal
         visible={isDeletePasswordModalVisible}
-        transparent
-        presentationStyle="overFullScreen"
-        statusBarTranslucent
-        navigationBarTranslucent
-        onRequestClose={closeDeletePasswordModal}
-      >
-        <Pressable
-          style={styles.modalBackdrop}
-          onPress={closeDeletePasswordModal}
-        >
-          <Pressable style={styles.modalCard} onPress={() => {}}>
-            <Text style={styles.modalTitle}>
-              {translate("accountScreen.deleteAccountPasswordPrompt.title")}
-            </Text>
-            <Text style={styles.modalMessage}>
-              {translate("accountScreen.deleteAccountPasswordPrompt.message")}
-            </Text>
-
-            <TextInput
-              value={deletePassword}
-              onChangeText={setDeletePassword}
-              secureTextEntry
-              editable={!deletingAccount}
-              autoCapitalize="none"
-              placeholder={translate(
-                "accountScreen.deleteAccountPasswordPrompt.placeholder",
-              )}
-              style={styles.passwordInput}
-            />
-
-            <View style={styles.modalActions}>
-              <MainButton
-                variant="clear"
-                title={translate("buttons.cancel")}
-                onPress={closeDeletePasswordModal}
-                isDisabled={deletingAccount}
-                style={styles.modalActionButton}
-              />
-              <MainButton
-                variant="primary"
-                title={translate("buttons.deleteAccount")}
-                onPress={submitDeleteAccount}
-                isDisabled={deletingAccount}
-                style={styles.modalActionButton}
-              />
-            </View>
-          </Pressable>
-        </Pressable>
-      </Modal>
+        password={deletePassword}
+        deletingAccount={deletingAccount}
+        onChangePassword={setDeletePassword}
+        onClose={closeDeletePasswordModal}
+        onSubmit={submitDeleteAccount}
+      />
     </View>
   );
 };
@@ -314,48 +245,6 @@ const styles = StyleSheet.create({
   textOnlyButtonContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-  },
-  modalBackdrop: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.8)",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
-  },
-  modalCard: {
-    width: "100%",
-    borderRadius: 12,
-    backgroundColor: colors.light.surface,
-    padding: 16,
-  },
-  modalTitle: {
-    ...textStyles.h4,
-    color: colors.light.textPrimary,
-    marginBottom: 8,
-  },
-  modalMessage: {
-    ...textStyles.body,
-    color: colors.light.textSecondary,
-    marginBottom: 12,
-  },
-  passwordInput: {
-    borderWidth: 1,
-    borderColor: colors.light.border,
-    borderRadius: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    color: colors.light.textPrimary,
-    backgroundColor: colors.light.surface,
-    ...textStyles.body,
-  },
-  modalActions: {
-    marginTop: 14,
-    flexDirection: "row",
-    gap: 8,
-    justifyContent: "space-between",
-  },
-  modalActionButton: {
-    flex: 1,
   },
 });
 

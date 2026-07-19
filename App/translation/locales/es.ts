@@ -334,14 +334,10 @@ const es: Translations = {
       title: "Cerrar Sesión",
       message: "¿Estás seguro de que deseas cerrar sesión?",
     },
-    deleteAccountAlert: {
+    deleteAccountPasswordPrompt: {
       title: "Eliminar Cuenta",
       message:
-        "¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.",
-    },
-    deleteAccountPasswordPrompt: {
-      title: "Confirma tu contraseña",
-      message: "Ingresa tu contraseña para eliminar tu cuenta de forma permanente.",
+        "Ingresa tu contraseña para eliminar tu cuenta de forma permanente.",
       placeholder: "Contraseña",
     },
     deleteAccountSuccess: {

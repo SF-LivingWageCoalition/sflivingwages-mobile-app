@@ -326,13 +326,8 @@ const en = {
       title: "Logout",
       message: "Are you sure you want to logout?",
     },
-    deleteAccountAlert: {
-      title: "Delete Account",
-      message:
-        "Are you sure you want to delete your account? This action cannot be undone.",
-    },
     deleteAccountPasswordPrompt: {
-      title: "Confirm your password",
+      title: "Delete Account",
       message: "Enter your password to permanently delete your account.",
       placeholder: "Password",
     },
