@@ -1,13 +1,7 @@
 import React from "react";
-import {
-  Modal,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 import MainButton from "../../../components/MainButton";
+import PasswordField from "../../../components/forms/PasswordField";
 import { colors } from "../../../theme";
 import { textStyles } from "../../../theme/fontStyles";
 import { translate } from "../../../translation";
@@ -47,16 +41,11 @@ const DeletePasswordModal: React.FC<DeletePasswordModalProps> = ({
             {translate("accountScreen.deleteAccountPasswordPrompt.message")}
           </Text>
 
-          <TextInput
+          <PasswordField
             value={password}
             onChangeText={onChangePassword}
-            secureTextEntry
             editable={!deletingAccount}
-            autoCapitalize="none"
-            placeholder={translate(
-              "accountScreen.deleteAccountPasswordPrompt.placeholder",
-            )}
-            style={styles.passwordInput}
+            label={translate("inputs.password")}
           />
 
           <View style={styles.modalActions}>
@@ -104,16 +93,6 @@ const styles = StyleSheet.create({
     ...textStyles.body,
     color: colors.light.textSecondary,
     marginBottom: 12,
-  },
-  passwordInput: {
-    borderWidth: 1,
-    borderColor: colors.light.border,
-    borderRadius: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    color: colors.light.textPrimary,
-    backgroundColor: colors.light.surface,
-    ...textStyles.body,
   },
   modalActions: {
     marginTop: 14,
