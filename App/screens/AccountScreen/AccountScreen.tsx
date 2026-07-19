@@ -249,7 +249,6 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
       <Modal
         visible={isDeletePasswordModalVisible}
         transparent
-        animationType="fade"
         presentationStyle="overFullScreen"
         statusBarTranslucent
         navigationBarTranslucent
