@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { AccountScreenProps } from "../../types/types";
 import { useSelector, useDispatch } from "react-redux";
@@ -34,6 +34,7 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   const [deletePassword, setDeletePassword] = useState("");
   const [isDeletePasswordModalVisible, setIsDeletePasswordModalVisible] =
     useState(false);
+  const skipNextFocusValidationRef = useRef(false);
 
   // use shared `getStatusFromError` from auth error helpers
 
@@ -44,9 +45,15 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
     }
   }, [isLoggedIn, loggingOut]);
 
+  // Trigger user validation when focused, except when returning from an account sub-screen.
   useFocusEffect(
     React.useCallback(() => {
       if (!isLoggedIn) return;
+      if (skipNextFocusValidationRef.current) {
+        skipNextFocusValidationRef.current = false;
+        return;
+      }
+
       let cancelled = false;
       void (async () => {
         try {
@@ -118,6 +125,10 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   const onDeleteAccount = () => {
     setDeletePassword("");
     setIsDeletePasswordModalVisible(true);
+  };
+
+  const onOpenAccountSubScreen = () => {
+    skipNextFocusValidationRef.current = true;
   };
 
   const closeDeletePasswordModal = () => {
@@ -204,7 +215,12 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
         <View style={styles.container}>
           <AccountScreenHeader />
           {/* Account Menu */}
-          {isLoggedIn && <AccountScreenMenu navigation={navigation} />}
+          {isLoggedIn && (
+            <AccountScreenMenu
+              navigation={navigation}
+              onOpenSubScreen={onOpenAccountSubScreen}
+            />
+          )}
           {/* Auth Buttons */}
           {isLoggedIn ? (
             <>

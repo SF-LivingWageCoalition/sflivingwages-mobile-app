@@ -7,15 +7,23 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import HorizontalDivider from "./HorizontalDivider";
 import { AccountScreenProps } from "../../../types/types";
 
-const AccountScreenMenu: React.FC<AccountScreenProps> = ({ navigation }) => {
+type AccountScreenMenuProps = AccountScreenProps & {
+  onOpenSubScreen?: () => void;
+};
+
+const AccountScreenMenu: React.FC<AccountScreenMenuProps> = ({
+  navigation,
+  onOpenSubScreen,
+}) => {
   return (
     <View>
       <HorizontalDivider />
       <TouchableOpacity
         style={styles.menuItem}
-        onPress={() =>
-          navigation.navigate("AccountNavigator", { screen: "Profile" })
-        }
+        onPress={() => {
+          onOpenSubScreen?.();
+          navigation.navigate("AccountNavigator", { screen: "Profile" });
+        }}
       >
         <Text style={styles.menuItemText}>
           {translate("accountScreen.profile")}
