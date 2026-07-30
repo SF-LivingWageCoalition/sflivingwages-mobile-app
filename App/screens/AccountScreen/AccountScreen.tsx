@@ -30,13 +30,13 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
 
   // Local flag used to show an in-app overlay while logout is in progress.
   const [loggingOut, setLoggingOut] = useState(false);
+  // Local state for delete account flow
   const [deletingAccount, setDeletingAccount] = useState(false);
   const [deletePassword, setDeletePassword] = useState("");
   const [isDeletePasswordModalVisible, setIsDeletePasswordModalVisible] =
     useState(false);
+  // Ref to skip validation on next focus when returning from a sub-screen.
   const skipNextFocusValidationRef = useRef(false);
-
-  // use shared `getStatusFromError` from auth error helpers
 
   // This ensures the overlay remains visible until `clearUser()` has been dispatched.
   useEffect(() => {
