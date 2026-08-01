@@ -40,6 +40,7 @@ const ReportViolation: React.FC = () => {
   const [fullName, setFullName] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
   const [userPhone, setUserPhone] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -56,10 +57,10 @@ const ReportViolation: React.FC = () => {
 
   const assistList: string[] = [
     translate("assistScreen.assistList.wageTheft"),
+    translate("assistScreen.assistList.discriminationHarassment"),
     translate("assistScreen.assistList.unpaidOvertime"),
-    translate("assistScreen.assistList.noBreaks"),
-    translate("assistScreen.assistList.discrimination"),
-    translate("assistScreen.assistList.immigrationStatus"),
+    translate("assistScreen.assistList.immigrantRights"),
+    translate("assistScreen.assistList.other"),
   ];
   const [isChecked, setCheckState] = useState<boolean[]>(
     new Array(assistList.length).fill(false),
@@ -91,6 +92,7 @@ const ReportViolation: React.FC = () => {
       fullName,
       userEmail,
       userPhone: userPhone.replace(/\D/g, ""), // Only digits
+      description,
       list,
     });
     if (!result.success) {
@@ -113,6 +115,7 @@ const ReportViolation: React.FC = () => {
           fullName,
           userEmail,
           userPhone: userPhone.replace(/\D/g, ""),
+          description,
           violations: list,
         },
         jwt,
@@ -146,6 +149,7 @@ const ReportViolation: React.FC = () => {
     setFullName(user?.display_name ?? "");
     setUserEmail(user?.user_email ?? "");
     setUserPhone("");
+    setDescription("");
     setCheckState(new Array(assistList.length).fill(false));
     setAssistList([]);
     setLatitude(null);
@@ -295,6 +299,24 @@ const ReportViolation: React.FC = () => {
                   <Text style={styles.inputError}>{errors.userPhone}</Text>
                 )}
               </View>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.inputName}>
+                  {translate("assistScreen.description")}
+                  <Text style={styles.requiredField}>*</Text>
+                </Text>
+                <TextInput
+                  style={styles.descriptionInput}
+                  multiline
+                  onChangeText={(descriptionInput) =>
+                    setDescription(descriptionInput)
+                  }
+                  value={description}
+                />
+                {errors.description && (
+                  <Text style={styles.inputError}>{errors.description}</Text>
+                )}
+              </View>
               <Text style={styles.instruction}>
                 {translate("assistScreen.options")}
                 <Text style={styles.requiredField}> *</Text>
@@ -387,6 +409,16 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.light.primary,
     borderBottomWidth: 1,
     margin: 10,
+  },
+  descriptionInput: {
+    minHeight: 80,
+    borderColor: colors.light.primary,
+    borderWidth: 1,
+    margin: 10,
+    borderRadius: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    textAlignVertical: "top",
   },
   addressTextInput: {
     minHeight: 72,

@@ -8,6 +8,7 @@ export type ViolationPayload = {
   fullName: string;
   userEmail: string;
   userPhone: string;
+  description: string;
   violations: string[];
 };
 
