@@ -14,6 +14,10 @@ const es: Translations = {
     beReadyForICE: "Esté Listo para ICE",
     reportBusiness:
       "Denunciar empresas que violan los derechos de los trabajadores",
+    livingWageCalculator: "Calculadora de Salario Digno",
+    complaints: "Quejas",
+    rights: "Derechos",
+    calculator: "Calculadora",
   },
   assistScreen: {
     title: `Podemos ayudarte.`,
