@@ -1,6 +1,6 @@
 # User Redux Slice - developer reference
 
-Maintainer: `@scottmotion` - Last updated: 2026-06-12
+Maintainer: `@scottmotion` - Last updated: 2026-07-19
 
 ## Preamble
 
@@ -27,6 +27,7 @@ The store wiring lives in `App/redux/store/store.ts`, where this reducer is moun
   - [loginUserThunk](#loginuserthunk)
   - [validateUserThunk](#validateuserthunk)
   - [logoutUserThunk](#logoutuserthunk)
+  - [deleteAccountThunk](#deleteaccountthunk)
 - [Selectors](#selectors)
 - [Lifecycle Behavior (extraReducers)](#lifecycle-behavior-extrareducers)
 - [Quick Usage](#quick-usage)
@@ -39,12 +40,12 @@ The store wiring lives in `App/redux/store/store.ts`, where this reducer is moun
 | File                                          | Purpose                                                                                                            |
 | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | `App/redux/features/userSlice/userSlice.ts`   | Slice state, synchronous reducers (`setUser`, `clearUser`), and thunk lifecycle handling in `extraReducers`.       |
-| `App/redux/features/userSlice/userThunks.ts`  | Async auth-related thunks (`loginUserThunk`, `validateUserThunk`, `logoutUserThunk`).                              |
+| `App/redux/features/userSlice/userThunks.ts`  | Async auth-related thunks (`loginUserThunk`, `validateUserThunk`, `logoutUserThunk`, `deleteAccountThunk`).        |
 | `App/redux/features/userSlice/selectors.ts`   | Read-only selectors (`selectUser`, `selectRoles`, `selectJwt`, `selectIsLoggedIn`).                                |
 | `App/redux/features/userSlice/types.ts`       | Shared types for thunk fulfilled and rejected payloads.                                                            |
 | `App/redux/store/store.ts`                    | Root reducer wiring (`userData` key), persistence config, and store setup.                                         |
 | `App/redux/features/userUiSlice/selectors.ts` | `selectUserUiIsValidating` selector used by `validateUserThunk.condition` to prevent duplicate validation runs.    |
-| `App/api/auth/authApi.ts`                     | API calls invoked by thunks (`loginUser`, `validateToken`, `refreshToken`, `logoutUser`).                          |
+| `App/api/auth/authApi.ts`                     | API calls invoked by thunks (`loginUser`, `validateToken`, `refreshToken`, `logoutUser`, `deleteCustomerAccount`). |
 | `App/api/auth/utils.ts`                       | Runtime helpers used by slice/thunks (`normalizeJwt`, `unwrapOrThrow`, `unwrapNewToken`, `isValidValidationData`). |
 
 ---
@@ -196,6 +197,23 @@ Flow:
 2. Calls `authApi.logoutUser(token)`.
 3. Slice clears local state on fulfilled lifecycle.
 
+### `deleteAccountThunk`
+
+Signature:
+
+```ts
+createAsyncThunk<void, { password: string }, { state: RootState }>;
+```
+
+Flow:
+
+1. Reads current user from `selectUser(state)` and derives numeric customer ID from `user.ID`.
+2. Reads account email from `user.user_email`.
+3. Throws early if user identity data is missing or invalid.
+4. Calls `authApi.deleteCustomerAccount(customerId, email, password)`.
+5. Uses `unwrapOrThrow` so UI callers can handle failures via rejected thunk errors.
+6. Slice clears local state on fulfilled lifecycle.
+
 ---
 
 ## Selectors
@@ -230,6 +248,8 @@ This selector assumes JWT has already been normalized.
   - Other statuses keep current local state unchanged.
 - `logoutUserThunk.fulfilled`
   - Clears user state regardless of server response body details.
+- `deleteAccountThunk.fulfilled`
+  - Clears user state after successful permanent account deletion.
 
 ---
 
@@ -244,6 +264,7 @@ import {
   loginUserThunk,
   validateUserThunk,
   logoutUserThunk,
+  deleteAccountThunk,
 } from "./userThunks";
 
 const dispatch = useDispatch<AppDispatch>();
@@ -256,6 +277,9 @@ await dispatch(validateUserThunk());
 
 // Logout
 await dispatch(logoutUserThunk());
+
+// Delete account (requires password confirmation)
+await dispatch(deleteAccountThunk({ password }));
 ```
 
 Manual partial update example:

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { AccountScreenProps } from "../../types/types";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,13 +8,18 @@ import { selectIsLoggedIn } from "../../redux/features/userSlice/userSlice";
 import {
   validateUserThunk,
   logoutUserThunk,
+  deleteAccountThunk,
 } from "../../redux/features/userSlice/userThunks";
 import { selectUserUiIsValidating } from "../../redux/features/userUiSlice/userUiSlice";
 import { colors } from "../../theme";
 import { translate } from "../../translation";
-import { getStatusFromError } from "../../api/auth/errorHelpers";
+import {
+  getStatusFromError,
+  mapApiErrorToMessage,
+} from "../../api/auth/errorHelpers";
 import MainButton from "../../components/MainButton";
 import AccountScreenHeader from "./components/AccountScreenHeader";
+import DeletePasswordModal from "./components/DeletePasswordModal";
 import AccountScreenMenu from "./components/AccountScreenMenu";
 import LoadingOverlay from "../../components/LoadingOverlay";
 
@@ -25,8 +30,13 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
 
   // Local flag used to show an in-app overlay while logout is in progress.
   const [loggingOut, setLoggingOut] = useState(false);
-
-  // use shared `getStatusFromError` from auth error helpers
+  // Local state for delete account flow
+  const [deletingAccount, setDeletingAccount] = useState(false);
+  const [deletePassword, setDeletePassword] = useState("");
+  const [isDeletePasswordModalVisible, setIsDeletePasswordModalVisible] =
+    useState(false);
+  // Ref to skip validation on next focus when returning from a sub-screen.
+  const skipNextFocusValidationRef = useRef(false);
 
   // This ensures the overlay remains visible until `clearUser()` has been dispatched.
   useEffect(() => {
@@ -35,9 +45,15 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
     }
   }, [isLoggedIn, loggingOut]);
 
+  // Trigger user validation when focused, except when returning from an account sub-screen.
   useFocusEffect(
     React.useCallback(() => {
       if (!isLoggedIn) return;
+      if (skipNextFocusValidationRef.current) {
+        skipNextFocusValidationRef.current = false;
+        return;
+      }
+
       let cancelled = false;
       void (async () => {
         try {
@@ -106,6 +122,49 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
     );
   };
 
+  const onDeleteAccount = () => {
+    setDeletePassword("");
+    setIsDeletePasswordModalVisible(true);
+  };
+
+  const onOpenAccountSubScreen = () => {
+    skipNextFocusValidationRef.current = true;
+  };
+
+  const closeDeletePasswordModal = () => {
+    if (deletingAccount) return;
+    setDeletePassword("");
+    setIsDeletePasswordModalVisible(false);
+  };
+
+  const submitDeleteAccount = async () => {
+    if (!deletePassword.trim()) {
+      Alert.alert(
+        translate("accountScreen.deleteAccountError.title"),
+        translate("validation.passwordRequired"),
+      );
+      return;
+    }
+
+    setDeletingAccount(true);
+    try {
+      await dispatch(deleteAccountThunk({ password: deletePassword })).unwrap();
+      setDeletePassword("");
+      setIsDeletePasswordModalVisible(false);
+      Alert.alert(
+        translate("accountScreen.deleteAccountSuccess.title"),
+        translate("accountScreen.deleteAccountSuccess.message"),
+      );
+    } catch (err) {
+      Alert.alert(
+        translate("accountScreen.deleteAccountError.title"),
+        mapApiErrorToMessage(err),
+      );
+    } finally {
+      setDeletingAccount(false);
+    }
+  };
+
   const AuthButtons: React.FC = () => (
     <View style={styles.authButtonsContainer}>
       <MainButton
@@ -134,7 +193,18 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
         variant="primary"
         title={translate("buttons.logout")}
         onPress={onLogout}
-        isDisabled={loggingOut}
+        isDisabled={loggingOut || deletingAccount}
+      />
+    </View>
+  );
+
+  const DeleteAccountButton: React.FC = () => (
+    <View style={styles.authButtonsContainer}>
+      <MainButton
+        variant="clear"
+        title={translate("buttons.deleteAccount")}
+        onPress={onDeleteAccount}
+        isDisabled={loggingOut || deletingAccount}
       />
     </View>
   );
@@ -145,14 +215,35 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
         <View style={styles.container}>
           <AccountScreenHeader />
           {/* Account Menu */}
-          {isLoggedIn && <AccountScreenMenu navigation={navigation} />}
+          {isLoggedIn && (
+            <AccountScreenMenu
+              navigation={navigation}
+              onOpenSubScreen={onOpenAccountSubScreen}
+            />
+          )}
           {/* Auth Buttons */}
-          {isLoggedIn ? <LogoutButton /> : <AuthButtons />}
+          {isLoggedIn ? (
+            <>
+              <LogoutButton />
+              <DeleteAccountButton />
+            </>
+          ) : (
+            <AuthButtons />
+          )}
         </View>
       </ScrollView>
 
       {/* Overlay shown while logout is in progress or token validation is running. */}
-      {(loggingOut || isValidating) && <LoadingOverlay />}
+      {(loggingOut || deletingAccount || isValidating) && <LoadingOverlay />}
+
+      <DeletePasswordModal
+        visible={isDeletePasswordModalVisible}
+        password={deletePassword}
+        deletingAccount={deletingAccount}
+        onChangePassword={setDeletePassword}
+        onClose={closeDeletePasswordModal}
+        onSubmit={submitDeleteAccount}
+      />
     </View>
   );
 };

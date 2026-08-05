@@ -326,6 +326,18 @@ const en = {
       title: "Logout",
       message: "Are you sure you want to logout?",
     },
+    deleteAccountPasswordPrompt: {
+      title: "Delete Account",
+      message: "Enter your password to permanently delete your account.",
+      placeholder: "Password",
+    },
+    deleteAccountSuccess: {
+      title: "Account deleted",
+      message: "Your account has been permanently deleted.",
+    },
+    deleteAccountError: {
+      title: "Delete account failed",
+    },
   },
   authModal: {
     title: "Sign in to continue",
@@ -370,6 +382,7 @@ const en = {
     register: "Register",
     forgotPassword: "Forgot Password",
     logout: "Logout",
+    deleteAccount: "Delete Account",
     cancel: "Cancel",
     close: "Close",
     ok: "OK",
