@@ -1,6 +1,6 @@
 # Auth API — developer reference
 
-Maintainer: `@scottmotion` — Last updated: 2026-06-12
+Maintainer: `@scottmotion` — Last updated: 2026-07-19
 
 ## Preamble
 
@@ -33,6 +33,7 @@ See the [references](#references) section for links to the above-mentioned docum
   - [revokeToken()](#revoketoken)
   - [loginUser()](#loginuser)
   - [registerCustomer()](#registercustomer)
+  - [deleteCustomerAccount()](#deletecustomeraccount)
   - [sendPasswordReset()](#sendpasswordreset)
   - [logoutUser()](#logoutuser)
   - [Non-JSON / Parse Errors (what parseJsonSafe returns)](#non-json--parse-errors-what-parsejsonsafe-returns)
@@ -84,16 +85,17 @@ Implementation quick-reference: file paths and a one-line purpose to help you ju
 
 The primary exported functions from `App/api/auth/authApi.ts`, a short description of their purpose, and their return values:
 
-| Function                            | Purpose                                                                                                                                                                                     | Returns                                        |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| `fetchToken(email, password)`       | Request a JWT from the Simple JWT Login endpoint.                                                                                                                                           | `Promise<ApiResult<TokenData>>`                |
-| `validateToken(jwtToken)`           | Validate a JWT with the Simple JWT Login endpoint.                                                                                                                                          | `Promise<ApiResult<ValidationData>>`           |
-| `refreshToken(jwtToken)`            | Refresh a JWT via the Simple JWT Login endpoint (returns a new token).                                                                                                                      | `Promise<ApiResult<TokenData>>`                |
-| `revokeToken(jwtToken)`             | Revoke a JWT on the server using the Simple JWT Login revoke endpoint.                                                                                                                      | `Promise<ApiResult<TokenData>>`                |
-| `loginUser(email, password)`        | High-level login flow: fetches a token and validates it; returns the validated payload on success. Prefer `loginUserThunk` in UI code — it wraps this call and updates Redux automatically. | `Promise<ApiResult<ValidationData['data']>>`   |
-| `registerCustomer(email, password)` | Create a WooCommerce customer via the WooCommerce REST API.                                                                                                                                 | `Promise<ApiResult<CustomerRegistrationData>>` |
-| `sendPasswordReset(email)`          | Request a password reset email via Simple JWT Login.                                                                                                                                        | `Promise<ApiResult<PasswordResetData>>`        |
-| `logoutUser(jwtToken?)`             | Attempt a best-effort revoke of the provided JWT on the server. Returns a `LogoutResult` so callers can inspect revoke outcome. Local state clearing is handled by Redux thunks/slice.      | `Promise<LogoutResult>`                        |
+| Function                                             | Purpose                                                                                                                                                                                     | Returns                                        |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| `fetchToken(email, password)`                        | Request a JWT from the Simple JWT Login endpoint.                                                                                                                                           | `Promise<ApiResult<TokenData>>`                |
+| `validateToken(jwtToken)`                            | Validate a JWT with the Simple JWT Login endpoint.                                                                                                                                          | `Promise<ApiResult<ValidationData>>`           |
+| `refreshToken(jwtToken)`                             | Refresh a JWT via the Simple JWT Login endpoint (returns a new token).                                                                                                                      | `Promise<ApiResult<TokenData>>`                |
+| `revokeToken(jwtToken)`                              | Revoke a JWT on the server using the Simple JWT Login revoke endpoint.                                                                                                                      | `Promise<ApiResult<TokenData>>`                |
+| `loginUser(email, password)`                         | High-level login flow: fetches a token and validates it; returns the validated payload on success. Prefer `loginUserThunk` in UI code — it wraps this call and updates Redux automatically. | `Promise<ApiResult<ValidationData['data']>>`   |
+| `registerCustomer(email, password)`                  | Create a WooCommerce customer via the WooCommerce REST API.                                                                                                                                 | `Promise<ApiResult<CustomerRegistrationData>>` |
+| `deleteCustomerAccount(customerId, email, password)` | Permanently delete a WooCommerce customer by ID (`force=true`) after re-validating credentials with the provided email/password.                                                            | `Promise<ApiResult<CustomerDeleteData>>`       |
+| `sendPasswordReset(email)`                           | Request a password reset email via Simple JWT Login.                                                                                                                                        | `Promise<ApiResult<PasswordResetData>>`        |
+| `logoutUser(jwtToken?)`                              | Attempt a best-effort revoke of the provided JWT on the server. Returns a `LogoutResult` so callers can inspect revoke outcome. Local state clearing is handled by Redux thunks/slice.      | `Promise<LogoutResult>`                        |
 
 ---
 
@@ -400,6 +402,57 @@ Failure (email exists):
   "code": "registration-error-email-exists",
   "message": "An account is already registered with your email address. Please log in.",
   "data": { "status": 400 }
+}
+```
+
+### `deleteCustomerAccount()`
+
+Permanently delete a WooCommerce customer account.
+
+Usage: deleteCustomerAccount("<customerId>", "<email>", "<password>")
+
+Returns: ApiResult\<CustomerDeleteData>
+
+Behavior:
+
+- Requires a valid numeric `customerId` (> 0).
+- Requires `email` and `password`.
+- Performs a re-auth gate by calling `fetchToken(email, password)` before deletion.
+- Sends a WooCommerce delete request to `/customers/{id}?force=true` using configured consumer credentials.
+- Returns standardized failures using `apiFailureWithServerCode` and runtime failures using `apiFailureFromException`.
+
+Success (customer deleted, excerpt):
+
+```json
+{
+  "id": 123,
+  "deleted": true,
+  "previous": {
+    "id": 123,
+    "email": "user@example.com",
+    "username": "exampleuser"
+  }
+}
+```
+
+Failure (wrong password, re-auth fails):
+
+```json
+{
+  "success": false,
+  "status": 400,
+  "errorMessage": "Authentication wrong credentials",
+  "data": { "errorCode": 48, "message": "Wrong user credentials" }
+}
+```
+
+Failure (invalid customer id):
+
+```json
+{
+  "success": false,
+  "status": 400,
+  "errorMessage": "Invalid customer id"
 }
 ```
 

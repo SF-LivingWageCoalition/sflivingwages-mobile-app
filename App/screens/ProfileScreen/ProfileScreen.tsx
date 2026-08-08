@@ -53,16 +53,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = () => {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View>
-          {isLoggedIn ? (
-            <View>
-              <UserInfo />
-            </View>
-          ) : null}
-        </View>
-      </View>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <View style={styles.container}>{isLoggedIn ? <UserInfo /> : null}</View>
     </ScrollView>
   );
 };

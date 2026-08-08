@@ -5,6 +5,7 @@ import {
   validateUserThunk,
   loginUserThunk,
   logoutUserThunk,
+  deleteAccountThunk,
 } from "./userThunks";
 import type { ValidateUserFulfilled, ValidateUserRejectValue } from "./types";
 
@@ -103,6 +104,11 @@ const userSlice = createSlice({
         },
       )
       .addCase(logoutUserThunk.fulfilled, (state) => {
+        state.user = undefined;
+        state.roles = [];
+        state.jwt = [];
+      })
+      .addCase(deleteAccountThunk.fulfilled, (state) => {
         state.user = undefined;
         state.roles = [];
         state.jwt = [];
