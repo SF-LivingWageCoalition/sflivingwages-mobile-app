@@ -14,5 +14,8 @@ export const assistanceSchema = z.object({
     .string()
     .min(10, translate("assistScreen.validation.userPhone"))
     .regex(/\d{10,}/, translate("assistScreen.validation.userPhoneLength")),
+  description: z
+    .string()
+    .min(1, translate("assistScreen.validation.description")),
   list: z.array(z.string()).min(1, translate("assistScreen.validation.list")),
 });
