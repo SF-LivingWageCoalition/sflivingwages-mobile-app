@@ -290,6 +290,11 @@ const en = {
         name: "Rodger Scott",
         title: "Member",
       },
+      {
+        id: 11,
+        name: "Javier Gutierrez",
+        title: "Member",
+      },
     ],
   },
   donateScreen: {

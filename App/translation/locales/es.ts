@@ -298,6 +298,11 @@ const es: Translations = {
         name: "Rodger Scott",
         title: "Miembro",
       },
+      {
+        id: 11,
+        name: "Javier Gutierrez",
+        title: "Miembro",
+      },
     ],
   },
   donateScreen: {
