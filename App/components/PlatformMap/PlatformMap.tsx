@@ -1,20 +1,20 @@
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { useNavigation } from "@react-navigation/native";
+import Constants, { ExecutionEnvironment } from "expo-constants";
+import { AppleMaps, GoogleMaps } from "expo-maps";
+import LottieView from "lottie-react-native";
 import React from "react";
 import {
   Modal,
   Platform,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  StyleSheet,
 } from "react-native";
-import Constants, { ExecutionEnvironment } from "expo-constants";
-import { useNavigation } from "@react-navigation/native";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import { AppleMaps, GoogleMaps } from "expo-maps";
-import LottieView from "lottie-react-native";
-
-import { fontSize, fontWeight } from "../../theme/fontStyles";
 import { colors } from "../../theme";
+import { fontSize, fontWeight } from "../../theme/fontStyles";
+
 // Expo Go = StoreClient
 const isExpoGo =
   Constants.executionEnvironment === ExecutionEnvironment.StoreClient ||

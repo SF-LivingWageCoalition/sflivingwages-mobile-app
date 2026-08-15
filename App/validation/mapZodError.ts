@@ -11,7 +11,7 @@ interface MapOptions {
 
 export function mapZodErrorToFormErrors(
   zodError: ZodError,
-  options?: MapOptions
+  options?: MapOptions,
 ): { fieldErrors: Record<string, string>; generalError?: string } {
   const fieldErrors: Record<string, string> = {};
   let generalError: string | undefined;

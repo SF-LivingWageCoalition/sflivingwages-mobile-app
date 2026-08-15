@@ -9,9 +9,14 @@ import {
   ViewStyle,
 } from "react-native";
 import { colors } from "../theme/colors";
-import { textStyles, fontSize } from "../theme/fontStyles";
+import { fontSize, textStyles } from "../theme/fontStyles";
 
-export type ButtonVariant = "primary" | "clear" | "outlined" | "circle" | "text";
+export type ButtonVariant =
+  | "primary"
+  | "clear"
+  | "outlined"
+  | "circle"
+  | "text";
 export type ButtonSize = "small" | "medium" | "large";
 
 export interface ButtonProps {
@@ -231,9 +236,7 @@ const MainButton: React.FC<ButtonProps> = ({
       ) : (
         <View style={styles.content}>
           {loadingIcon && (
-            <View
-              style={displayText ? styles.iconContainer : undefined}
-            >
+            <View style={displayText ? styles.iconContainer : undefined}>
               {loadingIcon}
             </View>
           )}

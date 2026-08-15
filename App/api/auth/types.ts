@@ -41,7 +41,7 @@ export type ValidationData = {
           site?: string;
           username?: string;
         };
-      }
+      },
     ];
     errorCode?: number;
     message?: string;

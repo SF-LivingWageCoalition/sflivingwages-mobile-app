@@ -23,9 +23,7 @@ export type AuthModalProps = {
  * Otherwise, it opens the AuthModal. On successful auth, the callback runs
  * and the modal closes.
  */
-export const useAuthGate = (options: {
-  onForgotPassword: () => void;
-}) => {
+export const useAuthGate = (options: { onForgotPassword: () => void }) => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const [modalVisible, setModalVisible] = useState(false);
   const pendingCallback = useRef<(() => void) | null>(null);
