@@ -1,5 +1,5 @@
-import { translate } from "../../translation";
 import type { TxKeyPath } from "../../translation";
+import { translate } from "../../translation";
 import type { ApiErrorPayload, ErrorInfo } from "./types";
 
 /**

@@ -17,7 +17,7 @@ export function loginSchema() {
     userPassword: z
       .string()
       .nonempty(
-        translate("validation.passwordRequired") || "Password is required"
+        translate("validation.passwordRequired") || "Password is required",
       ),
   });
 }

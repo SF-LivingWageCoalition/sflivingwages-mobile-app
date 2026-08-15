@@ -1,7 +1,7 @@
-import { ApiError } from "./errors";
-import { translate } from "../../translation";
 import type { TxKeyPath } from "../../translation";
+import { translate } from "../../translation";
 import { getFriendlyErrorInfo } from "./errorCodeMap";
+import { ApiError } from "./errors";
 
 /**
  * Convert an unknown error (often an ApiError) into a user-facing message.

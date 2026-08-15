@@ -1,10 +1,10 @@
+import { FontAwesome5 } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
-import { FontAwesome5 } from "@expo/vector-icons";
+import AccountScreen from "../screens/AccountScreen/AccountScreen";
 import AssistanceHome from "../screens/AssistanceHome/AssistanceHome";
 import ContributeScreen from "../screens/ContributeScreen/ContributeScreen";
 import NewHome from "../screens/HomeScreen/NewHome";
-import AccountScreen from "../screens/AccountScreen/AccountScreen";
 import { colors } from "../theme";
 import { BottomTabParamList } from "../types/types";
 

@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { JwtItem } from "../../../api/auth/types";
-import { normalizeJwt, isValidValidationData } from "../../../api/auth/utils";
+import { isValidValidationData, normalizeJwt } from "../../../api/auth/utils";
+import type { ValidateUserFulfilled, ValidateUserRejectValue } from "./types";
 import {
-  validateUserThunk,
+  deleteAccountThunk,
   loginUserThunk,
   logoutUserThunk,
-  deleteAccountThunk,
+  validateUserThunk,
 } from "./userThunks";
-import type { ValidateUserFulfilled, ValidateUserRejectValue } from "./types";
 
 /** Basic WordPress user info stored in Redux (subset of WP user object). */
 interface User {
@@ -119,8 +119,8 @@ const userSlice = createSlice({
 export const { setUser, clearUser } = userSlice.actions;
 export default userSlice.reducer;
 export {
-  selectUser,
-  selectRoles,
-  selectJwt,
   selectIsLoggedIn,
+  selectJwt,
+  selectRoles,
+  selectUser,
 } from "./selectors";

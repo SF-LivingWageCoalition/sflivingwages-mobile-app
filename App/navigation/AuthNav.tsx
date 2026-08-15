@@ -1,12 +1,12 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
+import ForgotPasswordScreen from "../screens/ForgotPasswordScreen/ForgotPasswordScreen";
+import LoginScreen from "../screens/LoginScreen/LoginScreen";
+import RegisterScreen from "../screens/RegisterScreen/RegisterScreen";
 import { colors } from "../theme";
 import { fontWeight } from "../theme/fontStyles";
 import { translate } from "../translation/i18n";
 import type { AuthStackParamList } from "../types/types";
-import LoginScreen from "../screens/LoginScreen/LoginScreen";
-import RegisterScreen from "../screens/RegisterScreen/RegisterScreen";
-import ForgotPasswordScreen from "../screens/ForgotPasswordScreen/ForgotPasswordScreen";
 
 const Stack = createStackNavigator<AuthStackParamList>();
 

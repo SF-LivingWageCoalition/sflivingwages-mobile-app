@@ -1,15 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import type { RootState } from "../../store/store";
-import type { ValidationData } from "../../../api/auth/types";
-import type { ValidateUserFulfilled, ValidateUserRejectValue } from "./types";
 import * as authApi from "../../../api/auth/authApi";
-import { selectUserUiIsValidating } from "../userUiSlice/selectors";
-import { selectJwt, selectUser } from "./selectors";
+import type { ValidationData } from "../../../api/auth/types";
 import {
+  isValidValidationData,
   unwrapNewToken,
   unwrapOrThrow,
-  isValidValidationData,
 } from "../../../api/auth/utils";
+import type { RootState } from "../../store/store";
+import { selectUserUiIsValidating } from "../userUiSlice/selectors";
+import { selectJwt, selectUser } from "./selectors";
+import type { ValidateUserFulfilled, ValidateUserRejectValue } from "./types";
 
 // Keep thunks as pure auth workflow wrappers; state changes belong in slice extraReducers.
 export const loginUserThunk = createAsyncThunk<

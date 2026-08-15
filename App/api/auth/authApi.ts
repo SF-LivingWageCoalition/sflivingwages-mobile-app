@@ -19,38 +19,35 @@
 
 // Import types used in the API functions
 import type {
+  ApiResult,
+  CustomerDeleteData,
+  CustomerRegistrationData,
+  LogoutResult,
+  PasswordResetData,
   TokenData,
   ValidationData,
-  CustomerRegistrationData,
-  CustomerDeleteData,
-  PasswordResetData,
-  ApiResult,
-  LogoutResult,
 } from "./types";
 
 // Import shared auth configuration constants
 import {
   BASE_URL,
+  JWT_AUTH_KEY,
   JWT_ROUTE,
   WC_ROUTE,
-  JWT_DE_KEY,
-  JWT_DE_ALG,
-  JWT_TYP,
-  JWT_AUTH_KEY,
   base64Credentials,
 } from "./config";
 
 // Import utility functions
+import { isUsernameExistsCode } from "./errorHelpers";
+import { generateCandidate, makeBaseFromEmail } from "./usernameUtils";
 import {
-  fetchWithTimeout,
   apiFailureFromException,
-  parseJsonSafe,
-  isValidValidationData,
   apiFailureWithServerCode,
   extractServerCode,
+  fetchWithTimeout,
+  isValidValidationData,
+  parseJsonSafe,
 } from "./utils";
-import { isUsernameExistsCode } from "./errorHelpers";
-import { makeBaseFromEmail, generateCandidate } from "./usernameUtils";
 
 /**
  * API helper functions for authentication.

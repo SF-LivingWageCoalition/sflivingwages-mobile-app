@@ -45,12 +45,12 @@ export function passwordSchema() {
     z
       .string()
       .nonempty(
-        translate("validation.passwordRequired") || "Password is required"
+        translate("validation.passwordRequired") || "Password is required",
       )
       .min(
         10,
         translate("validation.passwordTooShort") ||
-          "Password must be at least 10 characters"
+          "Password must be at least 10 characters",
       )
       .refine((val) => /[a-z]/.test(val), {
         message:
@@ -83,7 +83,7 @@ export function passwordSchema() {
           message:
             translate("validation.passwordInvalidChars") ||
             "Password contains invalid characters",
-        }
+        },
       )
       .refine((val) => !/\s/.test(val), {
         message:

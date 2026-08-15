@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import {
-  View,
   ActivityIndicator,
-  StyleSheet,
-  Modal,
   BackHandler,
+  Modal,
+  StyleSheet,
+  View,
 } from "react-native";
 import { colors } from "../theme";
 
@@ -14,7 +14,7 @@ const LoadingOverlay: React.FC = () => {
     const onBackPress = () => true; // returning true prevents default back behavior
     const subscription = BackHandler.addEventListener(
       "hardwareBackPress",
-      onBackPress
+      onBackPress,
     );
     return () => subscription.remove();
   }, []);

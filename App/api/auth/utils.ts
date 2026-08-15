@@ -4,16 +4,16 @@
  * Depends on error classes from errors.ts.
  */
 
-import { ApiError, TimeoutError } from "./errors";
-import type {
-  ParseJsonSafeResult,
-  ApiResult,
-  ValidationData,
-  JwtItem,
-  ApiErrorPayload,
-} from "./types";
 import { FETCH_TIMEOUT_MS } from "./config";
 import { getFriendlyErrorInfo } from "./errorCodeMap";
+import { ApiError, TimeoutError } from "./errors";
+import type {
+  ApiErrorPayload,
+  ApiResult,
+  JwtItem,
+  ParseJsonSafeResult,
+  ValidationData,
+} from "./types";
 
 /**
  * Helper that wraps fetch with an AbortController to enforce a timeout.
