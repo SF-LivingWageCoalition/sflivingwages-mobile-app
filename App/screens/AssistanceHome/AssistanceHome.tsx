@@ -1,26 +1,38 @@
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Entypo, FontAwesome5 } from "@expo/vector-icons";
 import {
   NavigationProp,
   ParamListBase,
   useNavigation,
 } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
 import {
-  FlatList,
   ImageBackground,
+  SectionList,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+
 import goldenGateBridge from "../../assets/images/golden-gate-bridge.png";
 import AuthModal from "../../components/AuthModal/AuthModal";
+import { AssistanceTabParamList } from "../../types/types";
 import { useAuthGate } from "../../hooks/useAuthGate";
-import { colors } from "../../theme";
 import { textStyles } from "../../theme/fontStyles";
 import { translate } from "../../translation/i18n";
-import { AssistanceTabParamList } from "../../types/types";
+import { colors } from "../../theme";
+
+type AssistanceTile = {
+  title: string;
+  screen: keyof AssistanceTabParamList;
+  icon: React.ComponentProps<typeof FontAwesome5>["name"];
+};
+
+type AssistanceSection = {
+  title: string;
+  data: AssistanceTile[][];
+};
 
 const AssistanceHome: React.FC = () => {
   const navigation =
@@ -44,35 +56,52 @@ const AssistanceHome: React.FC = () => {
     }
   };
 
-  const buttons: {
-    title: string;
-    screen: keyof AssistanceTabParamList;
-    icon: string;
-  }[] = [
+  const sections: AssistanceSection[] = [
     {
-      title: translate("assistHomeScreen.getAssistance"),
-      screen: "ReportViolation",
-      icon: "hands-helping",
+      title: translate("assistHomeScreen.complaints"),
+      data: [
+        [
+          {
+            title: translate("assistHomeScreen.getAssistance"),
+            screen: "ReportViolation",
+            icon: "hands-helping",
+          },
+          {
+            title: translate("assistHomeScreen.reportBusiness"),
+            screen: "ReportBusiness",
+            icon: "building",
+          },
+        ],
+      ],
     },
     {
-      title: translate("assistHomeScreen.wageRights"),
-      screen: "WageRights",
-      icon: "gavel",
+      title: translate("assistHomeScreen.rights"),
+      data: [
+        [
+          {
+            title: translate("assistHomeScreen.beReadyForICE"),
+            screen: "BeReadyForICE",
+            icon: "shield-alt",
+          },
+          {
+            title: translate("assistHomeScreen.wageRights"),
+            screen: "WageRights",
+            icon: "gavel",
+          },
+        ],
+      ],
     },
     {
-      title: translate("assistHomeScreen.beReadyForICE"),
-      screen: "BeReadyForICE",
-      icon: "shield-alt",
-    },
-    {
-      title: "Living Wage Calculator",
-      screen: "LivingWageCalculator",
-      icon: "calculator",
-    },
-    {
-      title: translate("assistHomeScreen.reportBusiness"),
-      screen: "ReportBusiness",
-      icon: "building",
+      title: translate("assistHomeScreen.calculator"),
+      data: [
+        [
+          {
+            title: translate("assistHomeScreen.livingWageCalculator"),
+            screen: "LivingWageCalculator",
+            icon: "calculator",
+          },
+        ],
+      ],
     },
   ];
 
@@ -95,41 +124,50 @@ const AssistanceHome: React.FC = () => {
         </View>
       </ImageBackground>
 
-      <FlatList
-        data={buttons}
-        keyExtractor={(item) => item.title}
-        numColumns={2}
-        columnWrapperStyle={styles.columnWrapper}
+      <SectionList
+        sections={sections}
+        keyExtractor={(row, index) =>
+          `${row.map((item) => item.title).join("-")}-${index}`
+        }
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <View style={styles.item}>
-            <TouchableOpacity
-              onPress={() => handleTilePress(item.screen)}
-              activeOpacity={0.85}
-              accessibilityRole="button"
-              accessibilityLabel={item.title}
-              style={styles.tile}
-            >
-              <View style={styles.tileHeader}>
-                <View style={styles.iconWrap}>
-                  <FontAwesome5
-                    name={item.icon}
-                    size={22}
-                    color={colors.light.primary}
-                  />
-                </View>
-                <Entypo
-                  name="chevron-right"
-                  size={22}
-                  color={colors.light.textSecondary}
-                />
-              </View>
+        renderSectionHeader={({ section }) => (
+          <Text style={styles.sectionTitle}>{section.title}</Text>
+        )}
+        stickySectionHeadersEnabled={false}
+        renderItem={({ item: row }) => (
+          <View style={styles.row}>
+            {row.map((item) => (
+              <View key={item.title} style={styles.item}>
+                <TouchableOpacity
+                  onPress={() => handleTilePress(item.screen)}
+                  activeOpacity={0.85}
+                  accessibilityRole="button"
+                  accessibilityLabel={item.title}
+                  style={styles.tile}
+                >
+                  <View style={styles.tileHeader}>
+                    <View style={styles.iconWrap}>
+                      <FontAwesome5
+                        name={item.icon}
+                        size={22}
+                        color={colors.light.primary}
+                      />
+                    </View>
 
-              <Text style={styles.tileTitle} numberOfLines={2}>
-                {item.title}
-              </Text>
-            </TouchableOpacity>
+                    <Entypo
+                      name="chevron-right"
+                      size={22}
+                      color={colors.light.textSecondary}
+                    />
+                  </View>
+
+                  <Text style={styles.tileTitle} numberOfLines={2}>
+                    {item.title}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ))}
           </View>
         )}
       />
@@ -213,6 +251,17 @@ const styles = StyleSheet.create({
     ...textStyles.bodyBold,
     color: colors.light.textPrimary,
     marginTop: 6,
+  },
+
+  sectionTitle: {
+    ...textStyles.h2,
+    color: colors.light.textPrimary,
+    marginBottom: 14,
+    paddingHorizontal: 18,
+  },
+  row: {
+    flexDirection: "row",
+    paddingHorizontal: 6,
   },
 });
 

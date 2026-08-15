@@ -11,6 +11,10 @@ const en = {
     wageRights: "Know Your Wage Rights",
     beReadyForICE: "Be Ready for ICE",
     reportBusiness: "Workplace Violation Map",
+    livingWageCalculator: "Living Wage Calculator",
+    complaints: "Complaints",
+    rights: "Rights",
+    calculator: "Calculator",
   },
   assistScreen: {
     title: `We can assist you.`,
