@@ -33,18 +33,6 @@ const BottomTabStack: React.FC = () => {
       />
 
       <Tab.Screen
-        name="Contribute"
-        component={ContributeScreen}
-        options={{
-          headerShown: false,
-          tabBarLabel: "Contribute",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome5 name={"hand-holding-heart"} color={color} size={20} />
-          ),
-        }}
-      />
-
-      <Tab.Screen
         name="Assist"
         component={AssistanceHome}
         options={{
@@ -52,6 +40,18 @@ const BottomTabStack: React.FC = () => {
           tabBarLabel: "Assist",
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name={"hands-helping"} color={color} size={20} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Contribute"
+        component={ContributeScreen}
+        options={{
+          headerShown: false,
+          tabBarLabel: "Contribute",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name={"hand-holding-heart"} color={color} size={20} />
           ),
         }}
       />
