@@ -158,7 +158,7 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
     } catch (err) {
       Alert.alert(
         translate("accountScreen.deleteAccountError.title"),
-        mapApiErrorToMessage(err),
+        mapApiErrorToMessage(err, "errors.unexpectedError"),
       );
     } finally {
       setDeletingAccount(false);

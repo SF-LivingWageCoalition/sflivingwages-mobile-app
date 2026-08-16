@@ -6,10 +6,15 @@ import {
   unwrapNewToken,
   unwrapOrThrow,
 } from "../../../api/auth/utils";
+import { ApiError } from "../../../api/auth/errors";
 import type { RootState } from "../../store/store";
 import { selectUserUiIsValidating } from "../userUiSlice/selectors";
 import { selectJwt, selectUser } from "./selectors";
-import type { ValidateUserFulfilled, ValidateUserRejectValue } from "./types";
+import type {
+  DeleteAccountRejectValue,
+  ValidateUserFulfilled,
+  ValidateUserRejectValue,
+} from "./types";
 
 // Keep thunks as pure auth workflow wrappers; state changes belong in slice extraReducers.
 export const loginUserThunk = createAsyncThunk<
@@ -89,21 +94,28 @@ export const logoutUserThunk = createAsyncThunk<
 export const deleteAccountThunk = createAsyncThunk<
   void,
   { password: string },
-  { state: RootState }
->("user/deleteAccount", async ({ password }, { getState }) => {
+  { state: RootState; rejectValue: DeleteAccountRejectValue }
+>("user/deleteAccount", async ({ password }, { getState, rejectWithValue }) => {
   const rootState = getState() as RootState;
   const user = selectUser(rootState);
   const customerId = Number.parseInt(user?.ID ?? "", 10);
   const email = user?.user_email;
 
   if (!email || !Number.isFinite(customerId) || customerId <= 0) {
-    throw new Error("Missing account details for deletion");
+    return rejectWithValue({ status: 400 });
   }
 
-  const deleteResult = await authApi.deleteCustomerAccount(
-    customerId,
-    email,
-    password,
-  );
-  unwrapOrThrow(deleteResult, "Could not delete account");
+  try {
+    const deleteResult = await authApi.deleteCustomerAccount(
+      customerId,
+      email,
+      password,
+    );
+    unwrapOrThrow(deleteResult, "Could not delete account");
+  } catch (error) {
+    if (error instanceof ApiError) {
+      return rejectWithValue({ status: error.status, data: error.data });
+    }
+    return rejectWithValue({ status: 0 });
+  }
 });
