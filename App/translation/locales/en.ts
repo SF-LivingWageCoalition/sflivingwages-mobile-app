@@ -340,7 +340,6 @@ const en = {
     deleteAccountPasswordPrompt: {
       title: "Delete Account",
       message: "Enter your password to permanently delete your account.",
-      placeholder: "Password",
     },
     deleteAccountSuccess: {
       title: "Account deleted",

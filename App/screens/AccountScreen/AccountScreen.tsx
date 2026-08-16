@@ -201,7 +201,7 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   const DeleteAccountButton: React.FC = () => (
     <View style={styles.authButtonsContainer}>
       <MainButton
-        variant="clear"
+        variant="text"
         title={translate("buttons.deleteAccount")}
         onPress={onDeleteAccount}
         isDisabled={loggingOut || deletingAccount}
