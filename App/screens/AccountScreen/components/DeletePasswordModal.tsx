@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 import MainButton from "../../../components/MainButton";
+import LoadingOverlay from "../../../components/LoadingOverlay";
 import PasswordField from "../../../components/forms/PasswordField";
 import { colors } from "../../../theme";
 import { textStyles } from "../../../theme/fontStyles";
@@ -112,6 +113,8 @@ const DeletePasswordModal: React.FC<DeletePasswordModalProps> = ({
           </Pressable>
         </KeyboardAvoidingView>
       </Pressable>
+
+      {deletingAccount && <LoadingOverlay />}
     </Modal>
   );
 };
