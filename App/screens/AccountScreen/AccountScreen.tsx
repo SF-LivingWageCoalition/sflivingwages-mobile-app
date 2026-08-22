@@ -35,7 +35,9 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   const [deletePassword, setDeletePassword] = useState("");
   const [isDeletePasswordModalVisible, setIsDeletePasswordModalVisible] =
     useState(false);
-  // Ref to skip validation on next focus when returning from a sub-screen.
+  // Set on tap, then consumed on blur to avoid stale skip flags.
+  const pendingSkipFocusValidationRef = useRef(false);
+  // One-shot ref consumed by the next focus cycle.
   const skipNextFocusValidationRef = useRef(false);
 
   // This ensures the overlay remains visible until `clearUser()` has been dispatched.
@@ -44,6 +46,26 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
       setLoggingOut(false);
     }
   }, [isLoggedIn, loggingOut]);
+
+  // Only skip validation when a sub-screen tap is followed by an actual blur.
+  useEffect(() => {
+    const unsubscribeBlur = navigation.addListener("blur", () => {
+      if (pendingSkipFocusValidationRef.current) {
+        skipNextFocusValidationRef.current = true;
+        pendingSkipFocusValidationRef.current = false;
+      }
+    });
+
+    const unsubscribeFocus = navigation.addListener("focus", () => {
+      // If focus happens without blur/navigation, clear pending skip intent.
+      pendingSkipFocusValidationRef.current = false;
+    });
+
+    return () => {
+      unsubscribeBlur();
+      unsubscribeFocus();
+    };
+  }, [navigation]);
 
   // Trigger user validation when focused, except when returning from an account sub-screen.
   useFocusEffect(
@@ -128,7 +150,7 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   };
 
   const onOpenAccountSubScreen = () => {
-    skipNextFocusValidationRef.current = true;
+    pendingSkipFocusValidationRef.current = true;
   };
 
   const closeDeletePasswordModal = () => {
@@ -158,7 +180,7 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
     } catch (err) {
       Alert.alert(
         translate("accountScreen.deleteAccountError.title"),
-        mapApiErrorToMessage(err),
+        mapApiErrorToMessage(err, "errors.unexpectedError"),
       );
     } finally {
       setDeletingAccount(false);
@@ -201,7 +223,7 @@ const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   const DeleteAccountButton: React.FC = () => (
     <View style={styles.authButtonsContainer}>
       <MainButton
-        variant="clear"
+        variant="text"
         title={translate("buttons.deleteAccount")}
         onPress={onDeleteAccount}
         isDisabled={loggingOut || deletingAccount}

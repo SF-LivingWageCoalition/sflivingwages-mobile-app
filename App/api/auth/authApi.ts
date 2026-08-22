@@ -399,7 +399,7 @@ export const deleteCustomerAccount = async (
     const authCheck = await fetchToken(email, password);
     if (!authCheck.success) {
       return apiFailureWithServerCode<CustomerDeleteData>(
-        authCheck.data ?? authCheck,
+        authCheck,
         authCheck.status,
       );
     }

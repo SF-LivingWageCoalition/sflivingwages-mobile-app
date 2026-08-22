@@ -349,7 +349,6 @@ const es: Translations = {
       title: "Eliminar Cuenta",
       message:
         "Ingresa tu contraseña para eliminar tu cuenta de forma permanente.",
-      placeholder: "Contraseña",
     },
     deleteAccountSuccess: {
       title: "Cuenta eliminada",
