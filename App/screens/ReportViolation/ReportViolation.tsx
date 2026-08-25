@@ -51,9 +51,7 @@ const ReportViolation: React.FC = () => {
   }, [user]);
 
   const [latitude, setLatitude] = useState<number | null>(null);
-  console.log("🚀 ~ ReportViolation ~ latitude:", latitude);
   const [longitude, setLongitude] = useState<number | null>(null);
-  console.log("🚀 ~ ReportViolation ~ longitude:", longitude);
 
   const assistList = [
     {
@@ -426,7 +424,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   textInput: {
-    height: 30,
+    minHeight: 30,
     borderBottomColor: colors.light.primary,
     borderBottomWidth: 1,
     margin: 10,

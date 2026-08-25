@@ -24,20 +24,14 @@ export type ViolationResponse = {
 };
 
 /**
- * Submit a workplace violation report to the backend API.
- *
- * TODO: Replace the endpoint path once the real endpoint URL is confirmed.
- * The endpoint is constructed from BASE_URL with a placeholder path.
- * The JWT is sent as a Bearer token in the Authorization header.
+ * Submit a workplace violation report to the backend Violations API.
  */
 export const submitViolation = async (
   payload: ViolationPayload,
   jwt: string,
 ): Promise<ApiResult<ViolationResponse>> => {
-  console.log("Submitting violation report with payload:", payload); // Log the payload for debugging purposes
   try {
     const endpoint = `${BASE_URL}${VIOLATIONS_ROUTE}`;
-    console.log("Submitting violation report to endpoint:", endpoint); // Log the endpoint for debugging purposes
     const response = await fetchWithTimeout(endpoint, {
       method: "POST",
       headers: {
