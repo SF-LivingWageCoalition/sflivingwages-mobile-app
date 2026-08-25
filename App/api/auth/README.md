@@ -66,7 +66,7 @@ Implementation quick-reference: file paths and a one-line purpose to help you ju
 | `App/navigation/AuthNav.tsx`                                | Navigator that wires auth-related screens together                                 |
 | `App/api/auth/authApi.ts`                                   | Core auth client (fetchToken, validateToken, loginUser, etc.);                     |
 | `App/api/auth/types.ts`                                     | Type definitions and `ApiResult<T>` shapes used across helpers                     |
-| `App/api/config.ts`                                         | Shared environment-driven API config and `base64Credentials` helper                 |
+| `App/api/config.ts`                                         | Shared environment-driven API config and `base64Credentials` helper                |
 | `App/api/auth/errorHelpers.ts`                              | Map server error codes to user-facing messages                                     |
 | `App/api/auth/utils.ts`                                     | Low-level helpers (normalizeJwt, parseJsonSafe, failure factories, unwrapOrThrow)  |
 | `App/api/auth/usernameUtils.ts`                             | Username generation helpers (makeBaseFromEmail, shortHash, generateCandidate)      |
@@ -163,7 +163,7 @@ Implementation details (see `App/api/auth/authApi.ts` and `App/api/auth/types.ts
 
 1. Check HTTP status (`result.status`): 4xx = client issue; 5xx = server issue.
 2. Inspect `Content-Type` and response body. If non-JSON, `parseJsonSafe` returns `{ __parseError: true, text }`.
-  If using Basic auth for WooCommerce endpoints, ensure `EXPO_PUBLIC_CONSUMER_KEY` and `EXPO_PUBLIC_CONSUMER_SECRET` are set — `base64Credentials` in `App/api/config.ts` returns `undefined` when keys are missing; using an undefined Basic auth value will cause authentication failures.
+   If using Basic auth for WooCommerce endpoints, ensure `EXPO_PUBLIC_CONSUMER_KEY` and `EXPO_PUBLIC_CONSUMER_SECRET` are set — `base64Credentials` in `App/api/config.ts` returns `undefined` when keys are missing; using an undefined Basic auth value will cause authentication failures.
 3. If `res.data?.__parseError` is true, check server/proxy logs (Nginx/Cloud) for upstream errors.
 4. If `res.data?.errorCode` or `res.data?.errorKey` exists, map that code to a friendly message (do not display raw server text).
 5. For unknown/5xx errors show `errors.unexpectedError`.
