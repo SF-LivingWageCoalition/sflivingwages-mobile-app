@@ -110,13 +110,19 @@ const ReportViolation: React.FC = () => {
     try {
       const apiResult = await submitViolation(
         {
-          businessName,
-          businessAddress,
-          fullName,
-          userEmail,
-          userPhone: userPhone.replace(/\D/g, ""),
-          description,
-          violations: list,
+          title: `Violation Report - ${businessName}`,
+          status: "pending",
+          acf: {
+            business_name: businessName,
+            business_address: businessAddress,
+            full_name: fullName,
+            user_email: userEmail,
+            user_phone: userPhone.replace(/\D/g, ""),
+            description,
+            violations: list,
+            latitude: latitude ?? 0,
+            longitude: longitude ?? 0,
+          },
         },
         jwt,
       );

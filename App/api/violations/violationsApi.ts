@@ -1,15 +1,22 @@
-import { BASE_URL } from "@env";
+import { BASE_URL, VIOLATIONS_ROUTE } from "./config";
+
 import type { ApiResult } from "../auth/types";
 import { apiFailureFromException, fetchWithTimeout } from "../auth/utils";
 
 export type ViolationPayload = {
-  businessName: string;
-  businessAddress: string;
-  fullName: string;
-  userEmail: string;
-  userPhone: string;
-  description: string;
-  violations: string[];
+  title: string;
+  status: "draft" | "pending" | "publish";
+  acf: {
+    business_name: string;
+    business_address: string;
+    full_name: string;
+    user_email: string;
+    user_phone: string;
+    description: string;
+    violations: string[];
+    latitude: number;
+    longitude: number;
+  };
 };
 
 export type ViolationResponse = {
@@ -27,8 +34,10 @@ export const submitViolation = async (
   payload: ViolationPayload,
   jwt: string,
 ): Promise<ApiResult<ViolationResponse>> => {
+  console.log("Submitting violation report with payload:", payload); // Log the payload for debugging purposes
   try {
-    const endpoint = `${BASE_URL}/wp-json/sflivingwage/v1/violations`;
+    const endpoint = `${BASE_URL}${VIOLATIONS_ROUTE}`;
+    console.log("Submitting violation report to endpoint:", endpoint); // Log the endpoint for debugging purposes
     const response = await fetchWithTimeout(endpoint, {
       method: "POST",
       headers: {
