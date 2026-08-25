@@ -1,4 +1,4 @@
-import { BASE_URL, VIOLATIONS_ROUTE } from "./config";
+import { BASE_URL, VIOLATIONS_ROUTE } from "../config";
 
 import type { ApiResult } from "../auth/types";
 import { apiFailureFromException, fetchWithTimeout } from "../auth/utils";

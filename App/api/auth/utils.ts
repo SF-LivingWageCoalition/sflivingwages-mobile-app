@@ -4,7 +4,7 @@
  * Depends on error classes from errors.ts.
  */
 
-import { FETCH_TIMEOUT_MS } from "./config";
+import { FETCH_TIMEOUT_MS } from "../config";
 import { getFriendlyErrorInfo } from "./errorCodeMap";
 import { ApiError, TimeoutError } from "./errors";
 import type {
