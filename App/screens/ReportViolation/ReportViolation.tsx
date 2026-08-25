@@ -55,12 +55,27 @@ const ReportViolation: React.FC = () => {
   const [longitude, setLongitude] = useState<number | null>(null);
   console.log("🚀 ~ ReportViolation ~ longitude:", longitude);
 
-  const assistList: string[] = [
-    translate("assistScreen.assistList.wageTheft"),
-    translate("assistScreen.assistList.discriminationHarassment"),
-    translate("assistScreen.assistList.unpaidOvertime"),
-    translate("assistScreen.assistList.immigrantRights"),
-    translate("assistScreen.assistList.other"),
+  const assistList = [
+    {
+      key: "wageTheft",
+      label: translate("assistScreen.assistList.wageTheft"),
+    },
+    {
+      key: "discriminationHarassment",
+      label: translate("assistScreen.assistList.discriminationHarassment"),
+    },
+    {
+      key: "unpaidOvertime",
+      label: translate("assistScreen.assistList.unpaidOvertime"),
+    },
+    {
+      key: "immigrantRights",
+      label: translate("assistScreen.assistList.immigrantRights"),
+    },
+    {
+      key: "other",
+      label: translate("assistScreen.assistList.other"),
+    },
   ];
   const [isChecked, setCheckState] = useState<boolean[]>(
     new Array(assistList.length).fill(false),
@@ -69,7 +84,7 @@ const ReportViolation: React.FC = () => {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const handledState = (position: number, option: string): void => {
+  const handledState = (position: number, optionKey: string): void => {
     const update = isChecked.map((item, index) =>
       index === position ? !item : item,
     );
@@ -77,9 +92,9 @@ const ReportViolation: React.FC = () => {
 
     let updateList: string[] = [...list];
     if (!isChecked[position]) {
-      updateList.push(option);
+      updateList.push(optionKey);
     } else {
-      updateList = list.filter((item) => item !== option);
+      updateList = list.filter((item) => item !== optionKey);
     }
     setAssistList(updateList);
   };
@@ -119,7 +134,7 @@ const ReportViolation: React.FC = () => {
             user_email: userEmail,
             user_phone: userPhone.replace(/\D/g, ""),
             description,
-            violations: list,
+            violation_type: list,
             latitude: latitude ?? 0,
             longitude: longitude ?? 0,
           },
@@ -332,11 +347,11 @@ const ReportViolation: React.FC = () => {
                 return (
                   <CheckBox
                     key={index}
-                    title={assist}
+                    title={assist.label}
                     textStyle={textStyles.body}
                     checkedColor={colors.light.primary}
                     checked={isChecked[index]}
-                    onPress={() => handledState(index, assist)}
+                    onPress={() => handledState(index, assist.key)}
                   />
                 );
               })}

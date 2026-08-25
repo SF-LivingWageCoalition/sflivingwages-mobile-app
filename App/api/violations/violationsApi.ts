@@ -13,7 +13,7 @@ export type ViolationPayload = {
     user_email: string;
     user_phone: string;
     description: string;
-    violations: string[];
+    violation_type: string[];
     latitude: number;
     longitude: number;
   };
