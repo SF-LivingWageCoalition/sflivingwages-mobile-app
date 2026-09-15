@@ -499,7 +499,6 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     borderColor: colors.light.primary,
     ...textStyles.caption,
-    height: 120,
   },
 
   placesSuggestions: {
