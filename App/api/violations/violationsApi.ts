@@ -16,6 +16,7 @@ export type ViolationPayload = {
     violation_type: string[];
     latitude: number;
     longitude: number;
+    timestamp: number;
   };
 };
 

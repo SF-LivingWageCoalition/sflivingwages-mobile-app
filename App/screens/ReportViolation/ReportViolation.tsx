@@ -143,6 +143,7 @@ const ReportViolation: React.FC = () => {
             violation_type: list,
             latitude: latitude ?? 0,
             longitude: longitude ?? 0,
+            timestamp: Math.floor(Date.now() / 1000), // Current Unix timestamp in seconds
           },
         },
         jwt,
