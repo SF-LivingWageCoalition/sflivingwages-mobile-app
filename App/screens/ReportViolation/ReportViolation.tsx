@@ -30,6 +30,12 @@ import { assistanceSchema } from "./assistanceSchema";
 
 const FORM_LIST_DATA = [{ key: "report-violation-form" }];
 
+const buildBusinessNameWithDate = (businessName: string): string => {
+  const today = new Date();
+  const formattedDate = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
+  return `${businessName} - ${formattedDate}`;
+};
+
 const ReportViolation: React.FC = () => {
   const user = useSelector(selectUser);
   const jwtItems = useSelector(selectJwt);
@@ -118,15 +124,17 @@ const ReportViolation: React.FC = () => {
     }
     setErrors({});
 
+    const businessNameWithDate = buildBusinessNameWithDate(businessName);
+
     const jwt = jwtItems[0]?.token ?? "";
     setLoading(true);
     try {
       const apiResult = await submitViolation(
         {
-          title: `Violation Report - ${businessName}`,
+          title: businessNameWithDate,
           status: "pending",
           acf: {
-            business_name: businessName,
+            business_name: businessNameWithDate,
             business_address: businessAddress,
             full_name: fullName,
             user_email: userEmail,
