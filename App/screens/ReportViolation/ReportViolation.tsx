@@ -49,6 +49,9 @@ const ReportViolation: React.FC = () => {
   const [description, setDescription] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
+  const [displayAddressLine1, setDisplayAddressLine1] = useState<string>("");
+  const [displayAddressLine2, setDisplayAddressLine2] = useState<string>("");
+
   useEffect(() => {
     if (user) {
       setFullName(user.display_name ?? "");
@@ -185,10 +188,28 @@ const ReportViolation: React.FC = () => {
     placesRef.current?.clear();
   };
 
+  const buildDisplayAddress = (businessAddress: string) => {
+    const parts = businessAddress
+      .split(",")
+      .map((part) => part.trim())
+      .filter(Boolean);
+
+    const noCountryParts = parts.length > 0 ? parts.slice(0, -1) : [];
+    const line2Parts = noCountryParts.slice(-2);
+    const line1Parts = noCountryParts.slice(0, -2);
+
+    const line1 = line1Parts.join(", ");
+    const line2 = line2Parts.join(", ");
+
+    setDisplayAddressLine1(line1);
+    setDisplayAddressLine2(line2);
+  };
+
   const handlePlaceSelect = (place: Place) => {
     const address = place?.details?.formattedAddress || "";
 
     setBusinessAddress(address);
+    buildDisplayAddress(address);
     setErrors((prev) => {
       const { businessAddress, ...rest } = prev;
       return rest;
@@ -250,6 +271,15 @@ const ReportViolation: React.FC = () => {
                   onPlaceSelect={(places: Place) => {
                     handlePlaceSelect(places);
                   }}
+                  onTextChange={(text) => {
+                    if (text === "") {
+                      setBusinessAddress("");
+                      setDisplayAddressLine1("");
+                      setDisplayAddressLine2("");
+                      setLatitude(null);
+                      setLongitude(null);
+                    }
+                  }}
                   fetchDetails={true}
                   detailsFields={[
                     "formattedAddress",
@@ -271,6 +301,17 @@ const ReportViolation: React.FC = () => {
                   </Text>
                 )}
               </View>
+
+              {businessAddress && (
+                <View style={styles.displayAddressContainer}>
+                  <Text style={styles.displayAddress}>
+                    {displayAddressLine1 && `${displayAddressLine1}`}
+                  </Text>
+                  <Text style={styles.displayAddress}>
+                    {displayAddressLine2 && `${displayAddressLine2}`}
+                  </Text>
+                </View>
+              )}
 
               <View style={styles.inputContainer}>
                 <Text style={styles.inputName}>
@@ -513,6 +554,18 @@ const styles = StyleSheet.create({
   placesSuggestions: {
     borderRadius: 4,
     elevation: 2,
+  },
+
+  displayAddressContainer: {
+    // margin: 12,
+    marginLeft: 22,
+    backgroundColor: colors.light.background,
+    padding: 10,
+    borderRadius: 6,
+  },
+  displayAddress: {
+    // ...textStyles.body,
+    marginLeft: 6,
   },
 });
 
