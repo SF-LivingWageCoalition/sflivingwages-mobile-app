@@ -142,7 +142,7 @@ const ReportViolation: React.FC = () => {
             full_name: fullName,
             user_email: userEmail,
             user_phone: userPhone.replace(/\D/g, ""),
-            description,
+            description: description,
             violation_type: list,
             latitude: latitude ?? 0,
             longitude: longitude ?? 0,
@@ -557,14 +557,12 @@ const styles = StyleSheet.create({
   },
 
   displayAddressContainer: {
-    // margin: 12,
     marginLeft: 22,
     backgroundColor: colors.light.background,
     padding: 10,
     borderRadius: 6,
   },
   displayAddress: {
-    // ...textStyles.body,
     marginLeft: 6,
   },
 });
