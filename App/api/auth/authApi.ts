@@ -35,7 +35,7 @@ import {
   JWT_ROUTE,
   WC_ROUTE,
   base64Credentials,
-} from "./config";
+} from "../config";
 
 // Import utility functions
 import { isUsernameExistsCode } from "./errorHelpers";

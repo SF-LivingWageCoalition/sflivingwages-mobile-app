@@ -1,15 +1,23 @@
-import { BASE_URL } from "@env";
+import { BASE_URL, VIOLATIONS_ROUTE } from "../config";
+
 import type { ApiResult } from "../auth/types";
 import { apiFailureFromException, fetchWithTimeout } from "../auth/utils";
 
 export type ViolationPayload = {
-  businessName: string;
-  businessAddress: string;
-  fullName: string;
-  userEmail: string;
-  userPhone: string;
-  description: string;
-  violations: string[];
+  title: string;
+  status: "draft" | "pending" | "publish";
+  acf: {
+    business_name: string;
+    business_address: string;
+    full_name: string;
+    user_email: string;
+    user_phone: string;
+    description: string;
+    violation_type: string[];
+    latitude: number;
+    longitude: number;
+    timestamp: number;
+  };
 };
 
 export type ViolationResponse = {
@@ -17,18 +25,14 @@ export type ViolationResponse = {
 };
 
 /**
- * Submit a workplace violation report to the backend API.
- *
- * TODO: Replace the endpoint path once the real endpoint URL is confirmed.
- * The endpoint is constructed from BASE_URL with a placeholder path.
- * The JWT is sent as a Bearer token in the Authorization header.
+ * Submit a workplace violation report to the backend Violations API.
  */
 export const submitViolation = async (
   payload: ViolationPayload,
   jwt: string,
 ): Promise<ApiResult<ViolationResponse>> => {
   try {
-    const endpoint = `${BASE_URL}/wp-json/sflivingwage/v1/violations`;
+    const endpoint = `${BASE_URL}${VIOLATIONS_ROUTE}`;
     const response = await fetchWithTimeout(endpoint, {
       method: "POST",
       headers: {

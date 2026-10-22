@@ -30,6 +30,12 @@ import { assistanceSchema } from "./assistanceSchema";
 
 const FORM_LIST_DATA = [{ key: "report-violation-form" }];
 
+const buildBusinessNameWithDate = (businessName: string): string => {
+  const today = new Date();
+  const formattedDate = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
+  return `${businessName} - ${formattedDate}`;
+};
+
 const ReportViolation: React.FC = () => {
   const user = useSelector(selectUser);
   const jwtItems = useSelector(selectJwt);
@@ -43,6 +49,9 @@ const ReportViolation: React.FC = () => {
   const [description, setDescription] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
+  const [displayAddressLine1, setDisplayAddressLine1] = useState<string>("");
+  const [displayAddressLine2, setDisplayAddressLine2] = useState<string>("");
+
   useEffect(() => {
     if (user) {
       setFullName(user.display_name ?? "");
@@ -51,16 +60,29 @@ const ReportViolation: React.FC = () => {
   }, [user]);
 
   const [latitude, setLatitude] = useState<number | null>(null);
-  console.log("🚀 ~ ReportViolation ~ latitude:", latitude);
   const [longitude, setLongitude] = useState<number | null>(null);
-  console.log("🚀 ~ ReportViolation ~ longitude:", longitude);
 
-  const assistList: string[] = [
-    translate("assistScreen.assistList.wageTheft"),
-    translate("assistScreen.assistList.discriminationHarassment"),
-    translate("assistScreen.assistList.unpaidOvertime"),
-    translate("assistScreen.assistList.immigrantRights"),
-    translate("assistScreen.assistList.other"),
+  const assistList = [
+    {
+      key: "wageTheft",
+      label: translate("assistScreen.assistList.wageTheft"),
+    },
+    {
+      key: "discriminationHarassment",
+      label: translate("assistScreen.assistList.discriminationHarassment"),
+    },
+    {
+      key: "unpaidOvertime",
+      label: translate("assistScreen.assistList.unpaidOvertime"),
+    },
+    {
+      key: "immigrantRights",
+      label: translate("assistScreen.assistList.immigrantRights"),
+    },
+    {
+      key: "other",
+      label: translate("assistScreen.assistList.other"),
+    },
   ];
   const [isChecked, setCheckState] = useState<boolean[]>(
     new Array(assistList.length).fill(false),
@@ -69,7 +91,7 @@ const ReportViolation: React.FC = () => {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const handledState = (position: number, option: string): void => {
+  const handledState = (position: number, optionKey: string): void => {
     const update = isChecked.map((item, index) =>
       index === position ? !item : item,
     );
@@ -77,9 +99,9 @@ const ReportViolation: React.FC = () => {
 
     let updateList: string[] = [...list];
     if (!isChecked[position]) {
-      updateList.push(option);
+      updateList.push(optionKey);
     } else {
-      updateList = list.filter((item) => item !== option);
+      updateList = list.filter((item) => item !== optionKey);
     }
     setAssistList(updateList);
   };
@@ -105,18 +127,27 @@ const ReportViolation: React.FC = () => {
     }
     setErrors({});
 
+    const businessNameWithDate = buildBusinessNameWithDate(businessName);
+
     const jwt = jwtItems[0]?.token ?? "";
     setLoading(true);
     try {
       const apiResult = await submitViolation(
         {
-          businessName,
-          businessAddress,
-          fullName,
-          userEmail,
-          userPhone: userPhone.replace(/\D/g, ""),
-          description,
-          violations: list,
+          title: businessNameWithDate,
+          status: "pending",
+          acf: {
+            business_name: businessNameWithDate,
+            business_address: businessAddress,
+            full_name: fullName,
+            user_email: userEmail,
+            user_phone: userPhone.replace(/\D/g, ""),
+            description: description,
+            violation_type: list,
+            latitude: latitude ?? 0,
+            longitude: longitude ?? 0,
+            timestamp: Math.floor(Date.now() / 1000), // Current Unix timestamp in seconds
+          },
         },
         jwt,
       );
@@ -157,10 +188,28 @@ const ReportViolation: React.FC = () => {
     placesRef.current?.clear();
   };
 
+  const buildDisplayAddress = (businessAddress: string) => {
+    const parts = businessAddress
+      .split(",")
+      .map((part) => part.trim())
+      .filter(Boolean);
+
+    const noCountryParts = parts.length > 0 ? parts.slice(0, -1) : [];
+    const line2Parts = noCountryParts.slice(-2);
+    const line1Parts = noCountryParts.slice(0, -2);
+
+    const line1 = line1Parts.join(", ");
+    const line2 = line2Parts.join(", ");
+
+    setDisplayAddressLine1(line1);
+    setDisplayAddressLine2(line2);
+  };
+
   const handlePlaceSelect = (place: Place) => {
     const address = place?.details?.formattedAddress || "";
 
     setBusinessAddress(address);
+    buildDisplayAddress(address);
     setErrors((prev) => {
       const { businessAddress, ...rest } = prev;
       return rest;
@@ -222,6 +271,15 @@ const ReportViolation: React.FC = () => {
                   onPlaceSelect={(places: Place) => {
                     handlePlaceSelect(places);
                   }}
+                  onTextChange={(text) => {
+                    if (text === "") {
+                      setBusinessAddress("");
+                      setDisplayAddressLine1("");
+                      setDisplayAddressLine2("");
+                      setLatitude(null);
+                      setLongitude(null);
+                    }
+                  }}
                   fetchDetails={true}
                   detailsFields={[
                     "formattedAddress",
@@ -243,6 +301,17 @@ const ReportViolation: React.FC = () => {
                   </Text>
                 )}
               </View>
+
+              {businessAddress && (
+                <View style={styles.displayAddressContainer}>
+                  <Text style={styles.displayAddress}>
+                    {displayAddressLine1 && `${displayAddressLine1}`}
+                  </Text>
+                  <Text style={styles.displayAddress}>
+                    {displayAddressLine2 && `${displayAddressLine2}`}
+                  </Text>
+                </View>
+              )}
 
               <View style={styles.inputContainer}>
                 <Text style={styles.inputName}>
@@ -326,11 +395,11 @@ const ReportViolation: React.FC = () => {
                 return (
                   <CheckBox
                     key={index}
-                    title={assist}
+                    title={assist.label}
                     textStyle={textStyles.body}
                     checkedColor={colors.light.primary}
                     checked={isChecked[index]}
-                    onPress={() => handledState(index, assist)}
+                    onPress={() => handledState(index, assist.key)}
                   />
                 );
               })}
@@ -405,7 +474,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   textInput: {
-    height: 30,
+    minHeight: 30,
     borderBottomColor: colors.light.primary,
     borderBottomWidth: 1,
     margin: 10,
@@ -480,12 +549,21 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     borderColor: colors.light.primary,
     ...textStyles.caption,
-    height: 120,
   },
 
   placesSuggestions: {
     borderRadius: 4,
     elevation: 2,
+  },
+
+  displayAddressContainer: {
+    marginLeft: 22,
+    backgroundColor: colors.light.background,
+    padding: 10,
+    borderRadius: 6,
+  },
+  displayAddress: {
+    marginLeft: 6,
   },
 });
 

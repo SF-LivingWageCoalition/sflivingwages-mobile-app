@@ -1,7 +1,7 @@
 /**
- * Auth Configuration Constants
- * These constants are used for API requests and authentication.
- * - Exports environment-backed constants used by the auth API layer
+ * Shared API Configuration Constants
+ * These constants are used for API requests in auth and violations modules.
+ * - Exports environment-backed constants used by API layers
  * - Keep types permissive (string | undefined) so consumers can handle missing env
  */
 import { Buffer } from "buffer";
@@ -12,6 +12,8 @@ export const BASE_URL: string | undefined = process.env.EXPO_PUBLIC_BASE_URL; //
 // API Routes
 export const JWT_ROUTE: string | undefined = process.env.EXPO_PUBLIC_JWT_ROUTE; // Route for Simple JWT Login plugin API
 export const WC_ROUTE: string | undefined = process.env.EXPO_PUBLIC_WC_ROUTE; // Route for WooCommerce REST API
+export const VIOLATIONS_ROUTE: string | undefined =
+  process.env.EXPO_PUBLIC_VIOLATIONS_ROUTE; // Route for Violations API
 
 // JWT configuration
 export const JWT_DE_KEY: string | undefined =
