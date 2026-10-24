@@ -11,7 +11,6 @@ import {
   View,
 } from "react-native";
 import { Divider } from "@rneui/themed";
-import { Card } from "react-native-paper";
 import Swiper from "react-native-swiper/src";
 import { WebView } from "react-native-webview";
 import MainButton from "../../components/MainButton";
@@ -210,7 +209,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
           {/* Media section */}
           <View style={styles.containerBody}>
             <Text style={styles.titles}>Media</Text>
-            <Card style={styles.cardStyle}>
+            <View style={styles.cardStyle}>
               <WebView
                 style={styles.youTubeStyle}
                 source={{
@@ -229,7 +228,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 mixedContentMode="compatibility"
                 thirdPartyCookiesEnabled={true}
               />
-              <Card.Actions>
+              <View style={styles.cardActions}>
                 <View style={styles.cardView}>
                   <Text
                     style={styles.actionText}
@@ -242,9 +241,9 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                     See full list of TV Shows
                   </Text>
                 </View>
-              </Card.Actions>
-            </Card>
-            <Card style={styles.cardStyle}>
+              </View>
+            </View>
+            <View style={styles.cardStyle}>
               <WebView
                 style={styles.youTubeStyle}
                 source={{
@@ -263,7 +262,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 mixedContentMode="compatibility"
                 thirdPartyCookiesEnabled={true}
               />
-              <Card.Actions>
+              <View style={styles.cardActions}>
                 <View style={styles.cardView}>
                   <Text
                     style={styles.actionText}
@@ -276,9 +275,9 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                     See full list of Vintage Videos
                   </Text>
                 </View>
-              </Card.Actions>
-            </Card>
-            <Card style={styles.cardStyle}>
+              </View>
+            </View>
+            <View style={styles.cardStyle}>
               <WebView
                 style={styles.youTubeStyle}
                 source={{
@@ -297,7 +296,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 mixedContentMode="compatibility"
                 thirdPartyCookiesEnabled={true}
               />
-              <Card.Actions>
+              <View style={styles.cardActions}>
                 <View style={styles.cardView}>
                   <Text
                     style={styles.actionText}
@@ -310,8 +309,8 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                     See full list of Documentaries
                   </Text>
                 </View>
-              </Card.Actions>
-            </Card>
+              </View>
+            </View>
           </View>
 
           {/* Social media section */}
@@ -497,6 +496,9 @@ const styles = StyleSheet.create({
     opacity: 0.99,
   },
   cardStyle: {
+    backgroundColor: colors.light.surface,
+    borderRadius: 4,
+    overflow: "hidden",
     shadowColor: colors.light.shadow,
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.1,
@@ -505,6 +507,12 @@ const styles = StyleSheet.create({
     marginTop: 26,
     borderWidth: 2,
     width: "90%",
+  },
+  cardActions: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: 8,
   },
   cardView: {
     flex: 1,
