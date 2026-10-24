@@ -1,7 +1,15 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useRef, useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  type ScrollViewInstance,
+  StyleSheet,
+  Text,
+  View,
+  type ViewInstance,
+} from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import MainButton from "../../components/MainButton";
 import appIcon from "../../../assets/icon.png";
@@ -16,8 +24,8 @@ const LivingWageCalculator: React.FC = () => {
   const [adults, setAdults] = useState<number>(1);
   const [children, setChildren] = useState<number>(0);
   const [calculationResult, setCalculationResult] = useState<any | null>(null);
-  const scrollViewRef = useRef<ScrollView>(null);
-  const resultsCardRef = useRef<View>(null);
+  const scrollViewRef = useRef<ScrollViewInstance>(null);
+  const resultsCardRef = useRef<ViewInstance>(null);
 
   function formatNumber(num: number) {
     return num.toLocaleString();
@@ -69,7 +77,7 @@ const LivingWageCalculator: React.FC = () => {
         (x, y) => {
           scrollViewRef.current?.scrollTo({ y: y - 20, animated: true });
         },
-        () => {}
+        () => {},
       );
     }, 100);
   };

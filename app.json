@@ -4,12 +4,10 @@
     "slug": "sflivingwages",
     "version": "11.0.4",
     "orientation": "portrait",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "icon": "./assets/icon.png",
       "bundleIdentifier": "com.sfLiving.sflivingwages",
-
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -31,15 +29,7 @@
         }
       }
     },
-    "androidStatusBar": {
-      "backgroundColor": "#C2185B"
-    },
     "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#d31623"
-    },
     "updates": {
       "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/f954fbe3-2740-4a48-8bda-2600b68a699e"
@@ -56,7 +46,17 @@
       ],
       "expo-asset",
       "expo-font",
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-image",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash.png",
+          "resizeMode": "cover",
+          "backgroundColor": "#d31623"
+        }
+      ],
+      "expo-status-bar"
     ],
     "extra": {
       "eas": {

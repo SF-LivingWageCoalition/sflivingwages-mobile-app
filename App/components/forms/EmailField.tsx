@@ -3,6 +3,7 @@ import {
   StyleProp,
   Text,
   TextInput,
+  type TextInputInstance,
   TextStyle,
   View,
   ViewStyle,
@@ -18,7 +19,7 @@ interface EmailFieldProps {
   label?: string;
   returnKeyType?: "next" | "done";
   onSubmitEditing?: () => void;
-  inputRef?: React.RefObject<TextInput | null>;
+  inputRef?: React.RefObject<TextInputInstance | null>;
   containerStyle?: StyleProp<ViewStyle>;
   inputStyle?: StyleProp<TextStyle>;
 }
