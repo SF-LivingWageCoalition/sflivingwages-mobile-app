@@ -29,9 +29,6 @@
         }
       }
     },
-    "androidStatusBar": {
-      "backgroundColor": "#C2185B"
-    },
     "icon": "./assets/icon.png",
     "updates": {
       "fallbackToCacheTimeout": 0,

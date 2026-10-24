@@ -17,7 +17,24 @@ npx expo export --platform ios --output-dir /tmp/export-check   # and --platform
 
 `expo export` is the cheapest way to catch Babel/Metro resolution breakage without a native build; `tsc` alone will not find it. Delete the output directory afterwards.
 
-The native side is Continuous Native Generation — there is no committed `ios/` or `android/` directory, so SDK upgrades do not need a manual native migration, but they do need a fresh development build (`eas build --profile development`).
+The native side is Continuous Native Generation — there is no committed `ios/` or `android/` directory, so SDK upgrades do not need a manual native migration, but they do need a fresh development build (`eas build --profile development`). `npx expo prebuild --no-install` is a useful fourth check, since it validates the config plugins and surfaces deprecated `app.json` fields; delete the generated `ios/` and `android/` directories afterwards, as neither is gitignored.
+
+## React Native types
+
+React Native 0.87 made the [Strict TypeScript API](https://reactnative.dev/docs/strict-typescript-api) the default, which changed two things this codebase ran into during the SDK 58 upgrade:
+
+- Component classes are no longer their own instance types. Refs need the instance types: `TextInputInstance`, `ViewInstance`, `ScrollViewInstance`, imported with an inline `type` modifier from `react-native`.
+- `ViewStyle` and `TextStyle` are now readonly, so a style object cannot be built by assigning properties one at a time. Build literals and compose them with spreads instead (see `App/components/MainButton.tsx`).
+
+Deep imports from `react-native/Libraries/*` are type errors. There is a `customConditions` opt-out in `tsconfig.json` for the whole migration, but this project does not use it and should not need to.
+
+`ImageBackground` is deprecated as of SDK 58 in favour of a `View` with an absolutely positioned `Image`. It still works and is used in several screens; migrate opportunistically.
+
+## Android specifics
+
+Edge-to-edge is mandatory, and the status bar cannot be given a background colour. The `androidStatusBar` app.json field was removed in the SDK 58 upgrade because prebuild reported it as deprecated and having no effect; the `expo-status-bar` plugin accepts only `hidden` and `style`. To put colour behind the status bar, render a view inset by the top safe area.
+
+R8 is enabled by default in release builds from SDK 58 (`android.enableMinifyInReleaseBuilds=true` in the generated `gradle.properties`). Libraries that rely on reflection may need ProGuard keep rules. If a release build misbehaves where a debug build does not, suspect this first; it can be turned off through `expo-build-properties`.
 
 ## Babel configuration
 
