@@ -4,6 +4,7 @@ import {
   StyleProp,
   Text,
   TextInput,
+  type TextInputInstance,
   TextStyle,
   TouchableOpacity,
   View,
@@ -22,7 +23,7 @@ interface PasswordFieldProps {
   autoComplete?: "password" | "new-password";
   returnKeyType?: "next" | "done";
   onSubmitEditing?: () => void;
-  inputRef?: React.RefObject<TextInput | null>;
+  inputRef?: React.RefObject<TextInputInstance | null>;
   containerStyle?: StyleProp<ViewStyle>;
   inputStyle?: StyleProp<TextStyle>;
 }

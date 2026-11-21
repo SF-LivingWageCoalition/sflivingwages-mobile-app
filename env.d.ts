@@ -1,10 +1,3 @@
-declare module "@env" {
-  export const BASE_URL: string;
-  export const SITE_KEY_V3: string;
-  export const SEND_TO: string;
-  export const VIOLATIONS_ENDPOINT: string;
-}
-
 declare module "*.png" {
   const value: any;
   export default value;

@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Paragraph, Title } from "react-native-paper";
 import { colors } from "../../../theme";
 import { textStyles } from "../../../theme/fontStyles";
 import { EventsListItemProps } from "../../../types/types";
@@ -70,10 +69,10 @@ const EventsListItem: React.FC<EventsListItemProps> = ({ event, index }) => {
         <Text style={styles.monthText}>{startMonth}</Text>
       </View>
       <View style={styles.eventInfoWrapper}>
-        <Title style={styles.titleText}>{event.title}</Title>
-        <Paragraph style={styles.timeText}>
+        <Text style={styles.titleText}>{event.title}</Text>
+        <Text style={styles.timeText}>
           {startTime} - {endTime}
-        </Paragraph>
+        </Text>
       </View>
     </TouchableOpacity>
   );

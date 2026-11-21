@@ -4,7 +4,7 @@ import {
   StyleProp,
   StyleSheet,
   Text,
-  TextInput,
+  type TextInputInstance,
   TouchableOpacity,
   View,
   ViewStyle,
@@ -36,7 +36,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
   style,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const passwordRef = useRef<TextInput | null>(null);
+  const passwordRef = useRef<TextInputInstance | null>(null);
 
   const { values, setField, errors, generalError, loading, submit } =
     useAuthForm<LoginFormValues>({

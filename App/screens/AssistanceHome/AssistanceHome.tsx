@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     color: colors.light.surface,
   },
   overlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     backgroundColor: "rgba(0, 0, 0, 0.35)",
   },
   listContent: {

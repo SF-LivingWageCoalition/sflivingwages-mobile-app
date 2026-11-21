@@ -5,7 +5,7 @@ import {
   StyleProp,
   StyleSheet,
   Text,
-  TextInput,
+  type TextInputInstance,
   View,
   ViewStyle,
 } from "react-native";
@@ -30,7 +30,7 @@ interface RegisterFormProps {
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistered, style }) => {
-  const passwordRef = useRef<TextInput | null>(null);
+  const passwordRef = useRef<TextInputInstance | null>(null);
 
   const { values, setField, errors, generalError, loading, submit } =
     useAuthForm<RegisterFormValues>({
