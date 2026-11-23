@@ -1,4 +1,3 @@
-import { CheckBox } from "@rneui/themed";
 import React, { useEffect, useRef, useState } from "react";
 import {
   Alert,
@@ -17,6 +16,7 @@ import GooglePlacesTextInput, {
 
 import appIcon from "../../../assets/icon.png";
 import { submitViolation } from "../../api/violations/violationsApi";
+import Checkbox from "../../components/forms/Checkbox";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import MainButton from "../../components/MainButton";
 import {
@@ -393,7 +393,7 @@ const ReportViolation: React.FC = () => {
 
               {assistList.map((assist, index) => {
                 return (
-                  <CheckBox
+                  <Checkbox
                     key={index}
                     title={assist.label}
                     textStyle={textStyles.body}

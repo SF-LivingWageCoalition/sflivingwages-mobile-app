@@ -54,9 +54,11 @@ This project accumulated a number of dependencies with no imports anywhere in th
 
 Before adding a dependency, check `reactnative.directory` for maintenance status and New Architecture support. `expo-doctor` validates installed packages against it.
 
-## Known remaining warnings
+## Icons
 
-`react-native-vector-icons` has no React Native Directory metadata, so `expo-doctor` can only report it as unknown rather than validate it. It is still a dependency and `App.tsx` silences its deprecation warning via `LogBox`. Prefer `@expo/vector-icons` for new icon usage, though that package is itself slated for deprecation in a future SDK.
+Use `@expo/vector-icons`, which is the only icon library in the project. It is itself slated for deprecation in a future SDK, so watch the release notes.
+
+`@rneui/base`, `@rneui/themed` and `react-native-vector-icons` were removed after the SDK 58 upgrade. The last two were not independent: RNEUI resolved its icon sets through a runtime `require` chain that tried `@react-native-vector-icons/*` first and fell back to the deprecated `react-native-vector-icons`, returning `null` — rendering nothing, with no error — when both were missing. That fallback is why `App.tsx` used to carry a `LogBox.ignoreLogs` for the deprecation warning. Only `Divider` and `CheckBox` were ever used from RNEUI; they are now a plain `View` in `NewHome.tsx` and `App/components/forms/Checkbox.tsx`.
 
 ## Dead code
 

@@ -10,7 +10,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Divider } from "@rneui/themed";
 import Swiper from "react-native-swiper/src";
 import { WebView } from "react-native-webview";
 import MainButton from "../../components/MainButton";
@@ -315,7 +314,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
 
           {/* Social media section */}
           <View style={styles.socialMediaArea}>
-            <Divider style={styles.divider} />
+            <View style={styles.divider} />
             <Text style={styles.follow}>Follow Us</Text>
             <View style={styles.socialMediaView}>
               <MainButton
@@ -537,6 +536,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     borderWidth: 0.5,
+    borderColor: colors.light.outline,
     shadowColor: colors.light.shadow,
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.3,

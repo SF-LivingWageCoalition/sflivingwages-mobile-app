@@ -2350,31 +2350,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rneui/base@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "@rneui/base@npm:5.0.0"
-  dependencies:
-    color: "npm:^3.2.1"
-    deepmerge: "npm:^4.2.2"
-    hoist-non-react-statics: "npm:^3.3.2"
-    react-native-size-matters: "npm:^0.4.0"
-  peerDependencies:
-    "@testing-library/jest-native": ^5.4.3
-    "@testing-library/react-native": ^13.2.0
-    react-native-safe-area-context: ">= 3.0.0"
-  checksum: 10c0/d6f2dc1d69d3013be019f9d0337617e36e4ea0e104790abde6331dc5eb8f5b829b66c53e314d324f29560ae0ab431b779b8b032c10b56d4c8e7ab5731ffe1158
-  languageName: node
-  linkType: hard
-
-"@rneui/themed@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "@rneui/themed@npm:5.0.0"
-  peerDependencies:
-    "@rneui/base": 5.0.0
-  checksum: 10c0/8c5bf94c35909e87010c7a16b08ee068e22396777cacbcd5199f95b92e00b64abcb70cf4877a9f510bf928520add6b043cdf478f6ebfeef66497373485c61cdb
-  languageName: node
-  linkType: hard
-
 "@sinclair/typebox@npm:^0.27.8":
   version: 0.27.10
   resolution: "@sinclair/typebox@npm:0.27.10"
@@ -3134,17 +3109,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cliui@npm:^7.0.2":
-  version: 7.0.4
-  resolution: "cliui@npm:7.0.4"
-  dependencies:
-    string-width: "npm:^4.2.0"
-    strip-ansi: "npm:^6.0.0"
-    wrap-ansi: "npm:^7.0.0"
-  checksum: 10c0/6035f5daf7383470cef82b3d3db00bec70afb3423538c50394386ffbbab135e26c3689c41791f911fa71b62d13d3863c712fdd70f0fbdffd938a1e6fd09aac00
-  languageName: node
-  linkType: hard
-
 "cliui@npm:^8.0.1":
   version: 8.0.1
   resolution: "cliui@npm:8.0.1"
@@ -3163,7 +3127,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"color-convert@npm:^1.9.0, color-convert@npm:^1.9.3":
+"color-convert@npm:^1.9.0":
   version: 1.9.3
   resolution: "color-convert@npm:1.9.3"
   dependencies:
@@ -3195,23 +3159,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"color-string@npm:^1.6.0, color-string@npm:^1.9.0":
+"color-string@npm:^1.9.0":
   version: 1.9.1
   resolution: "color-string@npm:1.9.1"
   dependencies:
     color-name: "npm:^1.0.0"
     simple-swizzle: "npm:^0.2.2"
   checksum: 10c0/b0bfd74c03b1f837f543898b512f5ea353f71630ccdd0d66f83028d1f0924a7d4272deb278b9aef376cacf1289b522ac3fb175e99895283645a2dc3a33af2404
-  languageName: node
-  linkType: hard
-
-"color@npm:^3.2.1":
-  version: 3.2.1
-  resolution: "color@npm:3.2.1"
-  dependencies:
-    color-convert: "npm:^1.9.3"
-    color-string: "npm:^1.6.0"
-  checksum: 10c0/39345d55825884c32a88b95127d417a2c24681d8b57069413596d9fcbb721459ef9d9ec24ce3e65527b5373ce171b73e38dbcd9c830a52a6487e7f37bf00e83c
   languageName: node
   linkType: hard
 
@@ -3394,7 +3348,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deepmerge@npm:^4.2.2, deepmerge@npm:^4.3.1":
+"deepmerge@npm:^4.3.1":
   version: 4.3.1
   resolution: "deepmerge@npm:4.3.1"
   checksum: 10c0/e53481aaf1aa2c4082b5342be6b6d8ad9dfe387bc92ce197a66dea08bd4265904a087e75e464f14d1347cf2ac8afe1e4c16b266e0561cc5df29382d3c5f80044
@@ -4323,7 +4277,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:^3.3.1, hoist-non-react-statics@npm:^3.3.2":
+"hoist-non-react-statics@npm:^3.3.1":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
   dependencies:
@@ -5856,15 +5810,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-size-matters@npm:^0.4.0":
-  version: 0.4.2
-  resolution: "react-native-size-matters@npm:0.4.2"
-  peerDependencies:
-    react-native: "*"
-  checksum: 10c0/56715d33d02f10d4ca358761420cc9a971b3872c11b9fa403afd4f0b2bbf74148fd3c4c799959727fb61c576a474e3e1155ffadc247c12d70fadcb562b4a9f29
-  languageName: node
-  linkType: hard
-
 "react-native-svg@npm:15.16.0":
   version: 15.16.0
   resolution: "react-native-svg@npm:15.16.0"
@@ -5904,19 +5849,6 @@ __metadata:
     react-native: "*"
     react-native-pager-view: ">= 6.0.0"
   checksum: 10c0/4a3aeacd5fbdf4fae9ba320da053fab0329131e9faac7f7290ddaa737850ac22c301dd2ab7942a1f0b09221fe3a198cc53eddf9910c66de19aa9e0e575cc61f2
-  languageName: node
-  linkType: hard
-
-"react-native-vector-icons@npm:^9.2.0":
-  version: 9.2.0
-  resolution: "react-native-vector-icons@npm:9.2.0"
-  dependencies:
-    prop-types: "npm:^15.7.2"
-    yargs: "npm:^16.1.1"
-  bin:
-    fa5-upgrade: bin/fa5-upgrade.sh
-    generate-icon: bin/generate-icon.js
-  checksum: 10c0/6a6c415195cfde49f3148e8568ffecb4b272e0ff6fe808fd2fd956834f3bdb2dbeac513b06be20497cce376a832909dfcba72431dc25e4aea076700cc34d8757
   languageName: node
   linkType: hard
 
@@ -6409,8 +6341,6 @@ __metadata:
     "@react-navigation/native-stack": "npm:^7"
     "@react-navigation/stack": "npm:^7"
     "@reduxjs/toolkit": "npm:^2.8.2"
-    "@rneui/base": "npm:^5.0.0"
-    "@rneui/themed": "npm:^5.0.0"
     "@types/i18n-js": "npm:^4.0.1"
     "@types/react": "npm:~19.3.0"
     "@types/redux-persist": "npm:^4.3.1"
@@ -6452,7 +6382,6 @@ __metadata:
     react-native-screens: "npm:~4.30.0"
     react-native-svg: "npm:15.16.0"
     react-native-swiper: "npm:^1.6.0"
-    react-native-vector-icons: "npm:^9.2.0"
     react-native-web: "npm:^0.21.4"
     react-native-webview: "npm:14.0.1"
     react-native-worklets: "npm:0.13.0"
@@ -7120,32 +7049,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yargs-parser@npm:^20.2.2":
-  version: 20.2.9
-  resolution: "yargs-parser@npm:20.2.9"
-  checksum: 10c0/0685a8e58bbfb57fab6aefe03c6da904a59769bd803a722bb098bd5b0f29d274a1357762c7258fb487512811b8063fb5d2824a3415a0a4540598335b3b086c72
-  languageName: node
-  linkType: hard
-
 "yargs-parser@npm:^21.1.1":
   version: 21.1.1
   resolution: "yargs-parser@npm:21.1.1"
   checksum: 10c0/f84b5e48169479d2f402239c59f084cfd1c3acc197a05c59b98bab067452e6b3ea46d4dd8ba2985ba7b3d32a343d77df0debd6b343e5dae3da2aab2cdf5886b2
-  languageName: node
-  linkType: hard
-
-"yargs@npm:^16.1.1":
-  version: 16.2.0
-  resolution: "yargs@npm:16.2.0"
-  dependencies:
-    cliui: "npm:^7.0.2"
-    escalade: "npm:^3.1.1"
-    get-caller-file: "npm:^2.0.5"
-    require-directory: "npm:^2.1.1"
-    string-width: "npm:^4.2.0"
-    y18n: "npm:^5.0.5"
-    yargs-parser: "npm:^20.2.2"
-  checksum: 10c0/b1dbfefa679848442454b60053a6c95d62f2d2e21dd28def92b647587f415969173c6e99a0f3bab4f1b67ee8283bf735ebe3544013f09491186ba9e8a9a2b651
   languageName: node
   linkType: hard
 
