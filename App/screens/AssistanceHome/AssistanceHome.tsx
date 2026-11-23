@@ -7,7 +7,7 @@ import {
 } from "@react-navigation/native";
 import React from "react";
 import {
-  ImageBackground,
+  Image,
   SectionList,
   StyleSheet,
   Text,
@@ -107,11 +107,12 @@ const AssistanceHome: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={goldenGateBridge}
-        style={styles.heroImage}
-        resizeMode="cover"
-      >
+      <View style={styles.heroImage}>
+        <Image
+          source={goldenGateBridge}
+          style={StyleSheet.absoluteFill}
+          resizeMode="cover"
+        />
         <View style={styles.overlay}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>
@@ -122,7 +123,7 @@ const AssistanceHome: React.FC = () => {
             </Text>
           </View>
         </View>
-      </ImageBackground>
+      </View>
 
       <SectionList
         sections={sections}

@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  FlatList,
-  StyleSheet,
-  View,
-  Text,
-  ImageBackground,
-} from "react-native";
+import { FlatList, Image, StyleSheet, View, Text } from "react-native";
 import { colors, textStyles } from "../../theme";
 import CampaignCard from "./components/CampaignCard";
 import goldenGateBridge from "../../assets/images/golden-gate-bridge.png";
@@ -18,18 +12,19 @@ const CampaignScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       {/* Hero section with background image */}
-      <ImageBackground
-        source={goldenGateBridge}
-        style={styles.heroImage}
-        resizeMode="cover"
-      >
+      <View style={styles.heroImage}>
+        <Image
+          source={goldenGateBridge}
+          style={StyleSheet.absoluteFill}
+          resizeMode="cover"
+        />
         <View style={styles.overlay}>
           <View style={styles.heroContent}>
             <Text style={styles.heroTitle}>Our Campaigns</Text>
             <Text style={styles.heroSubtitle}>Stand up for your rights</Text>
           </View>
         </View>
-      </ImageBackground>
+      </View>
 
       {/* Campaign list:
        * CAMPAIGN_IDS is [1, 2, 3, 4, 5, 6] — the set of campaign ids that have content in both campaignStructure.ts and the i18n campaigns namespace.

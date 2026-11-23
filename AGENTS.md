@@ -28,7 +28,7 @@ React Native 0.87 made the [Strict TypeScript API](https://reactnative.dev/docs/
 
 Deep imports from `react-native/Libraries/*` are type errors. There is a `customConditions` opt-out in `tsconfig.json` for the whole migration, but this project does not use it and should not need to.
 
-`ImageBackground` is deprecated as of SDK 58 in favour of a `View` with an absolutely positioned `Image`. It still works and is used in several screens; migrate opportunistically.
+`ImageBackground` is deprecated as of SDK 58 and is no longer used. The replacement pattern is a `View` carrying the container style, with `<Image style={StyleSheet.absoluteFill} resizeMode="cover" />` as its first child and the content after it. Where the old `imageStyle` prop set a `borderRadius`, that style belongs on the `Image`, not the wrapper.
 
 ## Android specifics
 

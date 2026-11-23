@@ -2,7 +2,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
 import {
   Dimensions,
-  ImageBackground,
+  Image,
   Linking,
   ScrollView,
   StyleSheet,
@@ -36,15 +36,16 @@ const bodyPageWidth = Dimensions.get("window").width;
  */
 const CarouselImage: React.FC<CarouselImageProps> = ({ image, onPress }) => (
   <TouchableOpacity key={image.id} onPress={onPress}>
-    <ImageBackground
-      source={image.src}
-      style={styles.imageBackground}
-      imageStyle={styles.imageBorder}
-    >
+    <View style={styles.imageBackground}>
+      <Image
+        source={image.src}
+        style={[StyleSheet.absoluteFill, styles.imageBorder]}
+        resizeMode="cover"
+      />
       <View style={styles.containerBody}>
         <Text style={styles.textEvent}>{image.title}</Text>
       </View>
-    </ImageBackground>
+    </View>
   </TouchableOpacity>
 );
 
@@ -57,15 +58,16 @@ const CarouselImageSmall: React.FC<CarouselImageProps> = ({
 }) => (
   <View style={styles.imageCarouselSmall}>
     <TouchableOpacity key={image.id} onPress={onPress}>
-      <ImageBackground
-        source={image.src}
-        style={styles.imageBackgroundSmall}
-        imageStyle={styles.imageBorder}
-      >
+      <View style={styles.imageBackgroundSmall}>
+        <Image
+          source={image.src}
+          style={[StyleSheet.absoluteFill, styles.imageBorder]}
+          resizeMode="cover"
+        />
         <View style={styles.containerBody}>
           <Text style={styles.textCampaignsImg}>{image.title}</Text>
         </View>
-      </ImageBackground>
+      </View>
     </TouchableOpacity>
   </View>
 );
@@ -135,7 +137,12 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
       <View style={styles.container}>
         {/* Top background section: Who we Are */}
         <View style={styles.topBackground}>
-          <ImageBackground source={goldenGateBridge} style={styles.background}>
+          <View style={styles.background}>
+            <Image
+              source={goldenGateBridge}
+              style={StyleSheet.absoluteFill}
+              resizeMode="cover"
+            />
             <View style={styles.header}>
               <Text style={styles.imageTitle}>
                 {translate("whoWeAreHeader.title")}
@@ -152,7 +159,7 @@ const NewHomeScreen: React.FC<NewHomeScreenProps> = ({ navigation }) => {
                 />
               </View>
             </View>
-          </ImageBackground>
+          </View>
         </View>
 
         {/* Main content section */}
